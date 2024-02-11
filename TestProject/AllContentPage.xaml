@@ -9,12 +9,13 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <ListView x:Name="ContentListView">
+        <ListView x:Name="ContentListView" ItemTapped="ContentListView_ItemTapped">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextCell Text="{Binding Title}" Detail="{Binding Type}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
     </VerticalStackLayout>
 </ContentPage>

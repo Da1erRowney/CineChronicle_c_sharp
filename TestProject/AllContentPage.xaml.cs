@@ -83,5 +83,24 @@ namespace TestProject
                 _ => databaseService.GetAllContent(),
             };
         }
+
+        private async void ContentListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item == null)
+                return;
+
+            // Получите выбранный элемент контента
+            Content selectedContent = (Content)e.Item;
+
+            // Создайте новую страницу для отображения подробной информации
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+
+            // Перейдите на новую страницу
+            await Navigation.PushAsync(viewContentPage);
+
+            // Сбросьте выбор элемента в ListView
+            ((ListView)sender).SelectedItem = null;
+        }
+
     }
 }

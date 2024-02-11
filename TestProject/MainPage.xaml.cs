@@ -83,7 +83,7 @@ public partial class MainPage : ContentPage
             Sidebar.IsVisible = true;
             TabButton.BackgroundColor = Color.FromHex("#A9A9A9"); // Используйте цвет темно-серого
             await Sidebar.FadeTo(1, 100); // Увеличить время анимации до 500 миллисекунд
-            Sidebar.WidthRequest = 200; // Установить желаемую ширину панели
+            Sidebar.WidthRequest = 350; // Установить желаемую ширину панели
         }
     }
 

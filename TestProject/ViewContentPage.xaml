@@ -1,12 +1,72 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TestProject.ViewContentPage"
-             Title="ViewContentPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             x:Class="TestProject.ViewContentPage">
+
+    <VerticalStackLayout Margin="20">
+        <!-- Заголовок -->
+        <Label Text="Подробная информация"
+           FontAttributes="Bold"
+           HorizontalOptions="Center"
+           Margin="0,20,0,10" />
+
+        <!-- Название -->
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label Text="{Binding Title, StringFormat='Название: {0}'}" />
+        </Frame>
+
+        <!-- Тип -->
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label Text="{Binding Type, StringFormat='Тип: {0}'}" />
+        </Frame>
+
+        <!-- Озвучка -->
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label Text="{Binding Dubbing, StringFormat='Озвучка: {0}'}" />
+        </Frame>
+
+        <!-- Номер последней просмотренной серии -->
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label Text="{Binding LastWatchedSeries, StringFormat='Номер последней просмотренной серии: {0}'}" />
+        </Frame>
+
+        <!-- Номер последнего просмотренного сезона -->
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label Text="{Binding LastWatchedSeason, StringFormat='Номер последнего просмотренного сезона: {0}'}" />
+        </Frame>
+
+        <!-- Дата выхода следующей серии -->
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label Text="{Binding NextEpisodeReleaseDate, StringFormat='Дата выхода следующей серии: {0}'}" />
+        </Frame>
+
+        <!-- Статус просмотра -->
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label Text="{Binding WatchStatus, StringFormat='Статус просмотра: {0}'}" />
+        </Frame>
+
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label x:Name="LinkLabel" Text="Нажмите для перехода на сайт" FontAttributes="Bold"/>
+        </Frame>
+
+
+
+
+
+
+
+
+
+        <!-- Дата добавления -->
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label Text="{Binding DateAdded, StringFormat='Дата добавления: {0}'}" />
+        </Frame>
+
+        <!-- Дата изменения серии -->
+        <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="0,0,0,5">
+            <Label Text="{Binding SeriesChangeDate, StringFormat='Дата изменения серии: {0}'}" />
+        </Frame>
     </VerticalStackLayout>
+
+
 </ContentPage>

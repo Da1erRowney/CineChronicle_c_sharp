@@ -23,7 +23,7 @@ namespace TestProject
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
             _databaseService = new DatabaseServiceContent(databasePath);
             SQLiteConnection connection = CreateDatabase(databasePath);
-        
+
         }
 
         private async void OnAddClicked(object sender, EventArgs e)
@@ -42,7 +42,7 @@ namespace TestProject
             // Преобразуйте выбранную дату в строку с нужным форматом
             string formattedDate = selectedDate.ToString("dd.MM.yyyy"); // Например, "01.02.2024"
 
-            if (DubbingEntry.Text==null)
+            if (DubbingEntry.Text == null)
             {
                 DubbingEntry.Text = "";
             }

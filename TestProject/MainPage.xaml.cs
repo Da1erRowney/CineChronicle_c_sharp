@@ -9,31 +9,49 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 	}
 
-	
+    public string UserChoice;
 
-    private void OnAllClicked(object sender, EventArgs e)
+
+    private async void OnAllClicked(object sender, EventArgs e)
     {
-
+        UserChoice = "All";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
     }
 
-    private void OnMoviesClicked(object sender, EventArgs e)
-    {
 
+    private async void OnMoviesClicked(object sender, EventArgs e)
+    {
+        UserChoice = "Movies";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
     }
 
-    private void OnSeriesClicked(object sender, EventArgs e)
+    private async void OnSeriesClicked(object sender, EventArgs e)
     {
-
+        UserChoice = "Series";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
     }
 
-    private void OnAnimeClicked(object sender, EventArgs e)
+    private async void OnAnimeClicked(object sender, EventArgs e)
     {
-
+        UserChoice = "Anime";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
     }
 
-    private void OnOthersClicked(object sender, EventArgs e)
+    private async void OnOthersClicked(object sender, EventArgs e)
     {
+        UserChoice = "Other";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
+    }
+    private async void OnDoramClicked(object sender, EventArgs e)
+    {
+        UserChoice = "Doram";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
+    }
 
+    private async void OnMultSeriesClicked(object sender, EventArgs e)
+    {
+        UserChoice = "Mult";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
     }
 
     private void OnAddMoreClicked(object sender, EventArgs e)
@@ -60,6 +78,11 @@ public partial class MainPage : ContentPage
             await Sidebar.FadeTo(1, 250); // Показать панель анимацией
             Sidebar.WidthRequest = 200; // Установить желаемую ширину панели
         }
+    }
+
+    private void OnUserStatisticsClicked(object sender, EventArgs e)
+    {
+
     }
 
 }

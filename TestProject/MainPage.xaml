@@ -7,7 +7,8 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-
+        
+        
         <ScrollView Grid.Column="0">
             <StackLayout Spacing="25" Padding="30,0">
                 <!-- Список недавно добавленных элементов -->
@@ -22,9 +23,10 @@
             </StackLayout>
         </ScrollView>
         <!-- Вертикальная боковая панель -->
-        <StackLayout x:Name="Sidebar"
+        <StackLayout 
+            x:Name="Sidebar"
              Grid.Column="1"
-             BackgroundColor="Black"
+             BackgroundColor="Gray"
              WidthRequest="0"
              Padding="10"
              Spacing="10"
@@ -35,20 +37,25 @@
             <Button Text="Фильмы" Clicked="OnMoviesClicked"  />
             <Button Text="Сериалы" Clicked="OnSeriesClicked"   />
             <Button Text="Аниме" Clicked="OnAnimeClicked"  />
+            <Button Text="Дорамы" Clicked="OnDoramClicked"  />
+            <Button Text="Мультсериалы" Clicked="OnMultSeriesClicked"  />
             <Button Text="Остальные" Clicked="OnOthersClicked" />
             <Button Text="Добавить еще" Clicked="OnAddMoreClicked"  />
+            <Button Text="Статистика пользователя" Clicked="OnUserStatisticsClicked"  />
             <Button Text="Настройки" Clicked="OnSettingsClicked" />
 
         </StackLayout>
-
-        <!-- Кнопка для открытия и закрытия вертикальной панели -->
-        <Button Grid.Column="0"
-        BackgroundColor="Gray"
-        WidthRequest="20"
-        VerticalOptions="Fill"
-        HorizontalOptions="End"
-        Margin="0,0,0,0"
-        Clicked="OnSidebarToggle">
+       
+        
+        <Button 
+            x:Name="Tab"
+            Grid.Column="0"
+            BackgroundColor="Gray"
+            WidthRequest="30"
+            VerticalOptions="Fill"
+            HorizontalOptions="End"
+            Margin="0,0,0,0"
+            Clicked="OnSidebarToggle">
         </Button>
 
 

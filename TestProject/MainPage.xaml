@@ -15,7 +15,6 @@
                 <!-- Список недавно добавленных элементов -->
                 <Label Text="Недавно добавленные"
                FontAttributes="Bold"
-               FontSize="20"
                HorizontalOptions="Center"
                Margin="0,20,0,10" />
 
@@ -29,7 +28,6 @@
                 <!-- Список недавно добавленных элементов -->
                 <Label Text="Смотрели недавно"
                FontAttributes="Bold"
-               FontSize="20"
                HorizontalOptions="Center"
                Margin="0,20,0,10" />
 

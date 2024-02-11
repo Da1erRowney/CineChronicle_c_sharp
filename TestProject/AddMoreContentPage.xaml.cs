@@ -41,8 +41,23 @@ namespace TestProject
 
             // Преобразуйте выбранную дату в строку с нужным форматом
             string formattedDate = selectedDate.ToString("dd.MM.yyyy"); // Например, "01.02.2024"
-           
 
+            if (DubbingEntry.Text==null)
+            {
+                DubbingEntry.Text = "";
+            }
+            if (LastWatchedSeriesEntry.Text == null)
+            {
+                LastWatchedSeriesEntry.Text = "0";
+            }
+            if (LastWatchedSeasonEntry.Text == null)
+            {
+                LastWatchedSeasonEntry.Text = "0";
+            }
+            if (LinkEntry.Text == null)
+            {
+                LinkEntry.Text = "";
+            }
             var newContent = new Content
             {
                 Title = TitleEntry.Text,

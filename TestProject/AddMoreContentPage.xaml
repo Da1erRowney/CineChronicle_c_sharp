@@ -1,12 +1,59 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TestProject.AddMoreContentPage"
-             Title="AddMoreContentPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             x:Class="TestProject.AddMoreContentPage">
+    <VerticalStackLayout Spacing="20" Padding="20">
+        <Label Text="Добавление контента"/>
+        <!-- Поле ввода Названия -->
+        <Entry Placeholder="Название" x:Name="TitleEntry" />
+
+        <!-- Выпадающий список для выбора типа -->
+        <Picker Title="Тип" x:Name="TypePicker">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Сериал</x:String>
+                    <x:String>Аниме</x:String>
+                    <x:String>Мультсериал</x:String>
+                    <x:String>Фильм</x:String>
+                    <x:String>Дорама</x:String>
+                    <x:String>Документалка</x:String>
+                    <x:String>Прочее</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <!-- Поле ввода для озвучки -->
+        <Entry Placeholder="Озвучка" x:Name="DubbingEntry" />
+
+        <!-- Поле ввода для номера последней просмотренной серии -->
+        <Entry Placeholder="Серия" x:Name="LastWatchedSeriesEntry" Keyboard="Numeric" />
+
+        <!-- Поле ввода для номера последнего просмотренного сезона -->
+        <Entry Placeholder="Сезон" x:Name="LastWatchedSeasonEntry" Keyboard="Numeric" />
+
+
+        <Entry Placeholder="Ссылка на сайт" x:Name="LinkEntry"/>
+        <!-- Поле ввода для выхода следующей серии -->
+        <StackLayout Orientation="Horizontal" Spacing="10">
+            <Label Text="Выход следующей серии" VerticalOptions="Center" />
+            <DatePicker x:Name="NextEpisodeReleaseDatePicker" />
+        </StackLayout>
+
+
+
+        <!-- Выпадающий список для выбора статуса просмотра -->
+        
+        <Picker Title="Статус просмотра" x:Name="WatchStatusPicker">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Просмотрено</x:String>
+                    <x:String>Смотрю</x:String>
+                    <x:String>Не начинал</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <!-- Кнопка "Добавить" -->
+        <Button Text="Добавить" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand" />
     </VerticalStackLayout>
 </ContentPage>

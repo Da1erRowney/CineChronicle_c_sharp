@@ -2,26 +2,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.MainPage">
 
-    <Grid>
+    <Grid x:Name="area">
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        
-        
-        <ScrollView Grid.Column="0">
+
+
+        <ScrollView Grid.Column="0" VerticalOptions="Center">
             <StackLayout Spacing="25" Padding="30,0">
                 <!-- Список недавно добавленных элементов -->
                 <Label Text="Недавно добавленные"
-                       FontAttributes="Bold"
-                       FontSize="20"
-                       HorizontalOptions="Center"
-                       Margin="0,20,0,10" />
+               FontAttributes="Bold"
+               FontSize="20"
+               HorizontalOptions="Center"
+               Margin="0,20,0,10" />
 
                 <!-- Здесь будет ваш список с недавно добавленными элементами -->
 
             </StackLayout>
         </ScrollView>
+
+        <ScrollView Grid.Column="0" VerticalOptions="Start">
+            <StackLayout Spacing="25" Padding="30,0">
+                <!-- Список недавно добавленных элементов -->
+                <Label Text="Смотрели недавно"
+               FontAttributes="Bold"
+               FontSize="20"
+               HorizontalOptions="Center"
+               Margin="0,20,0,10" />
+
+                <!-- Здесь будет ваш список с недавно добавленными элементами -->
+
+            </StackLayout>
+        </ScrollView>
+
+
         <!-- Вертикальная боковая панель -->
         <StackLayout 
             x:Name="Sidebar"
@@ -39,15 +56,17 @@
             <Button Text="Аниме" Clicked="OnAnimeClicked"  />
             <Button Text="Дорамы" Clicked="OnDoramClicked"  />
             <Button Text="Мультсериалы" Clicked="OnMultSeriesClicked"  />
+            <Button Text="Документалки" Clicked="OnDocumentalClicked"  />
             <Button Text="Остальные" Clicked="OnOthersClicked" />
             <Button Text="Добавить еще" Clicked="OnAddMoreClicked"  />
-            <Button Text="Статистика пользователя" Clicked="OnUserStatisticsClicked"  />
+            <Button Text="Информация" Clicked="OnUserStatisticsClicked"  />
             <Button Text="Настройки" Clicked="OnSettingsClicked" />
 
         </StackLayout>
        
         
         <Button 
+            x:Name="TabButton"
             Grid.Column="0"
             BackgroundColor="Gray"
             WidthRequest="30"

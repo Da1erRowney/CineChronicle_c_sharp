@@ -30,6 +30,9 @@ public partial class AllContentPage : ContentPage
             case "Mult":
                 MainLabel.Text = "Ваши мультсериалы";
                 return;
+            case "Documental":
+                MainLabel.Text = "Ваши документальные передачи";
+                return;
 
 
         }

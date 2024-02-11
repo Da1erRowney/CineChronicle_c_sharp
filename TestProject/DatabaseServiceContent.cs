@@ -11,8 +11,14 @@ namespace DataContent
         public DatabaseServiceContent(string databasePath)
         {
             _connection = new SQLiteConnection(databasePath);
+        }
+
+        public void CreateTables()
+        {
             _connection.CreateTable<Content>();
         }
+
+       
 
         public void InsertContent(Content content)
         {
@@ -52,8 +58,12 @@ namespace DataContent
         public string Title { get; set; }
         public string Type { get; set; }
         public string Dubbing { get; set; }
-        public int LastWatchedEpisode { get; set; }
+        public int LastWatchedSeries { get; set; }
+        public int LastWatchedSeason { get; set; }
         public string NextEpisodeReleaseDate { get; set; }
         public string WatchStatus { get; set; }
+        public string Link { get; set; }  
+        public string DateAdded { get; set; }
+        public string SeriesChangeDate { get; set; }
     }
 }

@@ -48,7 +48,6 @@
        
         
         <Button 
-            x:Name="Tab"
             Grid.Column="0"
             BackgroundColor="Gray"
             WidthRequest="30"

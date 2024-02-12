@@ -70,6 +70,12 @@
                 <Label Text="Дата изменения серии: " VerticalOptions="Center" />
             <Entry x:Name="SeriesChangeDateEntry" Text="{Binding SeriesChangeDate}" IsReadOnly="True" VerticalOptions="Center" />
             </StackLayout>
+            
+        <!-- Ссылка на сайт -->
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Ссылка на сайт: " VerticalOptions="Center" IsVisible="false" x:Name="LinkSecondLabel"/>
+            <Entry x:Name="LinkEntry" Text="{Binding Link}" IsVisible="false" IsReadOnly="True" VerticalOptions="Center" />
+        </StackLayout>
         <!-- Кнопка Удалить -->
         <Button Text="Удалить" Clicked="DeleteButton_Clicked" Margin="0,0,0,5" />
 

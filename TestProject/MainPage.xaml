@@ -9,27 +9,21 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-
         <ScrollView Grid.Column="0" VerticalOptions="Center">
-            <StackLayout Spacing="25" Padding="30,0">
+            <StackLayout x:Name="RecentlyAddedStackLayout" Spacing="25" Padding="30,0">
                 <!-- Список недавно добавленных элементов -->
-                <Label Text="Недавно добавленные"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               Margin="0,20,0,10" />
+              
 
                 <!-- Здесь будет ваш список с недавно добавленными элементами -->
 
             </StackLayout>
         </ScrollView>
 
+
         <ScrollView Grid.Column="0" VerticalOptions="Start">
-            <StackLayout Spacing="25" Padding="30,0">
-                <!-- Список недавно добавленных элементов -->
-                <Label Text="Смотрели недавно"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               Margin="0,20,0,10" />
+            <StackLayout Spacing="25" Padding="30,0" x:Name="RecentlyViewedStackLayout">
+
+             
 
                 <!-- Здесь будет ваш список с недавно добавленными элементами -->
 

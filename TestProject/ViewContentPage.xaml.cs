@@ -89,6 +89,10 @@ namespace TestProject
             CancelButton.IsVisible = true; // Отобразить кнопку "Отмена"
 
             // Разблокировать поля ввода
+            LinkSecondLabel.IsVisible = true;
+            LinkEntry.IsVisible = true;
+            LinkEntry.IsReadOnly = false;
+
             TitleEntry.IsReadOnly = false;
             TypeEntry.IsReadOnly = false;
             DubbingEntry.IsReadOnly = false;
@@ -107,6 +111,10 @@ namespace TestProject
             CancelButton.IsVisible = false; // Скрыть кнопку "Отмена"
 
             // Блокировать поля ввода
+            LinkSecondLabel.IsVisible = false;
+            LinkEntry.IsVisible = false;
+            LinkEntry.IsReadOnly = true;
+
             TitleEntry.IsReadOnly = true;
             TypeEntry.IsReadOnly = true;
             DubbingEntry.IsReadOnly = true;
@@ -136,7 +144,7 @@ namespace TestProject
             content.SeriesChangeDate = SeriesChangeDateEntry.Text;
 
             }
-
+            content.Link = LinkEntry.Text;
             content.LastWatchedSeries =  int.Parse(LastWatchedSeriesEntry.Text);
             content.LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
 
@@ -183,6 +191,10 @@ namespace TestProject
             }
 
             // Блокируем поля ввода
+            LinkSecondLabel.IsVisible = false;
+            LinkEntry.IsVisible = false;
+            LinkEntry.IsReadOnly = true;
+
             TitleEntry.IsReadOnly = true;
             TypeEntry.IsReadOnly = true;
             DubbingEntry.IsReadOnly = true;

@@ -12,6 +12,7 @@ namespace TestProject
     public partial class AllContentPage : ContentPage
     {
         private string Choise;
+
         public AllContentPage(string userChoise)
         {
             InitializeComponent();
@@ -27,6 +28,26 @@ namespace TestProject
             // Установите заголовок страницы в зависимости от выбора пользователя
             SetPageTitle();
 
+            // Получите контент в зависимости от выбора пользователя или все элементы
+            List<Content> content = GetContent(databaseService);
+
+            // Привяжите данные к списку
+            ContentListView.ItemsSource = content;
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Обновите список контента при каждом отображении страницы
+            UpdateContentList();
+        }
+
+        private void UpdateContentList()
+        {
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+
+            // Создайте сервис базы данных и таблицу
+            var databaseService = new DatabaseServiceContent(databasePath);
             // Получите контент в зависимости от выбора пользователя или все элементы
             List<Content> content = GetContent(databaseService);
 
@@ -98,8 +119,8 @@ namespace TestProject
                 };
         }
     }
-            
-        
+
+
 
         private async void ContentListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
@@ -118,6 +139,5 @@ namespace TestProject
             // Сбросьте выбор элемента в ListView
             ((ListView)sender).SelectedItem = null;
         }
-
     }
 }

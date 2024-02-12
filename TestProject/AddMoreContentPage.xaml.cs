@@ -23,16 +23,48 @@ namespace TestProject
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
             _databaseService = new DatabaseServiceContent(databasePath);
             SQLiteConnection connection = CreateDatabase(databasePath);
+            LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
+            LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
 
         }
+        private void LastWatchedSeriesEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Проверяем каждый введенный символ в поле
+            foreach (char c in e.NewTextValue)
+            {
+                // Если символ не является цифрой, удаляем его из текста
+                if (!char.IsDigit(c))
+                {
+                    LastWatchedSeriesEntry.Text = LastWatchedSeriesEntry.Text.Remove(LastWatchedSeriesEntry.Text.Length - 1);
+                    break;
+                }
+            }
+        }
 
+        private void LastWatchedSeasonEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Проверяем каждый введенный символ в поле
+            foreach (char c in e.NewTextValue)
+            {
+                // Если символ не является цифрой, удаляем его из текста
+                if (!char.IsDigit(c))
+                {
+                    LastWatchedSeasonEntry.Text = LastWatchedSeasonEntry.Text.Remove(LastWatchedSeasonEntry.Text.Length - 1);
+                    break;
+                }
+            }
+        }
         private async void OnAddClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(TitleEntry.Text) && string.IsNullOrEmpty(TypePicker.SelectedItem.ToString()) && string.IsNullOrEmpty(WatchStatusPicker.SelectedItem.ToString()))
+            string m_type = TypePicker.SelectedItem?.ToString();
+            string m_status = WatchStatusPicker.SelectedItem?.ToString();
+
+            if (string.IsNullOrEmpty(TitleEntry.Text) || string.IsNullOrEmpty(m_type) || string.IsNullOrEmpty(m_status))
             {
                 await DisplayAlert("Ошибка", "Заполните Название, Тип и Статус просмотра для возможности сохранения", "OK");
                 return;
             }
+
 
             // Получите выбранную дату из DatePicker
             DateTime selectedDate = NextEpisodeReleaseDatePicker.Date;

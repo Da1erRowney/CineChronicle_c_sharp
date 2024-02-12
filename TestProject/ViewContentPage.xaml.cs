@@ -101,7 +101,7 @@ namespace TestProject
             NextEpisodeReleaseDateEntry.IsReadOnly = false;
             WatchStatusEntry.IsReadOnly = false;
             DateAddedEntry.IsReadOnly = false;
-            SeriesChangeDateEntry.IsReadOnly = false;
+
         }
 
         private void SaveChanges()
@@ -123,7 +123,7 @@ namespace TestProject
             NextEpisodeReleaseDateEntry.IsReadOnly = true;
             WatchStatusEntry.IsReadOnly = true;
             DateAddedEntry.IsReadOnly = true;
-            SeriesChangeDateEntry.IsReadOnly = true;
+
 
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
 
@@ -187,7 +187,6 @@ namespace TestProject
                 NextEpisodeReleaseDateEntry.Text = content.NextEpisodeReleaseDate;
                 WatchStatusEntry.Text = content.WatchStatus;
                 DateAddedEntry.Text = content.DateAdded;
-                SeriesChangeDateEntry.Text = content.SeriesChangeDate;
             }
 
             // Блокируем поля ввода
@@ -203,7 +202,7 @@ namespace TestProject
             NextEpisodeReleaseDateEntry.IsReadOnly = true;
             WatchStatusEntry.IsReadOnly = true;
             DateAddedEntry.IsReadOnly = true;
-            SeriesChangeDateEntry.IsReadOnly = true;
+
         }
 
 

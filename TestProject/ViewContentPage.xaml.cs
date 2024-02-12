@@ -93,8 +93,18 @@ namespace TestProject
             LinkEntry.IsVisible = true;
             LinkEntry.IsReadOnly = false;
 
+            TypePicker.IsVisible = true;
+            TypePicker.SelectedItem = content.Type;
+            WatchStatusPicker.IsVisible = true;
+            WatchStatusPicker.SelectedItem = content.WatchStatus;
+
+
+            TypeEntry.IsVisible = false;
+            TypeLabel.IsVisible = false;
+            WatchStatusEntry.IsVisible = false;
+            WatchStatusLabel.IsVisible = false;
+
             TitleEntry.IsReadOnly = false;
-            TypeEntry.IsReadOnly = false;
             DubbingEntry.IsReadOnly = false;
             LastWatchedSeriesEntry.IsReadOnly = false;
             LastWatchedSeasonEntry.IsReadOnly = false;
@@ -115,8 +125,16 @@ namespace TestProject
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = true;
 
+            TypePicker.IsVisible = false;
+            WatchStatusPicker.IsVisible = false;
+
+
+            TypeEntry.IsVisible = true;
+            TypeLabel.IsVisible = true;
+            WatchStatusEntry.IsVisible = true; 
+            WatchStatusLabel.IsVisible = true;
+
             TitleEntry.IsReadOnly = true;
-            TypeEntry.IsReadOnly = true;
             DubbingEntry.IsReadOnly = true;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;
@@ -131,7 +149,7 @@ namespace TestProject
             DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
             content = databaseService.GetContentById(content.Id);
             content.Title = TitleEntry.Text;
-            content.Type = TypeEntry.Text;
+            content.Type = TypePicker.SelectedItem.ToString();
             content.Dubbing=  DubbingEntry.Text;
             if (LastWatchedSeriesEntry.Text != content.LastWatchedSeries.ToString() || LastWatchedSeasonEntry.Text != content.LastWatchedSeason.ToString())
             {
@@ -149,7 +167,7 @@ namespace TestProject
             content.LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
 
             content.NextEpisodeReleaseDate = NextEpisodeReleaseDateEntry.Text;
-            content.WatchStatus = WatchStatusEntry.Text;
+            content.WatchStatus = WatchStatusPicker.SelectedItem.ToString() ;
             content.DateAdded = DateAddedEntry.Text;
             databaseService.UpdateContent(content);
             databaseService.CloseConnection();
@@ -194,8 +212,16 @@ namespace TestProject
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = true;
 
+            TypePicker.IsVisible = false;
+            WatchStatusPicker.IsVisible = false;
+
+            TypeEntry.IsVisible = true;
+            TypeLabel.IsVisible = true;
+
+            WatchStatusEntry.IsVisible = true;
+            WatchStatusLabel.IsVisible = true;
+
             TitleEntry.IsReadOnly = true;
-            TypeEntry.IsReadOnly = true;
             DubbingEntry.IsReadOnly = true;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;

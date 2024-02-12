@@ -20,9 +20,22 @@
         <!-- Тип -->
 
             <StackLayout Orientation="Horizontal">
-                <Label Text="Тип: " VerticalOptions="Center" />
+                <Label Text="Тип: " VerticalOptions="Center" x:Name="TypeLabel"/>
             <Entry x:Name="TypeEntry" Text="{Binding Type}" IsReadOnly="True" VerticalOptions="Center" />
-            </StackLayout>
+            <Picker Title="Тип" x:Name="TypePicker" IsVisible="false">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Сериал</x:String>
+                        <x:String>Аниме</x:String>
+                        <x:String>Мультсериал</x:String>
+                        <x:String>Фильм</x:String>
+                        <x:String>Дорама</x:String>
+                        <x:String>Документалка</x:String>
+                        <x:String>Прочее</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </StackLayout>
 
 
         <!-- Озвучка -->
@@ -51,9 +64,18 @@
 
         <!-- Статус просмотра -->
             <StackLayout Orientation="Horizontal">
-                <Label Text="Статус просмотра: " VerticalOptions="Center" />
+            <Label Text="Статус просмотра: " VerticalOptions="Center" x:Name="WatchStatusLabel"/>
             <Entry x:Name="WatchStatusEntry" Text="{Binding WatchStatus}" IsReadOnly="True" VerticalOptions="Center" />
-            </StackLayout>
+            <Picker Title="Статус просмотра" x:Name="WatchStatusPicker" IsVisible="false" >
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Просмотрено</x:String>
+                        <x:String>Смотрю</x:String>
+                        <x:String>Не начинал</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </StackLayout>
 
 
         <!-- Ссылка на сайт -->

@@ -4,12 +4,12 @@ public partial class MainPage : ContentPage
 {
 
 
+    public static string UserChoice;
 	public MainPage()
 	{
 		InitializeComponent();
 	}
 
-    public string UserChoice;
 
 
     private async void OnAllClicked(object sender, EventArgs e)

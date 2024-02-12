@@ -10,9 +10,12 @@ namespace TestProject
     public partial class ViewContentPage : ContentPage
     {
         public ICommand OpenLinkCommand { get; private set; }
+        private Content content;
+
 
         public ViewContentPage(Content content)
         {
+            this.content = content;
             InitializeComponent();
             BindingContext = content; // Привязываем объект Content к BindingContext страницы
             OpenLinkCommand = new Command<string>(OpenLink);
@@ -41,5 +44,144 @@ namespace TestProject
                 await Browser.OpenAsync(new Uri(link), BrowserLaunchMode.SystemPreferred);
             }
         }
+
+        private async void DeleteButton_Clicked(object sender, EventArgs e)
+        {
+            bool result = await DisplayAlert("Уведомление", $"Вы уверены, что хотите удалить {content.Title}?", "Да", "Нет");
+
+            if (result)
+            {
+                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+
+                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+
+                databaseService.DeleteContent(content);
+
+                databaseService.CloseConnection();
+
+                await Navigation.PushAsync(new MainPage());
+            }
+        }
+
+
+
+        private bool isEditing = false; // Флаг, указывающий, в режиме редактирования или нет
+
+        private void EditButton_Clicked(object sender, EventArgs e)
+        {
+            if (isEditing)
+            {
+                // Если уже в режиме редактирования, то нужно сохранить изменения
+                SaveChanges();
+            }
+            else
+            {
+                // Если не в режиме редактирования, то переключиться в этот режим
+                StartEditing();
+            }
+        }
+
+        private void StartEditing()
+        {
+            isEditing = true;
+            EditButton.Text = "Сохранить";
+            CancelButton.IsVisible = true; // Отобразить кнопку "Отмена"
+
+            // Разблокировать поля ввода
+            TitleEntry.IsReadOnly = false;
+            TypeEntry.IsReadOnly = false;
+            DubbingEntry.IsReadOnly = false;
+            LastWatchedSeriesEntry.IsReadOnly = false;
+            LastWatchedSeasonEntry.IsReadOnly = false;
+            NextEpisodeReleaseDateEntry.IsReadOnly = false;
+            WatchStatusEntry.IsReadOnly = false;
+            DateAddedEntry.IsReadOnly = false;
+            SeriesChangeDateEntry.IsReadOnly = false;
+        }
+
+        private void SaveChanges()
+        {
+            isEditing = false;
+            EditButton.Text = "Изменить";
+            CancelButton.IsVisible = false; // Скрыть кнопку "Отмена"
+
+            // Блокировать поля ввода
+            TitleEntry.IsReadOnly = true;
+            TypeEntry.IsReadOnly = true;
+            DubbingEntry.IsReadOnly = true;
+            LastWatchedSeriesEntry.IsReadOnly = true;
+            LastWatchedSeasonEntry.IsReadOnly = true;
+            NextEpisodeReleaseDateEntry.IsReadOnly = true;
+            WatchStatusEntry.IsReadOnly = true;
+            DateAddedEntry.IsReadOnly = true;
+            SeriesChangeDateEntry.IsReadOnly = true;
+
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+
+            // Создаем экземпляр сервиса базы данных
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+            content.Title = TitleEntry.Text;
+            content.Type = TypeEntry.Text;
+            content.Dubbing=  DubbingEntry.Text;
+            content.LastWatchedSeries =  int.Parse(LastWatchedSeriesEntry.Text);
+            content.LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
+
+            content.NextEpisodeReleaseDate = NextEpisodeReleaseDateEntry.Text;
+            content.WatchStatus = WatchStatusEntry.Text;
+            content.DateAdded = DateAddedEntry.Text;
+            content.SeriesChangeDate = SeriesChangeDateEntry.Text;
+            databaseService.UpdateContent(content);
+            databaseService.CloseConnection();
+
+
+            // Обновить данные в БД
+            // Ваш код для обновления данных в БД
+        }
+
+        private void CancelButton_Clicked(object sender, EventArgs e)
+        {
+            // Отменить изменения и переключиться из режима редактирования
+            isEditing = false;
+            EditButton.Text = "Изменить";
+            CancelButton.IsVisible = false; // Скрыть кнопку "Отмена"
+
+            // Получаем путь к базе данных
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+
+            // Создаем экземпляр сервиса базы данных
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+
+            // Получаем данные из базы данных по ID
+            content = databaseService.GetContentById(content.Id);
+
+            // Проверяем наличие данных в объекте content
+            if (content != null)
+            {
+                // Заполняем поля ввода данными из объекта content
+                TitleEntry.Text = content.Title;
+                TypeEntry.Text = content.Type;
+                DubbingEntry.Text = content.Dubbing;
+                LastWatchedSeriesEntry.Text = content.LastWatchedSeries.ToString();
+                LastWatchedSeasonEntry.Text = content.LastWatchedSeason.ToString();
+                NextEpisodeReleaseDateEntry.Text = content.NextEpisodeReleaseDate;
+                WatchStatusEntry.Text = content.WatchStatus;
+                DateAddedEntry.Text = content.DateAdded;
+                SeriesChangeDateEntry.Text = content.SeriesChangeDate;
+            }
+
+            // Блокируем поля ввода
+            TitleEntry.IsReadOnly = true;
+            TypeEntry.IsReadOnly = true;
+            DubbingEntry.IsReadOnly = true;
+            LastWatchedSeriesEntry.IsReadOnly = true;
+            LastWatchedSeasonEntry.IsReadOnly = true;
+            NextEpisodeReleaseDateEntry.IsReadOnly = true;
+            WatchStatusEntry.IsReadOnly = true;
+            DateAddedEntry.IsReadOnly = true;
+            SeriesChangeDateEntry.IsReadOnly = true;
+        }
+
+
+
     }
 }

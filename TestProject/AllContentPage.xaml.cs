@@ -36,6 +36,7 @@ namespace TestProject
 
         private string AppDataDirectory => FileSystem.AppDataDirectory;
 
+      
         private void SetPageTitle()
         {
             switch (Choise)

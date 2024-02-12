@@ -28,7 +28,7 @@ namespace TestProject
 
         private async void OnAddClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(TitleEntry.Text) || string.IsNullOrEmpty(TypePicker.SelectedItem.ToString()) || string.IsNullOrEmpty(WatchStatusPicker.SelectedItem.ToString()))
+            if (string.IsNullOrEmpty(TitleEntry.Text) && string.IsNullOrEmpty(TypePicker.SelectedItem.ToString()) && string.IsNullOrEmpty(WatchStatusPicker.SelectedItem.ToString()))
             {
                 await DisplayAlert("Ошибка", "Заполните Название, Тип и Статус просмотра для возможности сохранения", "OK");
                 return;

@@ -1,4 +1,5 @@
 using DataContent;
+
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Xaml;
 using System;
@@ -120,16 +121,28 @@ namespace TestProject
 
             // Создаем экземпляр сервиса базы данных
             DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+            content = databaseService.GetContentById(content.Id);
             content.Title = TitleEntry.Text;
             content.Type = TypeEntry.Text;
             content.Dubbing=  DubbingEntry.Text;
+            if (LastWatchedSeriesEntry.Text != content.LastWatchedSeries.ToString() || LastWatchedSeasonEntry.Text != content.LastWatchedSeason.ToString())
+            {
+                DateTime currentDate = DateTime.UtcNow;
+                DateTime newDate = currentDate.AddHours(+3);
+                content.SeriesChangeDate = newDate.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            else
+            {
+            content.SeriesChangeDate = SeriesChangeDateEntry.Text;
+
+            }
+
             content.LastWatchedSeries =  int.Parse(LastWatchedSeriesEntry.Text);
             content.LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
 
             content.NextEpisodeReleaseDate = NextEpisodeReleaseDateEntry.Text;
             content.WatchStatus = WatchStatusEntry.Text;
             content.DateAdded = DateAddedEntry.Text;
-            content.SeriesChangeDate = SeriesChangeDateEntry.Text;
             databaseService.UpdateContent(content);
             databaseService.CloseConnection();
 

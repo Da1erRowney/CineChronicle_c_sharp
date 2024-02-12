@@ -26,7 +26,7 @@ namespace TestProject
 
             // Установите заголовок страницы в зависимости от выбора пользователя
             SetPageTitle();
-           
+
             // Получите контент в зависимости от выбора пользователя или все элементы
             List<Content> content = GetContent(databaseService);
 
@@ -36,7 +36,7 @@ namespace TestProject
 
         private string AppDataDirectory => FileSystem.AppDataDirectory;
 
-      
+
         private void SetPageTitle()
         {
             switch (Choise)
@@ -65,25 +65,41 @@ namespace TestProject
                 case "Documental":
                     MainLabel.Text = "Ваши документальные передачи";
                     return;
+
             }
         }
 
         private List<Content> GetContent(DatabaseServiceContent databaseService)
         {
-            return Choise switch
+            if (Choise == "Viewed" || Choise == "Progress" || Choise == "NotStarted")
             {
-                "All" => databaseService.GetAllContent(),
-                "Movies" => databaseService.GetAllContent().Where(c => c.Type == "Фильм").ToList(),
-                "Series" => databaseService.GetAllContent().Where(c => c.Type == "Сериал").ToList(),
-                "Anime" => databaseService.GetAllContent().Where(c => c.Type == "Аниме").ToList(),
-                "Other" => databaseService.GetAllContent().Where(c => c.Type == "Прочее").ToList(),
-                "Doram" => databaseService.GetAllContent().Where(c => c.Type == "Дорама").ToList(),
-                "Mult" => databaseService.GetAllContent().Where(c => c.Type == "Мультсериал").ToList(),
-                "Documental" => databaseService.GetAllContent().Where(c => c.Type == "Документалка").ToList(),
+                return Choise switch
+                {
+                    "Progress" => databaseService.GetAllContent().Where(c => c.WatchStatus == "Смотрю").ToList(),
+                    "NotStarted" => databaseService.GetAllContent().Where(c => c.WatchStatus == "Не начинал").ToList(),
+                    "Viewed" => databaseService.GetAllContent().Where(c => c.WatchStatus == "Просмотрено").ToList(),
+                    _ => databaseService.GetAllContent(),
+                };
 
-                _ => databaseService.GetAllContent(),
-            };
+            }
+            else
+            {
+                return Choise switch { 
+                "All" => databaseService.GetAllContent(),
+                    "Movies" => databaseService.GetAllContent().Where(c => c.Type == "Фильм").ToList(),
+                    "Series" => databaseService.GetAllContent().Where(c => c.Type == "Сериал").ToList(),
+                    "Anime" => databaseService.GetAllContent().Where(c => c.Type == "Аниме").ToList(),
+                    "Other" => databaseService.GetAllContent().Where(c => c.Type == "Прочее").ToList(),
+                    "Doram" => databaseService.GetAllContent().Where(c => c.Type == "Дорама").ToList(),
+                    "Mult" => databaseService.GetAllContent().Where(c => c.Type == "Мультсериал").ToList(),
+                    "Documental" => databaseService.GetAllContent().Where(c => c.Type == "Документалка").ToList(),
+
+                    _ => databaseService.GetAllContent(),
+                };
         }
+    }
+            
+        
 
         private async void ContentListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {

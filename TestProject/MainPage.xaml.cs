@@ -215,6 +215,23 @@ public partial class MainPage : ContentPage
         UserChoice = "Documental";
         await Navigation.PushAsync(new AllContentPage(UserChoice));
     }
+    private async void OnViewedClicked(object sender, EventArgs e)
+    {
+        UserChoice = "Viewed";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
+    }
+
+    private async void OnInProgressClicked(object sender, EventArgs e)
+    {
+        UserChoice = "Progress";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
+    }
+
+    private async void OnNotStartedClicked(object sender, EventArgs e)
+    {
+        UserChoice = "NotStarted";
+        await Navigation.PushAsync(new AllContentPage(UserChoice));
+    }
 
     private async void OnAddMoreClicked(object sender, EventArgs e)
     {

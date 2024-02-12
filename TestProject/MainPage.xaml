@@ -49,7 +49,12 @@
             <Button Text="Дорамы" Clicked="OnDoramClicked"  />
             <Button Text="Мультсериалы" Clicked="OnMultSeriesClicked"  />
             <Button Text="Документалки" Clicked="OnDocumentalClicked"  />
-            <Button Text="Остальные" Clicked="OnOthersClicked" />
+            <Button Text="Прочее" Clicked="OnOthersClicked" />
+
+            <Button Text="Просмотрено" Clicked="OnViewedClicked" />
+            <Button Text="В процессе" Clicked="OnInProgressClicked" />
+            <Button Text="Не начато" Clicked="OnNotStartedClicked" />
+
             <Button Text="Добавить еще" Clicked="OnAddMoreClicked"  />
             <Button Text="Информация" Clicked="OnUserStatisticsClicked"  />
             <Button Text="Настройки" Clicked="OnSettingsClicked" />

@@ -110,7 +110,7 @@ namespace TestProject
             LastWatchedSeasonEntry.IsReadOnly = false;
             NextEpisodeReleaseDateEntry.IsReadOnly = false;
             WatchStatusEntry.IsReadOnly = false;
-            DateAddedEntry.IsReadOnly = false;
+         
 
         }
 
@@ -140,7 +140,7 @@ namespace TestProject
             LastWatchedSeasonEntry.IsReadOnly = true;
             NextEpisodeReleaseDateEntry.IsReadOnly = true;
             WatchStatusEntry.IsReadOnly = true;
-            DateAddedEntry.IsReadOnly = true;
+          
 
 
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
@@ -227,7 +227,7 @@ namespace TestProject
             LastWatchedSeasonEntry.IsReadOnly = true;
             NextEpisodeReleaseDateEntry.IsReadOnly = true;
             WatchStatusEntry.IsReadOnly = true;
-            DateAddedEntry.IsReadOnly = true;
+           
 
         }
 

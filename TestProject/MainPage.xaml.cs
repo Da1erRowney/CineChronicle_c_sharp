@@ -249,12 +249,16 @@ public partial class MainPage : ContentPage
         {
             await Sidebar.FadeTo(0, 700); // Увеличить время анимации до 500 миллисекунд
             Sidebar.IsVisible = false;
+            RecentlyViewedStackLayout.IsVisible = true;
+            RecentlyAddedStackLayout.IsVisible = true;
             TabButton.BackgroundColor = Color.FromHex("#808080"); // Используйте цвет серого
             Sidebar.WidthRequest = 0; // Установить ширину панели в 0
         }
         else
         {
             Sidebar.IsVisible = true;
+            RecentlyViewedStackLayout.IsVisible = false;
+            RecentlyAddedStackLayout.IsVisible = false;
             TabButton.BackgroundColor = Color.FromHex("#A9A9A9"); // Используйте цвет темно-серого
             await Sidebar.FadeTo(1, 100); // Увеличить время анимации до 500 миллисекунд
             Sidebar.WidthRequest = 350; // Установить желаемую ширину панели

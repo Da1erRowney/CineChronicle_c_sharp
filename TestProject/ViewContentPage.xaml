@@ -83,13 +83,13 @@
 
         <!-- Дата добавления -->
             <StackLayout Orientation="Horizontal">
-                <Label Text="Дата добавления: " VerticalOptions="Center" />
+            <Label Text="Дата добавления: " VerticalOptions="Center" x:Name="DateAddedLabel"/>
             <Entry x:Name="DateAddedEntry" Text="{Binding DateAdded}" IsReadOnly="True" VerticalOptions="Center" />
             </StackLayout>
 
         <!-- Дата изменения серии -->
             <StackLayout Orientation="Horizontal">
-                <Label Text="Дата изменения серии: " VerticalOptions="Center" />
+            <Label Text="Дата изменения серии: " VerticalOptions="Center" x:Name="SeriesChangeDateLabel"/>
             <Entry x:Name="SeriesChangeDateEntry" Text="{Binding SeriesChangeDate}" IsReadOnly="True" VerticalOptions="Center" />
             </StackLayout>
             

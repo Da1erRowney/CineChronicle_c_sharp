@@ -27,6 +27,7 @@ namespace TestProject
         {
             // Нет необходимости в цикле, так как у вас только одна метка
             // Можно просто добавить обработчик для этой метки
+
             if (LinkLabel != null)
             {
                 LinkLabel.GestureRecognizers.Add(new TapGestureRecognizer
@@ -92,6 +93,11 @@ namespace TestProject
             LinkSecondLabel.IsVisible = true;
             LinkEntry.IsVisible = true;
             LinkEntry.IsReadOnly = false;
+            LinkLabel.IsVisible = false;
+            DateAddedLabel.IsVisible = false;
+            DateAddedEntry.IsVisible = false;
+            SeriesChangeDateLabel.IsVisible = false;
+            SeriesChangeDateEntry.IsVisible = false;
 
             TypePicker.IsVisible = true;
             TypePicker.SelectedItem = content.Type;
@@ -124,6 +130,11 @@ namespace TestProject
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = true;
+            LinkLabel.IsVisible = true;
+            DateAddedLabel.IsVisible = true;
+            DateAddedEntry.IsVisible = true;
+            SeriesChangeDateLabel.IsVisible = true;
+            SeriesChangeDateEntry.IsVisible = true;
 
             TypePicker.IsVisible = false;
             WatchStatusPicker.IsVisible = false;
@@ -211,7 +222,11 @@ namespace TestProject
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = true;
-
+            LinkLabel.IsVisible = true;
+            DateAddedLabel.IsVisible = true;
+            DateAddedEntry.IsVisible = true;
+            SeriesChangeDateLabel.IsVisible = true;
+            SeriesChangeDateEntry.IsVisible = true;
             TypePicker.IsVisible = false;
             WatchStatusPicker.IsVisible = false;
 

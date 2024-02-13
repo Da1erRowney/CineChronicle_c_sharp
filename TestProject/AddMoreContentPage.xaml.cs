@@ -65,7 +65,6 @@ namespace TestProject
                 return;
             }
 
-
             // Получите выбранную дату из DatePicker
             DateTime selectedDate = NextEpisodeReleaseDatePicker.Date;
             DateTime currentDate = DateTime.UtcNow;
@@ -74,40 +73,57 @@ namespace TestProject
             // Преобразуйте выбранную дату в строку с нужным форматом
             string formattedDate = selectedDate.ToString("dd.MM.yyyy"); // Например, "01.02.2024"
 
-            if (DubbingEntry.Text == null)
+            // Формируем ссылку в зависимости от выбранного типа контента и заполняем поле LinkEntry
+            string link = "";
+            if (string.IsNullOrEmpty(LinkEntry.Text))
             {
-                DubbingEntry.Text = "";
+                switch (m_type)
+                {
+                    case "Аниме":
+                        link = "https://animego.org/search/all?q=" + TitleEntry.Text;
+                        break;
+                    case "Дорама":
+                        link = "https://dorama.land/search?q=" + TitleEntry.Text;
+                        break;
+                    case "Сериал":
+                        link = "https://kinogo.biz/search/" + TitleEntry.Text;
+                        break;
+                    case "Мультсериал":
+                        link = "https://kinogo.biz/search/" + TitleEntry.Text;
+                        break;
+                    case "Фильм":
+                        link = "https://kinogo.biz/search/" + TitleEntry.Text;
+                        break;
+                    default:
+                        break;
+                }
             }
-            if (LastWatchedSeriesEntry.Text == null)
+            else
             {
-                LastWatchedSeriesEntry.Text = "0";
+                link = LinkEntry.Text;
             }
-            if (LastWatchedSeasonEntry.Text == null)
-            {
-                LastWatchedSeasonEntry.Text = "0";
-            }
-            if (LinkEntry.Text == null)
-            {
-                LinkEntry.Text = "";
-            }
+
+            // Создаем новый экземпляр контента
             var newContent = new Content
             {
                 Title = TitleEntry.Text,
-                Type = TypePicker.SelectedItem.ToString(),
+                Type = m_type,
                 Dubbing = DubbingEntry.Text,
                 LastWatchedSeries = int.Parse(LastWatchedSeriesEntry.Text),
                 LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text),
                 NextEpisodeReleaseDate = formattedDate,
-                WatchStatus = WatchStatusPicker.SelectedItem.ToString(),
-                Link = LinkEntry.Text,
+                WatchStatus = m_status,
+                Link = link,
                 DateAdded = newDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 SeriesChangeDate = ""
-
             };
 
+            // Вставляем новый контент в базу данных
             _databaseService.InsertContent(newContent);
 
-            Navigation.PopAsync();
+            // Возвращаемся на предыдущую страницу
+            await Navigation.PopAsync();
         }
+
     }
 }

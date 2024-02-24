@@ -1,13 +1,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.ViewContentPage">
-
+    <ScrollView>
     <VerticalStackLayout Margin="20">
-        <!-- Заголовок -->
+
+
+
+            <!-- Изображение для отображения фотографии -->
+            <Image x:Name="PosterImage" WidthRequest="200" HeightRequest="300"/>
+        
+
+            <!-- Заголовок -->
         <Label Text="Подробная информация"
                FontAttributes="Bold"
                HorizontalOptions="Center"
                Margin="0,20,0,10" />
+            <!-- Метка для отображения информации из Википедии -->
+            <Label x:Name="DescriptionLabel" />
+
 
         <!-- Название -->
        
@@ -106,7 +116,9 @@
 
         <!-- Кнопка Отмена -->
         <Button x:Name="CancelButton" Text="Отмена" Clicked="CancelButton_Clicked" Margin="0,0,0,5" IsVisible="false"/>
-
+        
+       
+       
     </VerticalStackLayout>
-
+    </ScrollView>
 </ContentPage>

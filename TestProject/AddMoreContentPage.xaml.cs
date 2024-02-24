@@ -103,18 +103,45 @@ namespace TestProject
                 link = LinkEntry.Text;
             }
 
+
+
+            string m_title = TitleEntry.Text;
+            string m_dubbing = DubbingEntry.Text;
+            string m_data = newDate.ToString("yyyy-MM-dd HH:mm:ss");
+            int m_lastWatchedSeries=0;
+            int m_lastWatchedSeason=0;
+
+            if (!string.IsNullOrEmpty(LastWatchedSeriesEntry.Text))
+            {
+                m_lastWatchedSeries = int.Parse(LastWatchedSeriesEntry.Text);
+            }
+            else
+            {
+                
+            }
+
+            if (!string.IsNullOrEmpty(LastWatchedSeasonEntry.Text))
+            {
+                m_lastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
+            }
+            else
+            {
+                
+            }
+
+
             // Создаем новый экземпляр контента
             var newContent = new Content
             {
-                Title = TitleEntry.Text,
+                Title = m_title,
                 Type = m_type,
-                Dubbing = DubbingEntry.Text,
-                LastWatchedSeries = int.Parse(LastWatchedSeriesEntry.Text),
-                LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text),
+                Dubbing = m_dubbing,
+                LastWatchedSeries = m_lastWatchedSeries,
+                LastWatchedSeason = m_lastWatchedSeason,
                 NextEpisodeReleaseDate = formattedDate,
                 WatchStatus = m_status,
                 Link = link,
-                DateAdded = newDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                DateAdded = m_data,
                 SeriesChangeDate = ""
             };
 

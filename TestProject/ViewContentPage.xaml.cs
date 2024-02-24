@@ -1,9 +1,11 @@
 using DataContent;
-
+using HtmlAgilityPack;
+using System.Net.Http;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Xaml;
 using System;
 using System.Windows.Input;
+using System.Text;
 
 namespace TestProject
 {
@@ -22,8 +24,218 @@ namespace TestProject
             OpenLinkCommand = new Command<string>(OpenLink);
             SetupLabelTappedEvents();
         }
+        private async void GetWikipediaInfo(string query)
+        {
+            string url = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
 
-        private void SetupLabelTappedEvents()
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        HtmlNode firstParagraph = htmlDocument.DocumentNode.SelectSingleNode("//p");
+
+                        string nameContent = $"{query}:\n";
+
+                        if (firstParagraph != null && firstParagraph.InnerText != nameContent && !firstParagraph.InnerText.Trim().EndsWith(":"))
+                        {
+
+                            string firstParagraphText = firstParagraph.InnerText;
+                            firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
+                            DescriptionLabel.Text = firstParagraphText;
+
+                        }
+
+                        else
+                        {
+
+                            // Ищем все элементы списка (теги <li>) внутри элемента с id="mw-content-text"
+                            var listItems = htmlDocument.DocumentNode.SelectNodes("//div[@id='mw-content-text']//li");
+
+                            if (listItems != null)
+                            {
+                                foreach (var listItem in listItems)
+                                {
+                                    string listItemText = listItem.InnerText;
+
+                                    if (listItemText.Contains("телесериал") || listItemText.Contains("дорама") || listItemText.Contains("мультсериал"))
+                                    {
+                                        listItemText = HtmlEntity.DeEntitize(listItemText);
+                                        DescriptionLabel.Text = listItemText;
+                                        return;
+                                    }
+                                }
+                            }
+
+                            DescriptionLabel.Text = "Информация о сериале не найдена1";
+                            
+                        }
+                    }
+                    
+                    else
+                    {
+
+                        DescriptionLabel.Text = "Информация о сериале не найдена2";
+
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DescriptionLabel.Text = $"Ошибка: {ex.Message}";
+                }
+            }
+        }
+
+
+    private async void GetJutsuInfo(string query)
+        {
+            string url = $"https://jut.su/search/?searchid=1893616&text={Uri.EscapeDataString(query)}";
+    
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync(CancellationToken.None);
+
+
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        // Find the <p> tag containing the description
+                        HtmlNode linkNode = htmlDocument.DocumentNode.SelectSingleNode("//a[@class='b-serp-item__title-link']");
+
+                        if (linkNode != null)
+                        {
+                            // Получаем значение атрибута 'href' первой ссылки
+                            DescriptionLabel.Text = linkNode.GetAttributeValue("href", "");
+                        }
+
+                        else
+                        {
+                            // If the <p> tag is not found, handle accordingly
+                            DescriptionLabel.Text = "Description not found.";
+                        }
+                    }
+                    else
+                    {
+                        // Handle HTTP request errors
+                        DescriptionLabel.Text = "Error fetching data from the website.";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions
+                    DescriptionLabel.Text = $"An error occurred: {ex.Message}";
+                }
+            }
+        }
+    
+    
+    private async void GetAnimeGoImage(string query)
+        {
+            string url = $"https://animego.org/search/all?q={Uri.EscapeDataString(query)}";
+            string urlSecond = $"https://yandex.by/search/?text={Uri.EscapeDataString(query)}";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+                        // Извлечение ссылки на изображение
+                        HtmlNode imageDiv = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='anime-grid-lazy lazy']");
+                        if (imageDiv != null)
+                        {
+                            string imageUrl = imageDiv.GetAttributeValue("data-original", "");
+                            // Отображаем изображение на форме
+                            PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
+                        }
+                    }
+                    else
+                    {
+                        // Обработка ошибок при выполнении запроса
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Обработка ошибок
+                }
+            }
+        }
+
+
+        private async void GetWikipediaImage(string query)
+        {
+            string url = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        // Находим элемент img с атрибутом src, содержащим ссылку на изображение
+                        HtmlNode imageNode = htmlDocument.DocumentNode.SelectSingleNode("//img[contains(@src, 'upload.wikimedia.org')]");
+
+                        if (imageNode != null)
+                        {
+                            string imageUrl = imageNode.GetAttributeValue("src", "");
+
+                            // Проверяем, содержит ли URL префикс "https://"
+                            if (!imageUrl.StartsWith("https://"))
+                            {
+                                // Добавляем префикс "https://", если его нет
+                                imageUrl = "https:" + imageUrl;
+                            }
+
+
+
+                            // Отображаем изображение на форме
+                            PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
+
+                        }
+                    }
+                    else
+                    {
+                        // Обработка ошибок при выполнении запроса
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Обработка ошибок
+                }
+            }
+        }
+
+
+        private async void SetupLabelTappedEvents()
         {
             // Нет необходимости в цикле, так как у вас только одна метка
             // Можно просто добавить обработчик для этой метки
@@ -36,6 +248,22 @@ namespace TestProject
                     CommandParameter = (BindingContext as Content)?.Link // Передаем ссылку в качестве параметра команды
                 });
             }
+
+            // Вызываем метод для получения информации с Википедии при загрузке страницы
+            string title = (BindingContext as Content)?.Title;
+            string type = (BindingContext as Content)?.Type;
+            if (type == "Аниме")
+            {
+                // GetJutsuInfo(title);
+                GetWikipediaInfo(title);
+                GetAnimeGoImage(title);
+            }
+            else
+            {
+                GetWikipediaInfo(title);
+                GetWikipediaImage(title);
+            }
+
         }
 
         private async void OpenLink(string link)

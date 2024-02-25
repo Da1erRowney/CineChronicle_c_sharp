@@ -6,6 +6,8 @@ using Microsoft.Maui.Controls.Xaml;
 using System;
 using System.Windows.Input;
 using System.Text;
+using System.Text.RegularExpressions;
+
 
 namespace TestProject
 {
@@ -95,60 +97,99 @@ namespace TestProject
             }
         }
 
-
-    private async void GetJutsuInfo(string query)
+        private async void GetKinogoInfo(string query)
         {
-            string url = $"https://jut.su/search/?searchid=1893616&text={Uri.EscapeDataString(query)}";
-    
+            string url = $"https://kinogo.biz/search/{Uri.EscapeDataString(query)}";
+
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
                     HttpResponseMessage response = await client.GetAsync(url);
-    
+
                     if (response.IsSuccessStatusCode)
                     {
-                        string htmlContent = await response.Content.ReadAsStringAsync(CancellationToken.None);
-
-
+                        string htmlContent = await response.Content.ReadAsStringAsync();
 
                         HtmlDocument htmlDocument = new HtmlDocument();
                         htmlDocument.LoadHtml(htmlContent);
 
-                        // Find the <p> tag containing the description
-                        HtmlNode linkNode = htmlDocument.DocumentNode.SelectSingleNode("//a[@class='b-serp-item__title-link']");
+                        HtmlNode excerptNode = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='excerpt']");
 
-                        if (linkNode != null)
+                        if (excerptNode != null)
                         {
-                            // Получаем значение атрибута 'href' первой ссылки
-                            DescriptionLabel.Text = linkNode.GetAttributeValue("href", "");
+                            string excerptText = excerptNode.InnerText.Trim();
+                            DescriptionLabel.Text = excerptText;
                         }
-
                         else
                         {
-                            // If the <p> tag is not found, handle accordingly
+                            DescriptionLabel.Text = "Описание не найдено";
+                        }
+                    }
+                    else
+                    {
+                        DescriptionLabel.Text = "Ошибка при получении страницы";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DescriptionLabel.Text = $"Ошибка: {ex.Message}";
+                }
+            }
+        }
+
+
+
+        private async void GetJutsuInfo(string query)
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            string url = $"https://jut.su/search/?searchid=1893616&text={Uri.EscapeDataString(query)}";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        byte[] responseBytes = await response.Content.ReadAsByteArrayAsync();
+                        string htmlContent = Encoding.GetEncoding("windows-1251").GetString(responseBytes);
+
+                        // Поиск ссылки с помощью регулярного выражения
+                        Match match = Regex.Match(htmlContent, @"<yass-span class=""b-serp-url__item"">(.*?)</yass-span>");
+
+                        if (match.Success)
+                        {
+                            string urlFromHtml = match.Groups[1].Value;
+                            DescriptionLabel.Text = urlFromHtml;
+                        }
+                        else
+                        {
+                            // Если ссылка не найдена, обработать соответствующим образом
                             DescriptionLabel.Text = "Description not found.";
                         }
                     }
                     else
                     {
-                        // Handle HTTP request errors
+                        // Обработка ошибок HTTP-запроса
                         DescriptionLabel.Text = "Error fetching data from the website.";
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Handle exceptions
+                    // Обработка исключений
                     DescriptionLabel.Text = $"An error occurred: {ex.Message}";
                 }
             }
         }
-    
-    
-    private async void GetAnimeGoImage(string query)
+
+
+
+
+        private async void GetAnimeGoImage(string query)
         {
             string url = $"https://animego.org/search/all?q={Uri.EscapeDataString(query)}";
-            string urlSecond = $"https://yandex.by/search/?text={Uri.EscapeDataString(query)}";
 
             using (HttpClient client = new HttpClient())
             {
@@ -254,9 +295,18 @@ namespace TestProject
             string type = (BindingContext as Content)?.Type;
             if (type == "Аниме")
             {
-                // GetJutsuInfo(title);
+
+
+                //GetJutsuInfo(title);
+                //GetKinogoInfo(title);
                 GetWikipediaInfo(title);
                 GetAnimeGoImage(title);
+            }
+            if(type == "Фильм")
+            {
+                //GetKinogoInfo(title);
+                GetWikipediaInfo(title);
+                GetWikipediaImage(title);
             }
             else
             {
@@ -478,3 +528,5 @@ namespace TestProject
 
     }
 }
+
+  

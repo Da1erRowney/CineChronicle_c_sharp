@@ -16,6 +16,7 @@ namespace TestProject
         public AllContentPage(string userChoise)
         {
             InitializeComponent();
+            new AppShell();
             Choise = userChoise;
 
             // Получите путь к базе данных

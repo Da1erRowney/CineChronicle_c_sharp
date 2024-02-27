@@ -1,5 +1,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TestProject"
+
              x:Class="TestProject.ViewContentPage">
     <ScrollView>
     <VerticalStackLayout Margin="20">
@@ -8,7 +10,7 @@
 
             <!-- Изображение для отображения фотографии -->
             <Image x:Name="PosterImage" WidthRequest="200" HeightRequest="300"/>
-        
+
 
             <!-- Заголовок -->
         <Label Text="Подробная информация"

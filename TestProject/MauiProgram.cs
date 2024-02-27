@@ -1,4 +1,9 @@
-﻿namespace TestProject;
+﻿using Microsoft.Maui;
+
+using System.Diagnostics.Metrics;
+using System.Reflection.Metadata;
+
+namespace TestProject;
 
 public static class MauiProgram
 {
@@ -7,12 +12,12 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
+               // .UseMauiCommunityToolkitMediaElement()
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
-
-		return builder.Build();
-	}
+            });
+        return builder.Build();
+    }
 }

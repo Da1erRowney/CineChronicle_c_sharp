@@ -40,65 +40,11 @@
         </ScrollView>
 
         <!-- Вертикальная боковая панель -->
-                <ScrollView>
-            <StackLayout 
-            x:Name="Sidebar"
-             Grid.Column="1"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="StartAndExpand"
-             BackgroundColor="Gray"
-             WidthRequest="0"
-             Padding="10"
-             Spacing="10"
-             IsVisible="False">
-
-
-                <Frame BorderColor="Black" CornerRadius="5" HasShadow="True">
-                    <StackLayout Spacing="0">
-                        <Button Text="Все" Clicked="OnAllClicked" />
-                        <Button Text="Фильмы" Clicked="OnMoviesClicked" />
-                        <Button Text="Сериалы" Clicked="OnSeriesClicked" />
-                        <Button Text="Аниме" Clicked="OnAnimeClicked" />
-                        <Button Text="Дорамы" Clicked="OnDoramClicked" />
-                        <Button Text="Мультсериалы" Clicked="OnMultSeriesClicked" />
-                        <Button Text="Документалки" Clicked="OnDocumentalClicked" />
-                        <Button Text="Прочее" Clicked="OnOthersClicked" />
-                    </StackLayout>
-                </Frame>
-
-                <Frame BorderColor="Black" CornerRadius="5" HasShadow="True">
-                    <StackLayout Spacing="0">
-                        <Button Text="Просмотрено" Clicked="OnViewedClicked" />
-                        <Button Text="В процессе" Clicked="OnInProgressClicked" />
-                        <Button Text="Не начато" Clicked="OnNotStartedClicked" />
-                    </StackLayout>
-                </Frame>
-
-
-                <Frame BorderColor="Black" CornerRadius="5" HasShadow="True">
-                    <StackLayout Spacing="0">
-                        <Button Text="Добавить еще" Clicked="OnAddMoreClicked"  />
-                            <Button Text="Информация" Clicked="OnUserStatisticsClicked"  />
-                         <Button Text="Настройки" Clicked="OnSettingsClicked" />
-                    </StackLayout>
-                </Frame>
-        
-            </StackLayout>
-                </ScrollView>
+               
             </StackLayout>
         </ScrollView>
 
-        <Button 
-            x:Name="TabButton"
-            Grid.Column="0"
-            BackgroundColor="Gray"
-            WidthRequest="30"
-            VerticalOptions="Fill"
-            HorizontalOptions="End"
-            Margin="0,0,0,0"
-            Clicked="OnSidebarToggle">
-        </Button>
-
+        
 
 
     </Grid>

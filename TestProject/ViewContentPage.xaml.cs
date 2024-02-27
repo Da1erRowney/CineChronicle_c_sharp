@@ -8,10 +8,10 @@ using System.Windows.Input;
 using System.Text;
 using System.Text.RegularExpressions;
 
-
 namespace TestProject
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+
     public partial class ViewContentPage : ContentPage
     {
         public ICommand OpenLinkCommand { get; private set; }
@@ -25,6 +25,7 @@ namespace TestProject
             BindingContext = content; // Привязываем объект Content к BindingContext страницы
             OpenLinkCommand = new Command<string>(OpenLink);
             SetupLabelTappedEvents();
+
         }
         private async void GetWikipediaInfo(string query)
         {
@@ -275,6 +276,121 @@ namespace TestProject
             }
         }
 
+        private async void GetAnemeGoInfo(string query)
+        {
+ 
+            string url = "https://animego.org/search/all?q=" + query;
+            string extractedText = "";
+            string extractedLink = "";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        HtmlNodeCollection nodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='h5 font-weight-normal mb-2 card-title text-truncate']/a");
+                        if (nodes != null && nodes.Count > 0)
+                        {
+                            foreach (HtmlNode node in nodes)
+                            {
+                                extractedText = node.InnerText.Trim();
+                                extractedLink = node.GetAttributeValue("href", "");
+                                break;
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    // Обработка ошибок
+                }
+            }
+
+            url = extractedLink;
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        HtmlNode descriptionNode = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='description pb-3']");
+                        if (descriptionNode != null)
+                        {
+                            extractedText = descriptionNode.InnerText.Trim();
+                            extractedText = HtmlEntity.DeEntitize(extractedText);
+                            DescriptionLabel.Text = extractedText;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Обработка ошибок
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        private async void GetTrailer(string query)
+        {
+            string url = "https://www.youtube.com/results?search_query=" + query + " трейлер";
+            string extractedLink = "";
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        string pattern = "\"videoId\":\"(.*?)\"";
+
+                        Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
+
+                        if (match.Success)
+                        {
+                            extractedLink = match.Groups[1].Value;
+                            extractedLink = "https://www.youtube.com/watch?v=" + extractedLink;
+
+                            //var mediaSource = MediaSource.CreateFromUri(new Uri(extractedLink));
+
+                            //// Создание нового элемента проигрывателя медиа
+                            //MediaPlayer player = new MediaPlayer();
+                            //player.Source = mediaSource;
+
+                            //// Присвоение элементу проигрывателя в пользовательском интерфейсе
+                            //videoPlayer.MediaPlayer = player;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+
 
         private async void SetupLabelTappedEvents()
         {
@@ -293,26 +409,35 @@ namespace TestProject
             // Вызываем метод для получения информации с Википедии при загрузке страницы
             string title = (BindingContext as Content)?.Title;
             string type = (BindingContext as Content)?.Type;
-            if (type == "Аниме")
+            switch (type)
             {
+                case "Аниме":
+                    GetAnemeGoInfo(title);
+                    GetAnimeGoImage(title);
+                    break;
+                case "Фильм":
+                    GetWikipediaInfo(title);
+                    GetWikipediaImage(title);
+                    break;
+                case "Сериал":
+                    GetWikipediaInfo(title);
+                    GetWikipediaImage(title);
+                    break;
+                case "Дорама":
+                    GetWikipediaInfo(title);
+                    GetWikipediaImage(title);
+                    break;
+                case "Мультсериал":
+                    GetWikipediaInfo(title);
+                    GetWikipediaImage(title);
+                    break;
+                case "Прочее":
+                    GetWikipediaInfo(title);
+                    GetWikipediaImage(title);
+                    break;
 
-
-                //GetJutsuInfo(title);
-                //GetKinogoInfo(title);
-                GetWikipediaInfo(title);
-                GetAnimeGoImage(title);
             }
-            if(type == "Фильм")
-            {
-                //GetKinogoInfo(title);
-                GetWikipediaInfo(title);
-                GetWikipediaImage(title);
-            }
-            else
-            {
-                GetWikipediaInfo(title);
-                GetWikipediaImage(title);
-            }
+        
 
         }
 
@@ -320,7 +445,7 @@ namespace TestProject
         {
             if (!string.IsNullOrEmpty(link))
             {
-                // Открываем ссылку в браузере
+                // Открываем ссылку в браузере*-*+9
                 await Browser.OpenAsync(new Uri(link), BrowserLaunchMode.SystemPreferred);
             }
         }
@@ -527,6 +652,7 @@ namespace TestProject
 
 
     }
+   
 }
 
   

@@ -19,7 +19,6 @@ namespace TestProject
         {
             InitializeComponent();
 
-
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
             _databaseService = new DatabaseServiceContent(databasePath);
             SQLiteConnection connection = CreateDatabase(databasePath);
@@ -149,7 +148,7 @@ namespace TestProject
             _databaseService.InsertContent(newContent);
 
             // Возвращаемся на предыдущую страницу
-            await Navigation.PopAsync();
+            await Navigation.PushAsync(new MainPage());
         }
 
     }

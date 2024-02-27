@@ -93,5 +93,10 @@ public partial class AppShell : Shell
     {
 
     }
+
+    private async void AddMoreContentPageClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new AddMoreContentPage());
+    }
 }
 

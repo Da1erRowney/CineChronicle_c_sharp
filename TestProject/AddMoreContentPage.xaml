@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.AddMoreContentPage">
+             
     <VerticalStackLayout Spacing="20" Padding="20">
+        
         <Label Text="Добавление контента"/>
         <!-- Поле ввода Названия -->
         <Entry Placeholder="Название" x:Name="TitleEntry" />

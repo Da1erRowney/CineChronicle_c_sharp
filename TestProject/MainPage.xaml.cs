@@ -22,8 +22,17 @@ public partial class MainPage : ContentPage
         SQLiteConnection connection = CreateDatabase(databasePath);
         DisplayRecentlyAddedContent();
         DisplayRecentlyViewedContent();
+        OnBackButtonPressed();
+      
 
     }
+    protected override bool OnBackButtonPressed()
+    {
+        // Отменяем обработку стандартного поведения кнопки "Назад"
+        NavigationPage.SetHasBackButton(this, false);
+        return true;
+    }
+
     protected override void OnAppearing()
     {
         base.OnAppearing();

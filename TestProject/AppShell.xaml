@@ -86,10 +86,12 @@
     
     <MenuItem Text="Главная страница" StyleClass="MenuItemLayoutStyle" Clicked="OnMainPageClicked">
     </MenuItem>
-    
-    <FlyoutItem Title="Добавить еще" Icon="icon_about.png">
+    <MenuItem Text="Добавить еще" StyleClass="MenuItemLayoutStyle" Clicked="AddMoreContentPageClicked">
+    </MenuItem>
+
+    <!--<FlyoutItem Title="Добавить еще" Icon="icon_about.png">
         <ShellContent Route="AddMoreContentPage" ContentTemplate="{DataTemplate local:AddMoreContentPage}" />
-    </FlyoutItem>
+    </FlyoutItem>-->
     
     <!--<FlyoutItem Title="Все" Icon="icon_about.png">
         <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:MainPage}" />

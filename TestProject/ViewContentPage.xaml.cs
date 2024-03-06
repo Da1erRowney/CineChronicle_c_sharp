@@ -7,6 +7,7 @@ using System;
 using System.Windows.Input;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Net;
 
 namespace TestProject
 {
@@ -54,7 +55,7 @@ namespace TestProject
                             string firstParagraphText = firstParagraph.InnerText;
                             firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
                             DescriptionLabel.Text = firstParagraphText;
-
+                            GetWikipediaImage(query);
                         }
 
                         else
@@ -62,27 +63,82 @@ namespace TestProject
 
                             // Ищем все элементы списка (теги <li>) внутри элемента с id="mw-content-text"
                             var listItems = htmlDocument.DocumentNode.SelectNodes("//div[@id='mw-content-text']//li");
-
-                            if (listItems != null)
+                            var linkNode = htmlDocument.DocumentNode.SelectSingleNode("//a[@title='Игра престолов (телесериал)']");
+                            // Проверяем, что элемент найден
+                            if (linkNode != null)
                             {
-                                foreach (var listItem in listItems)
-                                {
-                                    string listItemText = listItem.InnerText;
+                                // Получаем значение атрибута href
+                                string hrefValue = linkNode.GetAttributeValue("href", "");
+                                // Сохраняем ссылку в отдельную переменную
+                                var urls = hrefValue;
 
-                                    if (listItemText.Contains("телесериал") || listItemText.Contains("дорама") || listItemText.Contains("мультсериал"))
+                                using (HttpClient clients = new HttpClient())
+                                {
+                                    try
                                     {
-                                        listItemText = HtmlEntity.DeEntitize(listItemText);
-                                        DescriptionLabel.Text = listItemText;
-                                        return;
+                                        HttpResponseMessage responses = await clients.GetAsync(urls);
+
+                                        if (response.IsSuccessStatusCode)
+                                        {
+                                            string htmlContents = await responses.Content.ReadAsStringAsync();
+
+                                            HtmlDocument htmlDocuments = new HtmlDocument();
+                                            htmlDocuments.LoadHtml(htmlContents);
+
+                                            // Находим элемент img с атрибутом src, содержащим ссылку на изображение
+                                            HtmlNode imageNodes = htmlDocuments.DocumentNode.SelectSingleNode("//img[contains(@src, 'upload.wikimedia.org')]");
+
+                                            if (imageNodes != null)
+                                            {
+                                                string imageUrls = imageNodes.GetAttributeValue("src", "");
+
+                                                // Проверяем, содержит ли URL префикс "https://"
+                                                if (!imageUrls.StartsWith("https://"))
+                                                {
+                                                    // Добавляем префикс "https://", если его нет
+                                                    imageUrls = "https:" + imageUrls;
+                                                }
+
+
+
+                                                // Отображаем изображение на форме
+                                                PosterImage.Source = ImageSource.FromUri(new Uri(imageUrls));
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // Обработка ошибок при выполнении запроса
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        // Обработка ошибок
+                                    }
+
+                                }
+
+                                if (listItems != null)
+                                {
+                                    foreach (var listItem in listItems)
+                                    {
+                                        string listItemText = listItem.InnerText;
+
+                                        if (listItemText.Contains("телесериал") || listItemText.Contains("дорама") || listItemText.Contains("мультсериал"))
+                                        {
+                                            listItemText = HtmlEntity.DeEntitize(listItemText);
+                                            DescriptionLabel.Text = listItemText;
+                                            return;
+                                        }
                                     }
                                 }
-                            }
 
-                            DescriptionLabel.Text = "Информация о сериале не найдена1";
-                            
+                                DescriptionLabel.Text = "Информация о сериале не найдена1";
+
+                            }
                         }
                     }
-                    
+
                     else
                     {
 
@@ -389,6 +445,51 @@ namespace TestProject
                 }
             }
         }
+        //private async void GetLordsFilmImage(string query)
+        //{
+        //    string url = $"https://www.google.by/search?q= {Uri.EscapeDataString(query)} Постер&tbm=isch&ved=2ahUKEwiZtra589-EAxW8if0HHa5CCkYQ2-cCegQIABAA&oq=а&gs_lp=EgNpbWciAtCwSJwUUJsSWKoTcAB4AJABAJgBsAGgAbABqgEDMC4xuAEDyAEA-AEBigILZ3dzLXdpei1pbWeoAgDCAgoQABiABBiKBRhDiAYB&sclient=img&ei=-4ToZdnMOryT9u8ProWpsAQ";
+
+        //    using (HttpClient client = new HttpClient())
+        //    {
+        //        try
+        //        {
+        //            HttpResponseMessage response = await client.GetAsync(url);
+
+        //            if (response.IsSuccessStatusCode)
+        //            {
+        //                string htmlContent = await response.Content.ReadAsStringAsync();
+
+        //                // Извлечение ссылки на изображение
+        //                Match match = Regex.Match(htmlContent, @"<img\s+src\s*=\s*""([^""]+)""");
+
+
+        //                if (match.Success)
+        //                {
+        //                    string imageUrl = match.Groups[1].Value;
+        //                    // Отображаем изображение на форме
+        //                    PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
+        //                }
+        //                else
+        //                {
+        //                    // Обработка случая, когда ссылка на изображение не найдена
+        //                }
+        //            }
+        //            else
+        //            {
+        //                HttpStatusCode statusCode = response.StatusCode;
+        //                // Обработка ошибки на основе кода состояния
+        //                Console.WriteLine($"HTTP Error: {statusCode}");
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Обработка ошибок
+        //        }
+        //    }
+        //}
+
+
+
 
 
 
@@ -421,7 +522,7 @@ namespace TestProject
                     break;
                 case "Сериал":
                     GetWikipediaInfo(title);
-                    GetWikipediaImage(title);
+                   // GetWikipediaImage(title);
                     break;
                 case "Дорама":
                     GetWikipediaInfo(title);

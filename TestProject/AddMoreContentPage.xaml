@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.AddMoreContentPage">
              
+        <ScrollView>
     <VerticalStackLayout Spacing="20" Padding="20">
-        
         <Label Text="Добавление контента"/>
         <!-- Поле ввода Названия -->
         <Entry Placeholder="Название" x:Name="TitleEntry" />
@@ -57,5 +57,7 @@
 
         <!-- Кнопка "Добавить" -->
         <Button Text="Добавить" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand" />
+     
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

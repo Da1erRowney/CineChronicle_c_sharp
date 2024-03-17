@@ -8,11 +8,8 @@ using System.Windows.Input;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Net;
-
-
-
-
-
+using Google.Apis.YouTube.v3;
+using Google.Apis.Services;
 
 namespace TestProject
 {
@@ -430,42 +427,7 @@ namespace TestProject
             }
         }
 
-        private async void GetTrailer(string query)
-        {
-            string url = "https://www.youtube.com/results?search_query=" + query + " трейлер";
-            string extractedLink = "";
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(url);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string htmlContent = await response.Content.ReadAsStringAsync();
-
-                        HtmlDocument htmlDocument = new HtmlDocument();
-                        htmlDocument.LoadHtml(htmlContent);
-
-                        string pattern = "\"videoId\":\"(.*?)\"";
-
-                        Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
-
-                        if (match.Success)
-                        {
-                            extractedLink = match.Groups[1].Value;
-                            extractedLink = "https://www.youtube.com/watch?v=" + extractedLink;
-                            MediaPlayerApi(extractedLink);
-                        }
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
+        
         //private async void GetLordsFilmImage(string query)
         //{
         //    string url = $"https://www.google.by/search?q= {Uri.EscapeDataString(query)} Постер&tbm=isch&ved=2ahUKEwiZtra589-EAxW8if0HHa5CCkYQ2-cCegQIABAA&oq=а&gs_lp=EgNpbWciAtCwSJwUUJsSWKoTcAB4AJABAJgBsAGgAbABqgEDMC4xuAEDyAEA-AEBigILZ3dzLXdpei1pbWeoAgDCAgoQABiABBiKBRhDiAYB&sclient=img&ei=-4ToZdnMOryT9u8ProWpsAQ";
@@ -512,19 +474,19 @@ namespace TestProject
 
 
 
-        public void MediaPlayerApi(string link)
-        {
-            string apiKey = "YOUR_API_KEY";
+        //public void MediaPlayerApi(string link)
+        //{
+        //    string apiKey = "YOUR_API_KEY";
 
-            // Создание службы YouTube Data API
-            YouTubeService youtubeService = new YouTubeService(new BaseClientService.Initializer()
-            {
-                ApiKey = apiKey,
-                ApplicationName = "YourAppName"
-            });
+        //    // Создание службы YouTube Data API
+        //    YouTubeService youtubeService = new YouTubeService(new BaseClientService.Initializer()
+        //    {
+        //        ApiKey = apiKey,
+        //        ApplicationName = "YourAppName"
+        //    });
 
            
-        }
+        //}
 
 
         private async void SetupLabelTappedEvents()
@@ -539,6 +501,7 @@ namespace TestProject
                     Command = OpenLinkCommand,
                     CommandParameter = (BindingContext as Content)?.Link // Передаем ссылку в качестве параметра команды
                 });
+
             }
 
             // Вызываем метод для получения информации с Википедии при загрузке страницы
@@ -572,7 +535,10 @@ namespace TestProject
                     break;
 
             }
-        
+           
+
+
+
 
         }
 
@@ -783,11 +749,42 @@ namespace TestProject
            
 
         }
+        private async Task OpenTrailer(string trailerUrl)
+        {
+            try
+            {
+                // Проверяем, является ли устройство мобильным
+                if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
+                {
+                    // Открываем ссылку на трейлер с использованием установленного приложения YouTube
+                    await Launcher.OpenAsync(new Uri("vnd.youtube://" + trailerUrl.Split('=')[1]));
+                }
+                else
+                {
+                    // Открываем ссылку на трейлер во внешнем браузере
+                    await Launcher.OpenAsync(new Uri(trailerUrl));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при открытии трейлера: {ex.Message}");
+            }
+        }
 
 
+
+        private async void TrailerButton_Clicked(object sender, EventArgs e)
+        {
+            string url = (BindingContext as Content)?.LinkTrailer;
+            OpenLink(url);
+
+
+
+
+        }
 
     }
-   
+
 }
 
   

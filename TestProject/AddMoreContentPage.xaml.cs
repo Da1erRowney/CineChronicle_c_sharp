@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using SQLite;
 using DataContent;
+using HtmlAgilityPack;
+using System.Text.RegularExpressions;
 
 namespace TestProject
 {
     public partial class AddMoreContentPage : ContentPage
     {
         private DatabaseServiceContent _databaseService;
+        string LinkYotube;
         public SQLiteConnection CreateDatabase(string databasePath)
         {
             SQLiteConnection connection = new SQLiteConnection(databasePath);
@@ -101,14 +104,51 @@ namespace TestProject
             {
                 link = LinkEntry.Text;
             }
-
+           
 
 
             string m_title = TitleEntry.Text;
             string m_dubbing = DubbingEntry.Text;
+            
             string m_data = newDate.ToString("yyyy-MM-dd HH:mm:ss");
             int m_lastWatchedSeries=0;
             int m_lastWatchedSeason=0;
+            //GetTrailer(m_title);
+            string url = "https://www.youtube.com/results?search_query=" + m_title + " трейлер";
+            string extractedLink;
+            string m_linkTrailer="";
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        string pattern = "\"videoId\":\"(.*?)\"";
+
+                        Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
+
+                        if (match.Success)
+                        {
+                            extractedLink = match.Groups[1].Value;
+                            extractedLink = " https://www.youtube.com/watch?v=" + extractedLink;
+                            m_linkTrailer = extractedLink;
+                          
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
 
             if (!string.IsNullOrEmpty(LastWatchedSeriesEntry.Text))
             {
@@ -127,11 +167,11 @@ namespace TestProject
             {
                 
             }
-
-
+         
             // Создаем новый экземпляр контента
             var newContent = new Content
             {
+
                 Title = m_title,
                 Type = m_type,
                 Dubbing = m_dubbing,
@@ -140,15 +180,23 @@ namespace TestProject
                 NextEpisodeReleaseDate = formattedDate,
                 WatchStatus = m_status,
                 Link = link,
+                LinkTrailer = m_linkTrailer,
                 DateAdded = m_data,
                 SeriesChangeDate = ""
             };
 
             // Вставляем новый контент в базу данных
             _databaseService.InsertContent(newContent);
-
-            // Возвращаемся на предыдущую страницу
-            await Navigation.PushAsync(new MainPage());
+            TypePicker.SelectedItem = null;
+            WatchStatusPicker.SelectedItem = null;
+            NextEpisodeReleaseDatePicker = null;
+            TitleEntry.Text = null;
+            DubbingEntry.Text = null;
+            LastWatchedSeriesEntry.Text = null;
+            LastWatchedSeasonEntry.Text = null;
+            LinkEntry.Text = null;
+            await DisplayAlert("Успех", "Ваши данные сохранены", "OK");
+            return;
         }
 
     }

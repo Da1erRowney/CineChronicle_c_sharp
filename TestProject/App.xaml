@@ -12,5 +12,32 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
-    
+
+    <Application.MainPage>
+        <Shell FlyoutBehavior="Flyout" FlyoutHeaderBehavior="Fixed" FlyoutVerticalScrollMode="Auto">
+            <FlyoutItem Title="Главная страница" Icon="main_page_dark.svg">
+                <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
+            </FlyoutItem>
+
+            <FlyoutItem Title="Добавить еще" Icon="add_more_content_page_dark.svg">
+                <ShellContent ContentTemplate="{DataTemplate local:AddMoreContentPage}"/>
+            </FlyoutItem>
+
+            <FlyoutItem Title="Ваш контент" Icon="all_content_page_dark.svg">
+                <ShellContent ContentTemplate="{DataTemplate local:AllContentPage}"/>
+            </FlyoutItem>
+
+            <FlyoutItem Title="Информация" Icon="information_page_dark.svg">
+                <ShellContent ContentTemplate="{DataTemplate local:AddMoreContentPage}"/>
+            </FlyoutItem>
+
+            <FlyoutItem Title="Настройки" Icon="setting_page_dark.svg">
+                <ShellContent ContentTemplate="{DataTemplate local:SettingPage}"/>
+            </FlyoutItem>
+
+
+
+        </Shell>
+        
+    </Application.MainPage>
 </Application>

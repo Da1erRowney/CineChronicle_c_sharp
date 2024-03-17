@@ -2,38 +2,51 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TestProject"
              x:Class="TestProject.ViewContentPage" AutomationProperties.IsInAccessibleTree="False" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False">
-    <ScrollView>
+    <Grid  BackgroundColor="Transparent">
+
+        <Image x:Name="Background" Grid.Row ="1" Source="mainbackground.gif" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+
+        <Grid Grid.Row="0" BackgroundColor="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+
+        </Grid>
+        
+        <ScrollView>
     <VerticalStackLayout Margin="20">
-
-
-            <!--<yt:YouTubePlayer x:Name="youtubePlayer" VideoSource="https://www.youtube.com/watch?v=CZ-zE17V60E" />-->
-
-
 
             <!-- Изображение для отображения фотографии -->
             <Image x:Name="PosterImage" WidthRequest="200" HeightRequest="300"/>
 
-
-            <!-- Заголовок -->
-        <Label Text="Подробная информация"
+                <Frame Opacity="0.8" Padding="2" Margin="0,-5,0,20">
+                    <!-- Заголовок -->
+                    <Label Text="Подробная информация"
                FontAttributes="Bold"
                HorizontalOptions="Center"
                Margin="0,20,0,10" />
-            <!-- Метка для отображения информации из Википедии -->
-            <Label x:Name="DescriptionLabel" />
+                </Frame>
+        
+                <!-- Метка для отображения информации из Википедии -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <Label x:Name="DescriptionLabel" />
+                </Frame>
 
 
-        <!-- Название -->
-       
-            <StackLayout Orientation="Horizontal">
+                <!-- Название -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal">
                 <Label Text="Название: " VerticalOptions="Center" />
                 <Entry x:Name="TitleEntry" Text="{Binding Title}" IsReadOnly="True" VerticalOptions="Center" />
             </StackLayout>
+                </Frame>
 
-
-        <!-- Тип -->
-
-            <StackLayout Orientation="Horizontal">
+                <!-- Тип -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal">
                 <Label Text="Тип: " VerticalOptions="Center" x:Name="TypeLabel"/>
             <Entry x:Name="TypeEntry" Text="{Binding Type}" IsReadOnly="True" VerticalOptions="Center" />
             <Picker Title="Тип" x:Name="TypePicker" IsVisible="false">
@@ -50,34 +63,43 @@
                 </Picker.ItemsSource>
             </Picker>
         </StackLayout>
+                </Frame>
 
-
-        <!-- Озвучка -->
-            <StackLayout Orientation="Horizontal">
+                <!-- Озвучка -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal">
                 <Label Text="Озвучка: " VerticalOptions="Center" />
             <Entry x:Name="DubbingEntry" Text="{Binding Dubbing}" IsReadOnly="True" VerticalOptions="Center" />
             </StackLayout>
+                </Frame>
 
-        <!-- Номер последней просмотренной серии -->
-            <StackLayout Orientation="Horizontal">
+                <!-- Номер последней просмотренной серии -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal">
                 <Label Text="Номер последней просмотренной серии: " VerticalOptions="Center" />
             <Entry x:Name="LastWatchedSeriesEntry"  Text="{Binding LastWatchedSeries}" IsReadOnly="True" VerticalOptions="Center" />
             </StackLayout>
+                </Frame>
 
-        <!-- Номер последнего просмотренного сезона -->
-            <StackLayout Orientation="Horizontal">
+                <!-- Номер последнего просмотренного сезона -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal">
                 <Label Text="Номер последнего просмотренного сезона: " VerticalOptions="Center" />
             <Entry x:Name="LastWatchedSeasonEntry" Text="{Binding LastWatchedSeason}" IsReadOnly="True" VerticalOptions="Center" />
             </StackLayout>
+                </Frame>
 
-        <!-- Дата выхода следующей серии -->
-            <StackLayout Orientation="Horizontal">
+                <!-- Дата выхода следующей серии -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                        <StackLayout Orientation="Horizontal">
                 <Label Text="Дата выхода следующей серии: " VerticalOptions="Center" />
             <Entry x:Name="NextEpisodeReleaseDateEntry" Text="{Binding NextEpisodeReleaseDate}" IsReadOnly="True" VerticalOptions="Center" />
             </StackLayout>
+                </Frame>
 
-        <!-- Статус просмотра -->
-            <StackLayout Orientation="Horizontal">
+                <!-- Статус просмотра -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal">
             <Label Text="Статус просмотра: " VerticalOptions="Center" x:Name="WatchStatusLabel"/>
             <Entry x:Name="WatchStatusEntry" Text="{Binding WatchStatus}" IsReadOnly="True" VerticalOptions="Center" />
             <Picker Title="Статус просмотра" x:Name="WatchStatusPicker" IsVisible="false" >
@@ -90,41 +112,50 @@
                 </Picker.ItemsSource>
             </Picker>
         </StackLayout>
+                </Frame>
 
 
-            <!-- Ссылка на сайт -->
-            <Label x:Name="LinkLabel" Text="Нажмите для перехода на сайт" FontAttributes="Bold"/>
+                <!-- Ссылка на сайт -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Center">
+                        <Label Text="Перейти к просмотру" VerticalOptions="Center" x:Name="WatchingLabel" />
+                        <ImageButton x:Name="WatchingButton" Clicked="WatchingButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="50" HeightRequest="50"/>
+                    </StackLayout>
+                </Frame>
 
+                <!-- Трейлер -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Center">
+                        <Label Text="Просмотреть трейлер" VerticalOptions="Center" x:Name="TrailerLabel" />
+                        <ImageButton Clicked="TrailerButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="50" HeightRequest="50"/>
+                    </StackLayout>
+                </Frame>
 
-            <!-- Трейлер -->
+                <!-- Дата добавления -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Дата добавления: " VerticalOptions="Center" x:Name="DateAddedLabel"/>
+                        <Entry x:Name="DateAddedEntry" Text="{Binding DateAdded}" IsReadOnly="True" VerticalOptions="Center" />
+                    </StackLayout>
+                </Frame>
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Center">
-                <Label Text="Просмотреть трейлер" VerticalOptions="Center" x:Name="TrailerLabel" />
-                <ImageButton Clicked="TrailerButton_Clicked" Source="youtube.svg" Margin="10,0,0,0" WidthRequest="50" HeightRequest="50"/>
-            </StackLayout>
+                <!-- Дата изменения серии -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Дата изменения серии: " VerticalOptions="Center" x:Name="SeriesChangeDateLabel"/>
+                        <Entry x:Name="SeriesChangeDateEntry" Text="{Binding SeriesChangeDate}" IsReadOnly="True" VerticalOptions="Center" />
+                    </StackLayout>
+                </Frame>
 
+                <!-- Ссылка на сайт -->
+                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Ссылка на сайт: " VerticalOptions="Center" IsVisible="false" x:Name="LinkSecondLabel"/>
+                        <Entry x:Name="LinkEntry" Text="{Binding Link}" IsVisible="false" IsReadOnly="True" VerticalOptions="Center" />
+                    </StackLayout>
+                </Frame>
 
-
-
-
-            <!-- Дата добавления -->
-            <StackLayout Orientation="Horizontal">
-            <Label Text="Дата добавления: " VerticalOptions="Center" x:Name="DateAddedLabel"/>
-            <Entry x:Name="DateAddedEntry" Text="{Binding DateAdded}" IsReadOnly="True" VerticalOptions="Center" />
-            </StackLayout>
-
-        <!-- Дата изменения серии -->
-            <StackLayout Orientation="Horizontal">
-            <Label Text="Дата изменения серии: " VerticalOptions="Center" x:Name="SeriesChangeDateLabel"/>
-            <Entry x:Name="SeriesChangeDateEntry" Text="{Binding SeriesChangeDate}" IsReadOnly="True" VerticalOptions="Center" />
-            </StackLayout>
-            
-        <!-- Ссылка на сайт -->
-        <StackLayout Orientation="Horizontal">
-            <Label Text="Ссылка на сайт: " VerticalOptions="Center" IsVisible="false" x:Name="LinkSecondLabel"/>
-            <Entry x:Name="LinkEntry" Text="{Binding Link}" IsVisible="false" IsReadOnly="True" VerticalOptions="Center" />
-        </StackLayout>
-        <!-- Кнопка Удалить -->
+                <!-- Кнопка Удалить -->
         <Button Text="Удалить" Clicked="DeleteButton_Clicked" Margin="0,0,0,5" />
 
         <!-- Кнопка Изменить -->
@@ -137,4 +168,5 @@
        
     </VerticalStackLayout>
     </ScrollView>
+     </Grid>
 </ContentPage>

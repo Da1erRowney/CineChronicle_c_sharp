@@ -21,4 +21,11 @@ public partial class SettingPage : ContentPage
         }
 
     }
+    //[Obsolete]
+    //protected override void OnAppearing()
+    //{
+    //    base.OnAppearing();
+
+
+    //}
 }

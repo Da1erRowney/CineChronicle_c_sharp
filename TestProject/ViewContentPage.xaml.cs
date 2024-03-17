@@ -17,39 +17,19 @@ namespace TestProject
 
     public partial class ViewContentPage : ContentPage
     {
-       
-
         public ICommand OpenLinkCommand { get; private set; }
         private Content content;
+        string videoUrl=null;
 
-        // Ваш метод для открытия ссылки на видео YouTube
-        private async void OpenYouTubeVideo(string videoId)
-        {
-            var youtubeUrl = $"https://www.youtube.com/watch?v={videoId}";
 
-            try
-            {
-                await Launcher.OpenAsync(youtubeUrl);
-            }
-            catch (Exception ex)
-            {
-                // Обработка ошибок, если URL-адрес не может быть открыт
-                Console.WriteLine($"Unable to open YouTube video: {ex.Message}");
-            }
-
-        }
-     
 
         public ViewContentPage(Content content)
         {
             this.content = content;
             InitializeComponent();
             BindingContext = content; // Привязываем объект Content к BindingContext страницы
-            OpenLinkCommand = new Command<string>(OpenLink);
-            //OpenYouTubeVideo("2tDOsJq0VCY");
             SetupLabelTappedEvents();
-
-
+            OpenLinkCommand = new Command<string>(OpenLink);
 
         }
 
@@ -85,7 +65,6 @@ namespace TestProject
 
                         else
                         {
-
                             // Ищем все элементы списка (теги <li>) внутри элемента с id="mw-content-text"
                             var listItems = htmlDocument.DocumentNode.SelectNodes("//div[@id='mw-content-text']//li");
                             var linkNode = htmlDocument.DocumentNode.SelectSingleNode("//a[@title='Игра престолов (телесериал)']");
@@ -123,12 +102,8 @@ namespace TestProject
                                                     // Добавляем префикс "https://", если его нет
                                                     imageUrls = "https:" + imageUrls;
                                                 }
-
-
-
                                                 // Отображаем изображение на форме
                                                 PosterImage.Source = ImageSource.FromUri(new Uri(imageUrls));
-
                                             }
                                         }
                                         else
@@ -142,7 +117,6 @@ namespace TestProject
                                     }
 
                                 }
-
                                 if (listItems != null)
                                 {
                                     foreach (var listItem in listItems)
@@ -157,19 +131,14 @@ namespace TestProject
                                         }
                                     }
                                 }
-
                                 DescriptionLabel.Text = "Информация о сериале не найдена1";
 
                             }
                         }
                     }
-
                     else
                     {
-
                         DescriptionLabel.Text = "Информация о сериале не найдена2";
-
-
                     }
                 }
                 catch (Exception ex)
@@ -219,9 +188,6 @@ namespace TestProject
                 }
             }
         }
-
-
-
         private async void GetJutsuInfo(string query)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -266,9 +232,6 @@ namespace TestProject
             }
         }
 
-
-
-
         private async void GetAnimeGoImage(string query)
         {
             string url = $"https://animego.org/search/all?q={Uri.EscapeDataString(query)}";
@@ -292,6 +255,7 @@ namespace TestProject
                             string imageUrl = imageDiv.GetAttributeValue("data-original", "");
                             // Отображаем изображение на форме
                             PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
+                            Background.Source= ImageSource.FromUri(new Uri(imageUrl));
                         }
                     }
                     else
@@ -305,7 +269,6 @@ namespace TestProject
                 }
             }
         }
-
 
         private async void GetWikipediaImage(string query)
         {
@@ -337,12 +300,9 @@ namespace TestProject
                                 // Добавляем префикс "https://", если его нет
                                 imageUrl = "https:" + imageUrl;
                             }
-
-
-
                             // Отображаем изображение на форме
                             PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
-
+                            Background.Source = ImageSource.FromUri(new Uri(imageUrl));
                         }
                     }
                     else
@@ -384,6 +344,37 @@ namespace TestProject
                             {
                                 extractedText = node.InnerText.Trim();
                                 extractedLink = node.GetAttributeValue("href", "");
+
+                                url = extractedLink;
+
+                                using (HttpClient clientы = new HttpClient())
+                                {
+                                    try
+                                    {
+                                        HttpResponseMessage responseы = await clientы.GetAsync(url);
+
+                                        if (responseы.IsSuccessStatusCode)
+                                        {
+                                            string htmlContentы = await responseы.Content.ReadAsStringAsync();
+
+                                            HtmlDocument htmlDocumentы = new HtmlDocument();
+                                            htmlDocumentы.LoadHtml(htmlContentы);
+
+                                            HtmlNode descriptionNode = htmlDocumentы.DocumentNode.SelectSingleNode("//div[@class='description pb-3']");
+                                            if (descriptionNode != null)
+                                            {
+                                                extractedText = descriptionNode.InnerText.Trim();
+                                                extractedText = HtmlEntity.DeEntitize(extractedText);
+                                                DescriptionLabel.Text = extractedText;
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        // Обработка ошибок
+                                        Console.WriteLine(ex.Message);
+                                    }
+                                }
                                 break;
                             }
                         }
@@ -395,8 +386,12 @@ namespace TestProject
                 }
             }
 
-            url = extractedLink;
+        }
 
+        private async void GetTrailer(string query, string type)
+        {
+            string url = $"https://www.youtube.com/results?search_query={query}+{type}+трейлер";
+            string extractedLink = "";
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -410,24 +405,27 @@ namespace TestProject
                         HtmlDocument htmlDocument = new HtmlDocument();
                         htmlDocument.LoadHtml(htmlContent);
 
-                        HtmlNode descriptionNode = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='description pb-3']");
-                        if (descriptionNode != null)
+                        string pattern = "\"videoId\":\"(.*?)\"";
+
+                        Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
+
+                        if (match.Success)
                         {
-                            extractedText = descriptionNode.InnerText.Trim();
-                            extractedText = HtmlEntity.DeEntitize(extractedText);
-                            DescriptionLabel.Text = extractedText;
+                            extractedLink = match.Groups[1].Value;
+                            videoUrl = $"https://www.youtube.com/watch?v={extractedLink}";
+
+                            //// Открываем ссылку на видео в приложении YouTube
+                            await Browser.OpenAsync(new Uri(videoUrl), BrowserLaunchMode.SystemPreferred);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Обработка ошибок
                     Console.WriteLine(ex.Message);
                 }
             }
         }
 
-        
         //private async void GetLordsFilmImage(string query)
         //{
         //    string url = $"https://www.google.by/search?q= {Uri.EscapeDataString(query)} Постер&tbm=isch&ved=2ahUKEwiZtra589-EAxW8if0HHa5CCkYQ2-cCegQIABAA&oq=а&gs_lp=EgNpbWciAtCwSJwUUJsSWKoTcAB4AJABAJgBsAGgAbABqgEDMC4xuAEDyAEA-AEBigILZ3dzLXdpei1pbWeoAgDCAgoQABiABBiKBRhDiAYB&sclient=img&ei=-4ToZdnMOryT9u8ProWpsAQ";
@@ -472,37 +470,11 @@ namespace TestProject
         //}
 
 
-
-
-        //public void MediaPlayerApi(string link)
-        //{
-        //    string apiKey = "YOUR_API_KEY";
-
-        //    // Создание службы YouTube Data API
-        //    YouTubeService youtubeService = new YouTubeService(new BaseClientService.Initializer()
-        //    {
-        //        ApiKey = apiKey,
-        //        ApplicationName = "YourAppName"
-        //    });
-
-           
-        //}
-
-
         private async void SetupLabelTappedEvents()
         {
             // Нет необходимости в цикле, так как у вас только одна метка
             // Можно просто добавить обработчик для этой метки
 
-            if (LinkLabel != null)
-            {
-                LinkLabel.GestureRecognizers.Add(new TapGestureRecognizer
-                {
-                    Command = OpenLinkCommand,
-                    CommandParameter = (BindingContext as Content)?.Link // Передаем ссылку в качестве параметра команды
-                });
-
-            }
 
             // Вызываем метод для получения информации с Википедии при загрузке страницы
             string title = (BindingContext as Content)?.Title;
@@ -512,33 +484,37 @@ namespace TestProject
                 case "Аниме":
                     GetAnemeGoInfo(title);
                     GetAnimeGoImage(title);
+                    WatchingButton.Source = "anime.png";
                     break;
                 case "Фильм":
                     GetWikipediaInfo(title);
                     GetWikipediaImage(title);
+                    WatchingButton.Source = "movie.png";
                     break;
                 case "Сериал":
                     GetWikipediaInfo(title);
-                   // GetWikipediaImage(title);
+                    GetWikipediaImage(title);
+                    WatchingButton.Source = "movie.png";
                     break;
                 case "Дорама":
                     GetWikipediaInfo(title);
                     GetWikipediaImage(title);
+                    WatchingButton.Source = "dorama.png";
                     break;
                 case "Мультсериал":
                     GetWikipediaInfo(title);
                     GetWikipediaImage(title);
+                    WatchingButton.Source = "movie.png";
                     break;
                 case "Прочее":
                     GetWikipediaInfo(title);
                     GetWikipediaImage(title);
+                    WatchingButton.Source = "movie.png";
                     break;
-
+                default:
+                    WatchingButton.Source = "movie.png";
+                    break;
             }
-           
-
-
-
 
         }
 
@@ -597,7 +573,6 @@ namespace TestProject
             LinkSecondLabel.IsVisible = true;
             LinkEntry.IsVisible = true;
             LinkEntry.IsReadOnly = false;
-            LinkLabel.IsVisible = false;
             DateAddedLabel.IsVisible = false;
             DateAddedEntry.IsVisible = false;
             SeriesChangeDateLabel.IsVisible = false;
@@ -620,8 +595,6 @@ namespace TestProject
             LastWatchedSeasonEntry.IsReadOnly = false;
             NextEpisodeReleaseDateEntry.IsReadOnly = false;
             WatchStatusEntry.IsReadOnly = false;
-         
-
         }
 
         private void SaveChanges()
@@ -634,7 +607,6 @@ namespace TestProject
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = true;
-            LinkLabel.IsVisible = true;
             DateAddedLabel.IsVisible = true;
             DateAddedEntry.IsVisible = true;
             SeriesChangeDateLabel.IsVisible = true;
@@ -726,7 +698,6 @@ namespace TestProject
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = true;
-            LinkLabel.IsVisible = true;
             DateAddedLabel.IsVisible = true;
             DateAddedEntry.IsVisible = true;
             SeriesChangeDateLabel.IsVisible = true;
@@ -749,40 +720,19 @@ namespace TestProject
            
 
         }
-        private async Task OpenTrailer(string trailerUrl)
+
+
+
+        private void TrailerButton_Clicked(object sender, EventArgs e)
         {
-            try
-            {
-                // Проверяем, является ли устройство мобильным
-                if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
-                {
-                    // Открываем ссылку на трейлер с использованием установленного приложения YouTube
-                    await Launcher.OpenAsync(new Uri("vnd.youtube://" + trailerUrl.Split('=')[1]));
-                }
-                else
-                {
-                    // Открываем ссылку на трейлер во внешнем браузере
-                    await Launcher.OpenAsync(new Uri(trailerUrl));
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при открытии трейлера: {ex.Message}");
-            }
+            GetTrailer(content.Title, content.Type);
+           
         }
 
-
-
-        private async void TrailerButton_Clicked(object sender, EventArgs e)
+        private async void WatchingButton_Clicked(object sender, EventArgs e)
         {
-            string url = (BindingContext as Content)?.LinkTrailer;
-            OpenLink(url);
-
-
-
-
+            await Browser.OpenAsync(new Uri(content.Link), BrowserLaunchMode.SystemPreferred);
         }
-
     }
 
 }

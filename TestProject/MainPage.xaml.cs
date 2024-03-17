@@ -123,7 +123,7 @@ public partial class MainPage : ContentPage
         List<Content> allContent = databaseService.GetAllContent().OrderByDescending(c => c.SeriesChangeDate).ToList();
 
         // Отображаем только первые 5 элементов
-        List<Content> recentlyViewedContent = allContent.Take(5).ToList();
+        List<Content> recentlyViewedContent = allContent.Take(20).ToList();
 
         // Очищаем содержимое StackLayout перед добавлением новых элементов
         RecentlyViewedStackLayout.Children.Clear();

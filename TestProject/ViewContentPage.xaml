@@ -1,10 +1,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TestProject"
-
              x:Class="TestProject.ViewContentPage">
     <ScrollView>
     <VerticalStackLayout Margin="20">
+
+
+            <!--<yt:YouTubePlayer x:Name="youtubePlayer" VideoSource="https://www.youtube.com/watch?v=CZ-zE17V60E" />-->
 
 
 
@@ -90,10 +92,13 @@
         </StackLayout>
 
 
-        <!-- Ссылка на сайт -->
+            <!-- Ссылка на сайт -->
             <Label x:Name="LinkLabel" Text="Нажмите для перехода на сайт" FontAttributes="Bold"/>
+        
+            <!-- Трейлер -->
+            <Label x:Name="TrailerLabel" Text="Нажмите для просмотра трейлера" FontAttributes="Bold"/> 
 
-        <!-- Дата добавления -->
+            <!-- Дата добавления -->
             <StackLayout Orientation="Horizontal">
             <Label Text="Дата добавления: " VerticalOptions="Center" x:Name="DateAddedLabel"/>
             <Entry x:Name="DateAddedEntry" Text="{Binding DateAdded}" IsReadOnly="True" VerticalOptions="Center" />

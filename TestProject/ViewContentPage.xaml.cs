@@ -9,15 +9,39 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Net;
 
+
+
+
+
+
 namespace TestProject
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
 
     public partial class ViewContentPage : ContentPage
     {
+       
+
         public ICommand OpenLinkCommand { get; private set; }
         private Content content;
 
+        // Ваш метод для открытия ссылки на видео YouTube
+        private async void OpenYouTubeVideo(string videoId)
+        {
+            var youtubeUrl = $"https://www.youtube.com/watch?v={videoId}";
+
+            try
+            {
+                await Launcher.OpenAsync(youtubeUrl);
+            }
+            catch (Exception ex)
+            {
+                // Обработка ошибок, если URL-адрес не может быть открыт
+                Console.WriteLine($"Unable to open YouTube video: {ex.Message}");
+            }
+
+        }
+     
 
         public ViewContentPage(Content content)
         {
@@ -25,9 +49,13 @@ namespace TestProject
             InitializeComponent();
             BindingContext = content; // Привязываем объект Content к BindingContext страницы
             OpenLinkCommand = new Command<string>(OpenLink);
+            //OpenYouTubeVideo("2tDOsJq0VCY");
             SetupLabelTappedEvents();
 
+
+
         }
+
         private async void GetWikipediaInfo(string query)
         {
             string url = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
@@ -427,17 +455,10 @@ namespace TestProject
                         {
                             extractedLink = match.Groups[1].Value;
                             extractedLink = "https://www.youtube.com/watch?v=" + extractedLink;
-
-                            //var mediaSource = MediaSource.CreateFromUri(new Uri(extractedLink));
-
-                            //// Создание нового элемента проигрывателя медиа
-                            //MediaPlayer player = new MediaPlayer();
-                            //player.Source = mediaSource;
-
-                            //// Присвоение элементу проигрывателя в пользовательском интерфейсе
-                            //videoPlayer.MediaPlayer = player;
+                            MediaPlayerApi(extractedLink);
                         }
                     }
+
                 }
                 catch (Exception ex)
                 {
@@ -491,6 +512,19 @@ namespace TestProject
 
 
 
+        public void MediaPlayerApi(string link)
+        {
+            string apiKey = "YOUR_API_KEY";
+
+            // Создание службы YouTube Data API
+            YouTubeService youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                ApiKey = apiKey,
+                ApplicationName = "YourAppName"
+            });
+
+           
+        }
 
 
         private async void SetupLabelTappedEvents()

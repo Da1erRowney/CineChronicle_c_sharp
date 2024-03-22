@@ -854,6 +854,38 @@ namespace TestProject
         {
             await Browser.OpenAsync(new Uri(content.Link), BrowserLaunchMode.SystemPreferred);
         }
+
+        private void StepperSeries_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            var newValue = e.NewValue;
+            LastWatchedSeriesEntry.Text = newValue.ToString();
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+
+            // Создаем экземпляр сервиса базы данных
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+            content = databaseService.GetContentById(content.Id);
+            DateTime currentDate = DateTime.UtcNow;
+            DateTime newDate = currentDate.AddHours(+3);
+            content.SeriesChangeDate = newDate.ToString("yyyy-MM-dd HH:mm:ss");
+            databaseService.UpdateContent(content);
+            databaseService.CloseConnection();
+        }
+
+        private void StepperSeason_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            var newValue = e.NewValue;
+            LastWatchedSeasonEntry.Text = newValue.ToString();
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+
+            // Создаем экземпляр сервиса базы данных
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+            content = databaseService.GetContentById(content.Id);
+            DateTime currentDate = DateTime.UtcNow;
+            DateTime newDate = currentDate.AddHours(+3);
+            content.SeriesChangeDate = newDate.ToString("yyyy-MM-dd HH:mm:ss");
+            databaseService.UpdateContent(content);
+            databaseService.CloseConnection();
+        }
     }
 
 }

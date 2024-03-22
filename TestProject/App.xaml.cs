@@ -6,6 +6,7 @@ public partial class App : Application
     {
         InitializeComponent();
         //MainPage = new AppShell();
+
         UpdateThemeIcons(); // Вызываем метод обновления иконок при запуске приложения
 
         // Подписываемся на событие изменения темы

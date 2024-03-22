@@ -52,6 +52,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\fontello.ttf" />
+	  <None Remove="Resources\Fonts\ofont.ru_Cruinn.ttf" />
+	  <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="Google.Apis.YouTube.v3" Version="1.67.0.3358" />
 	  <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
 	  <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />

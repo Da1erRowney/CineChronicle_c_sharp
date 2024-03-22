@@ -78,14 +78,15 @@
                         <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
                 <Label Text="Номер последней просмотренной серии: " VerticalOptions="Center" />
             <Entry x:Name="LastWatchedSeriesEntry"  Text="{Binding LastWatchedSeries}" IsReadOnly="True" VerticalOptions="Center" />
+            <Stepper x:Name="StepperSeries" Minimum="0" Maximum="100" Increment="1" />
             </StackLayout>
-               
-                <!-- Номер последнего просмотренного сезона -->
+                        <!-- Номер последнего просмотренного сезона -->
              
                     <StackLayout Orientation="Horizontal">
                 <Label Text="Номер последнего просмотренного сезона: " VerticalOptions="Center" />
             <Entry x:Name="LastWatchedSeasonEntry" Text="{Binding LastWatchedSeason}" IsReadOnly="True" VerticalOptions="Center" />
-            </StackLayout>
+                            <Stepper x:Name="StepperSeason" Minimum="0" Maximum="100" Increment="1" />
+                        </StackLayout>
                 
 
                 <!-- Дата выхода следующей серии -->

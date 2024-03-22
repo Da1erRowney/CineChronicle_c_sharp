@@ -1,45 +1,65 @@
 ﻿using DataContent;
 using SQLite;
+using System.Collections.Generic;
 
 namespace TestProject;
 
 public partial class MainPage : ContentPage
 {
 
-
     private DatabaseServiceContent _databaseService;
+    public List<Content> Content { get; set; }
     public SQLiteConnection CreateDatabase(string databasePath)
     {
         SQLiteConnection connection = new SQLiteConnection(databasePath);
         connection.CreateTable<Content>();
         return connection;
+
     }
     public MainPage()
 	{
+
 		InitializeComponent();
         string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
         _databaseService = new DatabaseServiceContent(databasePath);
         SQLiteConnection connection = CreateDatabase(databasePath);
+        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+
+        // Получаем все элементы контента и сортируем их по дате добавления
+        List<Content> allContent = databaseService.GetAllContent().OrderByDescending(c => c.DateAdded).ToList();
+
+        // Отображаем только первые 5 элементов
+        Content = allContent.Take(5).ToList();
+        BindingContext = this;
         DisplayRecentlyAddedContent();
         DisplayRecentlyViewedContent();
-        OnBackButtonPressed();
+        //OnBackButtonPressed();
       
 
     }
-    protected override bool OnBackButtonPressed()
-    {
-        // Отменяем обработку стандартного поведения кнопки "Назад"
-        NavigationPage.SetHasBackButton(this, false);
-        return true;
-    }
+    //protected override bool OnBackButtonPressed()
+    //{
+    //    // Отменяем обработку стандартного поведения кнопки "Назад"
+    //    NavigationPage.SetHasBackButton(this, false);
+    //    return true;
+    //}
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
+        DisplayListAdded();
         DisplayRecentlyAddedContent();
         DisplayRecentlyViewedContent();
     }
-
+    private void DisplayListAdded()
+    {
+        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+        _databaseService = new DatabaseServiceContent(databasePath);
+        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+        List<Content> allContent = databaseService.GetAllContent().OrderByDescending(c => c.DateAdded).ToList();
+        Content = allContent.Take(5).ToList();
+        BindingContext = this;
+    }
     private void DisplayRecentlyAddedContent()
     {
         // Получаем путь к базе данных
@@ -189,12 +209,22 @@ public partial class MainPage : ContentPage
     }
 
 
- 
 
-   
+    private async void RecentlyAddedCarouselView_SelectionChanged(object sender, PositionChangedEventArgs e)
+    {
+        if (RecentlyAddedCarouselView.ItemsSource is IList<Content> items)
+        {
+            int selectedIndex = e.CurrentPosition;
+            if (selectedIndex >= 0 && selectedIndex < items.Count)
+            {
+                Content selectedItem = items[selectedIndex];
+                // Создаем экземпляр ViewContentPage и передаем выбранный контент
+                ViewContentPage viewContentPage = new ViewContentPage(selectedItem);
 
-
-
-
+                // Используем Navigation для перехода на страницу ViewContentPage
+                await Navigation.PushAsync(viewContentPage);
+            }
+        }
+    }
 }
 

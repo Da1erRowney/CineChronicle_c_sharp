@@ -130,7 +130,7 @@ namespace TestProject
             {
                 
             }
-         
+
             // Создаем новый экземпляр контента
             var newContent = new Content
             {
@@ -144,9 +144,39 @@ namespace TestProject
                 WatchStatus = m_status,
                 Link = link,
                 DateAdded = m_data,
-                SeriesChangeDate = ""
+                SeriesChangeDate = "",
+                Image = "",
+                SmallDecription = ""
             };
+            ViewContentPage viewContentPage = new ViewContentPage(newContent);
+            switch (m_type)
+            {
+                case "Аниме":
+                    viewContentPage.GetAnemeGoInfo(m_title);
+                    viewContentPage.GetAnimeGoImage(m_title);
+                    break;
+                case "Фильм":
+                    viewContentPage.GetWikipediaInfo(m_title);
+                    viewContentPage.GetWikipediaImage(m_title);
+                    break;
+                case "Сериал":
+                    viewContentPage.GetWikipediaInfo(m_title);
+                    viewContentPage.GetWikipediaImage(m_title);
+                    break;
+                case "Дорама":
+                    viewContentPage.GetWikipediaInfo(m_title);
+                    viewContentPage.GetWikipediaImage(m_title);
+                    break;
+                case "Мультсериал":
+                    viewContentPage.GetWikipediaInfo(m_title);
+                    viewContentPage.GetWikipediaImage(m_title);
+                    break;
+                case "Прочее":
+                    viewContentPage.GetWikipediaInfo(m_title);
+                    viewContentPage.GetWikipediaImage(m_title);
+                    break;
 
+            }
             // Вставляем новый контент в базу данных
             _databaseService.InsertContent(newContent);
             TitleEntry.Text ="";
@@ -155,7 +185,7 @@ namespace TestProject
             LastWatchedSeasonEntry.Text ="";
             LinkEntry.Text ="";
             await DisplayAlert("Успех", "Ваши данные сохранены", "OK");
-
+            await Navigation.PushAsync(new MainPage());
         }
 
     }

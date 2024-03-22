@@ -2,50 +2,65 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.AllContentPage">
 
-  
-    <StackLayout Orientation="Vertical" Padding="10">
-        <Label 
+    <Grid  BackgroundColor="Transparent">
+
+        <Image x:Name="Background" Grid.Row ="1" Source="all.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+
+        <Grid Grid.Row="0" BackgroundColor="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+
+        </Grid>
+        <StackLayout Orientation="Vertical" Padding="10">
+
+            <Label 
             x:Name="MainLabel"
             Text="Ваш контент!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <ListView x:Name="ContentListView" ItemTapped="ContentListView_ItemTapped">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Title}" Detail="{Binding Type}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            
-        </ListView>
-        <ScrollView>
-            <StackLayout>
-            <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                    <Button Text="Все" Clicked="ВсеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                    <Button Text="Аниме" Clicked="АнимеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                    <Button Text="Фильмы" Clicked="ФильмыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                    <Button Text="Сериалы" Clicked="СериалыButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-            </StackLayout>
-                <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                    <Button Text="Дорамы" Clicked="ДорамыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                    <Button Text="Мультсериалы" Clicked="МультсериалыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-            </StackLayout>
-                <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                    <Button Text="Документалки" Clicked="ДокументалкиButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                    <Button Text="Прочее" Clicked="ПрочееButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-            </StackLayout>
+            <ListView x:Name="ContentListView" ItemTapped="ContentListView_ItemTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Title}" Detail="{Binding Type}" />
 
-                <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                    <Button Text="Просмотрено" Clicked="ПросмотреноButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                    <Button Text="В процессе" Clicked="ВпроцессеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+            <ScrollView>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="Все" Clicked="ВсеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Аниме" Clicked="АнимеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="Фильмы" Clicked="ФильмыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Сериалы" Clicked="СериалыButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="Дорамы" Clicked="ДорамыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Мультсериалы" Clicked="МультсериалыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="Документалки" Clicked="ДокументалкиButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Прочее" Clicked="ПрочееButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="Просмотрено" Clicked="ПросмотреноButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="В процессе" Clicked="ВпроцессеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="Не начато" Clicked="НеначатоButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                    <Button Text="Не начато" Clicked="НеначатоButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-            </StackLayout>
-            </StackLayout>
-        </ScrollView>
+            </ScrollView>
 
 
         </StackLayout>
+    </Grid>
 </ContentPage>

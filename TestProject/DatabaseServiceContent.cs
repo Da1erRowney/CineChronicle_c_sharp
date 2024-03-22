@@ -65,5 +65,7 @@ namespace DataContent
         public string Link { get; set; }  
         public string DateAdded { get; set; }
         public string SeriesChangeDate { get; set; }
+        public string Image { get; set; }
+        public string SmallDecription { get; set; }
     }
 }

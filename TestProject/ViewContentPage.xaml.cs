@@ -33,9 +33,9 @@ namespace TestProject
 
         }
 
-        private async void GetWikipediaInfo(string query)
+        public async void GetWikipediaInfo(string query)
         {
-            string url = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
+            string url = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)} (телесериал)";
 
             using (HttpClient client = new HttpClient())
             {
@@ -60,14 +60,20 @@ namespace TestProject
                             string firstParagraphText = firstParagraph.InnerText;
                             firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
                             DescriptionLabel.Text = firstParagraphText;
-                            GetWikipediaImage(query);
+                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                            content = databaseService.GetContentById(content.Id);
+                            content.SmallDecription = firstParagraphText;
+                            databaseService.UpdateContent(content);
+                            databaseService.CloseConnection();
+                            GetWikipediaImage(query+" (телесериал)");
                         }
 
                         else
                         {
                             // Ищем все элементы списка (теги <li>) внутри элемента с id="mw-content-text"
                             var listItems = htmlDocument.DocumentNode.SelectNodes("//div[@id='mw-content-text']//li");
-                            var linkNode = htmlDocument.DocumentNode.SelectSingleNode("//a[@title='Игра престолов (телесериал)']");
+                            var linkNode = htmlDocument.DocumentNode.SelectSingleNode($"//a[@title='{Uri.EscapeDataString(query)} (телесериал)']");
                             // Проверяем, что элемент найден
                             if (linkNode != null)
                             {
@@ -104,6 +110,14 @@ namespace TestProject
                                                 }
                                                 // Отображаем изображение на форме
                                                 PosterImage.Source = ImageSource.FromUri(new Uri(imageUrls));
+                                                Background.Source = ImageSource.FromUri(new Uri(imageUrls));
+
+                                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                                content = databaseService.GetContentById(content.Id);
+                                                content.Image = imageUrls;
+                                                databaseService.UpdateContent(content);
+                                                databaseService.CloseConnection();
                                             }
                                         }
                                         else
@@ -127,12 +141,54 @@ namespace TestProject
                                         {
                                             listItemText = HtmlEntity.DeEntitize(listItemText);
                                             DescriptionLabel.Text = listItemText;
+                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                            content = databaseService.GetContentById(content.Id);
+                                            content.SmallDecription = listItemText;
+                                            databaseService.UpdateContent(content);
+                                            databaseService.CloseConnection();
                                             return;
                                         }
                                     }
                                 }
                                 DescriptionLabel.Text = "Информация о сериале не найдена1";
 
+                            }
+                            else
+                            {
+                                string url1 = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
+
+                                using (HttpClient client1 = new HttpClient())
+                                {
+
+                                    HttpResponseMessage response1 = await client1.GetAsync(url1);
+
+                                    if (response.IsSuccessStatusCode)
+                                    {
+                                        string htmlContent1 = await response1.Content.ReadAsStringAsync();
+
+                                        HtmlDocument htmlDocument1 = new HtmlDocument();
+                                        htmlDocument1.LoadHtml(htmlContent1);
+
+                                        HtmlNode firstParagrap1h = htmlDocument1.DocumentNode.SelectSingleNode("//p");
+
+                                        string nameContent1 = $"{query}:\n";
+
+
+
+                                        string firstParagraphText = firstParagraph.InnerText;
+                                        firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
+                                        DescriptionLabel.Text = firstParagraphText;
+                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                        content = databaseService.GetContentById(content.Id);
+                                        content.SmallDecription = firstParagraphText;
+                                        databaseService.UpdateContent(content);
+                                        databaseService.CloseConnection();
+                                        GetWikipediaImage(query);
+
+                                    }
+                                }
                             }
                         }
                     }
@@ -232,7 +288,7 @@ namespace TestProject
             }
         }
 
-        private async void GetAnimeGoImage(string query)
+        public async void GetAnimeGoImage(string query)
         {
             string url = $"https://animego.org/search/all?q={Uri.EscapeDataString(query)}";
 
@@ -256,6 +312,55 @@ namespace TestProject
                             // Отображаем изображение на форме
                             PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
                             Background.Source= ImageSource.FromUri(new Uri(imageUrl));
+
+                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+
+                            // Создаем экземпляр сервиса базы данных
+                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                            content = databaseService.GetContentById(content.Id);
+                            content.Image = imageUrl;
+                            databaseService.UpdateContent(content);
+                            databaseService.CloseConnection();
+                        }
+                    }
+                    else
+                    {
+                        // Обработка ошибок при выполнении запроса
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Обработка ошибок
+                }
+            }
+        }
+        private async void GetPremierImage(string query)
+        {
+            string url = $"https://premier.one/search?query={Uri.EscapeDataString(query)}";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        // Извлечение ссылки на изображение
+                        HtmlNode imageTag = htmlDocument.DocumentNode.SelectSingleNode("//div[contains(@class, 'e-poster__image-wrap')]/figure/img");
+
+                        if (imageTag != null)
+                        {
+                            string imageUrl = imageTag.GetAttributeValue("src", "");
+
+                            // Отображаем изображение на форме
+                            PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
+                            Background.Source = ImageSource.FromUri(new Uri(imageUrl));
                         }
                     }
                     else
@@ -270,7 +375,8 @@ namespace TestProject
             }
         }
 
-        private async void GetWikipediaImage(string query)
+
+        public async void GetWikipediaImage(string query)
         {
             string url = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
 
@@ -303,6 +409,13 @@ namespace TestProject
                             // Отображаем изображение на форме
                             PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
                             Background.Source = ImageSource.FromUri(new Uri(imageUrl));
+
+                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                            content = databaseService.GetContentById(content.Id);
+                            content.Image = imageUrl;
+                            databaseService.UpdateContent(content);
+                            databaseService.CloseConnection();
                         }
                     }
                     else
@@ -317,7 +430,7 @@ namespace TestProject
             }
         }
 
-        private async void GetAnemeGoInfo(string query)
+        public async void GetAnemeGoInfo(string query)
         {
  
             string url = "https://animego.org/search/all?q=" + query;
@@ -366,6 +479,13 @@ namespace TestProject
                                                 extractedText = descriptionNode.InnerText.Trim();
                                                 extractedText = HtmlEntity.DeEntitize(extractedText);
                                                 DescriptionLabel.Text = extractedText;
+                                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                                content = databaseService.GetContentById(content.Id);
+                                                content.SmallDecription = extractedText;
+                                                databaseService.UpdateContent(content);
+                                                databaseService.CloseConnection();
+
                                             }
                                         }
                                     }
@@ -494,6 +614,7 @@ namespace TestProject
                 case "Сериал":
                     GetWikipediaInfo(title);
                     GetWikipediaImage(title);
+                    //GetPremierImage(title);
                     WatchingButton.Source = "movie.png";
                     break;
                 case "Дорама":

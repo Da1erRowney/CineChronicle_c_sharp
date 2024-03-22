@@ -1,8 +1,20 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.MainPage">
+    <Grid  BackgroundColor="Transparent">
 
-    <Grid x:Name="area">
+        <Image x:Name="Background" Grid.Row ="1" Source="all.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+
+        <Grid Grid.Row="0" BackgroundColor="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+
+        </Grid>
+        <Grid x:Name="area">
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -39,14 +51,99 @@
             </StackLayout>
         </ScrollView>
 
-        <!-- Вертикальная боковая панель -->
-               
-            </StackLayout>
-        </ScrollView>
+                    <CarouselView 
+                        x:Name="RecentlyAddedCarouselView"
+              IndicatorView="IndicatorViewFirst"
+              Grid.Row="2"
+              ItemsSource="{Binding Content}"
+              PeekAreaInsets="30"
+              PositionChanged="RecentlyAddedCarouselView_SelectionChanged">
+                        <CarouselView.ItemsLayout>
+                            <LinearItemsLayout
+                                ItemSpacing="0"
+                                Orientation="Horizontal"
+                                SnapPointsAlignment="Center"
+                                SnapPointsType="MandatorySingle"/>
+                        </CarouselView.ItemsLayout>
+                        
+                        <CarouselView.ItemTemplate>
+
+                            <DataTemplate>
+                                <Grid >
+                                    <Border
+                                        Grid.RowSpan="3"
+                                        BackgroundColor="#311b45"
+                                        HeightRequest="300"
+                                        Stroke="#6e557C"
+                                        StrokeShape ="RoundRectangle 30,30,30,30"
+                                        StrokeThickness="2"
+                                        WidthRequest="300">
+                                        <Grid RowDefinitions=".2*,.6*,.2*">
+                                            <Image Aspect="AspectFill" Source="{Binding Image}"
+                                                   Grid.RowSpan="3"/>
+                                            <RoundRectangle
+                                                Grid.RowSpan ="3"
+                                                CornerRadius ="30"
+                                                HeightRequest="300"
+                                                WidthRequest="300"
+                                                Opacity=".7">
+                                                <RoundRectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="0,1">
+                                                        <GradientStop Offset="0" Color="Transparent">
+                                                            
+                                                        </GradientStop>
+                                                        <GradientStop Offset="1" Color="#030005"></GradientStop>
+                                                    </LinearGradientBrush> 
+                                                </RoundRectangle.Fill>
+                                            </RoundRectangle>
+
+                                            
+                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
+                                                
+                                                <Label  TextColor ="White"
+                                                Text="{Binding Type, StringFormat='Тип: {0}'}"
+                                                         FontSize="12" />
+                                                <Label
+                                               FontSize="16" 
+                                            Text="{Binding Title}"
+                                            TextColor ="White"/>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                            <Border.Shadow>
+                                            <Shadow
+                                                Brush="#C283FD"
+                                                Opacity=".7"
+                                                Radius="100"
+                                                Offset="0,0"/>
+                                        </Border.Shadow>
+                                    </Border>
+
+                                   
+                                    
+
+
+                                </Grid>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate> 
+                        
+                    </CarouselView>
+
+                    <IndicatorView
+                    x:Name="IndicatorViewFirst"
+                    Grid.Row="3"
+                    
+                    HorizontalOptions="Center"
+                    IndicatorColor="#616161"
+                    IndicatorSize="8"
+                    SelectedIndicatorColor="White"
+                    VerticalOptions="Center"/>
+                </StackLayout>
+            </ScrollView>
 
         
 
 
+    </Grid>
     </Grid>
 
 </ContentPage>

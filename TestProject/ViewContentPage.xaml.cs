@@ -867,6 +867,8 @@ namespace TestProject
             DateTime currentDate = DateTime.UtcNow;
             DateTime newDate = currentDate.AddHours(+3);
             content.SeriesChangeDate = newDate.ToString("yyyy-MM-dd HH:mm:ss");
+            content.LastWatchedSeries = int.Parse(LastWatchedSeriesEntry.Text);
+
             databaseService.UpdateContent(content);
             databaseService.CloseConnection();
         }
@@ -883,6 +885,7 @@ namespace TestProject
             DateTime currentDate = DateTime.UtcNow;
             DateTime newDate = currentDate.AddHours(+3);
             content.SeriesChangeDate = newDate.ToString("yyyy-MM-dd HH:mm:ss");
+            content.LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
             databaseService.UpdateContent(content);
             databaseService.CloseConnection();
         }

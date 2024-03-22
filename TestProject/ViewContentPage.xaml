@@ -20,10 +20,14 @@
     <VerticalStackLayout Margin="20">
 
             <!-- Изображение для отображения фотографии -->
-            <Image x:Name="PosterImage" WidthRequest="200" HeightRequest="300"/>
+                <Image x:Name="PosterImage" WidthRequest="200" HeightRequest="300">
+                    <Image.Shadow>
+                        <Shadow Brush="#C283FD" Opacity=".9" Radius="200" Offset="0,0"/>
+                    </Image.Shadow>
+                </Image>
 
-                
-                    <!-- Заголовок -->
+
+                <!-- Заголовок -->
                     <Label Text="Подробная информация"
                FontAttributes="Bold"
                HorizontalOptions="Center"
@@ -49,7 +53,7 @@
                             <StackLayout Orientation="Horizontal">
                 <Label Text="Тип: " VerticalOptions="Center" x:Name="TypeLabel"/>
             <Entry x:Name="TypeEntry" Text="{Binding Type}" IsReadOnly="True" VerticalOptions="Center" />
-            <Picker Title="Тип" x:Name="TypePicker" IsVisible="false" Margin="0,0,00,0">
+            <Picker  Title="Тип" x:Name="TypePicker" IsVisible="false" Margin="0,0,00,0">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Сериал</x:String>
@@ -78,14 +82,14 @@
                         <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
                             <Label Text="Номер последней просмотренной серии: " VerticalOptions="Center" />
                             <Entry x:Name="LastWatchedSeriesEntry" Text="{Binding LastWatchedSeries}" IsReadOnly="True" VerticalOptions="Center" />
-                            <Stepper x:Name="StepperSeries" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeries, Mode=TwoWay}"  ValueChanged="StepperSeries_ValueChanged"/>
+                            <Stepper Margin="10,0,0,0"  BackgroundColor="#C283FD" x:Name="StepperSeries" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeries, Mode=TwoWay}"  ValueChanged="StepperSeries_ValueChanged"/>
                         </StackLayout>
                         <!-- Номер последнего просмотренного сезона -->
              
                     <StackLayout Orientation="Horizontal">
                 <Label Text="Номер последнего просмотренного сезона: " VerticalOptions="Center" />
             <Entry x:Name="LastWatchedSeasonEntry" Text="{Binding LastWatchedSeason}" IsReadOnly="True" VerticalOptions="Center" />
-                            <Stepper x:Name="StepperSeason" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeason, Mode=TwoWay}"  ValueChanged="StepperSeason_ValueChanged" />
+                            <Stepper Margin="10,0,0,0" BackgroundColor="#C283FD" x:Name="StepperSeason" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeason, Mode=TwoWay}"  ValueChanged="StepperSeason_ValueChanged" />
                         </StackLayout>
                 
 
@@ -152,6 +156,9 @@
                         <Entry x:Name="LinkEntry" Text="{Binding Link}" IsVisible="false" IsReadOnly="True" VerticalOptions="Center" />
                     </StackLayout>
                     </StackLayout>
+                    <Frame.Shadow>
+                        <Shadow Brush="#C283FD" Opacity=".7" Radius="100" Offset="0,0"/>
+                    </Frame.Shadow>
                 </Frame>
 
                 <!-- Кнопка Удалить -->

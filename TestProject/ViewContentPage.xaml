@@ -33,6 +33,7 @@
         
                 <Border
                     Margin="25,50,25,50"
+                   
                     Grid.RowSpan="3"
                     BackgroundColor="#311b45"
                     Stroke="#6e557C"
@@ -55,7 +56,9 @@
                 <!-- Метка для отображения информации из Википедии -->
           
                     <StackLayout>
-                    <Border  Margin="0,0,0,0"
+                    <Border 
+                         Opacity="0.8"
+                        Margin="0,0,0,0"
                              x:Name="DecriptionBorder"
                     HorizontalOptions="Start"
                     Grid.RowSpan="3"
@@ -74,7 +77,9 @@
 
                     <!-- Тип -->
                     <StackLayout Orientation="Horizontal" Margin="0,50,0,0">
-                        <Border  Margin="0,0,0,0"
+                        <Border  
+                             Opacity="0.8"
+                            Margin="0,0,0,0"
                              HorizontalOptions="Start"
                         Grid.RowSpan="3"
                              WidthRequest="200"
@@ -133,7 +138,7 @@
                         </Border>
 
                         <!-- Номер последней просмотренной серии -->
-                        <Border  Margin="0,0,0,0"
+                        <Border  Opacity="0.8" Margin="0,0,0,0"
                         HorizontalOptions="End"
                         Grid.RowSpan="3"
                                  WidthRequest="220"
@@ -180,8 +185,8 @@
                             </Border.Shadow>
                         </Border>
                     </StackLayout>
-                        
-                    <Border  Margin="0,50,0,0"
+
+                    <Border  Opacity="0.8" Margin="0,50,0,0"
                           HorizontalOptions="Center"
                           Grid.RowSpan="3"
                           StrokeShape ="RoundRectangle 30,30,30,30"
@@ -236,7 +241,7 @@
                         </Border.Shadow>
                     </Border>
 
-                    <Border  Margin="0,50,0,0" x:Name="ViewContent"
+                    <Border  Opacity="0.8" Margin="0,50,0,0" x:Name="ViewContent"
                         HorizontalOptions="Center"
                         Grid.RowSpan="3"
                         StrokeShape ="RoundRectangle 30,30,30,30"
@@ -262,8 +267,8 @@
                             <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
-                        
-                    <Border  Margin="0,50,0,0" x:Name="otherData"
+
+                    <Border  Opacity="0.8" Margin="0,50,0,0" x:Name="otherData"
                         HorizontalOptions="Center"
                         Grid.RowSpan="3"
                         StrokeShape ="RoundRectangle 30,30,30,30"
@@ -301,14 +306,14 @@
                 <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="0,50,0,0">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,0">
                         <!-- Кнопка Удалить -->
-                        <Button Text="Удалить" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18"/>
+                        <Button Opacity="0.8" Text="Удалить" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18"/>
 
                         <!-- Кнопка Изменить -->
-                        <Button x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18" />
+                        <Button Opacity="0.8" x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18" />
                         
                     </StackLayout>
                     <!-- Кнопка Отмена -->
-                    <Button x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" FontSize="18" />
+                    <Button Opacity="0.8" x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" FontSize="18" />
                     <StackLayout.Shadow>
                         <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
                     </StackLayout.Shadow>

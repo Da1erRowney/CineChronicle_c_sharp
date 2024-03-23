@@ -23,9 +23,8 @@ public partial class MainPage : ContentPage
 
     }
     public MainPage()
-	{
-
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
         _databaseService = new DatabaseServiceContent(databasePath);
@@ -41,11 +40,44 @@ public partial class MainPage : ContentPage
         List<Content> allContentSecond = databaseService.GetAllContent().OrderByDescending(c => c.SeriesChangeDate).ToList();
         ContentChange = allContentSecond.Take(5).ToList();
 
-        BindingContext = this;
-       
-        //OnBackButtonPressed();
-      
+        // Если база данных пуста, создаем контент с заданными значениями
+        if (allContent.Count == 0)
+        {
+            Content emptyContent = new Content
+            {
+                Title = "Добавьте контент",
+                Type = "Пустота",
+                WatchStatus = "Смотрю",
+                Image = "plus.png",
+                Dubbing = null,
+                LastWatchedSeries = 0,
+                LastWatchedSeason = 0,
+                NextEpisodeReleaseDate = null,
+                Link = "",
+                DateAdded = "2024-03-24 01:28:09",
+                SeriesChangeDate = "",
+                SmallDecription = ""
+            };
 
+            // Добавляем созданный контент в базу данных
+            _databaseService.InsertContent(emptyContent);
+
+             databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+            _databaseService = new DatabaseServiceContent(databasePath);
+             connection = CreateDatabase(databasePath);
+             databaseService = new DatabaseServiceContent(databasePath);
+
+            // Получаем все элементы контента и сортируем их по дате добавления
+            allContent = databaseService.GetAllContent().OrderByDescending(c => c.DateAdded).ToList();
+
+            // Отображаем только первые 5 элементов
+            ContentAdded = allContent.Take(5).ToList();
+
+             allContentSecond = databaseService.GetAllContent().OrderByDescending(c => c.SeriesChangeDate).ToList();
+            ContentChange = allContentSecond.Take(5).ToList();
+        }
+
+        BindingContext = this;
     }
     //protected override bool OnBackButtonPressed()
     //{
@@ -115,11 +147,25 @@ public partial class MainPage : ContentPage
             return;
 
         Content selectedContent = ContentChange[selectedIndex];
-        // Создайте новую страницу для отображения подробной информации
-        ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+        if (selectedContent.Type != "Пустота")
+        {
+            // Создайте новую страницу для отображения подробной информации
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
 
-        // Перейдите на новую страницу
-        await Navigation.PushAsync(viewContentPage);
+            // Перейдите на новую страницу
+            await Navigation.PushAsync(viewContentPage);
+        }
+        else
+        {
+            await Navigation.PushAsync(new AddMoreContentPage());
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+
+            databaseService.DeleteContent(selectedContent);
+
+            databaseService.CloseConnection();
+        }
     }
 
 

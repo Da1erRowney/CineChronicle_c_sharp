@@ -45,15 +45,15 @@
                                 <Grid>
                                     <Border
                                         Margin="25,50,25,50"
+                                        Stroke="#6e557C"
                                         Grid.RowSpan="3"
                                         BackgroundColor="#311b45"
                                         HeightRequest="300"
-                                        Stroke="#6e557C"
                                         StrokeShape ="RoundRectangle 30,30,30,30"
                                         StrokeThickness="2"
                                         WidthRequest="300">
                                         <Grid RowDefinitions=".2*,.6*,.2*">
-                                            <Image Aspect="AspectFill" Source="{Binding Image}" Grid.RowSpan="3"/>
+                                            <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle
                                                 Grid.RowSpan ="3"
                                                 CornerRadius ="30"
@@ -115,7 +115,7 @@
                                         StrokeThickness="2"
                                         WidthRequest="300">
                                         <Grid RowDefinitions=".2*,.6*,.2*">
-                                            <Image Aspect="AspectFill" Source="{Binding Image}" Grid.RowSpan="3"/>
+                                            <Image  Source="{Binding Image}" Grid.RowSpan="3" Aspect="Fill"/>
                                             <RoundRectangle
                                                 Grid.RowSpan ="3"
                                                 CornerRadius ="30"

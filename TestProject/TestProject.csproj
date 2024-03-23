@@ -52,9 +52,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiSplashScreen Remove="Resources\Images\plus.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\Fonts\fontello.ttf" />
 	  <None Remove="Resources\Fonts\ofont.ru_Cruinn.ttf" />
 	  <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+	  <None Remove="Resources\Images\plus.png" />
 	</ItemGroup>
 
 	<ItemGroup>

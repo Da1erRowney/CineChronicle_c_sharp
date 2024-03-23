@@ -4,60 +4,81 @@
              x:Class="TestProject.AddMoreContentPage">
              
         <ScrollView>
-    <VerticalStackLayout Spacing="20" Padding="20">
-        <Label Text="Добавление контента"/>
-        <!-- Поле ввода Названия -->
-        <Entry Placeholder="Название" x:Name="TitleEntry" />
+        <Grid  BackgroundColor="Transparent">
 
-        <!-- Выпадающий список для выбора типа -->
-        <Picker Title="Тип" x:Name="TypePicker">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>Сериал</x:String>
-                    <x:String>Аниме</x:String>
-                    <x:String>Мультсериал</x:String>
-                    <x:String>Фильм</x:String>
-                    <x:String>Дорама</x:String>
-                    <x:String>Документалка</x:String>
-                    <x:String>Прочее</x:String>
-                </x:Array>
-            </Picker.ItemsSource>
-        </Picker>
+            <Image x:Name="Background" Grid.Row ="1" Source="all.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 
-        <!-- Поле ввода для озвучки -->
-        <Entry Placeholder="Озвучка" x:Name="DubbingEntry" />
-
-        <!-- Поле ввода для номера последней просмотренной серии -->
-        <Entry Placeholder="Серия" x:Name="LastWatchedSeriesEntry" Keyboard="Numeric" />
-
-        <!-- Поле ввода для номера последнего просмотренного сезона -->
-        <Entry Placeholder="Сезон" x:Name="LastWatchedSeasonEntry" Keyboard="Numeric" />
-
-
-        <Entry Placeholder="Ссылка на сайт" x:Name="LinkEntry"/>
-        <!-- Поле ввода для выхода следующей серии -->
-        <StackLayout Orientation="Horizontal" Spacing="10">
-            <Label Text="Выход следующей серии" VerticalOptions="Center" />
-            <DatePicker x:Name="NextEpisodeReleaseDatePicker" />
-        </StackLayout>
+            <Grid Grid.Row="0" BackgroundColor="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
 
 
-        <!-- Выпадающий список для выбора статуса просмотра -->
-        
-        <Picker Title="Статус просмотра" x:Name="WatchStatusPicker">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>Просмотрено</x:String>
-                    <x:String>Смотрю</x:String>
-                    <x:String>Не начинал</x:String>
-                </x:Array>
-            </Picker.ItemsSource>
-        </Picker>
+            </Grid>
 
-        <!-- Кнопка "Добавить" -->
-        <Button Text="Добавить" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand" />
-     
-    </VerticalStackLayout>
+            <VerticalStackLayout Spacing="20" Padding="20" >
+                <Label Text="Добавление контента" FontSize="25" HorizontalOptions="Center"/>
+                <!-- Поле ввода Названия -->
+                <Entry Placeholder="Введите название (Обязательно)" x:Name="TitleEntry" FontSize="18" />
+
+                <!-- Выпадающий список для выбора типа -->
+                <Picker Title="Нажмите, чтобы указать тип контента (Обязательно)" x:Name="TypePicker" FontSize="18">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Сериал</x:String>
+                            <x:String>Аниме</x:String>
+                            <x:String>Мультсериал</x:String>
+                            <x:String>Фильм</x:String>
+                            <x:String>Дорама</x:String>
+                            <x:String>Документалка</x:String>
+                            <x:String>Прочее</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+                <!-- Поле ввода для озвучки -->
+                <Entry Placeholder="Введите озвучку" x:Name="DubbingEntry" FontSize="18" />
+                <StackLayout Orientation="Horizontal">
+                <!-- Поле ввода для номера последней просмотренной серии -->
+                    <Label Text="Серия: " FontSize="18" VerticalOptions="Center"/>
+                    <Entry Placeholder="Введите серию" x:Name="LastWatchedSeriesEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="18"/>
+
+                <!-- Поле ввода для номера последнего просмотренного сезона -->
+                    <Label Text="Сезон: " FontSize="18" Margin="50,0,0,0" VerticalOptions="Center"/>
+                    <Entry Placeholder="Введите сезон" x:Name="LastWatchedSeasonEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="18"/>
+                </StackLayout>
+
+                <Entry Placeholder="Вставьте ссылку на сайт, на котором вы смотрели" x:Name="LinkEntry" FontSize="18"/>
+                <!-- Поле ввода для выхода следующей серии -->
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="Выход следующей серии" VerticalOptions="Center" FontSize="18"/>
+                    <DatePicker x:Name="NextEpisodeReleaseDatePicker" FontSize="18"/>
+                </StackLayout>
+
+
+
+                <!-- Выпадающий список для выбора статуса просмотра -->
+
+                <Picker Title="Нажмите, чтобы указать статус просмотра (Обязательно)" x:Name="WatchStatusPicker" FontSize="18">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Просмотрено</x:String>
+                            <x:String>Смотрю</x:String>
+                            <x:String>Не начинал</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+                <!-- Кнопка "Добавить" -->
+                <Button Text="Добавить" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand" FontSize="18" WidthRequest="150" >
+                    <Button.Shadow>
+                        <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                    </Button.Shadow>
+                </Button>
+
+            </VerticalStackLayout>
+        </Grid>
     </ScrollView>
 </ContentPage>

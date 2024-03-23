@@ -5,16 +5,16 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
-		<RootNamespace>TestProject</RootNamespace>
+		<RootNamespace>CineChronicle</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>TestProject</ApplicationTitle>
+		<ApplicationTitle>Cine Chronicle</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.testproject</ApplicationId>
+		<ApplicationId>com.companyname.cinechronicle</ApplicationId>
 		<ApplicationIdGuid>da5df02f-7156-402f-859c-76b60ed4ab47</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -35,7 +35,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\newicon.png" ForegroundFile="Resources\AppIcon\newicon.png" Color="Black" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Images\*" Color="Black" />

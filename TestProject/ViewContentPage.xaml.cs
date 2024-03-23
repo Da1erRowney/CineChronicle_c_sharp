@@ -691,9 +691,12 @@ namespace TestProject
             CancelButton.IsVisible = true; // Отобразить кнопку "Отмена"
 
             // Разблокировать поля ввода
-            LinkSecondLabel.IsVisible = true;
-            LinkEntry.IsVisible = true;
+            LinkSecondLabel.IsVisible = false;
+            LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
+
+            otherData.IsVisible = false;
+            DecriptionBorder.IsVisible = false;
             DateAddedLabel.IsVisible = false;
             DateAddedEntry.IsVisible = false;
             SeriesChangeDateLabel.IsVisible = false;
@@ -703,7 +706,7 @@ namespace TestProject
             TypePicker.SelectedItem = content.Type;
             WatchStatusPicker.IsVisible = true;
             WatchStatusPicker.SelectedItem = content.WatchStatus;
-
+            ViewContent.IsVisible = false;
 
             TypeEntry.IsVisible = false;
             TypeLabel.IsVisible = false;
@@ -727,15 +730,17 @@ namespace TestProject
             // Блокировать поля ввода
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
-            LinkEntry.IsReadOnly = true;
+            LinkEntry.IsReadOnly = false;
+
             DateAddedLabel.IsVisible = true;
             DateAddedEntry.IsVisible = true;
             SeriesChangeDateLabel.IsVisible = true;
             SeriesChangeDateEntry.IsVisible = true;
-
+            ViewContent.IsVisible = true;
             TypePicker.IsVisible = false;
             WatchStatusPicker.IsVisible = false;
-
+            DecriptionBorder.IsVisible = true;
+            otherData.IsVisible = true;
 
             TypeEntry.IsVisible = true;
             TypeLabel.IsVisible = true;
@@ -818,7 +823,12 @@ namespace TestProject
             // Блокируем поля ввода
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
-            LinkEntry.IsReadOnly = true;
+            LinkEntry.IsReadOnly = false;
+            DecriptionBorder.IsVisible = true;
+            otherData.IsVisible = true;
+
+            ViewContent.IsVisible = true;
+
             DateAddedLabel.IsVisible = true;
             DateAddedEntry.IsVisible = true;
             SeriesChangeDateLabel.IsVisible = true;

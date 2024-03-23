@@ -19,160 +19,303 @@
         <ScrollView>
     <VerticalStackLayout Margin="20">
 
-            <!-- Изображение для отображения фотографии -->
-                <Image x:Name="PosterImage" WidthRequest="200" HeightRequest="300">
-                    <Image.Shadow>
-                        <Shadow Brush="#C283FD" Opacity=".9" Radius="200" Offset="0,0"/>
-                    </Image.Shadow>
-                </Image>
+                <Entry x:Name="TitleEntry" Text="{Binding Title}" FontSize="25" IsReadOnly="True" VerticalOptions="Center" HorizontalOptions="Center" Placeholder="Название">
+                    <Entry.Style>
+                        <Style TargetType="Entry">
+                            <Style.Triggers>
+                                <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
+                                    <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Entry.Style>
+                </Entry>
+        
+                <Border
+                    Margin="25,50,25,50"
+                    Grid.RowSpan="3"
+                    BackgroundColor="#311b45"
+                    Stroke="#6e557C"
+                    StrokeShape ="RoundRectangle 30,30,30,30"
+                    StrokeThickness="2">
+                    <Grid RowDefinitions=".2*,.6*,.2*">
+                        <!-- Изображение для отображения фотографии -->
+                        <Image Aspect="AspectFill" x:Name="PosterImage" Grid.RowSpan="3" > </Image>
+                    </Grid>
+                    <Border.Shadow>
+                        <Shadow Brush="#C283FD" Opacity="1.0" Radius="200" Offset="0,0"/>
+                    </Border.Shadow>
+                </Border>
 
 
-                <!-- Заголовок -->
-                    <Label Text="Подробная информация"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               Margin="0,20,0,10" />
-           
+                    
+                        
+    
         
                 <!-- Метка для отображения информации из Википедии -->
-                <Frame Opacity="0.8" Padding="5" Margin="0,0,0,10">
-                    <StackLayout>
-                    <Label x:Name="DescriptionLabel" />
-              
-
-                <!-- Название -->
           
-                    <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
-                <Label Text="Название: " VerticalOptions="Center" />
-                <Entry x:Name="TitleEntry" Text="{Binding Title}" IsReadOnly="True" VerticalOptions="Center" />
-            </StackLayout>
-              
+                    <StackLayout>
+                    <Border  Margin="0,0,0,0"
+                             x:Name="DecriptionBorder"
+                    HorizontalOptions="Start"
+                    Grid.RowSpan="3"
+                  
+                    StrokeShape ="RoundRectangle 30,30,30,30"
+                    StrokeThickness="2"
+                   >
+                        <Grid  Margin="10,20,0,10">
+                            <Label x:Name="DescriptionLabel" FontSize="16"/>
+                        </Grid>
+                        <Border.Shadow>
+                            <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                        </Border.Shadow>
+                    </Border>
 
-                <!-- Тип -->
-                        <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
-                            <StackLayout Orientation="Horizontal">
-                <Label Text="Тип: " VerticalOptions="Center" x:Name="TypeLabel"/>
-            <Entry x:Name="TypeEntry" Text="{Binding Type}" IsReadOnly="True" VerticalOptions="Center" />
-            <Picker  Title="Тип" x:Name="TypePicker" IsVisible="false" Margin="0,0,00,0">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Сериал</x:String>
-                        <x:String>Аниме</x:String>
-                        <x:String>Мультсериал</x:String>
-                        <x:String>Фильм</x:String>
-                        <x:String>Дорама</x:String>
-                        <x:String>Документалка</x:String>
-                        <x:String>Прочее</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-        </StackLayout>
-            
 
-                <!-- Озвучка -->
-              
-                    <StackLayout Orientation="Horizontal">
-                <Label Text="Озвучка: " VerticalOptions="Center" />
-            <Entry x:Name="DubbingEntry" Text="{Binding Dubbing}" IsReadOnly="True" VerticalOptions="Center" />
-            </StackLayout>
-                        </StackLayout>
+                    <!-- Тип -->
+                    <StackLayout Orientation="Horizontal" Margin="0,50,0,0">
+                        <Border  Margin="0,0,0,0"
+                             HorizontalOptions="Start"
+                        Grid.RowSpan="3"
+                             WidthRequest="200"
+                        StrokeShape ="RoundRectangle 30,30,30,30"
+                        StrokeThickness="2">
+                            <Grid  Margin="20,20,0,20">
+                                <StackLayout Orientation="Vertical" Margin="0,0,0,0">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Тип: " VerticalOptions="Center" x:Name="TypeLabel" FontSize="18"/>
+                                        <Entry x:Name="TypeEntry" Text="{Binding Type}" IsReadOnly="True" VerticalOptions="Center" FontSize="18"/>
+                                        <Picker  Title="Тип" x:Name="TypePicker" IsVisible="False" Margin="0,0,00,0" FontSize="18">
+                                            <Picker.ItemsSource>
+                                                <x:Array Type="{x:Type x:String}">
+                                                    <x:String>Сериал</x:String>
+                                                    <x:String>Аниме</x:String>
+                                                    <x:String>Мультсериал</x:String>
+                                                    <x:String>Фильм</x:String>
+                                                    <x:String>Дорама</x:String>
+                                                    <x:String>Документалка</x:String>
+                                                    <x:String>Прочее</x:String>
+                                                </x:Array>
+                                            </Picker.ItemsSource>
+                                            <Picker.Style>
+                                                <Style TargetType="Picker">
+                                                    <Style.Triggers>
+                                                        <Trigger TargetType="Picker" Property="IsVisible" Value="True">
+                                                            <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Picker.Style>
+                                        </Picker>
+                                    </StackLayout>
+
+
+                                    <!-- Озвучка -->
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Озвучка: " VerticalOptions="Center" FontSize="18"/>
+                                        <Entry x:Name="DubbingEntry" Text="{Binding Dubbing}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Placeholder="Ваша озвучка">
+                                            <Entry.Style>
+                                                <Style TargetType="Entry">
+                                                    <Style.Triggers>
+                                                        <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
+                                                            <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Entry.Style>
+                                        </Entry>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Grid>
+                            <Border.Shadow>
+                                <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                            </Border.Shadow>
+                        </Border>
 
                         <!-- Номер последней просмотренной серии -->
+                        <Border  Margin="0,0,0,0"
+                        HorizontalOptions="End"
+                        Grid.RowSpan="3"
+                                 WidthRequest="220"
+                        StrokeShape ="RoundRectangle 30,30,30,30"
+                        StrokeThickness="2">
+                            <Grid  Margin="20,20,0,0">
+                                <StackLayout Orientation="Vertical" Margin="0,0,0,0">
+                                    <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
+                                        <Label Text="Серия:  " VerticalOptions="Center" FontSize="18"/>
+                                        <Entry x:Name="LastWatchedSeriesEntry" Text="{Binding LastWatchedSeries}" IsReadOnly="True" VerticalOptions="Center" FontSize="18">
+                                            <Entry.Style>
+                                                <Style TargetType="Entry">
+                                                    <Style.Triggers>
+                                                        <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
+                                                            <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Entry.Style>
+                                        </Entry>
+                                        <Stepper Scale="0.5" Margin="-20,0,0,0"   x:Name="StepperSeries" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeries, Mode=TwoWay}"  ValueChanged="StepperSeries_ValueChanged"/>
+                                    </StackLayout>
+                                    <!-- Номер последнего просмотренного сезона -->
 
-                        <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
-                            <Label Text="Номер последней просмотренной серии: " VerticalOptions="Center" />
-                            <Entry x:Name="LastWatchedSeriesEntry" Text="{Binding LastWatchedSeries}" IsReadOnly="True" VerticalOptions="Center" />
-                            <Stepper Margin="10,0,0,0"  BackgroundColor="#C283FD" x:Name="StepperSeries" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeries, Mode=TwoWay}"  ValueChanged="StepperSeries_ValueChanged"/>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Сезон:  " VerticalOptions="Center" FontSize="18"/>
+                                        <Entry x:Name="LastWatchedSeasonEntry" Text="{Binding LastWatchedSeason}" IsReadOnly="True" VerticalOptions="Center" FontSize="18">
+                                            <Entry.Style>
+                                                <Style TargetType="Entry">
+                                                    <Style.Triggers>
+                                                        <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
+                                                            <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Entry.Style>
+                                        </Entry>
+                                        <Stepper Scale="0.5" Margin="-20,0,0,0"  x:Name="StepperSeason" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeason, Mode=TwoWay}"  ValueChanged="StepperSeason_ValueChanged" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </Grid>
+                            <Border.Shadow>
+                                <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                            </Border.Shadow>
+                        </Border>
+                    </StackLayout>
+                        
+                    <Border  Margin="0,50,0,0"
+                          HorizontalOptions="Center"
+                          Grid.RowSpan="3"
+                          StrokeShape ="RoundRectangle 30,30,30,30"
+                          StrokeThickness="2">
+                        <Grid  Margin="20,20,0,20">
+                            <!-- Дата выхода следующей серии -->
+                    <StackLayout Orientation="Vertical" Margin="0,0,0,0">
+                        <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
+                                    <Label Text="Дата выхода следующей серии: " VerticalOptions="Center" FontSize="18" />
+                                    <Entry x:Name="NextEpisodeReleaseDateEntry" Text="{Binding NextEpisodeReleaseDate}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Placeholder="Дата выхода серии">
+                                        <Entry.Style>
+                                            <Style TargetType="Entry">
+                                                <Style.Triggers>
+                                                    <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
+                                                        <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Entry.Style>
+                                    </Entry>
+                                </StackLayout>
+
+
+                        <!-- Статус просмотра -->
+
+                        <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
+                                    <Label Text="Статус просмотра: " VerticalOptions="Center" x:Name="WatchStatusLabel" FontSize="18"/>
+                                    <Entry x:Name="WatchStatusEntry" Text="{Binding WatchStatus}" IsReadOnly="True" VerticalOptions="Center" FontSize="18"/>
+                                    <Picker Title="Статус просмотра " x:Name="WatchStatusPicker" IsVisible="false" FontSize="18">
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Просмотрено</x:String>
+                                        <x:String>Смотрю</x:String>
+                                        <x:String>Не начинал</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                                        <Picker.Style>
+                                            <Style TargetType="Picker">
+                                                <Style.Triggers>
+                                                    <Trigger TargetType="Picker" Property="IsVisible" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Picker.Style>
+                                    </Picker>
                         </StackLayout>
-                        <!-- Номер последнего просмотренного сезона -->
-             
-                    <StackLayout Orientation="Horizontal">
-                <Label Text="Номер последнего просмотренного сезона: " VerticalOptions="Center" />
-            <Entry x:Name="LastWatchedSeasonEntry" Text="{Binding LastWatchedSeason}" IsReadOnly="True" VerticalOptions="Center" />
-                            <Stepper Margin="10,0,0,0" BackgroundColor="#C283FD" x:Name="StepperSeason" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeason, Mode=TwoWay}"  ValueChanged="StepperSeason_ValueChanged" />
+                    </StackLayout>
+                        </Grid>
+                        <Border.Shadow>
+                            <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                        </Border.Shadow>
+                    </Border>
+
+                    <Border  Margin="0,50,0,0" x:Name="ViewContent"
+                        HorizontalOptions="Center"
+                        Grid.RowSpan="3"
+                        StrokeShape ="RoundRectangle 30,30,30,30"
+                        StrokeThickness="2">
+                        <Grid  Margin="20,20,0,20" HorizontalOptions="Center">
+                            <!-- Ссылка на сайт -->
+                    <StackLayout Orientation="Horizontal" Margin="20,0,20,0" HorizontalOptions="Center">
+                        <StackLayout Orientation="Vertical" HorizontalOptions="Start" VerticalOptions="Center" Margin="0,0,0,0">
+                            <Label Text="Просмотр" VerticalOptions="Center" x:Name="WatchingLabel" FontSize="18"/>
+                            <ImageButton x:Name="WatchingButton" Clicked="WatchingButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="50" HeightRequest="50"/>
                         </StackLayout>
-                
 
-                <!-- Дата выхода следующей серии -->
 
-                        <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
-                <Label Text="Дата выхода следующей серии: " VerticalOptions="Center" />
-            <Entry x:Name="NextEpisodeReleaseDateEntry" Text="{Binding NextEpisodeReleaseDate}" IsReadOnly="True" VerticalOptions="Center" />
-            </StackLayout>
-              
+                        <!-- Трейлер -->
 
-                <!-- Статус просмотра -->
-
-                        <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
-            <Label Text="Статус просмотра: " VerticalOptions="Center" x:Name="WatchStatusLabel"/>
-            <Entry x:Name="WatchStatusEntry" Text="{Binding WatchStatus}" IsReadOnly="True" VerticalOptions="Center" />
-            <Picker Title="Статус просмотра" x:Name="WatchStatusPicker" IsVisible="false" >
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Просмотрено</x:String>
-                        <x:String>Смотрю</x:String>
-                        <x:String>Не начинал</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-        </StackLayout>
-               
-
-                <!-- Ссылка на сайт -->
-
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Center" Margin="0,20,0,0">
-                        <Label Text="Перейти к просмотру" VerticalOptions="Center" x:Name="WatchingLabel" />
-                        <ImageButton x:Name="WatchingButton" Clicked="WatchingButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="25" HeightRequest="25"/>
+                                <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="40,0,20,0">
+                            <Label Text="Трейлер" VerticalOptions="Center" x:Name="TrailerLabel" FontSize="18"/>
+                            <ImageButton Clicked="TrailerButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="50" HeightRequest="50"/>
+                        </StackLayout>
                     </StackLayout>
-                
+                        </Grid>
+                        <Border.Shadow>
+                            <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                        </Border.Shadow>
+                    </Border>
+                        
+                    <Border  Margin="0,50,0,0" x:Name="otherData"
+                        HorizontalOptions="Center"
+                        Grid.RowSpan="3"
+                        StrokeShape ="RoundRectangle 30,30,30,30"
+                        StrokeThickness="2">
+                        <Grid  Margin="20,20,0,20" HorizontalOptions="Center">
+                            <!-- Дата добавления -->
+                    <StackLayout Orientation="Vertical" Margin="0,0,20,0">
+                        <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
+                                    <Label Text="Дата добавления контента: " VerticalOptions="Center" x:Name="DateAddedLabel" FontSize="18"/>
+                                    <Entry x:Name="DateAddedEntry" Text="{Binding DateAdded}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" />
+                        </StackLayout>
 
-                <!-- Трейлер -->
 
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Center" Margin="0,20,0,0">
-                        <Label Text="Просмотреть трейлер" VerticalOptions="Center" x:Name="TrailerLabel" />
-                        <ImageButton Clicked="TrailerButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="25" HeightRequest="25"/>
+                        <!-- Дата изменения серии -->
+
+                        <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
+                                    <Label Text="Дата последнего изменения серии: " VerticalOptions="Center" x:Name="SeriesChangeDateLabel" FontSize="18"/>
+                                    <Entry x:Name="SeriesChangeDateEntry" Text="{Binding SeriesChangeDate}" IsReadOnly="True" VerticalOptions="Center" FontSize="18"/>
+                        </StackLayout>
                     </StackLayout>
-                
-                <!-- Дата добавления -->
+                        </Grid>
+                        <Border.Shadow>
+                            <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                        </Border.Shadow>
+                    </Border>
 
-                        <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
-                        <Label Text="Дата добавления: " VerticalOptions="Center" x:Name="DateAddedLabel"/>
-                        <Entry x:Name="DateAddedEntry" Text="{Binding DateAdded}" IsReadOnly="True" VerticalOptions="Center" />
-                    </StackLayout>
-               
-
-                <!-- Дата изменения серии -->
-
-                        <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
-                        <Label Text="Дата изменения серии: " VerticalOptions="Center" x:Name="SeriesChangeDateLabel"/>
-                        <Entry x:Name="SeriesChangeDateEntry" Text="{Binding SeriesChangeDate}" IsReadOnly="True" VerticalOptions="Center" />
-                    </StackLayout>
-                
-
-                <!-- Ссылка на сайт -->
+                    <!-- Ссылка на сайт -->
 
                         <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Text="Ссылка на сайт: " VerticalOptions="Center" IsVisible="false" x:Name="LinkSecondLabel"/>
                         <Entry x:Name="LinkEntry" Text="{Binding Link}" IsVisible="false" IsReadOnly="True" VerticalOptions="Center" />
                     </StackLayout>
                     </StackLayout>
-                    <Frame.Shadow>
-                        <Shadow Brush="#C283FD" Opacity=".7" Radius="100" Offset="0,0"/>
-                    </Frame.Shadow>
-                </Frame>
 
-                <!-- Кнопка Удалить -->
-        <Button Text="Удалить" Clicked="DeleteButton_Clicked" Margin="0,0,0,5" WidthRequest="150" />
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="0,50,0,0">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,0">
+                        <!-- Кнопка Удалить -->
+                        <Button Text="Удалить" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18"/>
 
-        <!-- Кнопка Изменить -->
-                <Button x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="0,0,0,5" WidthRequest="150"  />
+                        <!-- Кнопка Изменить -->
+                        <Button x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18" />
+                        
+                    </StackLayout>
+                    <!-- Кнопка Отмена -->
+                    <Button x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" FontSize="18" />
+                    <StackLayout.Shadow>
+                        <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                    </StackLayout.Shadow>
+                </StackLayout>
 
-        <!-- Кнопка Отмена -->
-                <Button x:Name="CancelButton" Text="Отмена" Clicked="CancelButton_Clicked" Margin="0,0,0,5" IsVisible="false" WidthRequest="150" />
-        
-       
-       
-    </VerticalStackLayout>
+
+            </VerticalStackLayout>
     </ScrollView>
      </Grid>
 </ContentPage>

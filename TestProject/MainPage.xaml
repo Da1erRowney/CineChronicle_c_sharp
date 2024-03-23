@@ -24,10 +24,10 @@
             <ScrollView>
                 <StackLayout>
                     
-                    <Label Text="Недавно просмотренные" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,10" />
+                    <Label Text="Недавно просмотренные" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" Margin="0,0,0,10" />
                    
                     <CollectionView 
-                        Margin="0,50,0,0"
+                        Margin="0,25,0,0"
                         x:Name="RecentlyChangeCarouselView"
                         Grid.Row="2"
                         ItemsSource="{Binding ContentChange}"
@@ -86,10 +86,10 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <Label Text="Недавно добавленные" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,10" />
+                    <Label Text="Недавно добавленные" FontAttributes="Bold"  FontSize="20" HorizontalOptions="Center" Margin="0,0,0,10" />
                     
                     <CollectionView 
-                          Margin="0,50,0,0"
+                          Margin="0,25,0,0"
                         x:Name="RecentlyAddedCarouselView"
                         Grid.Row="2"
                         ItemsSource="{Binding ContentAdded}"

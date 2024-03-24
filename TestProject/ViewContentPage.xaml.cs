@@ -866,7 +866,27 @@ namespace TestProject
             content.SeriesChangeDate = content.SeriesChangeDate;
 
             }
-            content.Link = LinkEntry.Text;
+            switch (content.Type)
+            {
+                case "Аниме":
+                    content.Link = "https://animego.org/search/all?q=" + TitleEntry.Text;
+                    break;
+                case "Дорама":
+                    content.Link = "https://dorama.land/search?q=" + TitleEntry.Text;
+                    break;
+                case "Сериал":
+                    content.Link = "https://kinogo.biz/search/" + TitleEntry.Text;
+                    break;
+                case "Мультсериал":
+                    content.Link = "https://kinogo.biz/search/" + TitleEntry.Text;
+                    break;
+                case "Фильм":
+                    content.Link = "https://kinogo.biz/search/" + TitleEntry.Text;
+                    break;
+                default:
+                    break;
+            }
+           
             content.LastWatchedSeries =  int.Parse(LastWatchedSeriesEntry.Text);
             content.LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
 

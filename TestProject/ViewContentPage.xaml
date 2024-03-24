@@ -66,7 +66,7 @@
                     StrokeThickness="2"
                    >
                         <Grid  Margin="10,20,0,10">
-                            <Label x:Name="DescriptionLabel" />
+                            <Label x:Name="DescriptionLabel" FontSize="16" />
                         </Grid>
                         <Border.Shadow>
                             <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
@@ -239,7 +239,23 @@
                             <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
-
+                      
+                        
+                    <Border  Opacity="0.8" Margin="0,50,0,0"
+                            HorizontalOptions="Center"
+                            Grid.RowSpan="3"
+                            StrokeShape ="RoundRectangle 30,30,30,30"
+                            StrokeThickness="2">
+                        <Grid  Margin="0,20,0,0">
+                            <StackLayout Orientation="Vertical" HorizontalOptions="Center" >
+                                <WebView x:Name="TrailerWeb" HeightRequest="300" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                            </StackLayout>
+                        </Grid>
+                        <Border.Shadow>
+                            <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                        </Border.Shadow>
+                    </Border>
+                        
                     <Border  Opacity="0.8" Margin="0,50,0,0" x:Name="ViewContent"
                         HorizontalOptions="Center"
                         Grid.RowSpan="3"

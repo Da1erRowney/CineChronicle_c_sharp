@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Net;
 using Google.Apis.YouTube.v3;
 using Google.Apis.Services;
+using System.Xml;
 
 namespace TestProject
 {
@@ -88,7 +89,7 @@ namespace TestProject
                                     {
                                         HttpResponseMessage responses = await clients.GetAsync(urls);
 
-                                        if (response.IsSuccessStatusCode)
+                                        if (responses.IsSuccessStatusCode)
                                         {
                                             string htmlContents = await responses.Content.ReadAsStringAsync();
 
@@ -137,7 +138,7 @@ namespace TestProject
                                     {
                                         string listItemText = listItem.InnerText;
 
-                                        if (listItemText.Contains("телесериал") || listItemText.Contains("дорама") || listItemText.Contains("мультсериал"))
+                                        if (listItemText.Contains("телесериал") || listItemText.Contains("дорама") || listItemText.Contains("мультсериал") || listItemText.Contains("фильм"))
                                         {
                                             listItemText = HtmlEntity.DeEntitize(listItemText);
                                             DescriptionLabel.Text = listItemText;
@@ -151,9 +152,10 @@ namespace TestProject
                                         }
                                     }
                                 }
-                                DescriptionLabel.Text = "Информация о сериале не найдена1";
+                                DescriptionLabel.Text = "Информация о сериале не найдена";
 
                             }
+
                             else
                             {
                                 string url1 = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
@@ -163,7 +165,7 @@ namespace TestProject
 
                                     HttpResponseMessage response1 = await client1.GetAsync(url1);
 
-                                    if (response.IsSuccessStatusCode)
+                                    if (response1.IsSuccessStatusCode)
                                     {
                                         string htmlContent1 = await response1.Content.ReadAsStringAsync();
 
@@ -176,7 +178,7 @@ namespace TestProject
 
 
 
-                                        string firstParagraphText = firstParagraph.InnerText;
+                                        string firstParagraphText = firstParagrap1h.InnerText;
                                         firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
                                         DescriptionLabel.Text = firstParagraphText;
                                         string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
@@ -194,7 +196,44 @@ namespace TestProject
                     }
                     else
                     {
-                        DescriptionLabel.Text = "Информация о сериале не найдена2";
+                        string url1 = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
+
+                        using (HttpClient client1 = new HttpClient())
+                        {
+
+                            HttpResponseMessage response1 = await client1.GetAsync(url1);
+
+                            if (response1.IsSuccessStatusCode)
+                            {
+                                string htmlContent1 = await response1.Content.ReadAsStringAsync();
+
+                                HtmlDocument htmlDocument1 = new HtmlDocument();
+                                htmlDocument1.LoadHtml(htmlContent1);
+
+                                HtmlNode firstParagrap1h = htmlDocument1.DocumentNode.SelectSingleNode("//p");
+
+                                string nameContent1 = $"{query}:\n";
+
+
+
+                                string firstParagraphText = firstParagrap1h.InnerText;
+                                firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
+                                DescriptionLabel.Text = firstParagraphText;
+                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                content = databaseService.GetContentById(content.Id);
+                                content.SmallDecription = firstParagraphText;
+                                databaseService.UpdateContent(content);
+                                databaseService.CloseConnection();
+                                GetWikipediaImage(query);
+
+                            }
+                            else
+                            {
+                                DescriptionLabel.Text = "Информация о сериале не найдена2";
+                            }
+                        }
+                       
                     }
                 }
                 catch (Exception ex)
@@ -468,25 +507,50 @@ namespace TestProject
 
                                         if (responseы.IsSuccessStatusCode)
                                         {
-                                            string htmlContentы = await responseы.Content.ReadAsStringAsync();
+                                            string htmlContentSearch = await responseы.Content.ReadAsStringAsync();
 
-                                            HtmlDocument htmlDocumentы = new HtmlDocument();
-                                            htmlDocumentы.LoadHtml(htmlContentы);
+                                            string pattern = @"<div data-readmore=""content"">\s+(.*?)\s+</div></div></div><div class=""mt-3"">";
+                                            Match match = Regex.Match(htmlContentSearch, pattern, RegexOptions.Singleline);
 
-                                            HtmlNode descriptionNode = htmlDocumentы.DocumentNode.SelectSingleNode("//div[@class='description pb-3']");
-                                            if (descriptionNode != null)
+                                            if (match.Success)
                                             {
-                                                extractedText = descriptionNode.InnerText.Trim();
+                                                extractedText = match.Groups[1].Value.Trim();
                                                 extractedText = HtmlEntity.DeEntitize(extractedText);
+                                                extractedText = Regex.Replace(extractedText, "<.*?>", String.Empty);
                                                 DescriptionLabel.Text = extractedText;
+
                                                 string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
                                                 DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
                                                 content = databaseService.GetContentById(content.Id);
                                                 content.SmallDecription = extractedText;
                                                 databaseService.UpdateContent(content);
                                                 databaseService.CloseConnection();
-
                                             }
+                                            else
+                                            {
+                                                string patterns = @"<div data-readmore=""content"">(.*?)</div></div></div><div class=""mt-3"">";
+                                                Match matchs = Regex.Match(htmlContentSearch, patterns, RegexOptions.Singleline);
+
+                                                if (matchs.Success)
+                                                {
+                                                    string extractedTexts = matchs.Groups[1].Value;
+                                                    extractedTexts = HtmlEntity.DeEntitize(extractedTexts);
+                                                    extractedTexts = Regex.Replace(extractedTexts, "<.*?>", String.Empty);
+                                                    DescriptionLabel.Text = extractedTexts;
+
+                                                    string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                                    DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                                    content = databaseService.GetContentById(content.Id);
+                                                    content.SmallDecription = extractedTexts;
+                                                    databaseService.UpdateContent(content);
+                                                    databaseService.CloseConnection();
+                                                }
+                                            }
+                                           
+                                        }
+                                        else
+                                        {
+                                            DescriptionLabel.Text = $"Описание для {query} не было найдено";
                                         }
                                     }
                                     catch (Exception ex)
@@ -525,8 +589,42 @@ namespace TestProject
                         HtmlDocument htmlDocument = new HtmlDocument();
                         htmlDocument.LoadHtml(htmlContent);
 
-                        string pattern = "\"videoId\":\"(.*?)\"";
+                        string pattern = "\\\\/vi\\\\/([^\\/\\\\\"]+)";
+                        Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
 
+                        if (match.Success)
+                        {
+                            extractedLink = match.Groups[1].Value;
+                            videoUrl = $"https://www.youtube.com/embed/{extractedLink}";
+
+                            TrailerWeb.Source = videoUrl;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+        private async void GetTrailers(string query, string type)
+        {
+            string url = $"https://www.youtube.com/results?search_query={query}+{type}+трейлер";
+            string extractedLink = "";
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        string pattern = "\\\\/vi\\\\/([^\\/\\\\\"]+)";
                         Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
 
                         if (match.Success)
@@ -534,7 +632,6 @@ namespace TestProject
                             extractedLink = match.Groups[1].Value;
                             videoUrl = $"https://www.youtube.com/watch?v={extractedLink}";
 
-                            //// Открываем ссылку на видео в приложении YouTube
                             await Browser.OpenAsync(new Uri(videoUrl), BrowserLaunchMode.SystemPreferred);
                         }
                     }
@@ -545,7 +642,7 @@ namespace TestProject
                 }
             }
         }
-
+        
         //private async void GetLordsFilmImage(string query)
         //{
         //    string url = $"https://www.google.by/search?q= {Uri.EscapeDataString(query)} Постер&tbm=isch&ved=2ahUKEwiZtra589-EAxW8if0HHa5CCkYQ2-cCegQIABAA&oq=а&gs_lp=EgNpbWciAtCwSJwUUJsSWKoTcAB4AJABAJgBsAGgAbABqgEDMC4xuAEDyAEA-AEBigILZ3dzLXdpei1pbWeoAgDCAgoQABiABBiKBRhDiAYB&sclient=img&ei=-4ToZdnMOryT9u8ProWpsAQ";
@@ -599,6 +696,7 @@ namespace TestProject
             // Вызываем метод для получения информации с Википедии при загрузке страницы
             string title = (BindingContext as Content)?.Title;
             string type = (BindingContext as Content)?.Type;
+            GetTrailer(title, type);
             switch (type)
             {
                 case "Аниме":
@@ -846,8 +944,8 @@ namespace TestProject
 
         private void TrailerButton_Clicked(object sender, EventArgs e)
         {
-            GetTrailer(content.Title, content.Type);
-           
+            GetTrailers(content.Title, content.Type);
+
         }
 
         private async void WatchingButton_Clicked(object sender, EventArgs e)

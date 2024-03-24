@@ -695,12 +695,9 @@ namespace TestProject
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
 
-            otherData.IsVisible = false;
+          
             DecriptionBorder.IsVisible = false;
-            DateAddedLabel.IsVisible = false;
-            DateAddedEntry.IsVisible = false;
-            SeriesChangeDateLabel.IsVisible = false;
-            SeriesChangeDateEntry.IsVisible = false;
+           
 
             TypePicker.IsVisible = true;
             TypePicker.SelectedItem = content.Type;
@@ -732,16 +729,12 @@ namespace TestProject
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
 
-            DateAddedLabel.IsVisible = true;
-            DateAddedEntry.IsVisible = true;
-            SeriesChangeDateLabel.IsVisible = true;
-            SeriesChangeDateEntry.IsVisible = true;
+           
             ViewContent.IsVisible = true;
             TypePicker.IsVisible = false;
             WatchStatusPicker.IsVisible = false;
             DecriptionBorder.IsVisible = true;
-            otherData.IsVisible = true;
-
+           
             TypeEntry.IsVisible = true;
             TypeLabel.IsVisible = true;
             WatchStatusEntry.IsVisible = true; 
@@ -772,7 +765,7 @@ namespace TestProject
             }
             else
             {
-            content.SeriesChangeDate = SeriesChangeDateEntry.Text;
+            content.SeriesChangeDate = content.SeriesChangeDate;
 
             }
             content.Link = LinkEntry.Text;
@@ -781,7 +774,7 @@ namespace TestProject
 
             content.NextEpisodeReleaseDate = NextEpisodeReleaseDateEntry.Text;
             content.WatchStatus = WatchStatusPicker.SelectedItem.ToString() ;
-            content.DateAdded = DateAddedEntry.Text;
+            content.DateAdded = content.DateAdded;
             databaseService.UpdateContent(content);
             databaseService.CloseConnection();
 
@@ -817,7 +810,7 @@ namespace TestProject
                 LastWatchedSeasonEntry.Text = content.LastWatchedSeason.ToString();
                 NextEpisodeReleaseDateEntry.Text = content.NextEpisodeReleaseDate;
                 WatchStatusEntry.Text = content.WatchStatus;
-                DateAddedEntry.Text = content.DateAdded;
+                
             }
 
             // Блокируем поля ввода
@@ -825,14 +818,11 @@ namespace TestProject
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
             DecriptionBorder.IsVisible = true;
-            otherData.IsVisible = true;
+           
 
             ViewContent.IsVisible = true;
 
-            DateAddedLabel.IsVisible = true;
-            DateAddedEntry.IsVisible = true;
-            SeriesChangeDateLabel.IsVisible = true;
-            SeriesChangeDateEntry.IsVisible = true;
+           
             TypePicker.IsVisible = false;
             WatchStatusPicker.IsVisible = false;
 

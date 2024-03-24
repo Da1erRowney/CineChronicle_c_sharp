@@ -70,6 +70,14 @@
                                             <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
                                                 <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
                                                 <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="12" TextColor="White">
+                                                    <Label.Text>
+                                                        <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
+                                                            <Binding Path="LastWatchedSeason" />
+                                                            <Binding Path="LastWatchedSeries" />
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>

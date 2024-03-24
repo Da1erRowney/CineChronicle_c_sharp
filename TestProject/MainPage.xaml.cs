@@ -90,7 +90,7 @@ public partial class MainPage : ContentPage
     {
         if (item == null)
             return;
-        Content selectedContent = ContentChange[selectedIndex];
+        Content selectedContent = ContentAdded[selectedIndex];
         if (selectedContent.Type != "Пустота")
         {
             // Создайте новую страницу для отображения подробной информации

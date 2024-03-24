@@ -21,10 +21,10 @@
             <VerticalStackLayout Spacing="20" Padding="20" >
                 <Label Text="Добавление контента" FontSize="25" HorizontalOptions="Center"/>
                 <!-- Поле ввода Названия -->
-                <Entry Placeholder="Введите название (Обязательно)" x:Name="TitleEntry" FontSize="18" />
+                <Entry Placeholder="Введите название (Обязательно)" x:Name="TitleEntry"  />
 
                 <!-- Выпадающий список для выбора типа -->
-                <Picker Title="Нажмите, чтобы указать тип контента (Обязательно)" x:Name="TypePicker" FontSize="18">
+                <Picker Title="Нажмите, чтобы указать тип контента (Обязательно)" x:Name="TypePicker">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>Сериал</x:String>
@@ -39,29 +39,29 @@
                 </Picker>
 
                 <!-- Поле ввода для озвучки -->
-                <Entry Placeholder="Введите озвучку" x:Name="DubbingEntry" FontSize="18" />
+                <Entry Placeholder="Введите озвучку" x:Name="DubbingEntry" />
                 <StackLayout Orientation="Horizontal">
                 <!-- Поле ввода для номера последней просмотренной серии -->
-                    <Label Text="Серия: " FontSize="18" VerticalOptions="Center"/>
-                    <Entry Placeholder="Введите серию" x:Name="LastWatchedSeriesEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="18"/>
+                    <Label Text="Серия: "  VerticalOptions="Center"/>
+                    <Entry Placeholder="Введите серию" x:Name="LastWatchedSeriesEntry" Margin="5,0,0,0" Keyboard="Numeric" />
 
                 <!-- Поле ввода для номера последнего просмотренного сезона -->
-                    <Label Text="Сезон: " FontSize="18" Margin="50,0,0,0" VerticalOptions="Center"/>
-                    <Entry Placeholder="Введите сезон" x:Name="LastWatchedSeasonEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="18"/>
+                    <Label Text="Сезон: "  Margin="50,0,0,0" VerticalOptions="Center"/>
+                    <Entry Placeholder="Введите сезон" x:Name="LastWatchedSeasonEntry" Margin="5,0,0,0" Keyboard="Numeric" />
                 </StackLayout>
 
-                <Entry Placeholder="Вставьте ссылку на сайт, на котором вы смотрели" x:Name="LinkEntry" FontSize="18"/>
+                <Entry Placeholder="Вставьте ссылку на сайт, на котором вы смотрели" x:Name="LinkEntry"/>
                 <!-- Поле ввода для выхода следующей серии -->
                 <StackLayout Orientation="Horizontal" Spacing="10">
-                    <Label Text="Выход следующей серии" VerticalOptions="Center" FontSize="18"/>
-                    <DatePicker x:Name="NextEpisodeReleaseDatePicker" FontSize="18"/>
+                    <Label Text="Выход следующей серии" VerticalOptions="Center" />
+                    <DatePicker x:Name="NextEpisodeReleaseDatePicker"/>
                 </StackLayout>
 
 
 
                 <!-- Выпадающий список для выбора статуса просмотра -->
 
-                <Picker Title="Нажмите, чтобы указать статус просмотра (Обязательно)" x:Name="WatchStatusPicker" FontSize="18">
+                <Picker Title="Нажмите, чтобы указать статус просмотра (Обязательно)" x:Name="WatchStatusPicker">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>Просмотрено</x:String>
@@ -72,7 +72,7 @@
                 </Picker>
 
                 <!-- Кнопка "Добавить" -->
-                <Button Text="Добавить" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand" FontSize="18" WidthRequest="150" >
+                <Button Text="Добавить" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" >
                     <Button.Shadow>
                         <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
                     </Button.Shadow>

@@ -5,6 +5,9 @@ using System.IO;
 using System.Linq;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Xaml;
+using SQLite;
+using Microsoft.Maui.Platform;
+using System.Diagnostics;
 
 namespace TestProject
 {
@@ -12,234 +15,565 @@ namespace TestProject
     public partial class AllContentPage : ContentPage
     {
         private string Choise;
+        public List<Content> ContentAll { get; set; }
+        public List<Content> ContentSerial { get; set; }
+        public List<Content> ContentAnime { get; set; }
+        public List<Content> ContentFilm { get; set; }
+        public List<Content> ContentDorama { get; set; }
+        public List<Content> ContentMult { get; set; }
+        public List<Content> ContentDocum { get; set; }
+        public List<Content> ContentOther { get; set; }
+        public List<Content> ContentViewed { get; set; }
+        public List<Content> ContentProcess { get; set; }
+        public List<Content> ContentNotStart { get; set; }
+
+        private List<Content> _contentSearch;
+        public List<Content> ContentSearch
+        {
+            get { return _contentSearch; }
+            set
+            {
+                _contentSearch = value;
+                OnPropertyChanged(nameof(ContentSearch));
+            }
+        }
+        public Content SelectedItem { get; set; }
+
+        private DatabaseServiceContent _databaseService;
+        public SQLiteConnection CreateDatabase(string databasePath)
+        {
+            SQLiteConnection connection = new SQLiteConnection(databasePath);
+            connection.CreateTable<Content>();
+            return connection;
+
+        }
 
         public AllContentPage()
         {
             InitializeComponent();
-            string userChoise = "All";
-    
-            Choise = userChoise;
+            Choise = "All";
 
-            // Получите путь к базе данных
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+            _databaseService = new DatabaseServiceContent(databasePath);
+            SQLiteConnection connection = CreateDatabase(databasePath);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
 
-            // Создайте сервис базы данных и таблицу
-            var databaseService = new DatabaseServiceContent(databasePath);
-            databaseService.CreateTables();
+            List<Content> contents = databaseService.GetAllContent().ToList();
+            ContentAll = contents.ToList();
 
-            // Установите заголовок страницы в зависимости от выбора пользователя
-            SetPageTitle();
+            List<Content> filteredContents = contents.Where(c => c.Type == "Сериал").ToList();
+            ContentSerial= filteredContents.ToList();
 
-            // Получите контент в зависимости от выбора пользователя или все элементы
-            List<Content> content = GetContent(databaseService);
+            filteredContents = contents.Where(c => c.Type == "Аниме").ToList();
+            ContentAnime = filteredContents.ToList();
 
-            // Привяжите данные к списку
-            ContentListView.ItemsSource = content;
-        }
-        public AllContentPage(string userChoise)
-        {
-            InitializeComponent();
+            filteredContents = contents.Where(c => c.Type == "Фильм").ToList();
+            ContentFilm = filteredContents.ToList();
 
-            Choise = userChoise;
+            filteredContents = contents.Where(c => c.Type == "Дорама").ToList();
+            ContentDorama = filteredContents.ToList();
 
-            // Получите путь к базе данных
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+            filteredContents = contents.Where(c => c.Type == "Мультсериал").ToList();
+            ContentMult = filteredContents.ToList();
 
-            // Создайте сервис базы данных и таблицу
-            var databaseService = new DatabaseServiceContent(databasePath);
-            databaseService.CreateTables();
+            filteredContents = contents.Where(c => c.Type == "Документалка").ToList();
+            ContentDocum = filteredContents.ToList();
 
-            // Установите заголовок страницы в зависимости от выбора пользователя
-            SetPageTitle();
+            filteredContents = contents.Where(c => c.Type == "Прочее").ToList();
+            ContentOther = filteredContents.ToList();
 
-            // Получите контент в зависимости от выбора пользователя или все элементы
-            List<Content> content = GetContent(databaseService);
+            filteredContents = contents.Where(c => c.WatchStatus == "Просмотрено").ToList();
+            ContentViewed = filteredContents.ToList();
 
-            // Привяжите данные к списку
-            ContentListView.ItemsSource = content;
+            filteredContents = contents.Where(c => c.WatchStatus == "Смотрю").ToList();
+            ContentProcess = filteredContents.ToList();
+
+            filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
+            ContentNotStart = filteredContents.ToList();
+
+            BindingContext = this;
         }
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            // Обновите список контента при каждом отображении страницы
-            UpdateContentList();
+            UpdateContent();
+           
         }
 
-        private void UpdateContentList()
+        private void UpdateContent()
         {
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+            _databaseService = new DatabaseServiceContent(databasePath);
+            SQLiteConnection connection = CreateDatabase(databasePath);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
 
-            // Создайте сервис базы данных и таблицу
-            var databaseService = new DatabaseServiceContent(databasePath);
-            // Получите контент в зависимости от выбора пользователя или все элементы
-            List<Content> content = GetContent(databaseService);
+            List<Content> contents = databaseService.GetAllContent().ToList();
+            ContentAll = contents.ToList();
 
-            // Привяжите данные к списку
-            ContentListView.ItemsSource = content;
-        }
+            List<Content> filteredContents = contents.Where(c => c.Type == "Сериал").ToList();
+            ContentSerial = filteredContents.ToList();
 
-        private string AppDataDirectory => FileSystem.AppDataDirectory;
+            filteredContents = contents.Where(c => c.Type == "Аниме").ToList();
+            ContentAnime = filteredContents.ToList();
 
+            filteredContents = contents.Where(c => c.Type == "Фильм").ToList();
+            ContentFilm = filteredContents.ToList();
 
-        private void SetPageTitle()
-        {
-            switch (Choise)
-            {
-                case "All":
-                    MainLabel.Text = "Ваш весь контент";
-                    return;
-                case "Movies":
-                    MainLabel.Text = "Ваши фильмы";
-                    return;
-                case "Series":
-                    MainLabel.Text = "Ваши сериалы";
-                    return;
-                case "Anime":
-                    MainLabel.Text = "Ваше аниме";
-                    return;
-                case "Other":
-                    MainLabel.Text = "Прочий контент";
-                    return;
-                case "Doram":
-                    MainLabel.Text = "Ваши дорамы";
-                    return;
-                case "Mult":
-                    MainLabel.Text = "Ваши мультсериалы";
-                    return;
-                case "Documental":
-                    MainLabel.Text = "Ваши документальные передачи";
-                    return;
+            filteredContents = contents.Where(c => c.Type == "Дорама").ToList();
+            ContentDorama = filteredContents.ToList();
 
-            }
-        }
+            filteredContents = contents.Where(c => c.Type == "Мультсериал").ToList();
+            ContentMult = filteredContents.ToList();
 
-        private List<Content> GetContent(DatabaseServiceContent databaseService)
-        {
-            if (Choise == "Viewed" || Choise == "Progress" || Choise == "NotStarted")
-            {
-                return Choise switch
-                {
-                    "Progress" => databaseService.GetAllContent().Where(c => c.WatchStatus == "Смотрю").ToList(),
-                    "NotStarted" => databaseService.GetAllContent().Where(c => c.WatchStatus == "Не начинал").ToList(),
-                    "Viewed" => databaseService.GetAllContent().Where(c => c.WatchStatus == "Просмотрено").ToList(),
-                    _ => databaseService.GetAllContent(),
-                };
+            filteredContents = contents.Where(c => c.Type == "Документалка").ToList();
+            ContentDocum = filteredContents.ToList();
 
-            }
-            else
-            {
-                return Choise switch { 
-                "All" => databaseService.GetAllContent(),
-                    "Movies" => databaseService.GetAllContent().Where(c => c.Type == "Фильм").ToList(),
-                    "Series" => databaseService.GetAllContent().Where(c => c.Type == "Сериал").ToList(),
-                    "Anime" => databaseService.GetAllContent().Where(c => c.Type == "Аниме").ToList(),
-                    "Other" => databaseService.GetAllContent().Where(c => c.Type == "Прочее").ToList(),
-                    "Doram" => databaseService.GetAllContent().Where(c => c.Type == "Дорама").ToList(),
-                    "Mult" => databaseService.GetAllContent().Where(c => c.Type == "Мультсериал").ToList(),
-                    "Documental" => databaseService.GetAllContent().Where(c => c.Type == "Документалка").ToList(),
+            filteredContents = contents.Where(c => c.Type == "Прочее").ToList();
+            ContentOther = filteredContents.ToList();
 
-                    _ => databaseService.GetAllContent(),
-                };
-        }
-    }
+            filteredContents = contents.Where(c => c.WatchStatus == "Просмотрено").ToList();
+            ContentViewed = filteredContents.ToList();
 
+            filteredContents = contents.Where(c => c.WatchStatus == "Смотрю").ToList();
+            ContentProcess = filteredContents.ToList();
 
+            filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
+            ContentNotStart = filteredContents.ToList();
 
-        private async void ContentListView_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            if (e.Item == null)
-                return;
-
-            // Получите выбранный элемент контента
-            Content selectedContent = (Content)e.Item;
-
-            // Создайте новую страницу для отображения подробной информации
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-
-            // Перейдите на новую страницу
-            await Navigation.PushAsync(viewContentPage);
-
-            // Сбросьте выбор элемента в ListView
-            ((ListView)sender).SelectedItem = null;
+            BindingContext = this;
         }
 
         private async void ВсеButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "All";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = true;
+            Serial.IsVisible = true;
+            Anime.IsVisible = true;
+            Film.IsVisible = true;
+            Dorama.IsVisible = true;
+            Mult.IsVisible = true;
+            Docum.IsVisible = true;
+            Other.IsVisible = true;
+            Viewed.IsVisible = true;
+            Process.IsVisible = true;
+            NotStart.IsVisible = true;
 
         }
 
         private async void АнимеButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "Anime";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = true;
+            Film.IsVisible = false;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = false;
+            Docum.IsVisible = false;
+            Other.IsVisible = false;
+            Viewed.IsVisible = false;
+            Process.IsVisible = false;
+            NotStart.IsVisible = false;
         }
 
         private async void ФильмыButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "Movies";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = false;
+            Film.IsVisible = true;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = false;
+            Docum.IsVisible = false;
+            Other.IsVisible = false;
+            Viewed.IsVisible = false;
+            Process.IsVisible = false;
+            NotStart.IsVisible = false;
         }
 
         private async void СериалыButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "Series";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = false;
+            Serial.IsVisible = true;
+            Anime.IsVisible = false;
+            Film.IsVisible = false;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = false;
+            Docum.IsVisible = false;
+            Other.IsVisible = false;
+            Viewed.IsVisible = false;
+            Process.IsVisible = false;
+            NotStart.IsVisible = false;
         }
 
         private async void ДорамыButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "Doram";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = false;
+            Film.IsVisible = false;
+            Dorama.IsVisible = true;
+            Mult.IsVisible = false;
+            Docum.IsVisible = false;
+            Other.IsVisible = false;
+            Viewed.IsVisible = false;
+            Process.IsVisible = false;
+            NotStart.IsVisible = false;
         }
 
         private async void МультсериалыButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "Mult";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = false;
+            Film.IsVisible = false;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = true;
+            Docum.IsVisible = false;
+            Other.IsVisible = false;
+            Viewed.IsVisible = false;
+            Process.IsVisible = false;
+            NotStart.IsVisible = false;
         }
 
         private async void ДокументалкиButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "Documental";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = false;
+            Film.IsVisible = false;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = false;
+            Docum.IsVisible = true;
+            Other.IsVisible = false;
+            Viewed.IsVisible = false;
+            Process.IsVisible = false;
+            NotStart.IsVisible = false;
         }
 
         private async void ПрочееButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "Other";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = false;
+            Film.IsVisible = false;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = false;
+            Docum.IsVisible = false;
+            Other.IsVisible = true;
+            Viewed.IsVisible = false;
+            Process.IsVisible = false;
+            NotStart.IsVisible = false;
         }
 
         private async void ПросмотреноButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "Viewed";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = false;
+            Film.IsVisible = false;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = false;
+            Docum.IsVisible = false;
+            Other.IsVisible = false;
+            Viewed.IsVisible = true;
+            Process.IsVisible = false;
+            NotStart.IsVisible = false;
         }
 
         private async void ВпроцессеButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "Progress";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
-            await Navigation.PushAsync(viewContentPage);
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = false;
+            Film.IsVisible = false;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = false;
+            Docum.IsVisible = false;
+            Other.IsVisible = false;
+            Viewed.IsVisible = false;
+            Process.IsVisible = true;
+            NotStart.IsVisible = false;
         }
 
         private async void НеначатоButton_Clicked(object sender, EventArgs e)
         {
-            string choiseBlock = "NotStarted";
-            AllContentPage viewContentPage = new AllContentPage(choiseBlock);
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = false;
+            Film.IsVisible = false;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = false;
+            Docum.IsVisible = false;
+            Other.IsVisible = false;
+            Viewed.IsVisible = false;
+            Process.IsVisible = false;
+            NotStart.IsVisible = true;
+        }
+        private async void OnItemSelectedAll(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentAll[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
             await Navigation.PushAsync(viewContentPage);
+            
+        }
+
+        private void ItemButtonClickedAll(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)AllContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedAll(item, selectedIndex);
+        }
+
+
+        private void ItemButtonClickedSerial(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)SerialContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedSerial(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedSerial(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentSerial[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+
+        private void ItemButtonClickedAnime(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)AnimeContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedAnime(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedAnime(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentAnime[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+
+        private void ItemButtonClickedFilm(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)FilmContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedFilm(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedFilm(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentFilm[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+
+        private void ItemButtonClickedDorama(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)DoramaContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedDorama(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedDorama(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentDorama[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+
+        private void ItemButtonClickedMult(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)MultContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedMult(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedMult(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentMult[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+
+        private void ItemButtonClickedDocum(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)DocumContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedDocum(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedDocum(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentDocum[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+
+        private void ItemButtonClickedOther(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)OtherContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedOther(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedOther(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentOther[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+
+        private void ItemButtonClickedViewed(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)ViewedContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedViewed(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedViewed(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentViewed[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+
+        private void ItemButtonClickedProcess(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)ProcessContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedProcess(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedProcess(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentProcess[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+
+        private void ItemButtonClickedNotStart(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)NotStartContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedNotStart(item, selectedIndex);
+        }
+
+        private async void OnItemSelectedNotStart(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentNotStart[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+        private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item is Content selectedContent)
+            {
+                ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+                await Navigation.PushAsync(viewContentPage);
+            }
+        }
+        private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+            _databaseService = new DatabaseServiceContent(databasePath);
+            SQLiteConnection connection = CreateDatabase(databasePath);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+
+            string searchQuery = searchBar.Text;
+            if (searchQuery != "")
+            {
+                All.IsVisible = false;
+                Serial.IsVisible = false;
+                Anime.IsVisible = false;
+                Film.IsVisible = false;
+                Dorama.IsVisible = false;
+                Mult.IsVisible = false;
+                Docum.IsVisible = false;
+                Other.IsVisible = false;
+                Viewed.IsVisible = false;
+                Process.IsVisible = false;
+                NotStart.IsVisible = false;
+                SearchList.IsVisible = true;
+                AllContentPage viewModel = new AllContentPage();
+                BindingContext = viewModel;
+                List<Content> contents = databaseService.GetAllContent().ToList();
+
+                List<Content> filteredContents = contents.Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
+                viewModel.ContentSearch = filteredContents.ToList();
+
+            }
+            else
+            {
+                SearchList.IsVisible = false;
+                All.IsVisible = true;
+                Serial.IsVisible = true;
+                Anime.IsVisible = true;
+                Film.IsVisible = true;
+                Dorama.IsVisible = true;
+                Mult.IsVisible = true;
+                Docum.IsVisible = true;
+                Other.IsVisible = true;
+                Viewed.IsVisible = true;
+                Process.IsVisible = true;
+                NotStart.IsVisible = true;
+                UpdateContent();
+            }
+
+           
+
         }
     }
 }

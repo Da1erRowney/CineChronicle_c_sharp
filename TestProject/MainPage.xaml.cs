@@ -90,13 +90,26 @@ public partial class MainPage : ContentPage
     {
         if (item == null)
             return;
+        Content selectedContent = ContentChange[selectedIndex];
+        if (selectedContent.Type != "Пустота")
+        {
+            // Создайте новую страницу для отображения подробной информации
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
 
-        Content selectedContent = ContentAdded[selectedIndex];
-        // Создайте новую страницу для отображения подробной информации
-        ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            // Перейдите на новую страницу
+            await Navigation.PushAsync(viewContentPage);
+        }
+        else
+        {
+            await Navigation.PushAsync(new AddMoreContentPage());
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
 
-        // Перейдите на новую страницу
-        await Navigation.PushAsync(viewContentPage);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+
+            databaseService.DeleteContent(selectedContent);
+
+            databaseService.CloseConnection();
+        }
     }
     private void ItemButtonClicked(object sender, EventArgs e)
     {

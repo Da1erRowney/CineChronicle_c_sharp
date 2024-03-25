@@ -28,6 +28,7 @@ namespace TestProject
         public List<Content> ContentNotStart { get; set; }
 
         private List<Content> _contentSearch;
+        public List<Content> ContentSort { get; set; }
         public List<Content> ContentSearch
         {
             get { return _contentSearch; }
@@ -60,7 +61,6 @@ namespace TestProject
 
             List<Content> contents = databaseService.GetAllContent().ToList();
             ContentAll = contents.ToList();
-
             List<Content> filteredContents = contents.Where(c => c.Type == "Сериал").ToList();
             ContentSerial= filteredContents.ToList();
 
@@ -90,12 +90,13 @@ namespace TestProject
 
             filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
             ContentNotStart = filteredContents.ToList();
-
+   
             BindingContext = this;
         }
         protected override void OnAppearing()
         {
             base.OnAppearing();
+           
             UpdateContent();
            
         }
@@ -140,6 +141,7 @@ namespace TestProject
             filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
             ContentNotStart = filteredContents.ToList();
 
+           
             BindingContext = this;
         }
 
@@ -156,6 +158,7 @@ namespace TestProject
             Viewed.IsVisible = true;
             Process.IsVisible = true;
             NotStart.IsVisible = true;
+            Sort.IsVisible = false;
 
         }
 
@@ -163,7 +166,7 @@ namespace TestProject
         {
             All.IsVisible = false;
             Serial.IsVisible = false;
-            Anime.IsVisible = true;
+            Anime.IsVisible = false;
             Film.IsVisible = false;
             Dorama.IsVisible = false;
             Mult.IsVisible = false;
@@ -172,6 +175,14 @@ namespace TestProject
             Viewed.IsVisible = false;
             Process.IsVisible = false;
             NotStart.IsVisible = false;
+
+            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Аниме").ToList();
+            ContentSort = filteredContents.ToList();
+
+            Sort.IsVisible = true;
+            SortLabel.Text = "Аниме";
+            BindingContext = this;
+
         }
 
         private async void ФильмыButton_Clicked(object sender, EventArgs e)
@@ -179,7 +190,7 @@ namespace TestProject
             All.IsVisible = false;
             Serial.IsVisible = false;
             Anime.IsVisible = false;
-            Film.IsVisible = true;
+            Film.IsVisible = false;
             Dorama.IsVisible = false;
             Mult.IsVisible = false;
             Docum.IsVisible = false;
@@ -187,12 +198,18 @@ namespace TestProject
             Viewed.IsVisible = false;
             Process.IsVisible = false;
             NotStart.IsVisible = false;
+
+            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Фильм").ToList();
+            ContentSort = filteredContents.ToList();
+            Sort.IsVisible = true;
+            SortLabel.Text = "Фильмы";
+            BindingContext = this;
         }
 
         private async void СериалыButton_Clicked(object sender, EventArgs e)
         {
             All.IsVisible = false;
-            Serial.IsVisible = true;
+            Serial.IsVisible = false;
             Anime.IsVisible = false;
             Film.IsVisible = false;
             Dorama.IsVisible = false;
@@ -202,6 +219,11 @@ namespace TestProject
             Viewed.IsVisible = false;
             Process.IsVisible = false;
             NotStart.IsVisible = false;
+            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Сериал").ToList();
+            ContentSort = filteredContents.ToList();
+            Sort.IsVisible = true;
+            SortLabel.Text = "Сериалы";
+            BindingContext = this;
         }
 
         private async void ДорамыButton_Clicked(object sender, EventArgs e)
@@ -210,13 +232,18 @@ namespace TestProject
             Serial.IsVisible = false;
             Anime.IsVisible = false;
             Film.IsVisible = false;
-            Dorama.IsVisible = true;
+            Dorama.IsVisible = false;
             Mult.IsVisible = false;
             Docum.IsVisible = false;
             Other.IsVisible = false;
             Viewed.IsVisible = false;
             Process.IsVisible = false;
             NotStart.IsVisible = false;
+            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Дорама").ToList();
+            ContentSort = filteredContents.ToList();
+            Sort.IsVisible = true;
+            SortLabel.Text = "Дорамы";
+            BindingContext = this;
         }
 
         private async void МультсериалыButton_Clicked(object sender, EventArgs e)
@@ -226,12 +253,17 @@ namespace TestProject
             Anime.IsVisible = false;
             Film.IsVisible = false;
             Dorama.IsVisible = false;
-            Mult.IsVisible = true;
+            Mult.IsVisible = false;
             Docum.IsVisible = false;
             Other.IsVisible = false;
             Viewed.IsVisible = false;
             Process.IsVisible = false;
             NotStart.IsVisible = false;
+            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Мультсериал").ToList();
+            ContentSort = filteredContents.ToList();
+            Sort.IsVisible = true;
+            SortLabel.Text = "Мультсериалы";
+            BindingContext = this;
         }
 
         private async void ДокументалкиButton_Clicked(object sender, EventArgs e)
@@ -242,11 +274,17 @@ namespace TestProject
             Film.IsVisible = false;
             Dorama.IsVisible = false;
             Mult.IsVisible = false;
-            Docum.IsVisible = true;
+            Docum.IsVisible = false;
             Other.IsVisible = false;
             Viewed.IsVisible = false;
             Process.IsVisible = false;
             NotStart.IsVisible = false;
+
+            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Документалки").ToList();
+            ContentSort = filteredContents.ToList();
+            Sort.IsVisible = true;
+            SortLabel.Text = "Документальные фильмы";
+            BindingContext = this;
         }
 
         private async void ПрочееButton_Clicked(object sender, EventArgs e)
@@ -258,10 +296,16 @@ namespace TestProject
             Dorama.IsVisible = false;
             Mult.IsVisible = false;
             Docum.IsVisible = false;
-            Other.IsVisible = true;
+            Other.IsVisible = false;
             Viewed.IsVisible = false;
             Process.IsVisible = false;
             NotStart.IsVisible = false;
+
+            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Прочее").ToList();
+            ContentSort = filteredContents.ToList();
+            Sort.IsVisible = true;
+            SortLabel.Text = "Прочее";
+            BindingContext = this;
         }
 
         private async void ПросмотреноButton_Clicked(object sender, EventArgs e)
@@ -274,9 +318,15 @@ namespace TestProject
             Mult.IsVisible = false;
             Docum.IsVisible = false;
             Other.IsVisible = false;
-            Viewed.IsVisible = true;
+            Viewed.IsVisible = false;
             Process.IsVisible = false;
             NotStart.IsVisible = false;
+          
+            List<Content> filteredContents = ContentAll.Where(c => c.WatchStatus == "Просмотрено").ToList();
+            ContentSort = filteredContents.ToList();
+            Sort.IsVisible = true;
+            SortLabel.Text = "Просмотрено";
+            BindingContext = this;
         }
 
         private async void ВпроцессеButton_Clicked(object sender, EventArgs e)
@@ -290,8 +340,13 @@ namespace TestProject
             Docum.IsVisible = false;
             Other.IsVisible = false;
             Viewed.IsVisible = false;
-            Process.IsVisible = true;
+            Process.IsVisible = false;
             NotStart.IsVisible = false;
+            Sort.IsVisible = true;
+            List<Content> filteredContents = ContentAll.Where(c => c.WatchStatus == "В процессе").ToList();
+            ContentSort = filteredContents.ToList();
+            SortLabel.Text = "В процессе";
+           
         }
 
         private async void НеначатоButton_Clicked(object sender, EventArgs e)
@@ -306,7 +361,23 @@ namespace TestProject
             Other.IsVisible = false;
             Viewed.IsVisible = false;
             Process.IsVisible = false;
-            NotStart.IsVisible = true;
+            NotStart.IsVisible = false;
+          
+            Sort.IsVisible = true;
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+            _databaseService = new DatabaseServiceContent(databasePath);
+            SQLiteConnection connection = CreateDatabase(databasePath);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+            List<Content> contents = databaseService.GetAllContent().ToList();
+
+            List<Content> filteredContents = contents.Where(c => c.WatchStatus.IndexOf("Не начато", StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
+            //viewModel.ContentSearch = filteredContents.ToList();
+            ContentSort = filteredContents.ToList();
+            BindingContext = this;
+
+            SortLabel.Text = "Не начатый контент";
+           
         }
         private async void OnItemSelectedAll(Content item, int selectedIndex)
         {
@@ -545,19 +616,26 @@ namespace TestProject
                 Viewed.IsVisible = false;
                 Process.IsVisible = false;
                 NotStart.IsVisible = false;
-                SearchList.IsVisible = true;
+                SearchList.IsVisible = false;
+                Sort.IsVisible = true;
+                SortLabel.Text = $"Искомый контент по запросу \"{searchQuery}\"";
                 AllContentPage viewModel = new AllContentPage();
                 BindingContext = viewModel;
+            
                 List<Content> contents = databaseService.GetAllContent().ToList();
 
                 List<Content> filteredContents = contents.Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
 
-                viewModel.ContentSearch = filteredContents.ToList();
+                //viewModel.ContentSearch = filteredContents.ToList();
+                ContentSort = filteredContents.ToList();
+                BindingContext = this;
+
 
             }
             else
             {
                 SearchList.IsVisible = false;
+                Sort.IsVisible = false;
                 All.IsVisible = true;
                 Serial.IsVisible = true;
                 Anime.IsVisible = true;
@@ -574,6 +652,23 @@ namespace TestProject
 
            
 
+        }
+
+        private void ItemButtonClickedSort(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)SortContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedSort(item, selectedIndex);
+        }
+        private async void OnItemSelectedSort(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentSort[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
         }
     }
 }

@@ -18,7 +18,78 @@
         <ScrollView>
             <StackLayout Orientation="Vertical" Padding="10">
                 <SearchBar x:Name="searchBar" Placeholder="Поиск контента..." TextChanged="SearchBar_TextChanged" />
+                <!--<StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="Все" Clicked="ВсеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Аниме" Clicked="АнимеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Фильмы" Clicked="ФильмыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="Дорамы" Clicked="ДорамыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Мультсериалы" Clicked="МультсериалыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Сериалы" Clicked="СериалыButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
+                  
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="Документалки" Clicked="ДокументалкиButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Прочее" Clicked="ПрочееButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Просмотрено" Clicked="ПросмотреноButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
 
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
+                        <Button Text="В процессе" Clicked="ВпроцессеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                        <Button Text="Не начато" Clicked="НеначатоButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    </StackLayout>
+                 
+                </StackLayout>-->
+
+            <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10" IsVisible="false">
+                    <Label  x:Name="SortLabel" Text="" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
+
+                    <CollectionView Margin="0,15,0,0"  x:Name="SortContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentSort}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                        <CollectionView.ItemsLayout >
+                            <LinearItemsLayout x:Name="SortC" ItemSpacing="0" Orientation="Vertical" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border Margin="25,50,25,50" Stroke="#6e557C" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="300" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="300">
+                                        <Grid RowDefinitions=".2*,.6*,.2*">
+                                            <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="300" WidthRequest="300" Opacity=".7">
+                                                <RoundRectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="0,1">
+                                                        <GradientStop Offset="0" Color="Transparent"></GradientStop>
+                                                        <GradientStop Offset="1" Color="#030005"></GradientStop>
+                                                    </LinearGradientBrush>
+                                                </RoundRectangle.Fill>
+                                            </RoundRectangle>
+                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
+                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
+                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="12" TextColor="White">
+                                                    <Label.Text>
+                                                        <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
+                                                            <Binding Path="LastWatchedSeason" />
+                                                            <Binding Path="LastWatchedSeries" />
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                        <Border.Shadow>
+                                            <Shadow Brush="#C283FD" Opacity=".7" Radius="100" Offset="0,0"/>
+                                        </Border.Shadow>
+                                    </Border>
+                                    <Button BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference SortContentCollectionView}}" CommandParameter="{Binding .}"
+                        Clicked="ItemButtonClickedSort"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </StackLayout>
+                
             <StackLayout x:Name="All" Orientation="Vertical" Padding="10">
                 <Label x:Name="MainLabel" Text="Весь ваш контент!" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
                 <CollectionView Margin="0,15,0,0" x:Name="AllContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAll}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
@@ -116,7 +187,7 @@
 
                 <CollectionView Margin="0,15,0,0" x:Name="AnimeContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAnime}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout x:Name="AnimeC" ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -535,36 +606,10 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
+             
 
 
-
-                <StackLayout>
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="Все" Clicked="ВсеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Аниме" Clicked="АнимеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="Фильмы" Clicked="ФильмыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Сериалы" Clicked="СериалыButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="Дорамы" Clicked="ДорамыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Мультсериалы" Clicked="МультсериалыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="Документалки" Clicked="ДокументалкиButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Прочее" Clicked="ПрочееButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                    </StackLayout>
-
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="Просмотрено" Clicked="ПросмотреноButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="В процессе" Clicked="ВпроцессеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="Не начато" Clicked="НеначатоButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                    </StackLayout>
-                </StackLayout>
-
+                
 
         </StackLayout>
             </ScrollView>

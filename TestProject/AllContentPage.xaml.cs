@@ -279,7 +279,7 @@ namespace TestProject
             ContentSort = filteredContents.ToList();
 
             Sort.IsVisible = true;
-            SortLabel.Text = "Аниме";
+            SortLabel.Text = "Всё ваше аниме";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
         }
@@ -302,7 +302,7 @@ namespace TestProject
             List<Content> filteredContents = ContentAll.Where(c => c.Type == "Фильм").ToList();
             ContentSort = filteredContents.ToList();
             Sort.IsVisible = true;
-            SortLabel.Text = "Фильмы";
+            SortLabel.Text = "Все ваши фильмы";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
         }
@@ -335,7 +335,7 @@ namespace TestProject
             ContentSort = filteredContents.ToList();
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
-            SortLabel.Text = "Сериалы";
+            SortLabel.Text = "Все ваши сериалы";
         }
 
         private async void ДорамыButton_Clicked(object sender, EventArgs e)
@@ -355,7 +355,7 @@ namespace TestProject
             List<Content> filteredContents = ContentAll.Where(c => c.Type == "Дорама").ToList();
             ContentSort = filteredContents.ToList();
             Sort.IsVisible = true;
-            SortLabel.Text = "Дорамы";
+            SortLabel.Text = "Все ваши дорамы";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
         }
@@ -377,7 +377,7 @@ namespace TestProject
             List<Content> filteredContents = ContentAll.Where(c => c.Type == "Мультсериал").ToList();
             ContentSort = filteredContents.ToList();
             Sort.IsVisible = true;
-            SortLabel.Text = "Мультсериалы";
+            SortLabel.Text = "Все ваши мультсериалы";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
         }
@@ -400,7 +400,7 @@ namespace TestProject
             List<Content> filteredContents = ContentAll.Where(c => c.Type == "Документалка").ToList();
             ContentSort = filteredContents.ToList();
             Sort.IsVisible = true;
-            SortLabel.Text = "Документальные фильмы";
+            SortLabel.Text = "Все ваши документальные фильмы";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
         }
@@ -423,7 +423,7 @@ namespace TestProject
             List<Content> filteredContents = ContentAll.Where(c => c.Type == "Прочее").ToList();
             ContentSort = filteredContents.ToList();
             Sort.IsVisible = true;
-            SortLabel.Text = "Прочее";
+            SortLabel.Text = "Ваш прочий контент";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
         }
@@ -446,7 +446,7 @@ namespace TestProject
             List<Content> filteredContents = ContentAll.Where(c => c.WatchStatus == "Просмотрено").ToList();
             ContentSort = filteredContents.ToList();
             Sort.IsVisible = true;
-            SortLabel.Text = "Просмотрено";
+            SortLabel.Text = "Просмотренный контент";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
         }
@@ -468,7 +468,7 @@ namespace TestProject
             Sort.IsVisible = true;
             List<Content> filteredContents = ContentAll.Where(c => c.WatchStatus == "Смотрю").ToList();
             ContentSort = filteredContents.ToList();
-            SortLabel.Text = "В процессе";
+            SortLabel.Text = "Контент, который вы начали смотреть";
             OnPropertyChanged(nameof(ContentSort));
         }
 

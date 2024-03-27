@@ -98,7 +98,7 @@
                     </CollectionView>
                    
                     <Label Text="Недавно добавленные" FontAttributes="Bold"  FontSize="20"  Margin="50,-25,0,10" />
-                    <Label Text="Контент, который вы не давно добавили"  FontSize="16"  Margin="50,-9,0,-25" />
+                    <Label Text="Контент, который вы недавно добавили"  FontSize="16"  Margin="50,-9,0,-25" />
                     <CollectionView 
                           Margin="0,0,0,0"
                         x:Name="RecentlyAddedCarouselView"

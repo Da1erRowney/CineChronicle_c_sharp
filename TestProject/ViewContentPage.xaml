@@ -242,6 +242,7 @@
                       
                         
                     <Border  Opacity="0.8" Margin="0,50,0,0"
+                             x:Name="TrailerWebBorder"
                             HorizontalOptions="Center"
                             Grid.RowSpan="3"
                             StrokeShape ="RoundRectangle 30,30,30,30"

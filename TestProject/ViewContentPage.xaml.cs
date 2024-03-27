@@ -792,8 +792,9 @@ namespace TestProject
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
+            TrailerWebBorder.IsVisible = false;
 
-          
+
             DecriptionBorder.IsVisible = false;
            
 
@@ -826,8 +827,8 @@ namespace TestProject
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
+            TrailerWebBorder.IsVisible = true;
 
-           
             ViewContent.IsVisible = true;
             TypePicker.IsVisible = false;
             WatchStatusPicker.IsVisible = false;
@@ -943,7 +944,7 @@ namespace TestProject
            
             TypePicker.IsVisible = false;
             WatchStatusPicker.IsVisible = false;
-
+            TrailerWebBorder.IsVisible = true;
             TypeEntry.IsVisible = true;
             TypeLabel.IsVisible = true;
 

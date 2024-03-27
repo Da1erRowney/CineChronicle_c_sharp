@@ -45,7 +45,7 @@ public partial class MainPage : ContentPage
         {
             Content emptyContent = new Content
             {
-                Title = "Добавьте контент",
+                Title = "Добавьте ваш первый контент",
                 Type = "Пустота",
                 WatchStatus = "Смотрю",
                 Image = "plus.png",

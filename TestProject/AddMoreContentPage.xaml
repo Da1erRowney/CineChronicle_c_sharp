@@ -19,9 +19,10 @@
             </Grid>
 
             <VerticalStackLayout Spacing="20" Padding="20" >
-                <Label Text="Добавление контента" FontSize="25" HorizontalOptions="Center"/>
+                <Label Text="На пути к успеху..." FontAttributes="Bold" FontSize="25" />
+                <Label Text="Добавьте свой контент" FontSize="16" Margin="0,-15,0,0"/>
                 <!-- Поле ввода Названия -->
-                <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" Margin="0,50,0,0">
                     <Label Text="Название: "/>
                     <Entry Placeholder="Введите название " x:Name="TitleEntry" Margin="5,-9,0,0" />
                 </StackLayout>

@@ -90,15 +90,111 @@ namespace TestProject
 
             filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
             ContentNotStart = filteredContents.ToList();
-   
+
+            ViewData();
             BindingContext = this;
         }
+        private void ViewData()
+        {
+
+            if (ContentAll.Count == 0)
+            {
+                All.IsVisible = false;
+            }
+            else
+            {
+                All.IsVisible = true;
+            }
+            if (ContentSerial.Count == 0)
+            {
+                Serial.IsVisible = false;
+            }
+            else
+            {
+                Serial.IsVisible = true;
+            }
+            if (ContentAnime.Count == 0)
+            {
+                Anime.IsVisible = false;
+            }
+            else
+            {
+                Anime.IsVisible = true;
+            }
+            if (ContentFilm.Count == 0)
+            {
+                Film.IsVisible = false;
+            }
+            else
+            {
+                Film.IsVisible = true;
+            }
+            if (ContentDorama.Count == 0)
+            {
+                Dorama.IsVisible = false;
+            }
+            else
+            {
+                Dorama.IsVisible = true;
+            }
+            if (ContentMult.Count == 0)
+            {
+                Mult.IsVisible = false;
+            }
+            else
+            {
+                Mult.IsVisible = true;
+            }
+            if (ContentDocum.Count == 0)
+            {
+                Docum.IsVisible = false;
+            }
+            else
+            {
+                Docum.IsVisible = true;
+            }
+            if (ContentOther.Count == 0)
+            {
+                Other.IsVisible = false;
+            }
+            else
+            {
+                Other.IsVisible = true;
+            }
+            if (ContentViewed.Count == 0)
+            {
+                Viewed.IsVisible = false;
+            }
+            else
+            {
+                Viewed.IsVisible = true;
+            }
+            if (ContentProcess.Count == 0)
+            {
+                Process.IsVisible = false;
+            }
+            else
+            {
+                Process.IsVisible = true;
+            }
+            if (ContentNotStart.Count == 0)
+            {
+                NotStart.IsVisible = false;
+            }
+            else
+            {
+                NotStart.IsVisible = true;
+            }
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
            
             UpdateContent();
-           
+            ViewData();
+
+
         }
 
         private void UpdateContent()
@@ -647,6 +743,7 @@ namespace TestProject
                 Viewed.IsVisible = true;
                 Process.IsVisible = true;
                 NotStart.IsVisible = true;
+                ViewData();
                 UpdateContent();
             }
 

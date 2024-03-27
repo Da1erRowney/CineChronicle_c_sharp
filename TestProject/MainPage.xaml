@@ -3,7 +3,7 @@
              x:Class="TestProject.MainPage">
     <Grid  BackgroundColor="Transparent">
 
-        <Image x:Name="Background" Grid.Row ="1" Source="all.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+        <Image x:Name="Background" Grid.Row ="1" Source="gradientthird.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 
         <Grid Grid.Row="0" BackgroundColor="Transparent">
             <Grid.ColumnDefinitions>
@@ -23,11 +23,12 @@
 
             <ScrollView>
                 <StackLayout>
-                    <Label Text="Недавно просмотренные" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" Margin="0,0,0,10" />
+                    <Label Text="Недавно просмотренные" FontAttributes="Bold" FontSize="20"  Margin="50,20,0,0" />
+                    <Label Text="Контент в котором вы обновляли серию"  FontSize="16"  Margin="50,0,0,-25" />
                  
                    
                     <CollectionView 
-                        Margin="0,15,0,0"
+                        Margin="0,0,0,0"
                         x:Name="RecentlyChangeCarouselView"
                         Grid.Row="2"
                         ItemsSource="{Binding ContentChange}"
@@ -36,9 +37,7 @@
                         <CollectionView.ItemsLayout >
                             <LinearItemsLayout
                                 ItemSpacing="0"
-                                Orientation="Horizontal"
-                                SnapPointsAlignment="Center"
-                                SnapPointsType="MandatorySingle"/>
+                                Orientation="Horizontal"/>
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -48,7 +47,7 @@
                                         Stroke="#6e557C"
                                         Grid.RowSpan="3"
                                         BackgroundColor="#311b45"
-                                        HeightRequest="300"
+                                        HeightRequest="400"
                                         StrokeShape ="RoundRectangle 30,30,30,30"
                                         StrokeThickness="2"
                                         WidthRequest="300">
@@ -57,7 +56,7 @@
                                             <RoundRectangle
                                                 Grid.RowSpan ="3"
                                                 CornerRadius ="30"
-                                                HeightRequest="300"
+                                                HeightRequest="400"
                                                 WidthRequest="300"
                                                 Opacity=".7">
                                                 <RoundRectangle.Fill>
@@ -94,10 +93,10 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                    
-                    <Label Text="Недавно добавленные" FontAttributes="Bold"  FontSize="20" HorizontalOptions="Center" Margin="0,0,0,10" />
-                    
+                    <Label Text="Недавно добавленные" FontAttributes="Bold"  FontSize="20"  Margin="50,-25,0,10" />
+                    <Label Text="Контент, который вы не давно добавили"  FontSize="16"  Margin="50,-9,0,-25" />
                     <CollectionView 
-                          Margin="0,15,0,0"
+                          Margin="0,0,0,0"
                         x:Name="RecentlyAddedCarouselView"
                         Grid.Row="2"
                         ItemsSource="{Binding ContentAdded}"
@@ -106,9 +105,7 @@
                         <CollectionView.ItemsLayout >
                             <LinearItemsLayout
                                 ItemSpacing="0"
-                                Orientation="Horizontal"
-                                SnapPointsAlignment="Center"
-                                SnapPointsType="MandatorySingle"/>
+                                Orientation="Horizontal"  />
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -117,7 +114,7 @@
                                         Margin="25,50,25,50"
                                         Grid.RowSpan="3"
                                         BackgroundColor="#311b45"
-                                        HeightRequest="300"
+                                        HeightRequest="400"
                                         Stroke="#6e557C"
                                         StrokeShape ="RoundRectangle 30,30,30,30"
                                         StrokeThickness="2"
@@ -127,7 +124,7 @@
                                             <RoundRectangle
                                                 Grid.RowSpan ="3"
                                                 CornerRadius ="30"
-                                                HeightRequest="300"
+                                                HeightRequest="400"
                                                 WidthRequest="300"
                                                 Opacity=".7">
                                                 <RoundRectangle.Fill>

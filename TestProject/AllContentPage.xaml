@@ -4,7 +4,7 @@
 
     <Grid  BackgroundColor="Transparent">
 
-        <Image x:Name="Background" Grid.Row ="1" Source="all.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+        <Image x:Name="Background" Grid.Row ="1" Source="gradientthird.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 
         <Grid Grid.Row="0" BackgroundColor="Transparent">
             <Grid.ColumnDefinitions>
@@ -18,37 +18,37 @@
         <ScrollView>
             <StackLayout Orientation="Vertical" Padding="10">
                 <SearchBar x:Name="searchBar" Placeholder="Поиск контента..." TextChanged="SearchBar_TextChanged" />
-                <!--<StackLayout>
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="Все" Clicked="ВсеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Аниме" Clicked="АнимеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Фильмы" Clicked="ФильмыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="Дорамы" Clicked="ДорамыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Мультсериалы" Clicked="МультсериалыButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Сериалы" Clicked="СериалыButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" >
+                        <Button Text="Все" Clicked="ВсеButton_Clicked"  VerticalOptions="Start" />
+                        <Button Text="Аниме" Clicked="АнимеButton_Clicked"  VerticalOptions="Start"  />
+                        <Button Text="Фильмы" Clicked="ФильмыButton_Clicked" VerticalOptions="Start"  />
+                        <Button Text="Дорамы" Clicked="ДорамыButton_Clicked" VerticalOptions="Start"  />
+                       
                     </StackLayout>
                   
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="Документалки" Clicked="ДокументалкиButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Прочее" Clicked="ПрочееButton_Clicked" VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Просмотрено" Clicked="ПросмотреноButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" >
+                        <Button Text="Мультсериалы" Clicked="МультсериалыButton_Clicked" VerticalOptions="Start" />
+                        <Button Text="Сериалы" Clicked="СериалыButton_Clicked"  VerticalOptions="Start"  />
+                        <Button Text="Документалки" Clicked="ДокументалкиButton_Clicked" VerticalOptions="Start"  />
+                        <Button Text="Прочее" Clicked="ПрочееButton_Clicked" VerticalOptions="Start" />
+                      
                     </StackLayout>
 
-                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" HorizontalOptions="Center">
-                        <Button Text="В процессе" Clicked="ВпроцессеButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
-                        <Button Text="Не начато" Clicked="НеначатоButton_Clicked"  VerticalOptions="Start" HorizontalOptions="Center" />
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" >
+                        <Button Text="Просмотрено" Clicked="ПросмотреноButton_Clicked"  VerticalOptions="Start"  />
+                        <Button Text="В процессе" Clicked="ВпроцессеButton_Clicked"  VerticalOptions="Start" />
+                        <Button Text="Не начато" Clicked="НеначатоButton_Clicked"  VerticalOptions="Start" />
                     </StackLayout>
                  
-                </StackLayout>-->
+                </StackLayout>
 
-            <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10" IsVisible="false">
-                    <Label  x:Name="SortLabel" Text="" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
-
+                <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10" IsVisible="false" Margin="0,20,0,0">
+                    <Label  x:Name="SortLabel" Text="" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentSort.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                     <CollectionView Margin="0,15,0,0"  x:Name="SortContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentSort}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                         <CollectionView.ItemsLayout >
-                            <LinearItemsLayout x:Name="SortC" ItemSpacing="0" Orientation="Vertical" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                            <LinearItemsLayout x:Name="SortC" ItemSpacing="0" Orientation="Vertical" />
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -89,12 +89,13 @@
                     </CollectionView>
 
                 </StackLayout>
-                
-            <StackLayout x:Name="All" Orientation="Vertical" Padding="10">
-                <Label x:Name="MainLabel" Text="Весь ваш контент!" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
-                <CollectionView Margin="0,15,0,0" x:Name="AllContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAll}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+
+                <StackLayout x:Name="All" Orientation="Vertical" Padding="10" Margin="0,20,0,0">
+                <Label x:Name="MainLabel" Text="Весь ваш контент!" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentAll.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
+                    <CollectionView Margin="0,0,0,0" x:Name="AllContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAll}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -136,11 +137,12 @@
             </StackLayout>
 
             <StackLayout x:Name="Serial" Orientation="Vertical" Padding="10">
-                <Label x:Name="SerialLabel" Text="Сериалы" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
+                    <Label x:Name="SerialLabel" Text="Сериалы" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentSerial.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
 
-                <CollectionView Margin="0,15,0,0" x:Name="SerialContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentSerial}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                <CollectionView Margin="0,0,0,0" x:Name="SerialContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentSerial}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -183,11 +185,12 @@
             </StackLayout>
 
             <StackLayout x:Name="Anime" Orientation="Vertical" Padding="10">
-                <Label  x:Name="AnimeLabel" Text="Аниме" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
+                    <Label  x:Name="AnimeLabel" Text="Аниме" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentAnime.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
 
-                <CollectionView Margin="0,15,0,0" x:Name="AnimeContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAnime}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                <CollectionView Margin="0,0,0,0" x:Name="AnimeContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAnime}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout x:Name="AnimeC" ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout x:Name="AnimeC" ItemSpacing="0" Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -230,10 +233,11 @@
             </StackLayout>
 
             <StackLayout x:Name="Film" Orientation="Vertical" Padding="10">
-                <Label x:Name="FilmLabel" Text="Фильмы" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
-                <CollectionView Margin="0,15,0,0" x:Name="FilmContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentFilm}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <Label x:Name="FilmLabel" Text="Фильмы" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentFilm.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
+                <CollectionView Margin="0,0,0,0" x:Name="FilmContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentFilm}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -276,10 +280,11 @@
             </StackLayout>
 
             <StackLayout x:Name="Dorama" Orientation="Vertical" Padding="10">
-                <Label x:Name="DoramaLabel" Text="Дорамы" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
-                <CollectionView Margin="0,15,0,0" x:Name="DoramaContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDorama}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <Label x:Name="DoramaLabel" Text="Дорамы" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentDorama.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
+                <CollectionView Margin="0,0,0,0" x:Name="DoramaContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDorama}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -322,11 +327,13 @@
             </StackLayout>
 
             <StackLayout x:Name="Mult" Orientation="Vertical" Padding="10">
-                <Label x:Name="MultLabel" Text="Мульсериалы" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
+                    <Label x:Name="MultLabel" Text="Мульсериалы" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentMult.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
+                  
 
-                <CollectionView Margin="0,15,0,0" x:Name="MultContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentMult}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <CollectionView Margin="0,0,0,0" x:Name="MultContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentMult}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -369,10 +376,11 @@
             </StackLayout>
 
             <StackLayout x:Name="Docum" Orientation="Vertical" Padding="10">
-                <Label x:Name="DocumLabel" Text="Документалки" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
-                <CollectionView Margin="0,15,0,0" x:Name="DocumContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDocum}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <Label x:Name="DocumLabel" Text="Документалки" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentDocum.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
+                <CollectionView Margin="0,0,0,0" x:Name="DocumContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDocum}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -415,10 +423,11 @@
             </StackLayout>
 
             <StackLayout x:Name="Other" Orientation="Vertical" Padding="10">
-                <Label x:Name="OtherLabel" Text="Прочее" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
-                <CollectionView Margin="0,15,0,0" x:Name="OtherContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentOther}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <Label x:Name="OtherLabel" Text="Прочее" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentOther.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
+                <CollectionView Margin="0,0,0,0" x:Name="OtherContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentOther}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -461,10 +470,11 @@
             </StackLayout>
 
             <StackLayout x:Name="Viewed" Orientation="Vertical" Padding="10">
-                <Label x:Name="ViewedLabel" Text="Просмотрено" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
-                <CollectionView Margin="0,15,0,0" x:Name="ViewedContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentViewed}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <Label x:Name="ViewedLabel" Text="Просмотрено" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentViewed.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
+                <CollectionView Margin="0,0,0,0" x:Name="ViewedContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentViewed}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -507,10 +517,11 @@
             </StackLayout>
 
             <StackLayout x:Name="Process" Orientation="Vertical" Padding="10">
-                <Label x:Name="ProcessLabel" Text="Смотрю" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
-                <CollectionView Margin="0,15,0,0" x:Name="ProcessContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentProcess}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <Label x:Name="ProcessLabel" Text="Смотрю" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentProcess.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
+                <CollectionView Margin="0,0,0,0" x:Name="ProcessContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentProcess}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -553,10 +564,11 @@
             </StackLayout>
 
             <StackLayout x:Name="NotStart" Orientation="Vertical" Padding="10">
-                <Label x:Name="NotStartLabel" Text="Не начинал смотреть" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20"/>
-                <CollectionView Margin="0,15,0,0" x:Name="NotStartContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentNotStart}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <Label x:Name="NotStartLabel" Text="Не начинал смотреть" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentNotStart.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
+                <CollectionView Margin="0,0,0,0" x:Name="NotStartContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentNotStart}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

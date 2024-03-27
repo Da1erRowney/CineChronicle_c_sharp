@@ -6,7 +6,7 @@
         <ScrollView>
         <Grid  BackgroundColor="Transparent">
 
-            <Image x:Name="Background" Grid.Row ="1" Source="all.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+            <Image x:Name="Background" Grid.Row ="1" Source="gradientthird.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 
             <Grid Grid.Row="0" BackgroundColor="Transparent">
                 <Grid.ColumnDefinitions>
@@ -21,25 +21,34 @@
             <VerticalStackLayout Spacing="20" Padding="20" >
                 <Label Text="Добавление контента" FontSize="25" HorizontalOptions="Center"/>
                 <!-- Поле ввода Названия -->
-                <Entry Placeholder="Введите название (Обязательно)" x:Name="TitleEntry"  />
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Название: "/>
+                    <Entry Placeholder="Введите название " x:Name="TitleEntry" Margin="5,-9,0,0" />
+                </StackLayout>
 
                 <!-- Выпадающий список для выбора типа -->
-                <Picker Title="Нажмите, чтобы указать тип контента (Обязательно)" x:Name="TypePicker">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Сериал</x:String>
-                            <x:String>Аниме</x:String>
-                            <x:String>Мультсериал</x:String>
-                            <x:String>Фильм</x:String>
-                            <x:String>Дорама</x:String>
-                            <x:String>Документалка</x:String>
-                            <x:String>Прочее</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Тип: "/>
+                    <Picker Title="Нажмите" x:Name="TypePicker" Margin="5,-9,0,0">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Сериал</x:String>
+                                <x:String>Аниме</x:String>
+                                <x:String>Мультсериал</x:String>
+                                <x:String>Фильм</x:String>
+                                <x:String>Дорама</x:String>
+                                <x:String>Документалка</x:String>
+                                <x:String>Прочее</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </StackLayout>
 
                 <!-- Поле ввода для озвучки -->
-                <Entry Placeholder="Введите озвучку" x:Name="DubbingEntry" />
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Озвучка: "/>
+                    <Entry Placeholder="Введите озвучку" Margin="5,-9,0,0" x:Name="DubbingEntry" />
+                </StackLayout>
                 <StackLayout Orientation="Horizontal">
                 <!-- Поле ввода для номера последней просмотренной серии -->
                     <Label Text="Серия: "  VerticalOptions="Center"/>
@@ -49,27 +58,31 @@
                     <Label Text="Сезон: "  Margin="50,0,0,0" VerticalOptions="Center"/>
                     <Entry Placeholder="Введите сезон" x:Name="LastWatchedSeasonEntry" Margin="5,0,0,0" Keyboard="Numeric" />
                 </StackLayout>
-
-                <Entry Placeholder="Вставьте ссылку на сайт, на котором вы смотрели" x:Name="LinkEntry"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Ссылка на источник: "/>
+                    <Entry Placeholder="https://ссылка на источник" x:Name="LinkEntry" Margin="5,-9,0,0"/>
+                </StackLayout>
                 <!-- Поле ввода для выхода следующей серии -->
                 <StackLayout Orientation="Horizontal" Spacing="10">
                     <Label Text="Выход следующей серии" VerticalOptions="Center" />
-                    <DatePicker x:Name="NextEpisodeReleaseDatePicker"/>
+                    <DatePicker Margin="5,0,0,0" x:Name="NextEpisodeReleaseDatePicker"/>
                 </StackLayout>
 
 
 
                 <!-- Выпадающий список для выбора статуса просмотра -->
-
-                <Picker Title="Нажмите, чтобы указать статус просмотра (Обязательно)" x:Name="WatchStatusPicker">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Просмотрено</x:String>
-                            <x:String>Смотрю</x:String>
-                            <x:String>Не начинал</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Статус просмотра: "/>
+                    <Picker Title="Нажмите" x:Name="WatchStatusPicker" Margin="5,-9,0,0">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Просмотрено</x:String>
+                                <x:String>Смотрю</x:String>
+                                <x:String>Не начинал</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </StackLayout>
 
                 <!-- Кнопка "Добавить" -->
                 <Button Text="Добавить" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" >

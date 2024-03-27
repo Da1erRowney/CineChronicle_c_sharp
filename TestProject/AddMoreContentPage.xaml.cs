@@ -130,6 +130,19 @@ namespace TestProject
             {
                 
             }
+            List<Content> contents = _databaseService.GetAllContent().ToList();
+
+            List<Content> filteredContents = contents.Where(c => c.Title.IndexOf(m_title, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            if( filteredContents.Count !=0 )
+            {
+                bool result = await DisplayAlert("Уведомление", $"Похоже {m_title} уже существует, вы уверены, что хотите создать копию?", "Да", "Нет");
+
+                if (!result)
+                {
+                    TitleEntry.Text = "";
+                    return;
+                }
+            }
 
             // Создаем новый экземпляр контента
             var newContent = new Content

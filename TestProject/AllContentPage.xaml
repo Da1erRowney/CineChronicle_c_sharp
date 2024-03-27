@@ -44,9 +44,9 @@
                 </StackLayout>
 
                 <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10" IsVisible="false" Margin="0,20,0,0">
-                    <Label  x:Name="SortLabel" Text="" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label  x:Name="SortLabel" Text="" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentSort.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
-                    <CollectionView Margin="0,15,0,0"  x:Name="SortContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentSort}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <CollectionView Margin="0,15,0,0" x:Name="SortContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentSort}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                         <CollectionView.ItemsLayout >
                             <LinearItemsLayout x:Name="SortC" ItemSpacing="0" Orientation="Vertical" />
                         </CollectionView.ItemsLayout>
@@ -91,7 +91,7 @@
                 </StackLayout>
 
                 <StackLayout x:Name="All" Orientation="Vertical" Padding="10" Margin="0,20,0,0">
-                <Label x:Name="MainLabel" Text="Весь ваш контент!" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="MainLabel" Text="Весь ваш контент!"  FontAttributes="Bold" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentAll.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                     <CollectionView Margin="0,0,0,0" x:Name="AllContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAll}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
@@ -137,7 +137,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Serial" Orientation="Vertical" Padding="10">
-                    <Label x:Name="SerialLabel" Text="Сериалы" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="SerialLabel" Text="Сериалы" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentSerial.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
 
                 <CollectionView Margin="0,0,0,0" x:Name="SerialContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentSerial}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
@@ -185,7 +185,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Anime" Orientation="Vertical" Padding="10">
-                    <Label  x:Name="AnimeLabel" Text="Аниме" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label  x:Name="AnimeLabel" Text="Аниме" VerticalOptions="Center"  FontAttributes="Bold" FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentAnime.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
 
                 <CollectionView Margin="0,0,0,0" x:Name="AnimeContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAnime}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
@@ -233,7 +233,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Film" Orientation="Vertical" Padding="10">
-                    <Label x:Name="FilmLabel" Text="Фильмы" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="FilmLabel" Text="Фильмы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentFilm.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="FilmContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentFilm}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
@@ -280,7 +280,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Dorama" Orientation="Vertical" Padding="10">
-                    <Label x:Name="DoramaLabel" Text="Дорамы" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="DoramaLabel" Text="Дорамы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentDorama.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="DoramaContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDorama}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
@@ -327,7 +327,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Mult" Orientation="Vertical" Padding="10">
-                    <Label x:Name="MultLabel" Text="Мульсериалы" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="MultLabel" Text="Мульсериалы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentMult.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                   
 
@@ -376,7 +376,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Docum" Orientation="Vertical" Padding="10">
-                    <Label x:Name="DocumLabel" Text="Документалки" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="DocumLabel" Text="Документалки" VerticalOptions="Center"  FontAttributes="Bold" FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentDocum.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="DocumContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDocum}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
@@ -423,7 +423,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Other" Orientation="Vertical" Padding="10">
-                    <Label x:Name="OtherLabel" Text="Прочее" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="OtherLabel" Text="Прочее" VerticalOptions="Center"  FontAttributes="Bold" FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentOther.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="OtherContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentOther}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
@@ -470,7 +470,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Viewed" Orientation="Vertical" Padding="10">
-                    <Label x:Name="ViewedLabel" Text="Просмотрено" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="ViewedLabel" Text="Просмотрено" VerticalOptions="Center"  FontAttributes="Bold" FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentViewed.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="ViewedContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentViewed}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
@@ -517,7 +517,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Process" Orientation="Vertical" Padding="10">
-                    <Label x:Name="ProcessLabel" Text="Смотрю" VerticalOptions="Center"  FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="ProcessLabel" Text="Смотрю" VerticalOptions="Center"  FontAttributes="Bold" FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentProcess.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="ProcessContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentProcess}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
@@ -564,7 +564,7 @@
             </StackLayout>
 
             <StackLayout x:Name="NotStart" Orientation="Vertical" Padding="10">
-                    <Label x:Name="NotStartLabel" Text="Не начинал смотреть" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label x:Name="NotStartLabel" Text="Не начинал смотреть" VerticalOptions="Center"  FontAttributes="Bold" FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentNotStart.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="14" Margin="50,0,0,-25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="NotStartContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentNotStart}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >

@@ -183,12 +183,12 @@ namespace TestProject
                     break;
                 case "Дорама":
                     viewContentPage.GetWikipediaInfo(m_title);
-                    viewContentPage.GetWikipediaImage(m_title);
+                  
                     viewContentPage.DataExitNextEpisod(m_title);
                     break;
                 case "Мультсериал":
                     viewContentPage.GetWikipediaInfo(m_title);
-                    viewContentPage.GetWikipediaImage(m_title);
+                   
                     viewContentPage.DataExitNextEpisod(m_title);
                     break;
                 case "Прочее":

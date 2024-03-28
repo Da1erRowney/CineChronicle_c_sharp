@@ -803,7 +803,7 @@ namespace TestProject
                                 Console.WriteLine("Не удалось найти текст.");
                             }
 
-                            if (content.Type == "Сериал" || content.Type == "Дорама" || content.Type == "Мульсериал" )
+                            if (content.Type == "Сериал" || content.Type == "Дорама" || content.Type == "Мультсериал" )
                             {
                                         HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
                                         if (imgIn != null)
@@ -891,13 +891,13 @@ namespace TestProject
                     break;
                 case "Дорама":
                     GetWikipediaInfo(title);
-                    GetWikipediaImage(title);
+                  
                     DataExitNextEpisod(title);
                     WatchingButton.Source = "dorama.png";
                     break;
                 case "Мультсериал":
                     GetWikipediaInfo(title);
-                    GetWikipediaImage(title);
+                   
                     DataExitNextEpisod(title);
                     WatchingButton.Source = "movie.png";
                     break;

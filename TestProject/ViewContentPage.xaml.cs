@@ -12,6 +12,7 @@ using Google.Apis.YouTube.v3;
 using Google.Apis.Services;
 using System.Xml;
 
+
 namespace TestProject
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -67,7 +68,7 @@ namespace TestProject
                             content.SmallDecription = firstParagraphText;
                             databaseService.UpdateContent(content);
                             databaseService.CloseConnection();
-                            GetWikipediaImage(query+" (телесериал)");
+                            //GetWikipediaImage(query+" (телесериал)");
                         }
 
                         else
@@ -187,7 +188,7 @@ namespace TestProject
                                         content.SmallDecription = firstParagraphText;
                                         databaseService.UpdateContent(content);
                                         databaseService.CloseConnection();
-                                        GetWikipediaImage(query);
+                                        //GetWikipediaImage(query);
 
                                     }
                                 }
@@ -215,19 +216,56 @@ namespace TestProject
                                 string nameContent1 = $"{query}:\n";
 
 
+                                if (firstParagrap1h != null && firstParagrap1h.InnerText != nameContent1 && !firstParagrap1h.InnerText.Trim().EndsWith(":"))
+                                {
+                                    string firstParagraphText = firstParagrap1h.InnerText;
+                                    firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
+                                    DescriptionLabel.Text = firstParagraphText;
+                                    string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                    DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                    content = databaseService.GetContentById(content.Id);
+                                    content.SmallDecription = firstParagraphText;
+                                    databaseService.UpdateContent(content);
+                                    databaseService.CloseConnection();
+                                    //GetWikipediaImage(query);
+                                }
+                                else
+                                {
+                                    var listItems = htmlDocument1.DocumentNode.SelectNodes("//div[@id='mw-content-text']//li");
 
-                                string firstParagraphText = firstParagrap1h.InnerText;
-                                firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
-                                DescriptionLabel.Text = firstParagraphText;
-                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                content = databaseService.GetContentById(content.Id);
-                                content.SmallDecription = firstParagraphText;
-                                databaseService.UpdateContent(content);
-                                databaseService.CloseConnection();
-                                GetWikipediaImage(query);
+                                        if (listItems != null)
+                                        {
+                                            foreach (var listItem in listItems)
+                                            {
+                                                string listItemText = listItem.InnerText;
 
-                            }
+                                            string search = content.Type;
+                                            if (search == "Сериал")
+                                            {
+                                                 search = "телесериал";
+                                            }
+                                           
+
+                                                if (listItemText.Contains(search))
+                                                {
+                                                    listItemText = HtmlEntity.DeEntitize(listItemText);
+                                                    DescriptionLabel.Text = listItemText;
+                                                    string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                                    DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                                    content = databaseService.GetContentById(content.Id);
+                                                    content.SmallDecription = listItemText;
+                                                    databaseService.UpdateContent(content);
+                                                    databaseService.CloseConnection();
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        DescriptionLabel.Text = "Информация о сериале не найдена";
+
+                                    }
+                                }
+
+                            
                             else
                             {
                                 DescriptionLabel.Text = "Информация о сериале не найдена2";
@@ -642,7 +680,7 @@ namespace TestProject
                 }
             }
         }
-        
+
         //private async void GetLordsFilmImage(string query)
         //{
         //    string url = $"https://www.google.by/search?q= {Uri.EscapeDataString(query)} Постер&tbm=isch&ved=2ahUKEwiZtra589-EAxW8if0HHa5CCkYQ2-cCegQIABAA&oq=а&gs_lp=EgNpbWciAtCwSJwUUJsSWKoTcAB4AJABAJgBsAGgAbABqgEDMC4xuAEDyAEA-AEBigILZ3dzLXdpei1pbWeoAgDCAgoQABiABBiKBRhDiAYB&sclient=img&ei=-4ToZdnMOryT9u8ProWpsAQ";
@@ -685,13 +723,146 @@ namespace TestProject
         //        }
         //    }
         //}
+        public async void DataExitNextEpisod(string query)
+        {
+            string url = $"https://www.toramp.com/ru/search/?q={query}";
 
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string htmlContent = await response.Content.ReadAsStringAsync();
+
+                    HtmlDocument htmlDocument = new HtmlDocument();
+                    htmlDocument.LoadHtml(htmlContent);
+
+                    // Извлечение ссылки из HTML
+                    HtmlNode linkNode = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='content']//a");
+                    if (linkNode != null)
+                    {
+                        string link = linkNode.GetAttributeValue("href", "");
+                        HttpResponseMessage responseIn = await client.GetAsync(link);
+
+                        if (responseIn.IsSuccessStatusCode)
+                        {
+                            string htmlContentIn = await responseIn.Content.ReadAsStringAsync();
+
+                            HtmlDocument htmlDocumentIn = new HtmlDocument();
+                            htmlDocumentIn.LoadHtml(htmlContentIn);
+
+                            // Извлечение ссылки из HTML
+                            HtmlNode linkNodeIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_3']/em");
+                            if (linkNodeIn != null)
+                            {
+                                string exitEpisod = linkNodeIn.InnerText;
+
+                                int startIndex = exitEpisod.IndexOf("осталось") + "осталось".Length; // Индекс после слова "осталось"
+                                int daysIndex = exitEpisod.IndexOf("дней", startIndex); // Индекс слова "дней" после startIndex
+
+                                if (daysIndex == -1)
+                                {
+                                    daysIndex = exitEpisod.IndexOf("дня", startIndex); // Индекс слова "день" после startIndex
+                                }
+
+                                if (daysIndex != -1)
+                                {
+                                    // Извлекаем подстроку между startIndex и daysIndex
+                                    string daysString = exitEpisod.Substring(startIndex, daysIndex - startIndex).Trim();
+
+                                    if (int.TryParse(daysString, out int days))
+                                    {
+                                        // Вычисляем дату через указанное количество дней
+                                        DateTime releaseDate = DateTime.Today.AddDays(days);
+
+                                        // Формируем строку для вывода
+                                        string output = $"Осталось {days} дней - ({releaseDate.ToShortDateString()})";
+
+                                        // Устанавливаем строку в NextEpisodeReleaseDateEntry
+                                        NextEpisodeReleaseDateEntry.Text = output;
+                                    }
+                                }
+                                else
+                                {
+
+                                    // Заменяем каждую точку на точку с отступом и символ перевода строки
+                                    exitEpisod = exitEpisod.Replace(".", ". \n");
+
+                                    // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
+                                    NextEpisodeReleaseDateEntry.Text = exitEpisod;
+
+
+                                    // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
+                                    NextEpisodeReleaseDateEntry.Text = exitEpisod;
+
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Не удалось найти текст.");
+                            }
+
+                            if (content.Type == "Сериал" || content.Type == "Дорама" || content.Type == "Мульсериал" )
+                            {
+                                        HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
+                                        if (imgIn != null)
+                                        {
+                                            string imageUrl = imgIn.GetAttributeValue("src", "");
+
+                                            // Проверяем, содержит ли URL префикс "https://"
+                                            if (!imageUrl.StartsWith("https://"))
+                                            {
+                                                // Добавляем префикс "https://", если его нет
+                                                imageUrl = "https:" + imageUrl;
+                                            }
+                                            // Устанавливаем изображение в элементы UI
+                                            PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
+                                            Background.Source = ImageSource.FromUri(new Uri(imageUrl));
+
+                                            // Обновляем ссылку на изображение в базе данных
+                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                            content = databaseService.GetContentById(content.Id);
+                                            content.Image = imageUrl;
+                                            databaseService.UpdateContent(content);
+                                            databaseService.CloseConnection();
+                                        }
+                                        else
+                                        {
+                                            //Console.WriteLine("Изображение не найдено.");
+                                        }
+                            }
+
+
+
+
+
+
+                                
+                            
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Не удалось выполнить запрос к сайту.");
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ссылка не найдена.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Не удалось выполнить запрос к сайту.");
+                }
+            }
+        }
 
         private async void SetupLabelTappedEvents()
         {
-            // Нет необходимости в цикле, так как у вас только одна метка
-            // Можно просто добавить обработчик для этой метки
-
 
             // Вызываем метод для получения информации с Википедии при загрузке страницы
             string title = (BindingContext as Content)?.Title;
@@ -702,32 +873,38 @@ namespace TestProject
                 case "Аниме":
                     GetAnemeGoInfo(title);
                     GetAnimeGoImage(title);
+                    DataExitNextEpisod(title);
                     WatchingButton.Source = "anime.png";
                     break;
                 case "Фильм":
                     GetWikipediaInfo(title);
                     GetWikipediaImage(title);
+                    DataExitNextEpisod(title);
                     WatchingButton.Source = "movie.png";
                     break;
                 case "Сериал":
                     GetWikipediaInfo(title);
-                    GetWikipediaImage(title);
+                    //GetWikipediaImage(title);
+                    DataExitNextEpisod(title);
                     //GetPremierImage(title);
                     WatchingButton.Source = "movie.png";
                     break;
                 case "Дорама":
                     GetWikipediaInfo(title);
                     GetWikipediaImage(title);
+                    DataExitNextEpisod(title);
                     WatchingButton.Source = "dorama.png";
                     break;
                 case "Мультсериал":
                     GetWikipediaInfo(title);
                     GetWikipediaImage(title);
+                    DataExitNextEpisod(title);
                     WatchingButton.Source = "movie.png";
                     break;
                 case "Прочее":
                     GetWikipediaInfo(title);
                     GetWikipediaImage(title);
+                    DataExitNextEpisod(title);
                     WatchingButton.Source = "movie.png";
                     break;
                 default:
@@ -976,6 +1153,7 @@ namespace TestProject
 
         private void StepperSeries_ValueChanged(object sender, ValueChangedEventArgs e)
         {
+
             var newValue = e.NewValue;
             LastWatchedSeriesEntry.Text = newValue.ToString();
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
@@ -985,6 +1163,7 @@ namespace TestProject
             content = databaseService.GetContentById(content.Id);
             DateTime currentDate = DateTime.UtcNow;
             DateTime newDate = currentDate.AddHours(+3);
+
             content.SeriesChangeDate = newDate.ToString("yyyy-MM-dd HH:mm:ss");
             content.LastWatchedSeries = int.Parse(LastWatchedSeriesEntry.Text);
 

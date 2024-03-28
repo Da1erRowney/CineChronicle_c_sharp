@@ -5,6 +5,7 @@ using DataContent;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 
+
 namespace TestProject
 {
     public partial class AddMoreContentPage : ContentPage
@@ -161,37 +162,42 @@ namespace TestProject
                 Image = "",
                 SmallDecription = ""
             };
+            _databaseService.InsertContent(newContent);
             ViewContentPage viewContentPage = new ViewContentPage(newContent);
             switch (m_type)
             {
                 case "Аниме":
                     viewContentPage.GetAnemeGoInfo(m_title);
                     viewContentPage.GetAnimeGoImage(m_title);
+                    viewContentPage.DataExitNextEpisod(m_title);
                     break;
                 case "Фильм":
                     viewContentPage.GetWikipediaInfo(m_title);
                     viewContentPage.GetWikipediaImage(m_title);
+                    viewContentPage.DataExitNextEpisod(m_title);
                     break;
                 case "Сериал":
                     viewContentPage.GetWikipediaInfo(m_title);
-                    viewContentPage.GetWikipediaImage(m_title);
+                   // viewContentPage.GetWikipediaImage(m_title);
+                    viewContentPage.DataExitNextEpisod(m_title);
                     break;
                 case "Дорама":
                     viewContentPage.GetWikipediaInfo(m_title);
                     viewContentPage.GetWikipediaImage(m_title);
+                    viewContentPage.DataExitNextEpisod(m_title);
                     break;
                 case "Мультсериал":
                     viewContentPage.GetWikipediaInfo(m_title);
                     viewContentPage.GetWikipediaImage(m_title);
+                    viewContentPage.DataExitNextEpisod(m_title);
                     break;
                 case "Прочее":
                     viewContentPage.GetWikipediaInfo(m_title);
                     viewContentPage.GetWikipediaImage(m_title);
+                    viewContentPage.DataExitNextEpisod(m_title);
                     break;
 
             }
-            // Вставляем новый контент в базу данных
-            _databaseService.InsertContent(newContent);
             TitleEntry.Text ="";
             DubbingEntry.Text ="";
             LastWatchedSeriesEntry.Text ="";

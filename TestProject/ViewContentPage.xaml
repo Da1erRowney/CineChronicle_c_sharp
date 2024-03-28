@@ -193,7 +193,7 @@
                         <Grid  Margin="20,20,0,20">
                             <!-- Дата выхода следующей серии -->
                     <StackLayout Orientation="Vertical" Margin="0,0,0,0">
-                        <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
+                                <StackLayout Orientation="Vertical" Margin="0,0,0,0">
                                     <Label Text="Дата выхода следующей серии: " VerticalOptions="Center" />
                                     <Entry x:Name="NextEpisodeReleaseDateEntry" Text="{Binding NextEpisodeReleaseDate}" IsReadOnly="True" VerticalOptions="Center" Placeholder="Дата выхода серии">
                                         <Entry.Style>

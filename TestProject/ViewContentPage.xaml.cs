@@ -859,7 +859,123 @@ namespace TestProject
                     }
                     else
                     {
-                        Console.WriteLine($"Информация о {query} не найдена");
+                        linkNode = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='content']//a");
+                        if (linkNode != null)
+                        {
+                            string link = linkNode.GetAttributeValue("href", "");
+                            HttpResponseMessage responseIn = await client.GetAsync(link);
+
+                            if (responseIn.IsSuccessStatusCode)
+                            {
+                                string htmlContentIn = await responseIn.Content.ReadAsStringAsync();
+
+                                HtmlDocument htmlDocumentIn = new HtmlDocument();
+                                htmlDocumentIn.LoadHtml(htmlContentIn);
+
+                                // Извлечение ссылки из HTML
+                                HtmlNode linkNodeIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_3']/em");
+                                HtmlNode linkNodeCount = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_0']");
+                                if (linkNodeIn != null || linkNodeCount != null)
+                                {
+                                    string exitEpisod = linkNodeIn.InnerText;
+                                    string countText = linkNodeCount.InnerText.Trim();
+
+                                    int startIndex = exitEpisod.IndexOf("осталось") + "осталось".Length; // Индекс после слова "осталось"
+                                    int daysIndex = exitEpisod.IndexOf("дней", startIndex); // Индекс слова "дней" после startIndex
+
+                                    if (daysIndex == -1)
+                                    {
+                                        daysIndex = exitEpisod.IndexOf("дня", startIndex); // Индекс слова "дня" после startIndex
+                                    }
+
+                                    if (daysIndex == -1)
+                                    {
+                                        daysIndex = exitEpisod.IndexOf("день", startIndex); // Индекс слова "день" после startIndex
+                                    }
+
+                                    if (daysIndex != -1)
+                                    {
+                                        // Извлекаем подстроку между startIndex и daysIndex
+                                        string daysString = exitEpisod.Substring(startIndex, daysIndex - startIndex).Trim();
+
+                                        if (int.TryParse(daysString, out int days))
+                                        {
+                                            // Вычисляем дату через указанное количество дней
+                                            DateTime releaseDate = DateTime.Today.AddDays(days);
+
+                                            // Формируем строку для вывода
+                                            string output = $"Осталось {days} дней - ({releaseDate.ToShortDateString()})";
+
+                                            // Устанавливаем строку в NextEpisodeReleaseDateEntry
+                                            NextEpisodeReleaseDateEntry.Text = output;
+                                            CountLabel.Text = countText;
+                                        }
+                                    }
+
+                                    else
+                                    {
+
+                                        // Заменяем каждую точку на точку с отступом и символ перевода строки
+                                        exitEpisod = exitEpisod.Replace(".", ".\n");
+
+                                        // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
+                                        NextEpisodeReleaseDateEntry.Text = exitEpisod;
+                                        CountLabel.Text = countText;
+
+
+                                    }
+                                }
+                                else
+                                {
+                                    NextEpisodeReleaseDateEntry.Text = $"Информация о {query} не найдена";
+                                }
+
+                                if (content.Type == "Сериал" || content.Type == "Дорама" || content.Type == "Мультсериал")
+                                {
+                                    HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
+                                    if (imgIn != null)
+                                    {
+                                        string imageUrl = imgIn.GetAttributeValue("src", "");
+
+                                        // Проверяем, содержит ли URL префикс "https://"
+                                        if (!imageUrl.StartsWith("https://"))
+                                        {
+                                            // Добавляем префикс "https://", если его нет
+                                            imageUrl = "https:" + imageUrl;
+                                        }
+                                        // Устанавливаем изображение в элементы UI
+                                        PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
+                                        Background.Source = ImageSource.FromUri(new Uri(imageUrl));
+
+                                        // Обновляем ссылку на изображение в базе данных
+                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                        content = databaseService.GetContentById(content.Id);
+                                        content.Image = imageUrl;
+                                        databaseService.UpdateContent(content);
+                                        databaseService.CloseConnection();
+                                    }
+                                    else
+                                    {
+                                        //Console.WriteLine("Изображение не найдено.");
+                                    }
+                                }
+
+
+
+
+
+
+
+
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Не удалось выполнить запрос к сайту.");
+                            }
+
+                        }
                     }
                 }
                 else

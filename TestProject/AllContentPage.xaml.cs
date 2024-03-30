@@ -27,6 +27,19 @@ namespace TestProject
         public List<Content> ContentProcess { get; set; }
         public List<Content> ContentNotStart { get; set; }
 
+        public List<Content> ContentAllall { get; set; }
+        public List<Content> ContentSerialall { get; set; }
+        public List<Content> ContentAnimeall { get; set; }
+        public List<Content> ContentFilmall { get; set; }
+        public List<Content> ContentDoramaall { get; set; }
+        public List<Content> ContentMultall { get; set; }
+        public List<Content> ContentDocumall { get; set; }
+        public List<Content> ContentOtherall { get; set; }
+        public List<Content> ContentViewedall { get; set; }
+        public List<Content> ContentProcessall { get; set; }
+        public List<Content> ContentNotStartall { get; set; }
+
+
         private List<Content> _contentSearch;
         public List<Content> ContentSort { get; set; }
         public List<Content> ContentSearch
@@ -53,49 +66,76 @@ namespace TestProject
         {
             InitializeComponent();
             Choise = "All";
+            Filling();
+        }
 
+        public void Filling()
+        {
+          
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
             _databaseService = new DatabaseServiceContent(databasePath);
             SQLiteConnection connection = CreateDatabase(databasePath);
             DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
 
             List<Content> contents = databaseService.GetAllContent().ToList();
-            ContentAll = contents.ToList();
+            ContentAll = contents.Take(5).ToList();
+            ContentAllall = contents.ToList();
+
             List<Content> filteredContents = contents.Where(c => c.Type == "Сериал").ToList();
-            ContentSerial= filteredContents.ToList();
+            ContentSerial = filteredContents.Take(5).ToList();
+            ContentSerialall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Аниме").ToList();
-            ContentAnime = filteredContents.ToList();
+            ContentAnime = filteredContents.Take(5).ToList();
+            ContentAnimeall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Фильм").ToList();
-            ContentFilm = filteredContents.ToList();
+            ContentFilm = filteredContents.Take(5).ToList();
+            ContentFilmall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Дорама").ToList();
-            ContentDorama = filteredContents.ToList();
+            ContentDorama = filteredContents.Take(5).ToList();
+            ContentDoramaall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Мультсериал").ToList();
-            ContentMult = filteredContents.ToList();
+            ContentMult = filteredContents.Take(5).ToList();
+            ContentMultall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Документалка").ToList();
-            ContentDocum = filteredContents.ToList();
+            ContentDocum = filteredContents.Take(5).ToList();
+            ContentDocumall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Прочее").ToList();
-            ContentOther = filteredContents.ToList();
+            ContentOther = filteredContents.Take(5).ToList();
+            ContentOtherall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.WatchStatus == "Просмотрено").ToList();
-            ContentViewed = filteredContents.ToList();
+            ContentViewed = filteredContents.Take(5).ToList();
+            ContentViewedall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.WatchStatus == "Смотрю").ToList();
-            ContentProcess = filteredContents.ToList();
+            ContentProcess = filteredContents.Take(5).ToList();
+            ContentProcessall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
-            ContentNotStart = filteredContents.ToList();
+            ContentNotStart = filteredContents.Take(5).ToList();
+            ContentNotStartall = filteredContents.ToList();
+            string search = searchBar.Text;
 
-            ViewData();
+
+            if (search != null && search !="")
+            {
+                Sort.IsVisible = true;
+                VisibleFalse();
+            }
+            
+            else
+            {
+                Sort.IsVisible = false;
+                ViewData();
+            }
             BindingContext = this;
         }
-
-
         private void ViewData()
         {
 
@@ -192,56 +232,23 @@ namespace TestProject
         protected override void OnAppearing()
         {
             base.OnAppearing();
-           
-            UpdateContent();
-            ViewData();
-
-
+            Filling();
         }
-
-        private void UpdateContent()
+        private void VisibleFalse()
         {
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-            _databaseService = new DatabaseServiceContent(databasePath);
-            SQLiteConnection connection = CreateDatabase(databasePath);
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-
-            List<Content> contents = databaseService.GetAllContent().ToList();
-            ContentAll = contents.ToList();
-
-            List<Content> filteredContents = contents.Where(c => c.Type == "Сериал").ToList();
-            ContentSerial = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.Type == "Аниме").ToList();
-            ContentAnime = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.Type == "Фильм").ToList();
-            ContentFilm = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.Type == "Дорама").ToList();
-            ContentDorama = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.Type == "Мультсериал").ToList();
-            ContentMult = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.Type == "Документалка").ToList();
-            ContentDocum = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.Type == "Прочее").ToList();
-            ContentOther = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.WatchStatus == "Просмотрено").ToList();
-            ContentViewed = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.WatchStatus == "Смотрю").ToList();
-            ContentProcess = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
-            ContentNotStart = filteredContents.ToList();
-
-           
-            BindingContext = this;
+            All.IsVisible = false;
+            Serial.IsVisible = false;
+            Anime.IsVisible = false;
+            Film.IsVisible = false;
+            Dorama.IsVisible = false;
+            Mult.IsVisible = false;
+            Docum.IsVisible = false;
+            Other.IsVisible = false;
+            Viewed.IsVisible = false;
+            Process.IsVisible = false;
+            NotStart.IsVisible = false;
         }
+
 
         private async void ВсеButton_Clicked(object sender, EventArgs e)
         {
@@ -257,26 +264,17 @@ namespace TestProject
             Process.IsVisible = true;
             NotStart.IsVisible = true;
             Sort.IsVisible = false;
+            ViewData();
+            searchBar.Text = ""; 
 
         }
 
         private async void АнимеButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
+            VisibleFalse();
 
-            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Аниме").ToList();
-            ContentSort = filteredContents.ToList();
+            ContentSort = ContentAnimeall;
 
             Sort.IsVisible = true;
             SortLabel.Text = "Всё ваше аниме";
@@ -287,20 +285,9 @@ namespace TestProject
         private async void ФильмыButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
+            VisibleFalse();
 
-            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Фильм").ToList();
-            ContentSort = filteredContents.ToList();
+            ContentSort = ContentFilmall;
             Sort.IsVisible = true;
             SortLabel.Text = "Все ваши фильмы";
             BindingContext = this;
@@ -311,28 +298,11 @@ namespace TestProject
         {
             ContentSort = null;
 
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
+            VisibleFalse();
 
             Sort.IsVisible = true;
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-            _databaseService = new DatabaseServiceContent(databasePath);
-            SQLiteConnection connection = CreateDatabase(databasePath);
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
 
-            List<Content> contents = databaseService.GetAllContent().ToList();
-
-            List<Content> filteredContents = contents.Where(c => c.Type == "Сериал").ToList();
-            ContentSort = filteredContents.ToList();
+            ContentSort = ContentSerialall;
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
             SortLabel.Text = "Все ваши сериалы";
@@ -341,19 +311,9 @@ namespace TestProject
         private async void ДорамыButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
-            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Дорама").ToList();
-            ContentSort = filteredContents.ToList();
+            VisibleFalse();
+
+            ContentSort = ContentDoramaall;
             Sort.IsVisible = true;
             SortLabel.Text = "Все ваши дорамы";
             BindingContext = this;
@@ -363,19 +323,9 @@ namespace TestProject
         private async void МультсериалыButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
-            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Мультсериал").ToList();
-            ContentSort = filteredContents.ToList();
+            VisibleFalse();
+
+            ContentSort = ContentMultall;
             Sort.IsVisible = true;
             SortLabel.Text = "Все ваши мультсериалы";
             BindingContext = this;
@@ -385,43 +335,32 @@ namespace TestProject
         private async void ДокументалкиButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
+            VisibleFalse();
 
-            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Документалка").ToList();
-            ContentSort = filteredContents.ToList();
+
+            ContentSort = ContentDocumall;
             Sort.IsVisible = true;
             SortLabel.Text = "Все ваши документальные фильмы";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
         }
-
+        private void ВесьКонтентClicked(object sender, EventArgs e)
+        {
+            ContentSort = null;
+            VisibleFalse();
+            ContentSort = ContentAllall;
+            Sort.IsVisible = true;
+            SortLabel.Text = "Весь ваш контент";
+            BindingContext = this;
+            OnPropertyChanged(nameof(ContentSort));
+        }
         private async void ПрочееButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
+            VisibleFalse();
 
-            List<Content> filteredContents = ContentAll.Where(c => c.Type == "Прочее").ToList();
-            ContentSort = filteredContents.ToList();
+
+            ContentSort = ContentOtherall;
             Sort.IsVisible = true;
             SortLabel.Text = "Ваш прочий контент";
             BindingContext = this;
@@ -431,20 +370,10 @@ namespace TestProject
         private async void ПросмотреноButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
-          
-            List<Content> filteredContents = ContentAll.Where(c => c.WatchStatus == "Просмотрено").ToList();
-            ContentSort = filteredContents.ToList();
+            VisibleFalse();
+
+
+            ContentSort = ContentViewedall;
             Sort.IsVisible = true;
             SortLabel.Text = "Просмотренный контент";
             BindingContext = this;
@@ -454,20 +383,10 @@ namespace TestProject
         private async void ВпроцессеButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
+            VisibleFalse();
             Sort.IsVisible = true;
-            List<Content> filteredContents = ContentAll.Where(c => c.WatchStatus == "Смотрю").ToList();
-            ContentSort = filteredContents.ToList();
+
+            ContentSort = ContentProcessall;
             SortLabel.Text = "Контент, который вы начали смотреть";
             OnPropertyChanged(nameof(ContentSort));
         }
@@ -475,29 +394,9 @@ namespace TestProject
         private async void НеначатоButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-            All.IsVisible = false;
-            Serial.IsVisible = false;
-            Anime.IsVisible = false;
-            Film.IsVisible = false;
-            Dorama.IsVisible = false;
-            Mult.IsVisible = false;
-            Docum.IsVisible = false;
-            Other.IsVisible = false;
-            Viewed.IsVisible = false;
-            Process.IsVisible = false;
-            NotStart.IsVisible = false;
-          
+            VisibleFalse();
             Sort.IsVisible = true;
-
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-            _databaseService = new DatabaseServiceContent(databasePath);
-            SQLiteConnection connection = CreateDatabase(databasePath);
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-
-            List<Content> contents = databaseService.GetAllContent().ToList();
-
-            List<Content> filteredContents = contents.Where(c => c.WatchStatus.IndexOf("Не начинал", StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-            ContentSort = filteredContents.ToList();
+            ContentSort = ContentNotStartall;
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
             SortLabel.Text = "Не начатый контент";
@@ -721,11 +620,51 @@ namespace TestProject
         }
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
+            
+
+            string searchQuery = searchBar.Text;
+            if (searchQuery != "")
+            {
+               
+            }
+            else
+            {
+                searchBar.Text = "";
+                SearchList.IsVisible = false;
+                Sort.IsVisible = false;
+                ContentSort = null; // Установка источника данных в null
+                OnPropertyChanged(nameof(ContentSort));
+                Filling();
+                ViewData();
+            }
+
+           
+
+        }
+
+        private void ItemButtonClickedSort(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var item = (Content)button.CommandParameter;
+            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)SortContentCollectionView.ItemsSource).IndexOf(item);
+            OnItemSelectedSort(item, selectedIndex);
+        }
+        private async void OnItemSelectedSort(Content item, int selectedIndex)
+        {
+            if (item == null)
+                return;
+
+            Content selectedContent = ContentSort[selectedIndex];
+            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+        private void SearchContent(object sender, EventArgs e)
+        {
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
             _databaseService = new DatabaseServiceContent(databasePath);
             SQLiteConnection connection = CreateDatabase(databasePath);
             DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-
             string searchQuery = searchBar.Text;
             if (searchQuery != "")
             {
@@ -755,44 +694,15 @@ namespace TestProject
             }
             else
             {
+                SortLabel.Text = "";
+                searchBar.Text = "";
                 SearchList.IsVisible = false;
                 Sort.IsVisible = false;
-                All.IsVisible = true;
-                Serial.IsVisible = true;
-                Anime.IsVisible = true;
-                Film.IsVisible = true;
-                Dorama.IsVisible = true;
-                Mult.IsVisible = true;
-                Docum.IsVisible = true;
-                Other.IsVisible = true;
-                Viewed.IsVisible = true;
-                Process.IsVisible = true;
-                NotStart.IsVisible = true;
                 ContentSort = null; // Установка источника данных в null
                 OnPropertyChanged(nameof(ContentSort));
+                Filling();
                 ViewData();
-                UpdateContent();
             }
-
-           
-
-        }
-
-        private void ItemButtonClickedSort(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)SortContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedSort(item, selectedIndex);
-        }
-        private async void OnItemSelectedSort(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentSort[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
         }
     }
 }

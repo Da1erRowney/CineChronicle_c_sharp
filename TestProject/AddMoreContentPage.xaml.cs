@@ -68,12 +68,12 @@ namespace TestProject
             }
 
             // Получите выбранную дату из DatePicker
-            DateTime selectedDate = NextEpisodeReleaseDatePicker.Date;
+           
             DateTime currentDate = DateTime.UtcNow;
             DateTime newDate = currentDate.AddHours(+3);
 
             // Преобразуйте выбранную дату в строку с нужным форматом
-            string formattedDate = selectedDate.ToString("dd.MM.yyyy"); // Например, "01.02.2024"
+           
 
             // Формируем ссылку в зависимости от выбранного типа контента и заполняем поле LinkEntry
             string link = "";
@@ -154,7 +154,7 @@ namespace TestProject
                 Dubbing = m_dubbing,
                 LastWatchedSeries = m_lastWatchedSeries,
                 LastWatchedSeason = m_lastWatchedSeason,
-                NextEpisodeReleaseDate = formattedDate,
+                NextEpisodeReleaseDate = "В ожиданании получения информации...",
                 WatchStatus = m_status,
                 Link = link,
                 DateAdded = m_data,

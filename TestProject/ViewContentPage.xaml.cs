@@ -11,6 +11,7 @@ using System.Net;
 using Google.Apis.YouTube.v3;
 using Google.Apis.Services;
 using System.Xml;
+using System.Web;
 
 
 namespace TestProject
@@ -739,7 +740,7 @@ namespace TestProject
                     htmlDocument.LoadHtml(htmlContent);
 
                     // Извлечение ссылки из HTML
-                    HtmlNode linkNode = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='content']//a");
+                    HtmlNode linkNode = htmlDocument.DocumentNode.SelectSingleNode($"//div[@class='content']//a[contains(., '{query}')]");
                     if (linkNode != null)
                     {
                         string link = linkNode.GetAttributeValue("href", "");
@@ -754,16 +755,23 @@ namespace TestProject
 
                             // Извлечение ссылки из HTML
                             HtmlNode linkNodeIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_3']/em");
-                            if (linkNodeIn != null)
+                            HtmlNode linkNodeCount = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_0']");
+                            if (linkNodeIn != null || linkNodeCount!=null)
                             {
                                 string exitEpisod = linkNodeIn.InnerText;
+                                string countText = linkNodeCount.InnerText.Trim();
 
                                 int startIndex = exitEpisod.IndexOf("осталось") + "осталось".Length; // Индекс после слова "осталось"
                                 int daysIndex = exitEpisod.IndexOf("дней", startIndex); // Индекс слова "дней" после startIndex
 
                                 if (daysIndex == -1)
                                 {
-                                    daysIndex = exitEpisod.IndexOf("дня", startIndex); // Индекс слова "день" после startIndex
+                                    daysIndex = exitEpisod.IndexOf("дня", startIndex); // Индекс слова "дня" после startIndex
+                                }
+
+                                if (daysIndex == -1)
+                                {
+                                    daysIndex = exitEpisod.IndexOf("день", startIndex); // Индекс слова "день" после startIndex
                                 }
 
                                 if (daysIndex != -1)
@@ -781,20 +789,20 @@ namespace TestProject
 
                                         // Устанавливаем строку в NextEpisodeReleaseDateEntry
                                         NextEpisodeReleaseDateEntry.Text = output;
+                                        CountLabel.Text = countText;
                                     }
                                 }
-                                else
+                            
+                            else
                                 {
 
                                     // Заменяем каждую точку на точку с отступом и символ перевода строки
-                                    exitEpisod = exitEpisod.Replace(".", ". \n");
+                                    exitEpisod = exitEpisod.Replace(".", ".\n");
 
                                     // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
                                     NextEpisodeReleaseDateEntry.Text = exitEpisod;
+                                    CountLabel.Text = countText;
 
-
-                                    // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
-                                    NextEpisodeReleaseDateEntry.Text = exitEpisod;
 
                                 }
                             }
@@ -990,7 +998,12 @@ namespace TestProject
             DubbingEntry.IsReadOnly = false;
             LastWatchedSeriesEntry.IsReadOnly = false;
             LastWatchedSeasonEntry.IsReadOnly = false;
-            NextEpisodeReleaseDateEntry.IsReadOnly = false;
+
+
+            DataLabel.IsVisible = false;
+            NextEpisodeReleaseDateEntry.IsVisible = false;
+            CountLabel.IsVisible = false;
+
             WatchStatusEntry.IsReadOnly = false;
         }
 
@@ -1016,11 +1029,16 @@ namespace TestProject
             WatchStatusEntry.IsVisible = true; 
             WatchStatusLabel.IsVisible = true;
 
+
+            DataLabel.IsVisible = true;
+            NextEpisodeReleaseDateEntry.IsVisible = true;
+            CountLabel.IsVisible = true;
+
             TitleEntry.IsReadOnly = true;
             DubbingEntry.IsReadOnly = true;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;
-            NextEpisodeReleaseDateEntry.IsReadOnly = true;
+           
             WatchStatusEntry.IsReadOnly = true;
           
 
@@ -1128,11 +1146,15 @@ namespace TestProject
             WatchStatusEntry.IsVisible = true;
             WatchStatusLabel.IsVisible = true;
 
+            DataLabel.IsVisible = true;
+            NextEpisodeReleaseDateEntry.IsVisible = true;
+            CountLabel.IsVisible = true;
+
             TitleEntry.IsReadOnly = true;
             DubbingEntry.IsReadOnly = true;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;
-            NextEpisodeReleaseDateEntry.IsReadOnly = true;
+            
             WatchStatusEntry.IsReadOnly = true;
            
 

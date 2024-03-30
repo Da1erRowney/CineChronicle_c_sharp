@@ -89,7 +89,7 @@
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="Тип: " VerticalOptions="Center" x:Name="TypeLabel"/>
                                         <Entry x:Name="TypeEntry" Text="{Binding Type}" IsReadOnly="True" VerticalOptions="Center"/>
-                                        <Picker  Title="Тип" x:Name="TypePicker" IsVisible="False" Margin="0,0,0,0" >
+                                        <Picker  Title="Тип: " x:Name="TypePicker" IsVisible="False" Margin="0,0,0,0" >
                                             <Picker.ItemsSource>
                                                 <x:Array Type="{x:Type x:String}">
                                                     <x:String>Сериал</x:String>
@@ -194,18 +194,9 @@
                             <!-- Дата выхода следующей серии -->
                     <StackLayout Orientation="Vertical" Margin="0,0,0,0">
                                 <StackLayout Orientation="Vertical" Margin="0,0,0,0">
-                                    <Label Text="Дата выхода следующей серии: " VerticalOptions="Center" />
-                                    <Entry x:Name="NextEpisodeReleaseDateEntry" Text="{Binding NextEpisodeReleaseDate}" IsReadOnly="True" VerticalOptions="Center" Placeholder="Дата выхода серии">
-                                        <Entry.Style>
-                                            <Style TargetType="Entry">
-                                                <Style.Triggers>
-                                                    <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
-                                                        <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Entry.Style>
-                                    </Entry>
+                                    <Label Text="Дата выхода следующей серии: " VerticalOptions="Center"  x:Name="DataLabel"/>
+                                    <Label x:Name="NextEpisodeReleaseDateEntry" Text="{Binding NextEpisodeReleaseDate}"  VerticalOptions="Center" />
+                                    <Label x:Name="CountLabel" />
                                 </StackLayout>
 
 
@@ -214,7 +205,7 @@
                         <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
                                     <Label Text="Статус просмотра: " VerticalOptions="Center" x:Name="WatchStatusLabel" />
                                     <Entry x:Name="WatchStatusEntry" Text="{Binding WatchStatus}" IsReadOnly="True" VerticalOptions="Center" />
-                                    <Picker Title="Статус просмотра " x:Name="WatchStatusPicker" IsVisible="false" >
+                                    <Picker Title="Статус просмотра: " x:Name="WatchStatusPicker" IsVisible="false" >
                                 <Picker.ItemsSource>
                                     <x:Array Type="{x:Type x:String}">
                                         <x:String>Просмотрено</x:String>

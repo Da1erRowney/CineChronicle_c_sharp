@@ -63,11 +63,6 @@
                     <Label Text="Ссылка на источник: "/>
                     <Entry Placeholder="https://ссылка на источник" x:Name="LinkEntry" Margin="5,-9,0,0"/>
                 </StackLayout>
-                <!-- Поле ввода для выхода следующей серии -->
-                <StackLayout Orientation="Horizontal" Spacing="10">
-                    <Label Text="Выход следующей серии" VerticalOptions="Center" />
-                    <DatePicker Margin="5,0,0,0" x:Name="NextEpisodeReleaseDatePicker"/>
-                </StackLayout>
 
 
 

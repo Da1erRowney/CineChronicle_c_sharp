@@ -154,7 +154,7 @@ namespace TestProject
                                         }
                                     }
                                 }
-                                DescriptionLabel.Text = "Информация о сериале не найдена";
+                                DescriptionLabel.Text = $"Информация о {query} не найдена";
 
                             }
 
@@ -261,7 +261,7 @@ namespace TestProject
                                                 }
                                             }
                                         }
-                                        DescriptionLabel.Text = "Информация о сериале не найдена";
+                                        DescriptionLabel.Text = $"Информация о {query} не найдена";
 
                                     }
                                 }
@@ -269,7 +269,7 @@ namespace TestProject
                             
                             else
                             {
-                                DescriptionLabel.Text = "Информация о сериале не найдена2";
+                                DescriptionLabel.Text = $"Информация о {query} не найдена";
                             }
                         }
                        
@@ -349,7 +349,7 @@ namespace TestProject
                         else
                         {
                             // Если ссылка не найдена, обработать соответствующим образом
-                            DescriptionLabel.Text = "Description not found.";
+                            DescriptionLabel.Text = $"Информация о {query} не найдена";
                         }
                     }
                     else
@@ -589,7 +589,7 @@ namespace TestProject
                                         }
                                         else
                                         {
-                                            DescriptionLabel.Text = $"Описание для {query} не было найдено";
+                                            DescriptionLabel.Text = $"Информация о {query} не найдена";
                                         }
                                     }
                                     catch (Exception ex)
@@ -808,7 +808,7 @@ namespace TestProject
                             }
                             else
                             {
-                                Console.WriteLine("Не удалось найти текст.");
+                                NextEpisodeReleaseDateEntry.Text=$"Информация о {query} не найдена";
                             }
 
                             if (content.Type == "Сериал" || content.Type == "Дорама" || content.Type == "Мультсериал" )
@@ -859,7 +859,7 @@ namespace TestProject
                     }
                     else
                     {
-                        Console.WriteLine("Ссылка не найдена.");
+                        Console.WriteLine($"Информация о {query} не найдена");
                     }
                 }
                 else

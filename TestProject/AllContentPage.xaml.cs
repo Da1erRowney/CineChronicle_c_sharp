@@ -119,20 +119,30 @@ namespace TestProject
             filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
             ContentNotStart = filteredContents.Take(5).ToList();
             ContentNotStartall = filteredContents.ToList();
+
+            OnPropertyChanged(nameof(ContentAll));
+            OnPropertyChanged(nameof(ContentSerial));
+            OnPropertyChanged(nameof(ContentAnime));
+            OnPropertyChanged(nameof(ContentDorama));
+            OnPropertyChanged(nameof(ContentMult));
+            OnPropertyChanged(nameof(ContentDocum));
+            OnPropertyChanged(nameof(ContentOther));
+            OnPropertyChanged(nameof(ContentViewed));
+            OnPropertyChanged(nameof(ContentProcess));
+            OnPropertyChanged(nameof(ContentNotStart));
+
             string search = searchBar.Text;
-
-
             if (search != null && search !="")
             {
                 Sort.IsVisible = true;
                 VisibleFalse();
             }
-            
             else
             {
                 Sort.IsVisible = false;
                 ViewData();
             }
+
             CategoryCheck();
             BindingContext = this;
         }

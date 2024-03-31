@@ -4,7 +4,7 @@
              x:Class="TestProject.ViewContentPage" AutomationProperties.IsInAccessibleTree="False" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False">
     <Grid  BackgroundColor="Transparent">
 
-        <Image x:Name="Background" Grid.Row ="1" Source="gradientthird.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+        <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 
         <Grid Grid.Row="0" BackgroundColor="Transparent">
             <Grid.ColumnDefinitions>
@@ -36,7 +36,7 @@
                    
                     Grid.RowSpan="3"
                     BackgroundColor="#311b45"
-                    Stroke="#6e557C"
+                    Stroke="Black"
                     StrokeShape ="RoundRectangle 30,30,30,30"
                     StrokeThickness="2">
                     <Grid RowDefinitions=".2*,.6*,.2*">
@@ -44,7 +44,7 @@
                         <Image Aspect="AspectFill" x:Name="PosterImage" Grid.RowSpan="3" > </Image>
                     </Grid>
                     <Border.Shadow>
-                        <Shadow Brush="#C283FD" Opacity="1.0" Radius="200" Offset="0,0"/>
+                        <Shadow Brush="Black" Opacity="1.0" Radius="200" Offset="0,0"/>
                     </Border.Shadow>
                 </Border>
 
@@ -69,7 +69,7 @@
                             <Label x:Name="DescriptionLabel" FontSize="16" />
                         </Grid>
                         <Border.Shadow>
-                            <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                            <Shadow Brush="Black" Opacity="1.0" Radius="100" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
 
@@ -165,7 +165,7 @@
                                 </StackLayout>
                             </Grid>
                             <Border.Shadow>
-                                <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                                <Shadow Brush="Black" Opacity="1.0" Radius="100" Offset="0,0"/>
                             </Border.Shadow>
                         </Border>
 
@@ -227,7 +227,7 @@
                     </StackLayout>
                         </Grid>
                         <Border.Shadow>
-                            <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                            <Shadow Brush="Black" Opacity="1.0" Radius="100" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
                       
@@ -244,7 +244,7 @@
                             </StackLayout>
                         </Grid>
                         <Border.Shadow>
-                            <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                            <Shadow Brush="Black" Opacity="1.0" Radius="100" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
                         
@@ -271,7 +271,7 @@
                     </StackLayout>
                         </Grid>
                         <Border.Shadow>
-                            <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                            <Shadow Brush="Black" Opacity="1.0" Radius="100" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
 
@@ -297,7 +297,7 @@
                     <!-- Кнопка Отмена -->
                     <Button Opacity="0.8" x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" />
                     <StackLayout.Shadow>
-                        <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                        <Shadow Brush="Black" Opacity="1.0" Radius="100" Offset="0,0"/>
                     </StackLayout.Shadow>
                 </StackLayout>
 

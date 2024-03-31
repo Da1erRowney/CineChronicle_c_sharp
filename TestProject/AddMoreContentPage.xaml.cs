@@ -63,6 +63,7 @@ namespace TestProject
 
             if (string.IsNullOrEmpty(TitleEntry.Text) || string.IsNullOrEmpty(m_type) || string.IsNullOrEmpty(m_status))
             {
+
                 await DisplayAlert("Ошибка", "Заполните Название, Тип и Статус просмотра для возможности сохранения", "OK");
                 return;
             }
@@ -203,6 +204,7 @@ namespace TestProject
             LastWatchedSeriesEntry.Text ="";
             LastWatchedSeasonEntry.Text ="";
             LinkEntry.Text ="";
+
             await DisplayAlert("Успех", "Ваши данные сохранены", "OK");
             await Navigation.PushAsync(new MainPage());
         }

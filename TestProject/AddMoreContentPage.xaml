@@ -3,10 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.AddMoreContentPage">
              
-        <ScrollView>
         <Grid  BackgroundColor="Transparent">
 
-            <Image x:Name="Background" Grid.Row ="1" Source="gradientthird.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+            <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 
             <Grid Grid.Row="0" BackgroundColor="Transparent">
                 <Grid.ColumnDefinitions>
@@ -23,14 +22,14 @@
                 <Label Text="Добавьте свой контент" FontSize="16" Margin="0,-15,0,0"/>
                 <!-- Поле ввода Названия -->
                 <StackLayout Orientation="Horizontal" Margin="0,50,0,0">
-                    <Label Text="Название: "/>
-                    <Entry Placeholder="Введите название " x:Name="TitleEntry" Margin="5,-9,0,0" />
+                    <Label Text="Название: " FontSize="16"/>
+                    <Entry Placeholder="Введите название " x:Name="TitleEntry" Margin="5,-9,0,0" FontSize="16"/>
                 </StackLayout>
 
                 <!-- Выпадающий список для выбора типа -->
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Тип: "/>
-                    <Picker Title="Нажмите" x:Name="TypePicker" Margin="5,-9,0,0">
+                    <Label Text="Тип: " FontSize="16"/>
+                    <Picker Title="Нажмите" x:Name="TypePicker" Margin="5,-9,0,0" FontSize="16">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>Сериал</x:String>
@@ -47,29 +46,29 @@
 
                 <!-- Поле ввода для озвучки -->
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Озвучка: "/>
-                    <Entry Placeholder="Введите озвучку" Margin="5,-9,0,0" x:Name="DubbingEntry" />
+                    <Label Text="Озвучка: " FontSize="16"/>
+                    <Entry Placeholder="Введите озвучку" Margin="5,-9,0,0" x:Name="DubbingEntry" FontSize="16"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
                 <!-- Поле ввода для номера последней просмотренной серии -->
-                    <Label Text="Серия: "  VerticalOptions="Center"/>
-                    <Entry Placeholder="Введите серию" x:Name="LastWatchedSeriesEntry" Margin="5,0,0,0" Keyboard="Numeric" />
+                    <Label Text="Серия: "  VerticalOptions="Center" FontSize="16"/>
+                    <Entry Placeholder="Введите серию" x:Name="LastWatchedSeriesEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="16"/>
 
                 <!-- Поле ввода для номера последнего просмотренного сезона -->
-                    <Label Text="Сезон: "  Margin="50,0,0,0" VerticalOptions="Center"/>
-                    <Entry Placeholder="Введите сезон" x:Name="LastWatchedSeasonEntry" Margin="5,0,0,0" Keyboard="Numeric" />
+                    <Label Text="Сезон: "  Margin="50,0,0,0" VerticalOptions="Center" FontSize="16"/>
+                    <Entry Placeholder="Введите сезон" x:Name="LastWatchedSeasonEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="16"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Ссылка на источник: "/>
-                    <Entry Placeholder="https://ссылка на источник" x:Name="LinkEntry" Margin="5,-9,0,0"/>
+                    <Label Text="Ссылка на источник: " FontSize="16"/>
+                    <Entry Placeholder="https://ссылка на источник" x:Name="LinkEntry" Margin="5,-9,0,0" FontSize="16"/>
                 </StackLayout>
 
 
 
                 <!-- Выпадающий список для выбора статуса просмотра -->
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Статус просмотра: "/>
-                    <Picker Title="Нажмите" x:Name="WatchStatusPicker" Margin="5,-9,0,0">
+                    <Label Text="Статус просмотра: " FontSize="16"/>
+                    <Picker Title="Нажмите" x:Name="WatchStatusPicker" Margin="5,-9,0,0" FontSize="16">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>Просмотрено</x:String>
@@ -83,11 +82,11 @@
                 <!-- Кнопка "Добавить" -->
                 <Button Text="Добавить" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" >
                     <Button.Shadow>
-                        <Shadow Brush="#C283FD" Opacity="1.0" Radius="100" Offset="0,0"/>
+                        <Shadow Brush="white" Opacity="1.0" Radius="100" Offset="0,0"/>
                     </Button.Shadow>
                 </Button>
 
             </VerticalStackLayout>
         </Grid>
-    </ScrollView>
+
 </ContentPage>

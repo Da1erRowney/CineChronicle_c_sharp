@@ -39,6 +39,8 @@ namespace TestProject
         public List<Content> ContentProcessall { get; set; }
         public List<Content> ContentNotStartall { get; set; }
 
+        public List<Content> firstColumnData { get; set; }
+        public List<Content> secondColumnData { get; set; }
 
         private List<Content> _contentSearch;
         public List<Content> ContentSort { get; set; }
@@ -426,9 +428,36 @@ namespace TestProject
             ContentSort = ContentAllall;
             Sort.IsVisible = true;
             SortLabel.Text = "Весь ваш контент";
+
+            //int countContent = ContentSort.Count;
+            //int firstColumn, secondColumn;
+           
+
+            //if (countContent % 2 != 0)
+            //{
+            //    firstColumn = (countContent / 2) + 1;
+            //    secondColumn = countContent / 2;
+
+            //    firstColumnData = ContentSort.Take(firstColumn).ToList();
+            //    secondColumnData = ContentSort.Skip(firstColumn).Take(secondColumn).ToList();
+            //}
+            //else
+            //{
+            //    firstColumn = countContent / 2;
+            //    secondColumn = countContent / 2;
+
+            //    firstColumnData = ContentSort.Take(firstColumn).ToList();
+            //    secondColumnData = ContentSort.Skip(firstColumn).Take(secondColumn).ToList();
+            //}
+
+
+
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
+            //OnPropertyChanged(nameof(firstColumnData));
+            //OnPropertyChanged(nameof(secondColumnData));
             Choise = "Allall";
+
         }
         private async void ПрочееButton_Clicked(object sender, EventArgs e)
         {

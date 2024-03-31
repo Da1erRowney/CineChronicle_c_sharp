@@ -14,7 +14,7 @@ namespace TestProject
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AllContentPage : ContentPage
     {
-        private string Choise;
+        public string Choise ="All";
         public List<Content> ContentAll { get; set; }
         public List<Content> ContentSerial { get; set; }
         public List<Content> ContentAnime { get; set; }
@@ -65,7 +65,6 @@ namespace TestProject
         public AllContentPage()
         {
             InitializeComponent();
-            Choise = "All";
             Filling();
         }
 
@@ -134,7 +133,65 @@ namespace TestProject
                 Sort.IsVisible = false;
                 ViewData();
             }
+            CategoryCheck();
             BindingContext = this;
+        }
+        private void CategoryCheck()
+        {
+            string answer = Choise;
+            switch (answer)
+            {
+                case ("All"):
+                    Sort.IsVisible = false;
+                    break;
+                case ("Animeall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("Filmall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("Serialall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("Doramaall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("Multall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("Documall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("Allall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("Otherall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("Viewedall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("Processall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+                case ("NotStartall"):
+                    VisibleFalse();
+                    Sort.IsVisible = true;
+                    break;
+
+
+
+            }
         }
         private void ViewData()
         {
@@ -265,7 +322,8 @@ namespace TestProject
             NotStart.IsVisible = true;
             Sort.IsVisible = false;
             ViewData();
-            searchBar.Text = ""; 
+            searchBar.Text = "";
+            Choise = "All";
 
         }
 
@@ -273,76 +331,72 @@ namespace TestProject
         {
             ContentSort = null;
             VisibleFalse();
-
             ContentSort = ContentAnimeall;
-
             Sort.IsVisible = true;
             SortLabel.Text = "Всё ваше аниме";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
+            Choise = "Animeall";
         }
 
         private async void ФильмыButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
             VisibleFalse();
-
             ContentSort = ContentFilmall;
             Sort.IsVisible = true;
             SortLabel.Text = "Все ваши фильмы";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
+            Choise = "Filmall";
         }
 
         private async void СериалыButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
-
             VisibleFalse();
-
             Sort.IsVisible = true;
-
             ContentSort = ContentSerialall;
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
             SortLabel.Text = "Все ваши сериалы";
+            Choise = "Serialall";
         }
 
         private async void ДорамыButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
             VisibleFalse();
-
             ContentSort = ContentDoramaall;
             Sort.IsVisible = true;
             SortLabel.Text = "Все ваши дорамы";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
+            Choise = "Doramaall";
         }
 
         private async void МультсериалыButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
             VisibleFalse();
-
             ContentSort = ContentMultall;
             Sort.IsVisible = true;
             SortLabel.Text = "Все ваши мультсериалы";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
+            Choise = "Multall";
         }
 
         private async void ДокументалкиButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
             VisibleFalse();
-
-
             ContentSort = ContentDocumall;
             Sort.IsVisible = true;
             SortLabel.Text = "Все ваши документальные фильмы";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
+            Choise = "Documall";
         }
         private void ВесьКонтентClicked(object sender, EventArgs e)
         {
@@ -353,31 +407,30 @@ namespace TestProject
             SortLabel.Text = "Весь ваш контент";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
+            Choise = "Allall";
         }
         private async void ПрочееButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
             VisibleFalse();
-
-
             ContentSort = ContentOtherall;
             Sort.IsVisible = true;
             SortLabel.Text = "Ваш прочий контент";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
+            Choise = "Otherall";
         }
 
         private async void ПросмотреноButton_Clicked(object sender, EventArgs e)
         {
             ContentSort = null;
             VisibleFalse();
-
-
             ContentSort = ContentViewedall;
             Sort.IsVisible = true;
             SortLabel.Text = "Просмотренный контент";
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
+            Choise = "Viewedall";
         }
 
         private async void ВпроцессеButton_Clicked(object sender, EventArgs e)
@@ -389,6 +442,7 @@ namespace TestProject
             ContentSort = ContentProcessall;
             SortLabel.Text = "Контент, который вы начали смотреть";
             OnPropertyChanged(nameof(ContentSort));
+            Choise = "Processall";
         }
 
         private async void НеначатоButton_Clicked(object sender, EventArgs e)
@@ -400,7 +454,8 @@ namespace TestProject
             BindingContext = this;
             OnPropertyChanged(nameof(ContentSort));
             SortLabel.Text = "Не начатый контент";
-           
+            Choise = "NotStartall";
+
         }
         private async void OnItemSelectedAll(Content item, int selectedIndex)
         {

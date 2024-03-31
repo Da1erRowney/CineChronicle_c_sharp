@@ -105,7 +105,7 @@
                             <TapGestureRecognizer Tapped="ВесьКонтентClicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentAllall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="16" Margin="50,0,0,-25"/>
+                    <Label Text="{Binding ContentAllall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="16" Margin="50,0,0,0"/>
                     <CollectionView Margin="0,0,0,0" x:Name="AllContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAll}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
                         <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />

@@ -130,6 +130,7 @@ namespace TestProject
             OnPropertyChanged(nameof(ContentViewed));
             OnPropertyChanged(nameof(ContentProcess));
             OnPropertyChanged(nameof(ContentNotStart));
+            OnPropertyChanged(nameof(ContentSort));
 
             string search = searchBar.Text;
             if (search != null && search !="")

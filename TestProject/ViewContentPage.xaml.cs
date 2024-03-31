@@ -1207,7 +1207,7 @@ namespace TestProject
             content.DateAdded = content.DateAdded;
             databaseService.UpdateContent(content);
             databaseService.CloseConnection();
-
+            SetupLabelTappedEvents();
 
             // Обновить данные в БД
             // Ваш код для обновления данных в БД

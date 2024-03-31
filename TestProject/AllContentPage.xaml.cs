@@ -130,6 +130,16 @@ namespace TestProject
             OnPropertyChanged(nameof(ContentViewed));
             OnPropertyChanged(nameof(ContentProcess));
             OnPropertyChanged(nameof(ContentNotStart));
+            OnPropertyChanged(nameof(ContentAllall));
+            OnPropertyChanged(nameof(ContentSerialall));
+            OnPropertyChanged(nameof(ContentAnimeall));
+            OnPropertyChanged(nameof(ContentDoramaall));
+            OnPropertyChanged(nameof(ContentMultall));
+            OnPropertyChanged(nameof(ContentDocumall));
+            OnPropertyChanged(nameof(ContentOtherall));
+            OnPropertyChanged(nameof(ContentViewedall));
+            OnPropertyChanged(nameof(ContentProcessall));
+            OnPropertyChanged(nameof(ContentNotStartall));
             OnPropertyChanged(nameof(ContentSort));
 
             string search = searchBar.Text;

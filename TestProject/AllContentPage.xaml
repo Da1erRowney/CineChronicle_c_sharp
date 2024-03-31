@@ -17,7 +17,7 @@
         </Grid>
         <ScrollView>
             <StackLayout Orientation="Vertical" Padding="10">
-                <SearchBar x:Name="searchBar" Placeholder="Поиск вашего контента..." TextChanged="SearchBar_TextChanged" HorizontalOptions="CenterAndExpand" SearchButtonPressed="SearchContent" />
+                <SearchBar x:Name="searchBar" Placeholder="Поиск вашего контента..." FontSize="18"  TextChanged="SearchBar_TextChanged" HorizontalOptions="CenterAndExpand" SearchButtonPressed="SearchContent" />
                 <!--<StackLayout>
                     <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" >
                         <Button Text="Все" Clicked="ВсеButton_Clicked"  VerticalOptions="Start" />
@@ -44,13 +44,13 @@
                 </StackLayout>-->
 
                 <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10" IsVisible="false" Margin="0,20,0,0">
-                    <Label  x:Name="SortLabel" Text="" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="25" Margin="50,0,0,0">
+                    <Label  x:Name="SortLabel" Text="" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="20" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ВсеButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentSort.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
-                    <Label Text="Вернуться назад" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0">
+                    <Label Text="{Binding ContentSort.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="16" Margin="50,0,0,0"/>
+                    <Label Text="Вернуться назад" VerticalOptions="Center" FontSize="16" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ВсеButton_Clicked" />
                         </Label.GestureRecognizers>
@@ -62,7 +62,7 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="250" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="250">
+                                    <Border Margin="0,25,0,25" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="250" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="250">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="250" WidthRequest="250" Opacity=".7">
@@ -99,13 +99,13 @@
 
                 </StackLayout>
 
-                <StackLayout x:Name="All" Orientation="Vertical" Padding="10" Margin="0,20,0,0">
-                    <Label x:Name="MainLabel" Text="Весь ваш контент!"  FontAttributes="Bold" VerticalOptions="Center"  FontSize="25" Margin="50,0,0,0" >
+                <StackLayout x:Name="All" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label x:Name="MainLabel" Text="Весь ваш контент!"  FontAttributes="Bold" VerticalOptions="Center"  FontSize="22" Margin="50,0,0,0" >
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ВесьКонтентClicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentAllall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentAllall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                     <CollectionView Margin="0,0,0,0" x:Name="AllContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAll}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
                         <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
@@ -113,7 +113,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                     <Grid RowDefinitions=".2*,.6*,.3*">
                                         <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                         <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -149,13 +149,13 @@
                 </CollectionView>
             </StackLayout>
 
-            <StackLayout x:Name="Serial" Orientation="Vertical" Padding="10">
-                    <Label x:Name="SerialLabel" Text="Сериалы" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="Serial" Orientation="Vertical" Padding="10"  Margin="0,25,0,0">
+                    <Label x:Name="SerialLabel" Text="Сериалы" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="СериалыButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentSerialall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentSerialall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
 
                 <CollectionView Margin="0,0,0,0" x:Name="SerialContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentSerial}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
@@ -164,7 +164,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -201,13 +201,13 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="Anime" Orientation="Vertical" Padding="10">
-                    <Label  x:Name="AnimeLabel" Text="Аниме" VerticalOptions="Center"  FontAttributes="Bold" FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="Anime" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label  x:Name="AnimeLabel" Text="Аниме" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="АнимеButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentAnimeall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentAnimeall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
 
                 <CollectionView Margin="0,0,0,0" x:Name="AnimeContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAnime}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
@@ -216,7 +216,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -253,13 +253,13 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="Film" Orientation="Vertical" Padding="10">
-                    <Label x:Name="FilmLabel" Text="Фильмы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="Film" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label x:Name="FilmLabel" Text="Фильмы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ФильмыButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentFilmall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentFilmall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="FilmContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentFilm}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
                         <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
@@ -267,7 +267,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -304,13 +304,13 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="Dorama" Orientation="Vertical" Padding="10">
-                    <Label x:Name="DoramaLabel" Text="Дорамы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="Dorama" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label x:Name="DoramaLabel" Text="Дорамы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ДорамыButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentDoramaall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentDoramaall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="DoramaContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDorama}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
                         <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
@@ -318,7 +318,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -355,13 +355,13 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="Mult" Orientation="Vertical" Padding="10">
-                    <Label x:Name="MultLabel" Text="Мультсериалы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="Mult" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label x:Name="MultLabel" Text="Мультсериалы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="МультсериалыButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentMultall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentMultall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                   
 
                     <CollectionView Margin="0,0,0,0" x:Name="MultContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentMult}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
@@ -371,7 +371,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -408,13 +408,13 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="Docum" Orientation="Vertical" Padding="10">
-                    <Label x:Name="DocumLabel" Text="Документалки" VerticalOptions="Center"  FontAttributes="Bold" FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="Docum" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label x:Name="DocumLabel" Text="Документалки" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ДокументалкиButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentDocumall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentDocumall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="DocumContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDocum}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
                         <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
@@ -422,7 +422,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -459,13 +459,13 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="Other" Orientation="Vertical" Padding="10">
-                    <Label x:Name="OtherLabel" Text="Прочее" VerticalOptions="Center"  FontAttributes="Bold" FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="Other" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label x:Name="OtherLabel" Text="Прочее" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ПрочееButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentOtherall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentOtherall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="OtherContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentOther}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
                         <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
@@ -473,7 +473,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -510,13 +510,13 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="Viewed" Orientation="Vertical" Padding="10">
-                    <Label x:Name="ViewedLabel" Text="Просмотрено" VerticalOptions="Center"  FontAttributes="Bold" FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="Viewed" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label x:Name="ViewedLabel" Text="Просмотрено" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ПросмотреноButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentViewedall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentViewedall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="ViewedContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentViewed}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
                         <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
@@ -524,7 +524,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -561,13 +561,13 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="Process" Orientation="Vertical" Padding="10">
-                    <Label x:Name="ProcessLabel" Text="Смотрю" VerticalOptions="Center"  FontAttributes="Bold" FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="Process" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label x:Name="ProcessLabel" Text="Смотрю" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ВпроцессеButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentProcessall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentProcessall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="ProcessContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentProcess}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
                         <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
@@ -575,7 +575,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
@@ -612,13 +612,13 @@
 
             </StackLayout>
 
-            <StackLayout x:Name="NotStart" Orientation="Vertical" Padding="10">
-                    <Label x:Name="NotStartLabel" Text="Не начинал смотреть" VerticalOptions="Center"  FontAttributes="Bold" FontSize="25" Margin="50,0,0,0">
+                <StackLayout x:Name="NotStart" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                    <Label x:Name="NotStartLabel" Text="Не начинал смотреть" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="НеначатоButton_Clicked" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding ContentNotStartall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="20" Margin="50,0,0,0"/>
+                    <Label Text="{Binding ContentNotStartall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="NotStartContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentNotStart}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
                         <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
@@ -626,7 +626,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,50,25,50" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">

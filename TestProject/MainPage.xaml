@@ -1,9 +1,12 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.MainPage"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              Title="Cine Chronicle">
 
-    
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Black}}" StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}" x:Name="statusBar"/>
+    </Page.Behaviors>    
     
     <Grid  BackgroundColor="Transparent">
 
@@ -31,8 +34,8 @@
                         <Image Source="newicon.png" WidthRequest="70" HeightRequest="70" />
                         <Label Text="Cine Chronicle" FontAttributes="Bold" FontSize="40" Margin="0,10,0,0"/>
                     </StackLayout>-->
-                    <Label Text="Недавно просмотренные" FontAttributes="Bold" FontSize="25"  Margin="50,20,0,0" />
-                    <Label Text="Контент в котором вы обновляли серию"  FontSize="20"  Margin="50,0,0,-25" />
+                    <Label Text="Недавно просмотренные" FontAttributes="Bold" FontSize="22"  Margin="50,20,0,0" />
+                    <Label Text="Контент в котором вы обновляли серию"  FontSize="16"  Margin="50,0,0,-25" />
                  
                    
                     <CollectionView 
@@ -88,7 +91,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="red" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}"  Opacity=".7" Radius="100" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button 
@@ -101,8 +104,8 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                    
-                    <Label Text="Недавно добавленные" FontAttributes="Bold"  FontSize="25"  Margin="50,0,0,10" />
-                    <Label Text="Контент, который вы недавно добавили"  FontSize="20"  Margin="50,-9,0,-25" />
+                    <Label Text="Недавно добавленные" FontAttributes="Bold"  FontSize="22"  Margin="50,0,0,10" />
+                    <Label Text="Контент, который вы недавно добавили"  FontSize="16"  Margin="50,-9,0,-25" />
                     <CollectionView 
                           Margin="0,0,0,0"
                         x:Name="RecentlyAddedCarouselView"
@@ -148,7 +151,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="red" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}" Opacity=".7" Radius="100" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button 

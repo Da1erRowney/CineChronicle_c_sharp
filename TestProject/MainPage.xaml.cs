@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 
 using System.Linq;
+using CommunityToolkit.Maui.Core;
 
 namespace TestProject;
 
@@ -25,6 +26,7 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         InitializeComponent();
+
 
         string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
         _databaseService = new DatabaseServiceContent(databasePath);

@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Maui;
 
 using System.Diagnostics.Metrics;
 using System.Reflection.Metadata;
@@ -12,7 +13,8 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-               // .UseMauiCommunityToolkitMediaElement()
+			.UseMauiCommunityToolkit()
+              //.UseMauiCommunityToolkitMediaElement()
             .ConfigureFonts(fonts =>
 			{
 				//fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

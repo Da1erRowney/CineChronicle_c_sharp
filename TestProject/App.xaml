@@ -16,6 +16,7 @@
 
     <Application.MainPage>
         <Shell FlyoutBehavior="Flyout" FlyoutHeaderBehavior="Fixed" FlyoutVerticalScrollMode="Auto">
+            
             <FlyoutItem x:Name="Main" Title="Главная страница" Icon="{AppThemeBinding Light='main_page_dark.svg', Dark='main_page_light.svg'}" >
                 <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
             </FlyoutItem>

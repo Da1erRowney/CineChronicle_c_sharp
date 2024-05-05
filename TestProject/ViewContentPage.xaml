@@ -45,7 +45,7 @@
                         <Image Aspect="AspectFill" x:Name="PosterImage" Grid.RowSpan="3" > </Image>
                     </Grid>
                     <Border.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}" Opacity="0.5"  Radius="200" Offset="0,0"/>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="200" Offset="0,0"/>
                     </Border.Shadow>
                 </Border>
 
@@ -71,7 +71,7 @@
                             <Label x:Name="DescriptionLabel" FontSize="16" />
                         </Grid>
                         <Border.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
 
@@ -172,7 +172,7 @@
                                 </StackLayout>
                             </Grid>
                             <Border.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
                             </Border.Shadow>
                         </Border>
 
@@ -237,7 +237,7 @@
                     </StackLayout>
                         </Grid>
                         <Border.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
                       
@@ -281,7 +281,7 @@
                     </StackLayout>
                         </Grid>
                         <Border.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
 
@@ -307,7 +307,7 @@
                     <!-- Кнопка Отмена -->
                     <Button Opacity="0.8" FontSize="18" x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" />
                     <StackLayout.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}" Opacity="0.5" Radius="100" Offset="0,0"/>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
                     </StackLayout.Shadow>
                 </StackLayout>
 

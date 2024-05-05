@@ -20,6 +20,7 @@ public partial class MainPage : ContentPage
     {
         SQLiteConnection connection = new SQLiteConnection(databasePath);
         connection.CreateTable<Content>();
+        connection.CreateTable<DateExit>();
         return connection;
 
     }

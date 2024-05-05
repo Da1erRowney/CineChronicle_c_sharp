@@ -46,14 +46,7 @@ public partial class ViewCategoryPage : ContentPage
         string searchQuery = searchBar.Text;
         if (searchQuery != "")
         {
-            SortLabel.Text = $"Искомый контент по запросу \"{searchQuery}\"";
-            List<Content> SearchContent = ContentCategoryReserve;
-
-            List<Content> filteredContents = SearchContent.Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-            ContentCategory = filteredContents.ToList();
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentCategory));
-
+           
         }
         else
         {

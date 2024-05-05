@@ -22,6 +22,7 @@ namespace TestProject
     {
         public ICommand OpenLinkCommand { get; private set; }
         private Content content;
+        private DateExit data;
         string videoUrl=null;
 
 
@@ -781,25 +782,39 @@ namespace TestProject
 
                                     if (int.TryParse(daysString, out int days))
                                     {
-                                        // Вычисляем дату через указанное количество дней
                                         DateTime releaseDate = DateTime.Today.AddDays(days);
 
                                         // Формируем строку для вывода
-                                        string output = $"Осталось {days} дней - ({releaseDate.ToShortDateString()})";
+                                        string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
 
-                                        // Устанавливаем строку в NextEpisodeReleaseDateEntry
                                         NextEpisodeReleaseDateEntry.Text = output;
                                         CountLabel.Text = countText;
+
+                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                        if (databaseService.GetDateByTitle(query) == null)
+                                        {
+                                            var newContent = new DateExit
+                                            {
+                                                Title = query,
+                                                DateRelease = releaseDate.ToShortDateString()
+                                            };
+                                            databaseService.InsertDate(newContent);
+                                        }
+                                        else
+                                        {
+                                            data = databaseService.GetDateByTitle(query);
+                                            data.DateRelease = releaseDate.ToShortDateString();
+                                            databaseService.UpdateContent(data);
+                                        }
+
                                     }
                                 }
                             
                             else
                                 {
+                                    exitEpisod = exitEpisod.Replace(".", ".");
 
-                                    // Заменяем каждую точку на точку с отступом и символ перевода строки
-                                    exitEpisod = exitEpisod.Replace(".", ".\n");
-
-                                    // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
                                     NextEpisodeReleaseDateEntry.Text = exitEpisod;
                                     CountLabel.Text = countText;
 
@@ -841,15 +856,6 @@ namespace TestProject
                                             //Console.WriteLine("Изображение не найдено.");
                                         }
                             }
-
-
-
-
-
-
-                                
-                            
-
                         }
                         else
                         {
@@ -904,11 +910,28 @@ namespace TestProject
                                             DateTime releaseDate = DateTime.Today.AddDays(days);
 
                                             // Формируем строку для вывода
-                                            string output = $"Осталось {days} дней - ({releaseDate.ToShortDateString()})";
+                                            string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
 
                                             // Устанавливаем строку в NextEpisodeReleaseDateEntry
                                             NextEpisodeReleaseDateEntry.Text = output;
                                             CountLabel.Text = countText;
+                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                            if (databaseService.GetDateByTitle(query) == null)
+                                            {
+                                                var newContent = new DateExit
+                                                {
+                                                    Title = query,
+                                                    DateRelease = releaseDate.ToShortDateString()
+                                                };
+                                                databaseService.InsertDate(newContent);
+                                            }
+                                            else
+                                            {
+                                                data = databaseService.GetDateByTitle(query);
+                                                data.DateRelease = releaseDate.ToShortDateString();
+                                                databaseService.UpdateContent(data);
+                                            }
                                         }
                                     }
 
@@ -916,7 +939,7 @@ namespace TestProject
                                     {
 
                                         // Заменяем каждую точку на точку с отступом и символ перевода строки
-                                        exitEpisod = exitEpisod.Replace(".", ".\n");
+                                        exitEpisod = exitEpisod.Replace(".", ".");
 
                                         // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
                                         NextEpisodeReleaseDateEntry.Text = exitEpisod;

@@ -16,6 +16,7 @@ namespace DataContent
         public void CreateTables()
         {
             _connection.CreateTable<Content>();
+            _connection.CreateTable<DateExit>();
         }
 
        
@@ -49,6 +50,28 @@ namespace DataContent
         {
             _connection?.Close();
         }
+
+
+        public void InsertDate(DateExit data)
+        {
+            _connection.Insert(data);
+        }
+        public void UpdateContent(DateExit data)
+        {
+            _connection.Update(data);
+        }
+
+        public void DeleteContent(DateExit data)
+        {
+            _connection.Delete(data);
+        }
+        public DateExit GetDateByTitle(string title)
+        {
+            return _connection.Table<DateExit>().FirstOrDefault(c => c.Title == title);
+        }
+
+
+
     }
 
     public class Content
@@ -67,5 +90,11 @@ namespace DataContent
         public string SeriesChangeDate { get; set; }
         public string Image { get; set; }
         public string SmallDecription { get; set; }
+    }
+    public class DateExit
+    {
+        [PrimaryKey]
+        public string Title { get; set; }
+        public string DateRelease { get; set; }
     }
 }

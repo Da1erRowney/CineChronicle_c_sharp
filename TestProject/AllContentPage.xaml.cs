@@ -9,6 +9,7 @@ using SQLite;
 using Microsoft.Maui.Platform;
 using System.Diagnostics;
 
+
 namespace TestProject
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -79,47 +80,47 @@ namespace TestProject
             DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
 
             List<Content> contents = databaseService.GetAllContent().ToList();
-            ContentAll = contents.Take(5).ToList();
+            ContentAll = contents.Take(8).ToList();
             ContentAllall = contents.ToList();
 
             List<Content> filteredContents = contents.Where(c => c.Type == "Сериал").ToList();
-            ContentSerial = filteredContents.Take(5).ToList();
+            ContentSerial = filteredContents.Take(8).ToList();
             ContentSerialall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Аниме").ToList();
-            ContentAnime = filteredContents.Take(5).ToList();
+            ContentAnime = filteredContents.Take(8).ToList();
             ContentAnimeall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Фильм").ToList();
-            ContentFilm = filteredContents.Take(5).ToList();
+            ContentFilm = filteredContents.Take(8).ToList();
             ContentFilmall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Дорама").ToList();
-            ContentDorama = filteredContents.Take(5).ToList();
+            ContentDorama = filteredContents.Take(8).ToList();
             ContentDoramaall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Мультсериал").ToList();
-            ContentMult = filteredContents.Take(5).ToList();
+            ContentMult = filteredContents.Take(8).ToList();
             ContentMultall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Документалка").ToList();
-            ContentDocum = filteredContents.Take(5).ToList();
+            ContentDocum = filteredContents.Take(8).ToList();
             ContentDocumall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.Type == "Прочее").ToList();
-            ContentOther = filteredContents.Take(5).ToList();
+            ContentOther = filteredContents.Take(8).ToList();
             ContentOtherall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.WatchStatus == "Просмотрено").ToList();
-            ContentViewed = filteredContents.Take(5).ToList();
+            ContentViewed = filteredContents.Take(8).ToList();
             ContentViewedall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.WatchStatus == "Смотрю").ToList();
-            ContentProcess = filteredContents.Take(5).ToList();
+            ContentProcess = filteredContents.Take(8).ToList();
             ContentProcessall = filteredContents.ToList();
 
             filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
-            ContentNotStart = filteredContents.Take(5).ToList();
+            ContentNotStart = filteredContents.Take(8).ToList();
             ContentNotStartall = filteredContents.ToList();
 
             OnPropertyChanged(nameof(ContentAll));
@@ -156,66 +157,10 @@ namespace TestProject
                 ViewData();
             }
 
-            CategoryCheck();
             BindingContext = this;
         }
-        private void CategoryCheck()
-        {
-            string answer = Choise;
-            switch (answer)
-            {
-                case ("All"):
-                    Sort.IsVisible = false;
-                    break;
-                case ("Animeall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("Filmall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("Serialall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("Doramaall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("Multall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("Documall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("Allall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("Otherall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("Viewedall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("Processall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-                case ("NotStartall"):
-                    VisibleFalse();
-                    Sort.IsVisible = true;
-                    break;
-
-
-
-            }
-        }
+       
+           
         private void ViewData()
         {
 
@@ -352,159 +297,88 @@ namespace TestProject
 
         private async void АнимеButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
+            string nameCategory = "Всё ваше аниме";
             ContentSort = ContentAnimeall;
-            Sort.IsVisible = true;
-            SortLabel.Text = "Всё ваше аниме";
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            Choise = "Animeall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
 
         private async void ФильмыButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
+            string nameCategory = "Все ваши фильмы";
             ContentSort = ContentFilmall;
-            Sort.IsVisible = true;
-            SortLabel.Text = "Все ваши фильмы";
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            Choise = "Filmall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
 
         private async void СериалыButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
-            Sort.IsVisible = true;
+            string nameCategory = "Все ваши сериалы";
             ContentSort = ContentSerialall;
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            SortLabel.Text = "Все ваши сериалы";
-            Choise = "Serialall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
 
         private async void ДорамыButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
+            string nameCategory = "Все ваши дорамы";
             ContentSort = ContentDoramaall;
-            Sort.IsVisible = true;
-            SortLabel.Text = "Все ваши дорамы";
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            Choise = "Doramaall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
 
         private async void МультсериалыButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
+            string nameCategory = "Все ваши мультсериалы";
             ContentSort = ContentMultall;
-            Sort.IsVisible = true;
-            SortLabel.Text = "Все ваши мультсериалы";
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            Choise = "Multall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
 
         private async void ДокументалкиButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
+            string nameCategory = "Все ваши документальные фильмы";
             ContentSort = ContentDocumall;
-            Sort.IsVisible = true;
-            SortLabel.Text = "Все ваши документальные фильмы";
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            Choise = "Documall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
-        private void ВесьКонтентClicked(object sender, EventArgs e)
+        private async void ВесьКонтентClicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
+            string nameCategory = "Весь ваш контент";
             ContentSort = ContentAllall;
-            Sort.IsVisible = true;
-            SortLabel.Text = "Весь ваш контент";
-
-            //int countContent = ContentSort.Count;
-            //int firstColumn, secondColumn;
-           
-
-            //if (countContent % 2 != 0)
-            //{
-            //    firstColumn = (countContent / 2) + 1;
-            //    secondColumn = countContent / 2;
-
-            //    firstColumnData = ContentSort.Take(firstColumn).ToList();
-            //    secondColumnData = ContentSort.Skip(firstColumn).Take(secondColumn).ToList();
-            //}
-            //else
-            //{
-            //    firstColumn = countContent / 2;
-            //    secondColumn = countContent / 2;
-
-            //    firstColumnData = ContentSort.Take(firstColumn).ToList();
-            //    secondColumnData = ContentSort.Skip(firstColumn).Take(secondColumn).ToList();
-            //}
-
-
-
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            //OnPropertyChanged(nameof(firstColumnData));
-            //OnPropertyChanged(nameof(secondColumnData));
-            Choise = "Allall";
-
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
         private async void ПрочееButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
+            string nameCategory = "Ваш прочий контент";
             ContentSort = ContentOtherall;
-            Sort.IsVisible = true;
-            SortLabel.Text = "Ваш прочий контент";
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            Choise = "Otherall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
 
         private async void ПросмотреноButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
+            string nameCategory = "Просмотренный контент";
             ContentSort = ContentViewedall;
-            Sort.IsVisible = true;
-            SortLabel.Text = "Просмотренный контент";
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            Choise = "Viewedall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
 
         private async void ВпроцессеButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
-            Sort.IsVisible = true;
-
+            string nameCategory = "Контент, который вы начали смотреть";
             ContentSort = ContentProcessall;
-            SortLabel.Text = "Контент, который вы начали смотреть";
-            OnPropertyChanged(nameof(ContentSort));
-            Choise = "Processall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
         }
 
         private async void НеначатоButton_Clicked(object sender, EventArgs e)
         {
-            ContentSort = null;
-            VisibleFalse();
-            Sort.IsVisible = true;
+            string nameCategory = "Не начатый контент";
             ContentSort = ContentNotStartall;
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentSort));
-            SortLabel.Text = "Не начатый контент";
-            Choise = "NotStartall";
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
+            await Navigation.PushAsync(viewContentPage);
 
         }
         private async void OnItemSelectedAll(Content item, int selectedIndex)

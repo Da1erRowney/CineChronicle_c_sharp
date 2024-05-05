@@ -107,7 +107,7 @@
         <Setter Property="FontFamily" Value="Ofont"/>
         <Setter Property="FontAutoScalingEnabled" Value="False" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Yellow200Accent}, Dark={StaticResource Gray300}}" />
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray300}}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
@@ -175,7 +175,7 @@
 
     <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-        <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource Yellow200Accent}, Dark={StaticResource Gray300}}" />
+        <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray300}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontAutoScalingEnabled" Value="False" />
         <Setter Property="FontFamily" Value="Ofont"/>
@@ -362,7 +362,7 @@
     </Style>
 
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
-        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Black}}" />
+        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Black}}" />
         <Setter Property="Shell.ForegroundColor" Value="{OnPlatform WinUI={StaticResource Black}, Default={StaticResource White}}" />
         <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}" />

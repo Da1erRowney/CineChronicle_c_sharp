@@ -5,12 +5,12 @@
              Title="Cine Chronicle">
 
     <Page.Behaviors>
-        <mct:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Black}}" StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}" x:Name="statusBar"/>
+        <mct:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Black}}" StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}" x:Name="statusBar"/>
     </Page.Behaviors>    
     
     <Grid  BackgroundColor="Transparent">
 
-        <Image x:Name="Background" Grid.Row ="1" Source="gradientsecond.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+        <Image x:Name="Background" Grid.Row ="1" Source="gradientseven.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 
         <Grid Grid.Row="0" BackgroundColor="Transparent">
             <Grid.ColumnDefinitions>
@@ -57,11 +57,11 @@
                                         Margin="25,50,25,50"
                                         Stroke="black"
                                         Grid.RowSpan="3"
-                                        BackgroundColor="#311b45"
-                                        HeightRequest="350"
+                                        BackgroundColor="Black"
+                                        HeightRequest="300"
                                         StrokeShape ="RoundRectangle 30,30,30,30"
                                         StrokeThickness="2"
-                                        WidthRequest="300">
+                                        WidthRequest="250">
                                         <Grid RowDefinitions=".2*,.6*,.2*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle
@@ -91,7 +91,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}"  Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"  Opacity=".7" Radius="20" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button 
@@ -124,12 +124,12 @@
                                     <Border
                                         Margin="25,50,25,50"
                                         Grid.RowSpan="3"
-                                        BackgroundColor="#311b45"
-                                        HeightRequest="350"
+                                        BackgroundColor="Black"
+                                        HeightRequest="300"
                                         Stroke="Black"
                                         StrokeShape ="RoundRectangle 30,30,30,30"
                                         StrokeThickness="2"
-                                        WidthRequest="300">
+                                        WidthRequest="250">
                                         <Grid RowDefinitions=".2*,.6*,.2*">
                                             <Image  Source="{Binding Image}" Grid.RowSpan="3" Aspect="Fill"/>
                                             <RoundRectangle
@@ -151,7 +151,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource ShRed}}" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}" Opacity=".7" Radius="20" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button 

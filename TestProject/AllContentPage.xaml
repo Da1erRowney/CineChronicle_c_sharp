@@ -17,7 +17,12 @@
         </Grid>
         <ScrollView>
             <StackLayout Orientation="Vertical" Padding="10">
-                <SearchBar x:Name="searchBar" Placeholder="Поиск вашего контента..." FontSize="18"  TextChanged="SearchBar_TextChanged" HorizontalOptions="CenterAndExpand" SearchButtonPressed="SearchContent" />
+                <SearchBar x:Name="searchBar" 
+                           Placeholder="Поиск вашего контента..." 
+                           FontSize="18"  
+                           TextChanged="SearchBar_TextChanged" 
+                           HorizontalOptions="CenterAndExpand" 
+                           SearchButtonPressed="SearchContent" />
                 <!--<StackLayout>
                     <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Start" >
                         <Button Text="Все" Clicked="ВсеButton_Clicked"  VerticalOptions="Start" />
@@ -43,7 +48,7 @@
                  
                 </StackLayout>-->
 
-                <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10" IsVisible="false" Margin="0,20,0,0">
+                <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10" IsVisible="false" Margin="-10,20,-10,0">
                     <Label  x:Name="SortLabel" Text="" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="20" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ВсеButton_Clicked" />
@@ -62,7 +67,12 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <Border Margin="0,25,0,25" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="250" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="250">
+                                    <Border Margin="0,25,0,25" Stroke="black" Grid.RowSpan="3" 
+                                            BackgroundColor="Black" 
+                                            HeightRequest="250" 
+                                            StrokeShape ="RoundRectangle 30,30,30,30" 
+                                            StrokeThickness="2" 
+                                            WidthRequest="250">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
                                             <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="250" WidthRequest="250" Opacity=".7">
@@ -87,7 +97,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference SortContentCollectionView}}" CommandParameter="{Binding .}"
@@ -99,24 +109,29 @@
 
                 </StackLayout>
 
-                <StackLayout x:Name="All" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="All" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="MainLabel" Text="Весь ваш контент!"  FontAttributes="Bold" VerticalOptions="Center"  FontSize="22" Margin="50,0,0,0" >
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ВесьКонтентClicked" />
                         </Label.GestureRecognizers>
                     </Label>
                     <Label Text="{Binding ContentAllall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
-                    <CollectionView Margin="0,0,0,0" x:Name="AllContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAll}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <CollectionView Margin="0,0,0,0"  x:Name="AllContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAll}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
-                    </CollectionView.ItemsLayout>
+                            <GridItemsLayout  Orientation="Horizontal" Span="2" />
+                        </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" 
+                                        BackgroundColor="Black" 
+                                        HeightRequest="150" 
+                                        StrokeShape ="RoundRectangle 30,30,30,30" 
+                                        StrokeThickness="3" 
+                                        WidthRequest="150">
                                     <Grid RowDefinitions=".2*,.6*,.3*">
                                         <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                        <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                        <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                             <RoundRectangle.Fill>
                                                 <LinearGradientBrush EndPoint="0,1">
                                                     <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -124,10 +139,9 @@
                                                 </LinearGradientBrush>
                                             </RoundRectangle.Fill>
                                         </RoundRectangle>
-                                        <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                            <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                            <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                            <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                            <Label FontSize="10" TextColor="White">
                                                 <Label.Text>
                                                     <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                         <Binding Path="LastWatchedSeason" />
@@ -138,7 +152,7 @@
                                         </VerticalStackLayout>
                                     </Grid>
                                     <Border.Shadow>
-                                        <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                        <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                     </Border.Shadow>
                                 </Border>
                                 <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference AllContentCollectionView}}" CommandParameter="{Binding .}"
@@ -149,7 +163,7 @@
                 </CollectionView>
             </StackLayout>
 
-                <StackLayout x:Name="Serial" Orientation="Vertical" Padding="10"  Margin="0,25,0,0">
+                <StackLayout x:Name="Serial" Orientation="Vertical" Padding="10"  Margin="-10,25,-10,0">
                     <Label x:Name="SerialLabel" Text="Сериалы" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="СериалыButton_Clicked" />
@@ -159,15 +173,15 @@
 
                 <CollectionView Margin="0,0,0,0" x:Name="SerialContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentSerial}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                        <GridItemsLayout  Orientation="Horizontal" Span="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -175,10 +189,9 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -189,7 +202,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference SerialContentCollectionView}}" CommandParameter="{Binding .}"
@@ -201,7 +214,7 @@
 
             </StackLayout>
 
-                <StackLayout x:Name="Anime" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="Anime" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label  x:Name="AnimeLabel" Text="Аниме" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="АнимеButton_Clicked" />
@@ -210,16 +223,17 @@
                     <Label Text="{Binding ContentAnimeall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
 
                 <CollectionView Margin="0,0,0,0" x:Name="AnimeContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentAnime}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
-                    <CollectionView.ItemsLayout >
-                        <LinearItemsLayout x:Name="AnimeC" ItemSpacing="0" Orientation="Horizontal" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
+
+                        <CollectionView.ItemsLayout >
+                            <GridItemsLayout  Orientation="Horizontal" Span="2" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -227,10 +241,9 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -241,7 +254,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference AnimeContentCollectionView}}" CommandParameter="{Binding .}"
@@ -253,7 +266,7 @@
 
             </StackLayout>
 
-                <StackLayout x:Name="Film" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="Film" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="FilmLabel" Text="Фильмы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ФильмыButton_Clicked" />
@@ -262,15 +275,15 @@
                     <Label Text="{Binding ContentFilmall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="FilmContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentFilm}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
-                    </CollectionView.ItemsLayout>
+                            <GridItemsLayout  Orientation="Horizontal" Span="2" />
+                        </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -278,21 +291,14 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
-                                                    <Label.Text>
-                                                        <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
-                                                            <Binding Path="LastWatchedSeason" />
-                                                            <Binding Path="LastWatchedSeries" />
-                                                        </MultiBinding>
-                                                    </Label.Text>
-                                                </Label>
+                                            <VerticalStackLayout Grid.Row="2" Margin="20,5,0,0">
+                                             
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference FilmContentCollectionView}}" CommandParameter="{Binding .}"
@@ -304,7 +310,7 @@
 
             </StackLayout>
 
-                <StackLayout x:Name="Dorama" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="Dorama" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="DoramaLabel" Text="Дорамы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ДорамыButton_Clicked" />
@@ -313,15 +319,15 @@
                     <Label Text="{Binding ContentDoramaall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="DoramaContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDorama}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                        <GridItemsLayout  Orientation="Horizontal" Span="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -329,10 +335,9 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -343,7 +348,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference DoramaContentCollectionView}}" CommandParameter="{Binding .}"
@@ -355,7 +360,7 @@
 
             </StackLayout>
 
-                <StackLayout x:Name="Mult" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="Mult" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="MultLabel" Text="Мультсериалы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="МультсериалыButton_Clicked" />
@@ -366,15 +371,15 @@
 
                     <CollectionView Margin="0,0,0,0" x:Name="MultContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentMult}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                        <GridItemsLayout  Orientation="Horizontal" Span="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -382,10 +387,9 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -396,7 +400,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference MultContentCollectionView}}" CommandParameter="{Binding .}"
@@ -408,7 +412,7 @@
 
             </StackLayout>
 
-                <StackLayout x:Name="Docum" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="Docum" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="DocumLabel" Text="Документалки" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ДокументалкиButton_Clicked" />
@@ -417,15 +421,15 @@
                     <Label Text="{Binding ContentDocumall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="DocumContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentDocum}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                        <GridItemsLayout  Orientation="Horizontal" Span="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -433,10 +437,9 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -447,7 +450,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference DocumContentCollectionView}}" CommandParameter="{Binding .}"
@@ -459,7 +462,7 @@
 
             </StackLayout>
 
-                <StackLayout x:Name="Other" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="Other" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="OtherLabel" Text="Прочее" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ПрочееButton_Clicked" />
@@ -468,15 +471,15 @@
                     <Label Text="{Binding ContentOtherall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="OtherContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentOther}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
-                    </CollectionView.ItemsLayout>
+                            <GridItemsLayout  Orientation="Horizontal" Span="2" />
+                        </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -484,10 +487,9 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -498,7 +500,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference OtherContentCollectionView}}" CommandParameter="{Binding .}"
@@ -510,7 +512,7 @@
 
             </StackLayout>
 
-                <StackLayout x:Name="Viewed" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="Viewed" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="ViewedLabel" Text="Просмотрено" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ПросмотреноButton_Clicked" />
@@ -519,15 +521,15 @@
                     <Label Text="{Binding ContentViewedall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="ViewedContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentViewed}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                        <GridItemsLayout  Orientation="Horizontal" Span="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -535,10 +537,9 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -549,7 +550,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference ViewedContentCollectionView}}" CommandParameter="{Binding .}"
@@ -561,7 +562,7 @@
 
             </StackLayout>
 
-                <StackLayout x:Name="Process" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="Process" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="ProcessLabel" Text="Смотрю" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ВпроцессеButton_Clicked" />
@@ -570,15 +571,15 @@
                     <Label Text="{Binding ContentProcessall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="ProcessContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentProcess}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                        <GridItemsLayout  Orientation="Horizontal" Span="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -586,10 +587,9 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -600,7 +600,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference ProcessContentCollectionView}}" CommandParameter="{Binding .}"
@@ -612,7 +612,7 @@
 
             </StackLayout>
 
-                <StackLayout x:Name="NotStart" Orientation="Vertical" Padding="10" Margin="0,25,0,0">
+                <StackLayout x:Name="NotStart" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="NotStartLabel" Text="Не начинал смотреть" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="НеначатоButton_Clicked" />
@@ -621,15 +621,15 @@
                     <Label Text="{Binding ContentNotStartall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
                 <CollectionView Margin="0,0,0,0" x:Name="NotStartContentCollectionView" Grid.Row="2" ItemsSource="{Binding ContentNotStart}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
                     <CollectionView.ItemsLayout >
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                        <GridItemsLayout  Orientation="Horizontal" Span="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="#311b45" HeightRequest="200" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="200">
+                                    <Border Margin="25,0,25,0" Stroke="black" Grid.RowSpan="3" BackgroundColor="Black" HeightRequest="150" StrokeShape ="RoundRectangle 30,30,30,30" StrokeThickness="2" WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="200" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -637,10 +637,9 @@
                                                     </LinearGradientBrush>
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
+                                            <VerticalStackLayout Grid.Row="2" Margin="15,0,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -651,7 +650,7 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                         <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="100" Offset="0,0"/>
+                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
                                         </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference NotStartContentCollectionView}}" CommandParameter="{Binding .}"

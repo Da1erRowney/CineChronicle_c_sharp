@@ -90,6 +90,9 @@
 	  <MauiXaml Update="SettingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="ViewCategoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="ViewContentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

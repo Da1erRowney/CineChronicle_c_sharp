@@ -37,6 +37,12 @@
                 <ShellContent ContentTemplate="{DataTemplate local:SettingPage}"/>
             </FlyoutItem>
 
+            <Shell.FlyoutFooter>
+                <StackLayout>
+                    <Label Text="Cine Chronicle 2024" HorizontalOptions="Center" />
+                </StackLayout>
+           </Shell.FlyoutFooter>
+
 
 
         </Shell>

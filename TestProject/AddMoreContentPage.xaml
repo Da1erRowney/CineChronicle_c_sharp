@@ -18,17 +18,17 @@
             </Grid>
 
             <VerticalStackLayout Spacing="20" Padding="20" >
-                <Label Text="На пути к успеху..." FontAttributes="Bold" FontSize="25" />
-                <Label Text="Добавьте свой контент" FontSize="18" Margin="0,-15,0,0"/>
+            <Label Text="На пути к успеху..." FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" />
+                <Label Text="Добавьте свой контент" FontSize="18" Margin="25,-15,0,0"/>
                 <!-- Поле ввода Названия -->
                 <StackLayout Orientation="Horizontal" Margin="0,50,0,0">
-                    <Label Text="Название: " FontSize="17"/>
-                    <Entry Placeholder="Введите название " x:Name="TitleEntry" Margin="5,-9,0,0" FontSize="17"/>
+                <Label Text="Название: " FontSize="17" Margin="25,0,0,0"/>
+                <Entry Placeholder="Введите название " x:Name="TitleEntry" Margin="5,-9,0,0" FontSize="17"/>
                 </StackLayout>
 
                 <!-- Выпадающий список для выбора типа -->
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Тип: " FontSize="17"/>
+                <Label Text="Тип: " FontSize="17" Margin="25,0,0,0"/>
                     <Picker Title="Нажмите" x:Name="TypePicker" Margin="5,-9,0,0" FontSize="17">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -46,20 +46,22 @@
 
                 <!-- Поле ввода для озвучки -->
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Озвучка: " FontSize="17"/>
+                <Label Text="Озвучка: " FontSize="17" Margin="25,0,0,0"/>
                     <Entry Placeholder="Введите озвучку" Margin="5,-9,0,0" x:Name="DubbingEntry" FontSize="17"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
                     <!-- Поле ввода для номера последней просмотренной серии -->
-                    <Label Text="Серия: "  VerticalOptions="Center" FontSize="17"/>
+                <Label Text="Серия: "  VerticalOptions="Center" FontSize="17" Margin="25,0,0,0"/>
                     <Entry Placeholder="Введите серию" x:Name="LastWatchedSeriesEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="17"/>
-
-                    <!-- Поле ввода для номера последнего просмотренного сезона -->
-                    <Label Text="Сезон: "  Margin="50,0,0,0" VerticalOptions="Center" FontSize="17"/>
+                </StackLayout>
+                
+                  <StackLayout Orientation="Horizontal"> 
+                <!-- Поле ввода для номера последнего просмотренного сезона -->
+                    <Label Text="Сезон: "  Margin="25,0,0,0" VerticalOptions="Center" FontSize="17" />
                     <Entry Placeholder="Введите сезон" x:Name="LastWatchedSeasonEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="17"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Ссылка на источник: " FontSize="16"/>
+                <Label Text="Ссылка на источник: " FontSize="16" Margin="25,0,0,0"/>
                     <Entry Placeholder="https://ссылка на источник" x:Name="LinkEntry" Margin="5,-9,0,0" FontSize="16"/>
                 </StackLayout>
 
@@ -67,7 +69,7 @@
 
                 <!-- Выпадающий список для выбора статуса просмотра -->
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Статус просмотра: " FontSize="17"/>
+                <Label Text="Статус просмотра: " FontSize="17" Margin="25,0,0,0"/>
                     <Picker Title="Нажмите" x:Name="WatchStatusPicker" Margin="5,-9,0,0" FontSize="17">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -80,7 +82,7 @@
                 </StackLayout>
 
                 <!-- Кнопка "Добавить" -->
-                <Button Text="Добавить" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" >
+                <Button Text="Сохранить" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" >
                     <Button.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
                     </Button.Shadow>

@@ -299,7 +299,7 @@ namespace TestProject
 
         private async void АнимеButton_Clicked(object sender, EventArgs e)
         {
-            string nameCategory = "Всё ваше аниме";
+            string nameCategory = "Всё ваше Аниме";
             ContentSort = ContentAnimeall;
             ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
             await Navigation.PushAsync(viewContentPage);
@@ -307,7 +307,7 @@ namespace TestProject
 
         private async void ФильмыButton_Clicked(object sender, EventArgs e)
         {
-            string nameCategory = "Все ваши фильмы";
+            string nameCategory = "Все ваши Фильмы";
             ContentSort = ContentFilmall;
             ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
             await Navigation.PushAsync(viewContentPage);
@@ -315,7 +315,7 @@ namespace TestProject
 
         private async void СериалыButton_Clicked(object sender, EventArgs e)
         {
-            string nameCategory = "Все ваши сериалы";
+            string nameCategory = "Все ваши Сериалы";
             ContentSort = ContentSerialall;
             ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
             await Navigation.PushAsync(viewContentPage);
@@ -323,7 +323,7 @@ namespace TestProject
 
         private async void ДорамыButton_Clicked(object sender, EventArgs e)
         {
-            string nameCategory = "Все ваши дорамы";
+            string nameCategory = "Все ваши Дорамы";
             ContentSort = ContentDoramaall;
             ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
             await Navigation.PushAsync(viewContentPage);
@@ -331,7 +331,7 @@ namespace TestProject
 
         private async void МультсериалыButton_Clicked(object sender, EventArgs e)
         {
-            string nameCategory = "Все ваши мультсериалы";
+            string nameCategory = "Все ваши Мультсериалы";
             ContentSort = ContentMultall;
             ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
             await Navigation.PushAsync(viewContentPage);
@@ -339,7 +339,7 @@ namespace TestProject
 
         private async void ДокументалкиButton_Clicked(object sender, EventArgs e)
         {
-            string nameCategory = "Все ваши документальные фильмы";
+            string nameCategory = "Все ваши Документальные фильмы";
             ContentSort = ContentDocumall;
             ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
             await Navigation.PushAsync(viewContentPage);

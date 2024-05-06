@@ -3,15 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.SettingPage"
              xmlns:local="clr-namespace:TestProject">
-    <StackLayout>
-        <Label 
-         Text="Сменить тему"/>
+    <Grid  BackgroundColor="Transparent">
 
-        <Switch 
-        x:Name="ThemeSwitch"  
-        Toggled="OnThemeToggled" />
+        <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+
+        <Grid Grid.Row="0" BackgroundColor="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
 
 
-    </StackLayout>
+        </Grid>
+
+        <VerticalStackLayout Spacing="20" Padding="20" >
+            <Label Text="Ваши настройки" FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" />
+            <Label Text="Когда-нибудь что-то будет добавлено..." FontSize="18" Margin="25,-15,0,0"/>
+
+            <StackLayout Orientation="Horizontal">
+                <Label  Text="Сменить тему" Margin="25,25,0,0" FontSize="17"/>
+                <Switch  x:Name="ThemeSwitch" Toggled="OnThemeToggled" Margin="5,16,0,0" />
+            </StackLayout>
+            <Label  HorizontalOptions="Start"
+                Text="Возможность менять тему приложения с светлой на тёмную. Лично я рекомендую dark side..." Margin="25,-30,0,0" FontSize="12"
+                    WidthRequest="250"/>
+
+
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>

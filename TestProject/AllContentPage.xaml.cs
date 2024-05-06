@@ -8,13 +8,15 @@ using Microsoft.Maui.Controls.Xaml;
 using SQLite;
 using Microsoft.Maui.Platform;
 using System.Diagnostics;
-
+using System.ComponentModel;
+using System.Windows.Input;
 
 namespace TestProject
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AllContentPage : ContentPage
-    {
+    { 
+    
         public string Choise ="All";
         public List<Content> ContentAll { get; set; }
         public List<Content> ContentSerial { get; set; }

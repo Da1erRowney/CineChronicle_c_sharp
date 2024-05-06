@@ -116,7 +116,7 @@
                                             </Picker.Style>
                                         </Picker>
                                     </StackLayout>
-                                    <StackLayout Orientation="Vertical" Margin="0,0,0,0">
+                                    <StackLayout Orientation="Vertical" Margin="0,0,0,0" x:Name="Statics">
                                         <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
                                             <Label Text="Серия:  " VerticalOptions="Center" FontSize="18"/>
                                             <Entry x:Name="LastWatchedSeriesEntry" Text="{Binding LastWatchedSeries}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0"
@@ -154,7 +154,7 @@
                                     </StackLayout>
 
                                     <!-- Озвучка -->
-                                    <StackLayout Orientation="Horizontal">
+                                    <StackLayout Orientation="Horizontal" x:Name="DubbingPo">
                                         <Label Text="Озвучка: " VerticalOptions="Center" FontSize="18"/>
                                         <Entry x:Name="DubbingEntry" Text="{Binding Dubbing}" IsReadOnly="True" VerticalOptions="Center"  Placeholder="Ваша озвучка" FontSize="18" Margin="0,3,0,0"
                                                PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}">
@@ -210,7 +210,7 @@
 
                         <!-- Статус просмотра -->
 
-                        <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
+                        <StackLayout Orientation="Horizontal" Margin="0,0,0,0" x:Name="StatusP">
                                     <Label Text="Статус просмотра: " VerticalOptions="Center" x:Name="WatchStatusLabel"  FontSize="18"/>
                                     <Entry x:Name="WatchStatusEntry" Text="{Binding WatchStatus}" IsReadOnly="True" VerticalOptions="Center"  FontSize="18" Margin="0,3,0,0"
                                             PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}"/>
@@ -298,7 +298,7 @@
                 <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="0,50,0,0">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,0">
                         <!-- Кнопка Удалить -->
-                        <Button Opacity="0.8" Text="Удалить" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18" />
+                        <Button Opacity="0.8" Text="Удалить" x:Name="DeleteButton" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18" />
 
                         <!-- Кнопка Изменить -->
                         <Button Opacity="0.8" x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18"  />

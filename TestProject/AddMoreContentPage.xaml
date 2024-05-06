@@ -50,11 +50,11 @@
                     <Entry Placeholder="Введите озвучку" Margin="5,-9,0,0" x:Name="DubbingEntry" FontSize="17"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
-                <!-- Поле ввода для номера последней просмотренной серии -->
+                    <!-- Поле ввода для номера последней просмотренной серии -->
                     <Label Text="Серия: "  VerticalOptions="Center" FontSize="17"/>
                     <Entry Placeholder="Введите серию" x:Name="LastWatchedSeriesEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="17"/>
 
-                <!-- Поле ввода для номера последнего просмотренного сезона -->
+                    <!-- Поле ввода для номера последнего просмотренного сезона -->
                     <Label Text="Сезон: "  Margin="50,0,0,0" VerticalOptions="Center" FontSize="17"/>
                     <Entry Placeholder="Введите сезон" x:Name="LastWatchedSeasonEntry" Margin="5,0,0,0" Keyboard="Numeric" FontSize="17"/>
                 </StackLayout>
@@ -82,11 +82,12 @@
                 <!-- Кнопка "Добавить" -->
                 <Button Text="Добавить" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" >
                     <Button.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
                     </Button.Shadow>
                 </Button>
 
             </VerticalStackLayout>
-        </Grid>
+
+    </Grid>
 
 </ContentPage>

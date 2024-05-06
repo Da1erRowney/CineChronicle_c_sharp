@@ -22,6 +22,7 @@ namespace TestProject
     {
         public ICommand OpenLinkCommand { get; private set; }
         private Content content;
+        private ContentRecommendation recom;
         private DateExit data;
         string videoUrl=null;
 
@@ -34,6 +35,23 @@ namespace TestProject
             BindingContext = content; // Привязываем объект Content к BindingContext страницы
             SetupLabelTappedEvents();
             OpenLinkCommand = new Command<string>(OpenLink);
+
+        }
+        public ViewContentPage(ContentRecommendation content)
+        {
+            this.recom = content;
+            InitializeComponent();
+            content.Type = recom.Type;
+            BindingContext = content; // Привязываем объект Content к BindingContext страницы
+            SetupLabelTappedEventsRecom();
+            OpenLinkCommand = new Command<string>(OpenLink);
+            Statics.IsVisible = false;
+            DubbingPo.IsVisible = false;
+            StatusP.IsVisible = false;
+            EditButton.IsVisible = false; 
+            DeleteButton.IsVisible = false;
+
+
 
         }
 
@@ -64,12 +82,15 @@ namespace TestProject
                             string firstParagraphText = firstParagraph.InnerText;
                             firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
                             DescriptionLabel.Text = firstParagraphText;
-                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                            content = databaseService.GetContentById(content.Id);
-                            content.SmallDecription = firstParagraphText;
-                            databaseService.UpdateContent(content);
-                            databaseService.CloseConnection();
+                            if (content != null)
+                            {
+                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                content = databaseService.GetContentById(content.Id);
+                                content.SmallDecription = firstParagraphText;
+                                databaseService.UpdateContent(content);
+                                databaseService.CloseConnection();
+                            }
                             //GetWikipediaImage(query+" (телесериал)");
                         }
 
@@ -184,12 +205,15 @@ namespace TestProject
                                         string firstParagraphText = firstParagrap1h.InnerText;
                                         firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
                                         DescriptionLabel.Text = firstParagraphText;
-                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                        content = databaseService.GetContentById(content.Id);
-                                        content.SmallDecription = firstParagraphText;
-                                        databaseService.UpdateContent(content);
-                                        databaseService.CloseConnection();
+                                        if (content != null)
+                                        {
+                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                            content = databaseService.GetContentById(content.Id);
+                                            content.SmallDecription = firstParagraphText;
+                                            databaseService.UpdateContent(content);
+                                            databaseService.CloseConnection();
+                                        }
                                         //GetWikipediaImage(query);
 
                                     }
@@ -223,12 +247,15 @@ namespace TestProject
                                     string firstParagraphText = firstParagrap1h.InnerText;
                                     firstParagraphText = HtmlEntity.DeEntitize(firstParagraphText);
                                     DescriptionLabel.Text = firstParagraphText;
-                                    string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                    DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                    content = databaseService.GetContentById(content.Id);
-                                    content.SmallDecription = firstParagraphText;
-                                    databaseService.UpdateContent(content);
-                                    databaseService.CloseConnection();
+                                    if (content != null)
+                                    {
+                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                        content = databaseService.GetContentById(content.Id);
+                                        content.SmallDecription = firstParagraphText;
+                                        databaseService.UpdateContent(content);
+                                        databaseService.CloseConnection();
+                                    }
                                     //GetWikipediaImage(query);
                                 }
                                 else
@@ -727,6 +754,16 @@ namespace TestProject
         //}
         public async void DataExitNextEpisod(string query)
         {
+            string type = "";
+            if (content != null)
+            {
+                type = content.Type;
+            }
+            else
+            {
+                type = recom.Type;
+            }
+
             string url = $"https://www.toramp.com/ru/search/?q={query}";
 
             using (HttpClient client = new HttpClient())
@@ -826,7 +863,7 @@ namespace TestProject
                                 NextEpisodeReleaseDateEntry.Text=$"Информация о {query} не найдена";
                             }
 
-                            if (content.Type == "Сериал" || content.Type == "Дорама" || content.Type == "Мультсериал" )
+                            if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" )
                             {
                                         HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
                                         if (imgIn != null)
@@ -843,13 +880,16 @@ namespace TestProject
                                             PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
                                             Background.Source = ImageSource.FromUri(new Uri(imageUrl));
 
-                                            // Обновляем ссылку на изображение в базе данных
-                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                            content = databaseService.GetContentById(content.Id);
-                                            content.Image = imageUrl;
-                                            databaseService.UpdateContent(content);
-                                            databaseService.CloseConnection();
+                                    // Обновляем ссылку на изображение в базе данных
+                                    if (content != null)
+                                    {
+                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                        content = databaseService.GetContentById(content.Id);
+                                        content.Image = imageUrl;
+                                        databaseService.UpdateContent(content);
+                                        databaseService.CloseConnection();
+                                    }
                                         }
                                         else
                                         {
@@ -953,7 +993,7 @@ namespace TestProject
                                     NextEpisodeReleaseDateEntry.Text = $"Информация о {query} не найдена";
                                 }
 
-                                if (content.Type == "Сериал" || content.Type == "Дорама" || content.Type == "Мультсериал")
+                                if (type == "Сериал" || type == "Дорама" || type == "Мультсериал"   )
                                 {
                                     HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
                                     if (imgIn != null)
@@ -969,14 +1009,20 @@ namespace TestProject
                                         // Устанавливаем изображение в элементы UI
                                         PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
                                         Background.Source = ImageSource.FromUri(new Uri(imageUrl));
-
-                                        // Обновляем ссылку на изображение в базе данных
-                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                        content = databaseService.GetContentById(content.Id);
-                                        content.Image = imageUrl;
-                                        databaseService.UpdateContent(content);
-                                        databaseService.CloseConnection();
+                                        if (content != null)
+                                        {
+                                            // Обновляем ссылку на изображение в базе данных
+                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                            content = databaseService.GetContentById(content.Id);
+                                            content.Image = imageUrl;
+                                            databaseService.UpdateContent(content);
+                                            databaseService.CloseConnection();
+                                        }
+                                        else
+                                        {
+                                           
+                                        }
                                     }
                                     else
                                     {
@@ -1045,6 +1091,58 @@ namespace TestProject
                 case "Мультсериал":
                     GetWikipediaInfo(title);
                    
+                    DataExitNextEpisod(title);
+                    WatchingButton.Source = "movie.png";
+                    break;
+                case "Прочее":
+                    GetWikipediaInfo(title);
+                    GetWikipediaImage(title);
+                    DataExitNextEpisod(title);
+                    WatchingButton.Source = "movie.png";
+                    break;
+                default:
+                    WatchingButton.Source = "movie.png";
+                    break;
+            }
+
+        }
+        private async void SetupLabelTappedEventsRecom()
+        {
+
+            // Вызываем метод для получения информации с Википедии при загрузке страницы
+            string title = (BindingContext as ContentRecommendation)?.Title;
+            string type = (BindingContext as ContentRecommendation)?.Type;
+            GetTrailer(title, type);
+            switch (type)
+            {
+                case "Аниме":
+                    GetAnemeGoInfo(title);
+                    GetAnimeGoImage(title);
+                    DataExitNextEpisod(title);
+                    WatchingButton.Source = "anime.png";
+                    break;
+                case "Фильм":
+                    GetWikipediaInfo(title);
+                    GetWikipediaImage(title);
+                    DataExitNextEpisod(title);
+                    WatchingButton.Source = "movie.png";
+                    break;
+                case "Сериал":
+                    GetWikipediaInfo(title);
+                    //GetWikipediaImage(title);
+                    DataExitNextEpisod(title);
+                    //GetPremierImage(title);
+                    WatchingButton.Source = "movie.png";
+                    break;
+                case "Дорама":
+                    GetWikipediaInfo(title);
+
+                    DataExitNextEpisod(title);
+                    WatchingButton.Source = "dorama.png";
+                    break;
+                case "Мультсериал":
+                    GetWikipediaInfo(title);
+
                     DataExitNextEpisod(title);
                     WatchingButton.Source = "movie.png";
                     break;

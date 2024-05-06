@@ -4,12 +4,14 @@ using SQLite;
 using DataContent;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
+using System.Windows.Input;
 
 
-namespace TestProject
-{
-    public partial class AddMoreContentPage : ContentPage
-    {
+namespace TestProject { 
+
+    public partial class AddMoreContentPage : ContentPage { 
+
         private DatabaseServiceContent _databaseService;
         public SQLiteConnection CreateDatabase(string databasePath)
         {
@@ -21,6 +23,7 @@ namespace TestProject
         public AddMoreContentPage()
         {
             InitializeComponent();
+
 
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
             _databaseService = new DatabaseServiceContent(databasePath);

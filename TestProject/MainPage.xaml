@@ -31,66 +31,7 @@
 
             <ScrollView>
                 <StackLayout>
-                    <Label Text="Рекомендуем" FontAttributes="Bold" FontSize="22"  Margin="50,20,0,0" />
-                    <Label Text="Рекомендованный вам контент"  FontSize="16"  Margin="50,0,0,-25" />
-
-
-                    <CollectionView 
-    Margin="0,50,0,0"
-    x:Name="RecentlyRecommendationCarouselView"
-    Grid.Row="2"
-    ItemsSource="{Binding ContentRecommendation}"
-    SelectionMode="Single"
-    SelectedItem="{Binding SelectedItem}">
-                        <CollectionView.ItemsLayout >
-                            <GridItemsLayout  Orientation="Vertical" Span="3" />
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Border
-                    Margin="25,0,25,0"
-                    Stroke="black"
-                    Grid.RowSpan="3"
-                    BackgroundColor="Black"
-                    HeightRequest="150"
-                    StrokeShape ="RoundRectangle 30,30,30,30"
-                    StrokeThickness="2"
-                    WidthRequest="150">
-                                        <Grid RowDefinitions=".2*,.6*,.2*">
-                                            <Image Aspect="Fill" Source="{Binding ImageUrl}" Grid.RowSpan="3" />
-                                            <RoundRectangle
-                            Grid.RowSpan ="3"
-                            CornerRadius ="30"
-                            HeightRequest="150"
-                            WidthRequest="150"
-                            Opacity=".7">
-                                                <RoundRectangle.Fill>
-                                                    <LinearGradientBrush EndPoint="0,1">
-                                                        <GradientStop Offset="0" Color="Transparent"></GradientStop>
-                                                        <GradientStop Offset="1" Color="#030005"></GradientStop>
-                                                    </LinearGradientBrush>
-                                                </RoundRectangle.Fill>
-                                            </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="10,-20,0,0">
-                                              
-                                                <Label FontSize="14" Text="{Binding Title}" TextColor="White" />
-                                                <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="10" />
-                                            </VerticalStackLayout>
-                                        </Grid>
-                                        <Border.Shadow>
-                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"  Opacity=".7" Radius="20" Offset="0,0"/>
-                                        </Border.Shadow>
-                                    </Border>
-                                    <Button 
-                    BackgroundColor="Transparent" 
-                    Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyRecommendationCarouselView}}"
-                    CommandParameter="{Binding .}"
-                    Clicked="ItemButtonClickedRecommendation"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                  
 
 
 
@@ -223,7 +164,67 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
+                    
+                    <Label Text="Рекомендуем" FontAttributes="Bold" FontSize="22"  Margin="50,0,0,0" />
+                    <Label Text="Рекомендованный вам контент"  FontSize="16"  Margin="50,0,0,-25" />
 
+
+                    <CollectionView 
+Margin="0,50,0,0"
+x:Name="RecentlyRecommendationCarouselView"
+Grid.Row="2"
+ItemsSource="{Binding ContentRecommendation}"
+SelectionMode="Single"
+SelectedItem="{Binding SelectedItem}">
+                        <CollectionView.ItemsLayout >
+                            <GridItemsLayout  Orientation="Horizontal" Span="2" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border
+                Margin="25,0,25,0"
+                Stroke="black"
+                Grid.RowSpan="3"
+                BackgroundColor="Black"
+                HeightRequest="150"
+                StrokeShape ="RoundRectangle 30,30,30,30"
+                StrokeThickness="2"
+                WidthRequest="150">
+                                        <Grid RowDefinitions=".2*,.6*,.2*">
+                                            <Image Aspect="Fill" Source="{Binding ImageUrl}" Grid.RowSpan="3" />
+                                            <RoundRectangle
+                        Grid.RowSpan ="3"
+                        CornerRadius ="30"
+                        HeightRequest="150"
+                        WidthRequest="150"
+                        Opacity=".7">
+                                                <RoundRectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="0,1">
+                                                        <GradientStop Offset="0" Color="Transparent"></GradientStop>
+                                                        <GradientStop Offset="1" Color="#030005"></GradientStop>
+                                                    </LinearGradientBrush>
+                                                </RoundRectangle.Fill>
+                                            </RoundRectangle>
+                                            <VerticalStackLayout Grid.Row="2" Margin="10,-20,0,0">
+
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor="White" />
+                                                <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="10" />
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                        <Border.Shadow>
+                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"  Opacity=".7" Radius="20" Offset="0,0"/>
+                                        </Border.Shadow>
+                                    </Border>
+                                    <Button 
+                BackgroundColor="Transparent" 
+                Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyRecommendationCarouselView}}"
+                CommandParameter="{Binding .}"
+                Clicked="ItemButtonClickedRecommendation"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </StackLayout>
             </ScrollView>
         </Grid>

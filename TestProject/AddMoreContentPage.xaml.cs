@@ -32,6 +32,46 @@ namespace TestProject {
             LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
 
         }
+        public AddMoreContentPage(ContentRecommendation data)
+        {
+            InitializeComponent();
+            TitleEntry.Text = data.Title;
+            if (data.Type == "Сериал")
+            {
+                // Найти объект элемента "Сериал" в списке элементов TypePicker
+                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == "Сериал");
+
+                // Присвоить найденный объект элемента в SelectedItem
+                TypePicker.SelectedItem = selectedType;
+            }
+            else if (data.Type == "Аниме")
+            {
+                // Найти объект элемента "Сериал" в списке элементов TypePicker
+                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == "Аниме");
+
+                // Присвоить найденный объект элемента в SelectedItem
+                TypePicker.SelectedItem = selectedType;
+            }
+            else if (data.Type == "Мультсериал")
+            {
+                // Найти объект элемента "Сериал" в списке элементов TypePicker
+                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == "Мультсериал");
+
+                // Присвоить найденный объект элемента в SelectedItem
+                TypePicker.SelectedItem = selectedType;
+            }
+            
+         
+
+
+            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+            _databaseService = new DatabaseServiceContent(databasePath);
+            SQLiteConnection connection = CreateDatabase(databasePath);
+            LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
+            LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
+
+        }
+
         private void LastWatchedSeriesEntry_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Проверяем каждый введенный символ в поле

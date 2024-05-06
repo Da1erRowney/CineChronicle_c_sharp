@@ -173,8 +173,12 @@ public string GetContentType(string title)
     if (title.Contains("(сериал)"))
         return "Сериал";
     else if (title.Contains("(аниме)"))
-        return "аниме";
-    else
+        return "Аниме";
+        else if (title.Contains("(мультсериал)" ))
+            return "Мультсериал";
+        else if ( title.Contains("(мультфильм)"))
+                return "Мультсериал";
+        else
         return "неизвестно";
 }
 

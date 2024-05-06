@@ -19,19 +19,27 @@
         <ScrollView>
     <VerticalStackLayout Margin="20">
 
-                <Entry x:Name="TitleEntry" Text="{Binding Title}" FontSize="25" IsReadOnly="True" VerticalOptions="Center" HorizontalOptions="Center" Placeholder="Название"
-                        PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}">
-                    <Entry.Style>
-                        <Style TargetType="Entry">
-                            <Style.Triggers>
-                                <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
-                                    <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Entry.Style>
-                </Entry>
-        
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                   
+                    <Entry x:Name="TitleEntry" Text="{Binding Title}" FontSize="25" IsReadOnly="True" VerticalOptions="Center" HorizontalOptions="Center" Placeholder="Название"
+           PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}">
+                        <Entry.Style>
+                            <Style TargetType="Entry">
+                                <Style.Triggers>
+                                    <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
+                                        <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Entry.Style>
+                    </Entry>
+                    <Image Source="pluscontent.png" WidthRequest="50" HeightRequest="50" Margin="5,5,0,0" x:Name="AddButton" IsVisible="false">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="ImageTapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </StackLayout>
+
                 <Border
                     Margin="25,50,25,50"
                    

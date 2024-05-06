@@ -24,7 +24,7 @@ namespace TestProject
         private Content content;
         private ContentRecommendation recom;
         private DateExit data;
-        string videoUrl=null;
+        string videoUrl = null;
 
 
 
@@ -48,8 +48,9 @@ namespace TestProject
             Statics.IsVisible = false;
             DubbingPo.IsVisible = false;
             StatusP.IsVisible = false;
-            EditButton.IsVisible = false; 
+            EditButton.IsVisible = false;
             DeleteButton.IsVisible = false;
+            AddButton.IsVisible = true;
 
 
 
@@ -262,45 +263,45 @@ namespace TestProject
                                 {
                                     var listItems = htmlDocument1.DocumentNode.SelectNodes("//div[@id='mw-content-text']//li");
 
-                                        if (listItems != null)
+                                    if (listItems != null)
+                                    {
+                                        foreach (var listItem in listItems)
                                         {
-                                            foreach (var listItem in listItems)
-                                            {
-                                                string listItemText = listItem.InnerText;
+                                            string listItemText = listItem.InnerText;
 
                                             string search = content.Type;
                                             if (search == "Сериал")
                                             {
-                                                 search = "телесериал";
+                                                search = "телесериал";
                                             }
-                                           
 
-                                                if (listItemText.Contains(search))
-                                                {
-                                                    listItemText = HtmlEntity.DeEntitize(listItemText);
-                                                    DescriptionLabel.Text = listItemText;
-                                                    string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                                    DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                                    content = databaseService.GetContentById(content.Id);
-                                                    content.SmallDecription = listItemText;
-                                                    databaseService.UpdateContent(content);
-                                                    databaseService.CloseConnection();
-                                                    return;
-                                                }
+
+                                            if (listItemText.Contains(search))
+                                            {
+                                                listItemText = HtmlEntity.DeEntitize(listItemText);
+                                                DescriptionLabel.Text = listItemText;
+                                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                                                content = databaseService.GetContentById(content.Id);
+                                                content.SmallDecription = listItemText;
+                                                databaseService.UpdateContent(content);
+                                                databaseService.CloseConnection();
+                                                return;
                                             }
                                         }
-                                        DescriptionLabel.Text = $"Информация о {query} не найдена";
-
                                     }
-                                }
+                                    DescriptionLabel.Text = $"Информация о {query} не найдена";
 
-                            
+                                }
+                            }
+
+
                             else
                             {
                                 DescriptionLabel.Text = $"Информация о {query} не найдена";
                             }
                         }
-                       
+
                     }
                 }
                 catch (Exception ex)
@@ -417,7 +418,7 @@ namespace TestProject
                             string imageUrl = imageDiv.GetAttributeValue("data-original", "");
                             // Отображаем изображение на форме
                             PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
-                            Background.Source= ImageSource.FromUri(new Uri(imageUrl));
+                            Background.Source = ImageSource.FromUri(new Uri(imageUrl));
 
                             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
 
@@ -538,7 +539,7 @@ namespace TestProject
 
         public async void GetAnemeGoInfo(string query)
         {
- 
+
             string url = "https://animego.org/search/all?q=" + query;
             string extractedText = "";
             string extractedLink = "";
@@ -613,7 +614,7 @@ namespace TestProject
                                                     databaseService.CloseConnection();
                                                 }
                                             }
-                                           
+
                                         }
                                         else
                                         {
@@ -794,7 +795,7 @@ namespace TestProject
                             // Извлечение ссылки из HTML
                             HtmlNode linkNodeIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_3']/em");
                             HtmlNode linkNodeCount = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_0']");
-                            if (linkNodeIn != null || linkNodeCount!=null)
+                            if (linkNodeIn != null || linkNodeCount != null)
                             {
                                 string exitEpisod = linkNodeIn.InnerText;
                                 string countText = linkNodeCount.InnerText.Trim();
@@ -847,8 +848,8 @@ namespace TestProject
 
                                     }
                                 }
-                            
-                            else
+
+                                else
                                 {
                                     exitEpisod = exitEpisod.Replace(".", ".");
 
@@ -860,25 +861,25 @@ namespace TestProject
                             }
                             else
                             {
-                                NextEpisodeReleaseDateEntry.Text=$"Информация о {query} не найдена";
+                                NextEpisodeReleaseDateEntry.Text = $"Информация о {query} не найдена";
                             }
 
-                            if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" )
+                            if (type == "Сериал" || type == "Дорама" || type == "Мультсериал")
                             {
-                                        HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
-                                        if (imgIn != null)
-                                        {
-                                            string imageUrl = imgIn.GetAttributeValue("src", "");
+                                HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
+                                if (imgIn != null)
+                                {
+                                    string imageUrl = imgIn.GetAttributeValue("src", "");
 
-                                            // Проверяем, содержит ли URL префикс "https://"
-                                            if (!imageUrl.StartsWith("https://"))
-                                            {
-                                                // Добавляем префикс "https://", если его нет
-                                                imageUrl = "https:" + imageUrl;
-                                            }
-                                            // Устанавливаем изображение в элементы UI
-                                            PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
-                                            Background.Source = ImageSource.FromUri(new Uri(imageUrl));
+                                    // Проверяем, содержит ли URL префикс "https://"
+                                    if (!imageUrl.StartsWith("https://"))
+                                    {
+                                        // Добавляем префикс "https://", если его нет
+                                        imageUrl = "https:" + imageUrl;
+                                    }
+                                    // Устанавливаем изображение в элементы UI
+                                    PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
+                                    Background.Source = ImageSource.FromUri(new Uri(imageUrl));
 
                                     // Обновляем ссылку на изображение в базе данных
                                     if (content != null)
@@ -890,11 +891,11 @@ namespace TestProject
                                         databaseService.UpdateContent(content);
                                         databaseService.CloseConnection();
                                     }
-                                        }
-                                        else
-                                        {
-                                            //Console.WriteLine("Изображение не найдено.");
-                                        }
+                                }
+                                else
+                                {
+                                    //Console.WriteLine("Изображение не найдено.");
+                                }
                             }
                         }
                         else
@@ -993,7 +994,7 @@ namespace TestProject
                                     NextEpisodeReleaseDateEntry.Text = $"Информация о {query} не найдена";
                                 }
 
-                                if (type == "Сериал" || type == "Дорама" || type == "Мультсериал"   )
+                                if (type == "Сериал" || type == "Дорама" || type == "Мультсериал")
                                 {
                                     HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
                                     if (imgIn != null)
@@ -1021,7 +1022,7 @@ namespace TestProject
                                         }
                                         else
                                         {
-                                           
+
                                         }
                                     }
                                     else
@@ -1084,13 +1085,13 @@ namespace TestProject
                     break;
                 case "Дорама":
                     GetWikipediaInfo(title);
-                  
+
                     DataExitNextEpisod(title);
                     WatchingButton.Source = "dorama.png";
                     break;
                 case "Мультсериал":
                     GetWikipediaInfo(title);
-                   
+
                     DataExitNextEpisod(title);
                     WatchingButton.Source = "movie.png";
                     break;
@@ -1218,7 +1219,7 @@ namespace TestProject
 
 
             DecriptionBorder.IsVisible = false;
-           
+
 
             TypePicker.IsVisible = true;
             TypePicker.SelectedItem = content.Type;
@@ -1260,10 +1261,10 @@ namespace TestProject
             TypePicker.IsVisible = false;
             WatchStatusPicker.IsVisible = false;
             DecriptionBorder.IsVisible = true;
-           
+
             TypeEntry.IsVisible = true;
             TypeLabel.IsVisible = true;
-            WatchStatusEntry.IsVisible = true; 
+            WatchStatusEntry.IsVisible = true;
             WatchStatusLabel.IsVisible = true;
 
 
@@ -1275,9 +1276,9 @@ namespace TestProject
             DubbingEntry.IsReadOnly = true;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;
-           
+
             WatchStatusEntry.IsReadOnly = true;
-          
+
 
 
             string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
@@ -1287,7 +1288,7 @@ namespace TestProject
             content = databaseService.GetContentById(content.Id);
             content.Title = TitleEntry.Text;
             content.Type = TypePicker.SelectedItem.ToString();
-            content.Dubbing=  DubbingEntry.Text;
+            content.Dubbing = DubbingEntry.Text;
             if (LastWatchedSeriesEntry.Text != content.LastWatchedSeries.ToString() || LastWatchedSeasonEntry.Text != content.LastWatchedSeason.ToString())
             {
                 DateTime currentDate = DateTime.UtcNow;
@@ -1296,7 +1297,7 @@ namespace TestProject
             }
             else
             {
-            content.SeriesChangeDate = content.SeriesChangeDate;
+                content.SeriesChangeDate = content.SeriesChangeDate;
 
             }
             switch (content.Type)
@@ -1319,12 +1320,12 @@ namespace TestProject
                 default:
                     break;
             }
-           
-            content.LastWatchedSeries =  int.Parse(LastWatchedSeriesEntry.Text);
+
+            content.LastWatchedSeries = int.Parse(LastWatchedSeriesEntry.Text);
             content.LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
 
             content.NextEpisodeReleaseDate = NextEpisodeReleaseDateEntry.Text;
-            content.WatchStatus = WatchStatusPicker.SelectedItem.ToString() ;
+            content.WatchStatus = WatchStatusPicker.SelectedItem.ToString();
             content.DateAdded = content.DateAdded;
             databaseService.UpdateContent(content);
             databaseService.CloseConnection();
@@ -1361,7 +1362,7 @@ namespace TestProject
                 LastWatchedSeasonEntry.Text = content.LastWatchedSeason.ToString();
                 NextEpisodeReleaseDateEntry.Text = content.NextEpisodeReleaseDate;
                 WatchStatusEntry.Text = content.WatchStatus;
-                
+
             }
 
             // Блокируем поля ввода
@@ -1369,11 +1370,11 @@ namespace TestProject
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
             DecriptionBorder.IsVisible = true;
-           
+
 
             ViewContent.IsVisible = true;
 
-           
+
             TypePicker.IsVisible = false;
             WatchStatusPicker.IsVisible = false;
             TrailerWebBorder.IsVisible = true;
@@ -1391,9 +1392,9 @@ namespace TestProject
             DubbingEntry.IsReadOnly = true;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;
-            
+
             WatchStatusEntry.IsReadOnly = true;
-           
+
 
         }
 
@@ -1445,6 +1446,12 @@ namespace TestProject
             content.LastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
             databaseService.UpdateContent(content);
             databaseService.CloseConnection();
+        }
+
+        private async void ImageTapped(object sender, EventArgs e)
+        {
+            AddMoreContentPage addMoreContentPage = new AddMoreContentPage(recom);
+            await Navigation.PushAsync(addMoreContentPage);
         }
     }
 

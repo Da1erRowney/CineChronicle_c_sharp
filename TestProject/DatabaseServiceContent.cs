@@ -74,6 +74,33 @@ namespace DataContent
         }
 
 
+        // Пользователь
+        public void InsertUser(User user)
+        {
+            _connection.Insert(user);
+        }
+        public User GetUsereByEmail(string title)
+        {
+            return _connection.Table<User>().FirstOrDefault(c => c.Email == title);
+        }
+
+        //Авторизованный пользователь
+        public void InsertAuth(Authorized authorized)
+        {
+            _connection.Insert(authorized);
+        }
+        public void UpdateAuth(Authorized authorized)
+        {
+            _connection.Update(authorized);
+        }
+        public Authorized GetAuthorizedByAuth(bool status)
+        {
+            return _connection.Table<Authorized>().FirstOrDefault(c => c.IsAuthenticated == status);
+        }
+        public Authorized GetAuthorizedByEmail(string status)
+        {
+            return _connection.Table<Authorized>().FirstOrDefault(c => c.Email == status);
+        }
 
     }
 

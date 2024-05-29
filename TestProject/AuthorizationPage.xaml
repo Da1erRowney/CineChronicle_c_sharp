@@ -39,6 +39,11 @@
                     <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
                 </Button.Shadow>
             </Button>
+            <Button Text="Войти" FontSize="17" Clicked="OnEntranceClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" >
+                <Button.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
+                </Button.Shadow>
+            </Button>
 
         </VerticalStackLayout>
 

@@ -87,6 +87,12 @@
 	  <MauiXaml Update="AllContentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="AuthorizationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="InformationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="SettingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

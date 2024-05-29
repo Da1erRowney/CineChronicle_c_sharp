@@ -59,13 +59,6 @@ namespace TestProject
         public Content SelectedItem { get; set; }
 
         private DatabaseServiceContent _databaseService;
-        public SQLiteConnection CreateDatabase(string databasePath)
-        {
-            SQLiteConnection connection = new SQLiteConnection(databasePath);
-            connection.CreateTable<Content>();
-            return connection;
-
-        }
 
         public AllContentPage()
         {
@@ -76,10 +69,10 @@ namespace TestProject
         public void Filling()
         {
           
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-            _databaseService = new DatabaseServiceContent(databasePath);
-            SQLiteConnection connection = CreateDatabase(databasePath);
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+ 
+            _databaseService = new DatabaseServiceContent(MainPage._databasePath);
+          
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
 
             List<Content> contents = databaseService.GetAllContent().ToList();
             ContentAll = contents.Take(8).ToList();
@@ -642,10 +635,9 @@ namespace TestProject
 
         private void SearchContent(object sender, EventArgs e)
         {
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-            _databaseService = new DatabaseServiceContent(databasePath);
-            SQLiteConnection connection = CreateDatabase(databasePath);
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+ 
+            _databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
             string searchQuery = searchBar.Text;
             if (searchQuery != "")
             {

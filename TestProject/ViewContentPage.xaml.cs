@@ -85,9 +85,8 @@ namespace TestProject
                             DescriptionLabel.Text = firstParagraphText;
                             if (content != null)
                             {
-                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                content = databaseService.GetContentById(content.Id);
+                                DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                content = databaseService.GetContentByTitle(content.Title);
                                 content.SmallDecription = firstParagraphText;
                                 databaseService.UpdateContent(content);
                                 databaseService.CloseConnection();
@@ -137,10 +136,8 @@ namespace TestProject
                                                 // Отображаем изображение на форме
                                                 PosterImage.Source = ImageSource.FromUri(new Uri(imageUrls));
                                                 Background.Source = ImageSource.FromUri(new Uri(imageUrls));
-
-                                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                                content = databaseService.GetContentById(content.Id);
+                                                DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                                content = databaseService.GetContentByTitle(content.Title);
                                                 content.Image = imageUrls;
                                                 databaseService.UpdateContent(content);
                                                 databaseService.CloseConnection();
@@ -167,9 +164,9 @@ namespace TestProject
                                         {
                                             listItemText = HtmlEntity.DeEntitize(listItemText);
                                             DescriptionLabel.Text = listItemText;
-                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                            content = databaseService.GetContentById(content.Id);
+
+                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                            content = databaseService.GetContentByTitle(content.Title);
                                             content.SmallDecription = listItemText;
                                             databaseService.UpdateContent(content);
                                             databaseService.CloseConnection();
@@ -208,9 +205,9 @@ namespace TestProject
                                         DescriptionLabel.Text = firstParagraphText;
                                         if (content != null)
                                         {
-                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                            content = databaseService.GetContentById(content.Id);
+
+                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                            content = databaseService.GetContentByTitle(content.Title);
                                             content.SmallDecription = firstParagraphText;
                                             databaseService.UpdateContent(content);
                                             databaseService.CloseConnection();
@@ -250,9 +247,9 @@ namespace TestProject
                                     DescriptionLabel.Text = firstParagraphText;
                                     if (content != null)
                                     {
-                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                        content = databaseService.GetContentById(content.Id);
+                             
+                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                        content = databaseService.GetContentByTitle(content.Title);
                                         content.SmallDecription = firstParagraphText;
                                         databaseService.UpdateContent(content);
                                         databaseService.CloseConnection();
@@ -280,9 +277,9 @@ namespace TestProject
                                             {
                                                 listItemText = HtmlEntity.DeEntitize(listItemText);
                                                 DescriptionLabel.Text = listItemText;
-                                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                                content = databaseService.GetContentById(content.Id);
+    
+                                                DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                                content = databaseService.GetContentByTitle(content.Title);
                                                 content.SmallDecription = listItemText;
                                                 databaseService.UpdateContent(content);
                                                 databaseService.CloseConnection();
@@ -420,11 +417,11 @@ namespace TestProject
                             PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
                             Background.Source = ImageSource.FromUri(new Uri(imageUrl));
 
-                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+                 
 
                             // Создаем экземпляр сервиса базы данных
-                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                            content = databaseService.GetContentById(content.Id);
+                            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                            content = databaseService.GetContentByTitle(content.Title);
                             content.Image = imageUrl;
                             databaseService.UpdateContent(content);
                             databaseService.CloseConnection();
@@ -517,9 +514,9 @@ namespace TestProject
                             PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
                             Background.Source = ImageSource.FromUri(new Uri(imageUrl));
 
-                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                            content = databaseService.GetContentById(content.Id);
+                 
+                            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                            content = databaseService.GetContentByTitle(content.Title);
                             content.Image = imageUrl;
                             databaseService.UpdateContent(content);
                             databaseService.CloseConnection();
@@ -587,9 +584,9 @@ namespace TestProject
                                                 extractedText = Regex.Replace(extractedText, "<.*?>", String.Empty);
                                                 DescriptionLabel.Text = extractedText;
 
-                                                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                                content = databaseService.GetContentById(content.Id);
+    
+                                                DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                                content = databaseService.GetContentByTitle(content.Title);
                                                 content.SmallDecription = extractedText;
                                                 databaseService.UpdateContent(content);
                                                 databaseService.CloseConnection();
@@ -606,9 +603,9 @@ namespace TestProject
                                                     extractedTexts = Regex.Replace(extractedTexts, "<.*?>", String.Empty);
                                                     DescriptionLabel.Text = extractedTexts;
 
-                                                    string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                                    DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                                    content = databaseService.GetContentById(content.Id);
+        
+                                                    DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                                    content = databaseService.GetContentByTitle(content.Title);
                                                     content.SmallDecription = extractedTexts;
                                                     databaseService.UpdateContent(content);
                                                     databaseService.CloseConnection();
@@ -828,12 +825,19 @@ namespace TestProject
                                         NextEpisodeReleaseDateEntry.Text = output;
                                         CountLabel.Text = countText;
 
-                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                             
+                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
                                         if (databaseService.GetDateByTitle(query) == null)
                                         {
-                                            var newContent = new DateExit
+                                            string email = "Note Found";
+                                            if (databaseService.GetAuthorizedByAuth(true) != null)
                                             {
+                                                var authUser = databaseService.GetAuthorizedByAuth(true);
+                                                email = authUser.Email;
+                                            }
+                                                var newContent = new DateExit
+                                            {
+                                                Email = email,
                                                 Title = query,
                                                 DateRelease = releaseDate.ToShortDateString()
                                             };
@@ -884,9 +888,9 @@ namespace TestProject
                                     // Обновляем ссылку на изображение в базе данных
                                     if (content != null)
                                     {
-                                        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                        content = databaseService.GetContentById(content.Id);
+                             
+                                        DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                        content = databaseService.GetContentByTitle(content.Title);
                                         content.Image = imageUrl;
                                         databaseService.UpdateContent(content);
                                         databaseService.CloseConnection();
@@ -956,10 +960,16 @@ namespace TestProject
                                             // Устанавливаем строку в NextEpisodeReleaseDateEntry
                                             NextEpisodeReleaseDateEntry.Text = output;
                                             CountLabel.Text = countText;
-                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+
+                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
                                             if (databaseService.GetDateByTitle(query) == null)
                                             {
+                                                string email = "Note Found";
+                                                if (databaseService.GetAuthorizedByAuth(true) != null)
+                                                {
+                                                    var authUser = databaseService.GetAuthorizedByAuth(true);
+                                                    email = authUser.Email;
+                                                }
                                                 var newContent = new DateExit
                                                 {
                                                     Title = query,
@@ -1013,9 +1023,9 @@ namespace TestProject
                                         if (content != null)
                                         {
                                             // Обновляем ссылку на изображение в базе данных
-                                            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-                                            content = databaseService.GetContentById(content.Id);
+
+                                            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                                            content = databaseService.GetContentByTitle(content.Title);
                                             content.Image = imageUrl;
                                             databaseService.UpdateContent(content);
                                             databaseService.CloseConnection();
@@ -1175,9 +1185,9 @@ namespace TestProject
 
             if (result)
             {
-                string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+     
 
-                DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+                DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
 
                 databaseService.DeleteContent(content);
 
@@ -1281,11 +1291,11 @@ namespace TestProject
 
 
 
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+ 
 
             // Создаем экземпляр сервиса базы данных
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-            content = databaseService.GetContentById(content.Id);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            content = databaseService.GetContentByTitle(content.Title);
             content.Title = TitleEntry.Text;
             content.Type = TypePicker.SelectedItem.ToString();
             content.Dubbing = DubbingEntry.Text;
@@ -1343,13 +1353,13 @@ namespace TestProject
             CancelButton.IsVisible = false; // Скрыть кнопку "Отмена"
 
             // Получаем путь к базе данных
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+ 
 
             // Создаем экземпляр сервиса базы данных
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
 
             // Получаем данные из базы данных по ID
-            content = databaseService.GetContentById(content.Id);
+            content = databaseService.GetContentByTitle(content.Title);
 
             // Проверяем наличие данных в объекте content
             if (content != null)
@@ -1416,11 +1426,10 @@ namespace TestProject
 
             var newValue = e.NewValue;
             LastWatchedSeriesEntry.Text = newValue.ToString();
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
 
             // Создаем экземпляр сервиса базы данных
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-            content = databaseService.GetContentById(content.Id);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            content = databaseService.GetContentByTitle(content.Title);
             DateTime currentDate = DateTime.UtcNow;
             DateTime newDate = currentDate.AddHours(+3);
 
@@ -1435,11 +1444,10 @@ namespace TestProject
         {
             var newValue = e.NewValue;
             LastWatchedSeasonEntry.Text = newValue.ToString();
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
 
             // Создаем экземпляр сервиса базы данных
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
-            content = databaseService.GetContentById(content.Id);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            content = databaseService.GetContentByTitle(content.Title);
             DateTime currentDate = DateTime.UtcNow;
             DateTime newDate = currentDate.AddHours(+3);
             content.SeriesChangeDate = newDate.ToString("yyyy-MM-dd HH:mm:ss");

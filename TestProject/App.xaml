@@ -30,7 +30,7 @@
             </FlyoutItem>
 
             <FlyoutItem x:Name="Information" Title="Информация" Icon="{AppThemeBinding Light='information_page_dark.svg', Dark='information_page_light.svg'}">
-                <ShellContent ContentTemplate="{DataTemplate local:AddMoreContentPage}"/>
+                <ShellContent ContentTemplate="{DataTemplate local:InformationPage}"/>
             </FlyoutItem>
 
             <FlyoutItem x:Name="Setting" Title="Настройки" Icon="{AppThemeBinding Light='setting_page_dark.svg', Dark='setting_page_light.svg'}">

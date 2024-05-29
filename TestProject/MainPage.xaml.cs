@@ -22,25 +22,19 @@ public partial class MainPage : ContentPage
 {
     private List<ContentRecommendation> ContentRecommendation = new List<ContentRecommendation>();
     private DatabaseServiceContent _databaseService;
+    public static readonly string _databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
     public List<Content> ContentAdded { get; set; }
     public List<Content> ContentChange { get; set; }
     public Content SelectedItem { get; set; }
-    public SQLiteConnection CreateDatabase(string databasePath)
-    {
-        SQLiteConnection connection = new SQLiteConnection(databasePath);
-        connection.CreateTable<Content>();
-        connection.CreateTable<DateExit>();
-        return connection;
-
-    }
+ 
     public MainPage()
     {
         InitializeComponent();
 
-        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-        _databaseService = new DatabaseServiceContent(databasePath);
-        SQLiteConnection connection = CreateDatabase(databasePath);
-        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+        
+        _databaseService = new DatabaseServiceContent(_databasePath);
+        _databaseService.CreateTables();
+        DatabaseServiceContent databaseService = new DatabaseServiceContent(_databasePath);
 
         // Получаем все элементы контента и сортируем их по дате добавления
         List<Content> allContent = databaseService.GetAllContent().OrderByDescending(c => c.DateAdded).ToList();
@@ -74,10 +68,8 @@ public partial class MainPage : ContentPage
             // Добавляем созданный контент в базу данных
             _databaseService.InsertContent(emptyContent);
 
-             databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-            _databaseService = new DatabaseServiceContent(databasePath);
-             connection = CreateDatabase(databasePath);
-             databaseService = new DatabaseServiceContent(databasePath);
+            _databaseService = new DatabaseServiceContent(_databasePath);
+             databaseService = new DatabaseServiceContent(_databasePath);
 
             // Получаем все элементы контента и сортируем их по дате добавления
             allContent = databaseService.GetAllContent().OrderByDescending(c => c.DateAdded).ToList();
@@ -198,9 +190,9 @@ private async void OnItemSelected(Content item, int selectedIndex)
         else
         {
             await Navigation.PushAsync(new AddMoreContentPage());
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+            
 
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(_databasePath);
 
             databaseService.DeleteContent(selectedContent);
 
@@ -233,9 +225,9 @@ private async void OnItemSelected(Content item, int selectedIndex)
 
     private void DisplayListAdded()
     {
-        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-        _databaseService = new DatabaseServiceContent(databasePath);
-        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+        
+        _databaseService = new DatabaseServiceContent(_databasePath);
+        DatabaseServiceContent databaseService = new DatabaseServiceContent(_databasePath);
         List<Content> allContent = databaseService.GetAllContent().OrderByDescending(c => c.DateAdded).ToList();
         ContentAdded = allContent.Take(5).ToList();
         BindingContext = this;
@@ -243,9 +235,9 @@ private async void OnItemSelected(Content item, int selectedIndex)
     }
     private void DisplayListChange()
     {
-        string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-        _databaseService = new DatabaseServiceContent(databasePath);
-        DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+        
+        _databaseService = new DatabaseServiceContent(_databasePath);
+        DatabaseServiceContent databaseService = new DatabaseServiceContent(_databasePath);
         List<Content> allContentSecond = databaseService.GetAllContent().OrderByDescending(c => c.SeriesChangeDate).ToList();
         ContentChange = allContentSecond.Take(5).ToList();
         BindingContext = this;
@@ -276,9 +268,9 @@ private async void OnItemSelected(Content item, int selectedIndex)
         else
         {
             await Navigation.PushAsync(new AddMoreContentPage());
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+            
 
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(databasePath);
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(_databasePath);
 
             databaseService.DeleteContent(selectedContent);
 

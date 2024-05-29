@@ -8,9 +8,9 @@ namespace DataContent
     {
         private SQLiteConnection _connection;
 
-        public DatabaseServiceContent(string databasePath)
+        public DatabaseServiceContent(string _databasePath)
         {
-            _connection = new SQLiteConnection(databasePath);
+            _connection = new SQLiteConnection(_databasePath);
         }
 
         public void CreateTables()

@@ -13,21 +13,14 @@ namespace TestProject {
     public partial class AddMoreContentPage : ContentPage { 
 
         private DatabaseServiceContent _databaseService;
-        public SQLiteConnection CreateDatabase(string databasePath)
-        {
-            SQLiteConnection connection = new SQLiteConnection(databasePath);
-            connection.CreateTable<Content>();
-            return connection;
-        }
 
         public AddMoreContentPage()
         {
             InitializeComponent();
 
 
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-            _databaseService = new DatabaseServiceContent(databasePath);
-            SQLiteConnection connection = CreateDatabase(databasePath);
+            
+            _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
             LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
 
@@ -64,9 +57,8 @@ namespace TestProject {
          
 
 
-            string databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
-            _databaseService = new DatabaseServiceContent(databasePath);
-            SQLiteConnection connection = CreateDatabase(databasePath);
+            
+            _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
             LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
 

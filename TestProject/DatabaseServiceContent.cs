@@ -12,7 +12,7 @@ namespace DataContent
         {
             _connection = new SQLiteConnection(_databasePath);
         }
-
+        //Таблицы
         public void CreateTables()
         {
             _connection.CreateTable<Content>();
@@ -21,9 +21,17 @@ namespace DataContent
             _connection.CreateTable<Authorized>();
             _connection.CreateTable<UserSettings>();
         }
+        public void CloseConnection()
+        {
+            _connection?.Close();
+        }
+        public void DeleteTable() 
+        { 
+            _connection.DropTable<User>();
+            _connection.DropTable<Authorized>();
+        }
 
-       
-
+        //Контент
         public void InsertContent(Content content)
         {
             _connection.Insert(content);
@@ -48,12 +56,6 @@ namespace DataContent
         {
             return _connection.Table<Content>().ToList();
         }
-
-        public void CloseConnection()
-        {
-            _connection?.Close();
-        }
-
 
         public void InsertDate(DateExit data)
         {
@@ -86,6 +88,10 @@ namespace DataContent
         public void UpdateUser(User user)
         {
             _connection.Update(user);
+        }
+        public List<User> GetAllUser()
+        {
+            return _connection.Table<User>().ToList();
         }
 
 

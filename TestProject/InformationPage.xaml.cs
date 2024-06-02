@@ -9,9 +9,10 @@ public partial class InformationPage : ContentPage
 	{
 		InitializeComponent();
         CheckedAuthUser();
+
     }
 
-    public void CheckedAuthUser()
+    public async void CheckedAuthUser()
     {
         DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
         if (databaseService.GetAuthorizedByAuth(true) != null)

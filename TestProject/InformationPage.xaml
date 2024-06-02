@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TestProject.InformationPage"
-             Title="InformationPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            x:Name="Email"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Text="Click" Clicked="AuthButton_Clicked"/>
+             x:Class="TestProject.InformationPage">
+    <Grid  BackgroundColor="Transparent">
 
-    </VerticalStackLayout>
+        <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+
+        <Grid Grid.Row="0" BackgroundColor="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+        </Grid>
+        
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="0" >
+                        <Label Text="Предания Странствующего..." FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" x:Name="TitlePage"/>
+                        <Label Text="Информация о вашем аккаунте" FontSize="18" Margin="25,-15,0,0"/>
+                
+                <Border MinimumWidthRequest="400" HeightRequest="300" StrokeShape ="RoundRectangle 30,30,30,30" Margin="0,25,0,0" Opacity="0.9">
+                    <StackLayout >
+                        <Frame HasShadow="True" CornerRadius="50" Margin="0,10,0,10" HeightRequest="100" WidthRequest="100">
+                            <Image Aspect="Fill" x:Name="imageIcon" WidthRequest="100" HeightRequest="100"/>
+                        </Frame>
+                        <Label  Text="Аккаунт пользователя" FontSize="20" Margin="0,0,0,0" HorizontalOptions="Center"/>
+                        <Label  x:Name="EmailName" FontSize="17" Margin="0,0,0,0" HorizontalOptions="Center"/>
+                        <Button FontSize="17" x:Name="ButtonAuth" Text="Сменить аккаунт" Clicked="AuthButton_Clicked" WidthRequest="200" HorizontalOptions="FillAndExpand" Margin="0,25,0,0" >
+                            <Button.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
+                            </Button.Shadow>
+                        </Button>
+                    </StackLayout>
+                </Border>
+
+                
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+    
 </ContentPage>

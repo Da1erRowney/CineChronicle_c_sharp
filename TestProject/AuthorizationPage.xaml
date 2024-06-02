@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TestProject.AuthorizationPage"
-             Title="AuthorizationPage">
+             x:Class="TestProject.AuthorizationPage">
     <Grid  BackgroundColor="Transparent">
 
         <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
@@ -12,40 +11,153 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
-
-
         </Grid>
-
-        <VerticalStackLayout Spacing="20" Padding="20" >
-            <Label Text="Начни новую жизнь с нового аккаунта..." FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" />
+        
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="20" >
+            <Label Text="Мы вас ждали хозяин..." FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" x:Name="TitlePage"/>
             <Label Text="Управление аккаунтом" FontSize="18" Margin="25,-15,0,0"/>
-            <!-- Поле ввода Названия -->
-            <StackLayout Orientation="Horizontal" Margin="0,50,0,0">
-                <Label Text="Почта: " FontSize="17" Margin="25,0,0,0"/>
-                <Entry Placeholder="cinechronicle@gmail.com" x:Name="EmailEntry" Margin="5,-9,0,0" FontSize="17"/>
-            </StackLayout>
+            <Border 
+                Margin="0,100,0,0"
+                Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                x:Name="EntranceBorder"
+                HeightRequest="600"
+                Grid.RowSpan="3"
+                StrokeShape ="RoundRectangle 30,30,30,30"
+                StrokeThickness="2">
+                
+                <StackLayout Orientation="Vertical">
+                    <Label Text="Вход в аккаунт" FontAttributes="Bold" FontSize="25" Margin="50,25,0,0" />
+                        <!-- Поле ввода Почты -->
+                <StackLayout Orientation="Horizontal" Margin="50,50,0,0">
+                   
+                        <Border Margin="0,0,0,0"
+                            Stroke="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                            MinimumWidthRequest="300"
+                            HeightRequest="50"
+                            Grid.RowSpan="3"
+                            StrokeShape ="RoundRectangle 30,30,30,30"
+                            StrokeThickness="2">
+                            <Entry Placeholder="Введите почту" x:Name="EmailEntry" Margin="15,0,0,0" FontSize="17" PlaceholderColor="Gray"/>
+                        </Border>
 
-            <!-- Поле ввода для озвучки -->
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Пароль: " FontSize="17" Margin="25,0,0,0"/>
-                <Entry Placeholder="Введите пароль" Margin="5,-9,0,0" x:Name="PasswordEntry" FontSize="17"/>
-            </StackLayout>
+                    </StackLayout>
+
+                <!-- Поле ввода для Пароля -->
+                <StackLayout Orientation="Horizontal" Margin="50,25,0,0">
+             
+                        <Border Margin="0,0,0,0"
+                                Stroke="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                                MinimumWidthRequest="300"
+                                HeightRequest="50"
+                                Grid.RowSpan="3"
+                                StrokeShape ="RoundRectangle 30,30,30,30"
+                                StrokeThickness="2">
+                                <Entry Placeholder="Введите пароль" Margin="15,0,0,0" x:Name="PasswordEntry" FontSize="17" PlaceholderColor="Gray"/>
+                        </Border>
+                    </StackLayout>
+
+                        <Label Text="Забыли свой пароль?" FontSize="17" HorizontalOptions="Center" Margin="100,25,0,0">
+                            <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    
+                        <Button Text="Войти" FontSize="17" Clicked="OnEntranceClicked" HorizontalOptions="FillAndExpand"  WidthRequest="300" Margin="0,50,0,0" >
+                    <Button.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
+                    </Button.Shadow>
+                </Button>
+                    <StackLayout Orientation="Horizontal" Margin="70,50,0,0">
+                        <Label Text="У вас нет аккаунта? " FontSize="17" Margin="0,0,0,0" HorizontalOptions="Center" TextColor="DimGray"/>
+                        <Label Text="Создать" FontSize="17" Margin="10,0,0,0" HorizontalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCreateTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        
+                        <!-- Кнопка "Добавить" -->
+                        <!--<Button Text="Создать" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150"  Margin="5,-9,0,0" >
+                            <Button.Shadow>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
+                            </Button.Shadow>
+                        </Button>-->
+
+                    </StackLayout>
+                </StackLayout>
+                
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
+                </Border.Shadow>
+            </Border>
+
+                <StackLayout x:Name="CreateLayout"  IsVisible="false">
+                <Border 
+                    Margin="0,100,0,0"
+                    Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                    x:Name="CreateBorder"
+                   
+                    HeightRequest="450"
+                    Grid.RowSpan="3"
+                    StrokeShape ="RoundRectangle 30,30,30,30"
+                    StrokeThickness="2">
 
 
-            <!-- Кнопка "Добавить" -->
-            <Button Text="Сохранить" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" >
-                <Button.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
-                </Button.Shadow>
-            </Button>
-            <Button Text="Войти" FontSize="17" Clicked="OnEntranceClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" >
-                <Button.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
-                </Button.Shadow>
-            </Button>
 
-        </VerticalStackLayout>
+                <StackLayout Orientation="Vertical">
+                        <Label Text="Создание аккаунта" FontAttributes="Bold" FontSize="25" Margin="50,25,0,0" />
+                        <StackLayout Orientation="Horizontal" Margin="50,50,0,0">
+                            <Border Margin="0,0,0,0"
+                            Stroke="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                            MinimumWidthRequest="300"
+                            HeightRequest="50"
+                            Grid.RowSpan="3"
+                            StrokeShape ="RoundRectangle 30,30,30,30"
+                            StrokeThickness="2">
+                                    <Entry Placeholder="Введите почту" x:Name="Email1Entry" Margin="15,0,0,0" FontSize="17" PlaceholderColor="Gray"/>
+                                
+                        </Border>
 
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Margin="50,25,0,0">
+
+                        <Border Margin="0,0,0,0"
+                            Stroke="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                            MinimumWidthRequest="300"
+                            HeightRequest="50"
+                            Grid.RowSpan="3"
+                            StrokeShape ="RoundRectangle 30,30,30,30"
+                            StrokeThickness="2">
+                                    <Entry Placeholder="Введите пароль" Margin="15,0,0,0" x:Name="Password1Entry" FontSize="17" PlaceholderColor="Gray"/>
+                        </Border>
+                    </StackLayout>
+
+
+                    <Button Text="Создать" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="300" Margin="0,50,0,0" >
+                        <Button.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
+                        </Button.Shadow>
+                    </Button>
+                    
+                    <StackLayout Orientation="Horizontal" Margin="130,50,0,0">
+                       
+                        <Label Text="Вернуться к входу" FontSize="17" Margin="0,0,0,0" HorizontalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnReturnTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
+                </Border.Shadow>
+            </Border>
+                </StackLayout>
+
+
+            </VerticalStackLayout>
+</ScrollView>
     </Grid>
 </ContentPage>

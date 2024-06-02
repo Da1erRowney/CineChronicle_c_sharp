@@ -83,6 +83,11 @@ namespace DataContent
         {
             return _connection.Table<User>().FirstOrDefault(c => c.Email == title);
         }
+        public void UpdateUser(User user)
+        {
+            _connection.Update(user);
+        }
+
 
         //Авторизованный пользователь
         public void InsertAuth(Authorized authorized)
@@ -97,9 +102,9 @@ namespace DataContent
         {
             return _connection.Table<Authorized>().FirstOrDefault(c => c.IsAuthenticated == status);
         }
-        public Authorized GetAuthorizedByEmail(string status)
+        public Authorized GetAuthorizedByEmail(string email)
         {
-            return _connection.Table<Authorized>().FirstOrDefault(c => c.Email == status);
+            return _connection.Table<Authorized>().FirstOrDefault(c => c.Email == email);
         }
 
     }

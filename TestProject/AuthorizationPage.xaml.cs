@@ -1,4 +1,5 @@
 using DataContent;
+
 using System.Text.RegularExpressions;
 
 namespace TestProject;
@@ -9,9 +10,20 @@ public partial class AuthorizationPage : ContentPage
     public AuthorizationPage()
 	{
 		InitializeComponent();
-
-
+        CheckedAuthUser();
     }
+
+    public async void CheckedAuthUser()
+    {
+        DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+        if (databaseService.GetAuthorizedByAuth(true) != null)
+        {
+            var authUser = databaseService.GetAuthorizedByAuth(true);
+            string userName = authUser.Email;
+
+        }
+    }
+
     private async void OnAddClicked(object sender, EventArgs e)
     {
         DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
@@ -95,7 +107,25 @@ public partial class AuthorizationPage : ContentPage
 
             databaseService.UpdateAuth(newAuthUser);
             await DisplayAlert("Успех", "Вы успешно вошли в аккаунт", "OK");
-            await Navigation.PushAsync(new InformationPage());
+            InformationPage informationPage = new InformationPage();
+            await Navigation.PushAsync(informationPage);
+
+            //await Navigation.PopModalAsync();
+            //await informationPage.CheckedAuthUser();
+
+        }
+        else
+        {
+            var newAuthUser = databaseService.GetAuthorizedByEmail(email);
+            newAuthUser.IsAuthenticated = true;
+
+            databaseService.UpdateAuth(newAuthUser);
+            await DisplayAlert("Успех", "Вы успешно вошли в аккаунт", "OK");
+            InformationPage informationPage = new InformationPage();
+            await Navigation.PushAsync(informationPage);
+
+            //await Navigation.PopModalAsync();
+            //await informationPage.CheckedAuthUser();
         }
     }
     public static bool ValidateEmail(string email)
@@ -114,8 +144,8 @@ public partial class AuthorizationPage : ContentPage
 
     private void OnCreateTapped(object sender, EventArgs e)
     {
-        TitlePage.Text = "Начни новую жизнь с нового аккаунта...";
-        CreateLayout.IsVisible = true; //То бишь тут я отображаю свой border для создания
+        TitlePage.Text = "Начни жизнь с нового аккаунта...";
+        CreateLayout.IsVisible = true;
         EntranceBorder.IsVisible = false;
      
     }

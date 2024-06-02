@@ -53,8 +53,8 @@
                                 Grid.RowSpan="3"
                                 StrokeShape ="RoundRectangle 30,30,30,30"
                                 StrokeThickness="2">
-                                <Entry Placeholder="Введите пароль" Margin="15,0,0,0" x:Name="PasswordEntry" FontSize="17" PlaceholderColor="Gray"/>
-                        </Border>
+                                <Entry Placeholder="Введите пароль" Margin="15,0,0,0" x:Name="PasswordEntry" FontSize="17" PlaceholderColor="Gray" IsPassword="true" />
+                            </Border>
                     </StackLayout>
 
                         <Label Text="Забыли свой пароль?" FontSize="17" HorizontalOptions="Center" Margin="100,25,0,0">

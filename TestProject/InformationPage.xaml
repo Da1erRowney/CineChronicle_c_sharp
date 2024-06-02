@@ -30,10 +30,31 @@
                             <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1" Radius="50" Offset="0,0"/>
                             </Button.Shadow>
                         </Button>
+                        <Button FontSize="17" x:Name="ButtonExit" Text="Выйти из аккаунта" Clicked="ExitAccountButton_Clicked" WidthRequest="150" HorizontalOptions="FillAndExpand" Margin="0,15,0,0" IsVisible="false" >
+                            
+                            <Button.Shadow>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1" Radius="50" Offset="0,0"/>
+                            </Button.Shadow>
+                        </Button>
+                    </StackLayout>
+                </Border>
+                
+                <Border MinimumWidthRequest="600" MinimumHeightRequest="300" StrokeShape ="RoundRectangle 30,30,30,30" Margin="0,25,0,0" Opacity="0.9">
+                    <StackLayout >
+                        <Label Text="Ваша информация" FontAttributes="Bold" FontSize="25" Margin="50,25,0,0"/>
+                        
+                        <StackLayout Orientation="Vertical" x:Name="InformationLayout" IsVisible="false">
+                            <Label Text="Информация об аккаунте временно не доступна. Приносим свои извинения" FontSize="17" Margin="50,25,0,0"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Vertical" x:Name="NoteAuthAccountLayout" IsVisible="false">
+                            <Label Text="Информация доступна только авторизованным пользователям" FontSize="17" Margin="50,25,0,0"/>
+                            <Label Text="Извините, но информация об аккаунте доступна только для авторизованных пользователей. Пожалуйста, выполните вход или зарегистрируйтесь, чтобы получить доступ к этому разделу." FontSize="17" Margin="50,10,0,0"/>
+                        </StackLayout>
+                        
                     </StackLayout>
                 </Border>
 
-                
 
             </VerticalStackLayout>
         </ScrollView>

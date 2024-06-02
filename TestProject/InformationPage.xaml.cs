@@ -1,3 +1,4 @@
+#pragma warning disable CS4008
 using DataContent;
 using System.Net;
 
@@ -9,10 +10,10 @@ public partial class InformationPage : ContentPage
 	{
 		InitializeComponent();
         CheckedAuthUser();
-
     }
 
-    public async void CheckedAuthUser()
+
+    public async Task CheckedAuthUser()
     {
         DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
         if (databaseService.GetAuthorizedByAuth(true) != null)
@@ -30,11 +31,18 @@ public partial class InformationPage : ContentPage
             ButtonAuth.WidthRequest = 200;
             var getIcon = databaseService.GetUsereByEmail(authUser.Email);
             imageIcon.Source = getIcon.NameIcon;
+            InformationLayout.IsVisible = true;
+            ButtonExit.IsVisible = true;
+            NoteAuthAccountLayout.IsVisible = false;
 
         }
         else
         {
+            InformationLayout.IsVisible = false;
             EmailName.Text = "Пользователь отсутствует";
+            NoteAuthAccountLayout.IsVisible = true;
+            imageIcon.Source  = "";
+            ButtonExit.IsVisible = false;
             ButtonAuth.Text = "Авторизация";
             ButtonAuth.WidthRequest = 150;
         }
@@ -46,4 +54,16 @@ public partial class InformationPage : ContentPage
 
         await Navigation.PushAsync(authorization);
     }
+
+    private async void ExitAccountButton_Clicked(object sender, EventArgs e)
+    {
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            var authUser = databaseService.GetAuthorizedByAuth(true);
+            authUser.IsAuthenticated = false;
+            databaseService.UpdateAuth(authUser);
+            CheckedAuthUser();
+            //await Navigation.PushAsync(new InformationPage());
+
+    }
+
 }

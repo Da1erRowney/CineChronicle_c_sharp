@@ -108,4 +108,10 @@
 	  <Folder Include="Page\" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows10.0.19041.0'">
+	  <PackageReference Include="Catel.MVVM">
+	    <Version>6.0.3</Version>
+	  </PackageReference>
+	</ItemGroup>
+
 </Project>

@@ -71,8 +71,8 @@ public partial class AuthorizationPage : ContentPage
             await DisplayAlert("Ошибка", "Не все поля заполнены", "OK");
             return;
         }
-        string email = Email1Entry.Text.ToLower().TrimEnd();
-        if (databaseService.GetUsereByEmail(email).Email != null)
+        string email = EmailEntry.Text.ToLower().TrimEnd();
+        if (databaseService.GetUsereByEmail(email) == null)
         {
             await DisplayAlert("Ошибка", "Введенной почты не существует", "Ок");
             return;

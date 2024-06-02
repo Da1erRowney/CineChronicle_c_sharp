@@ -20,16 +20,28 @@
         <VerticalStackLayout Spacing="20" Padding="20" >
             <Label Text="Ваши настройки" FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" />
             <Label Text="Когда-нибудь что-то будет добавлено..." FontSize="18" Margin="25,-15,0,0"/>
-
-            <StackLayout Orientation="Horizontal">
+            <Border 
+                Margin="0,25,0,0"
+                Opacity="0.9"
+                Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                x:Name="EntranceBorder"
+                            MinimumHeightRequest="150"
+                Grid.RowSpan="3"
+                StrokeShape ="RoundRectangle 30,30,30,30"
+                StrokeThickness="2">
+                <StackLayout>
+                <StackLayout Orientation="Horizontal">
                 <Label  Text="Сменить тему" Margin="25,25,0,0" FontSize="17"/>
                 <Switch  x:Name="ThemeSwitch" Toggled="OnThemeToggled" Margin="5,16,0,0" />
             </StackLayout>
             <Label  HorizontalOptions="Start"
-                Text="Возможность менять тему приложения с светлой на тёмную. Лично я рекомендую dark side..." Margin="25,-30,0,0" FontSize="12"
+                Text="Возможность менять тему приложения с светлой на тёмную. Лично я рекомендую dark side..." Margin="25,-15,0,0" FontSize="12"
                     WidthRequest="250"/>
-
-
+                </StackLayout>
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
+                </Border.Shadow>
+            </Border>
         </VerticalStackLayout>
     </Grid>
 </ContentPage>

@@ -34,7 +34,7 @@ public partial class InformationPage : ContentPage
         }
         else
         {
-            EmailName.Text = "Пользователь отсутсвует";
+            EmailName.Text = "Пользователь отсутствует";
             ButtonAuth.Text = "Авторизация";
             ButtonAuth.WidthRequest = 150;
         }

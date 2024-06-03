@@ -16,7 +16,7 @@
 
 
             </Grid>
-
+        <ScrollView>
             <VerticalStackLayout Spacing="20" Padding="20" >
             <Label Text="На пути к успеху..." FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" />
                 <Label Text="Добавьте свой контент" FontSize="18" Margin="25,-15,0,0"/>
@@ -105,7 +105,7 @@
                 </Border.Shadow>
             </Border>
         </VerticalStackLayout>
-
+        </ScrollView>
     </Grid>
 
 </ContentPage>

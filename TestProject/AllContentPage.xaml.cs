@@ -251,7 +251,7 @@ namespace TestProject
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            Filling();
+            //Filling();
         }
         private void VisibleFalse()
         {

@@ -31,7 +31,7 @@
 
             <ScrollView>
                 <StackLayout>
-
+                    <StackLayout x:Name="MobilePhoneRec">
                     <Label Text="Рекомендованный контент" FontAttributes="Bold" FontSize="22"  Margin="25,0,0,0" />
                     <Label Text="Самое популярное на этой неделе"  FontSize="16"  Margin="25,0,0,-25" />
 
@@ -92,7 +92,7 @@ SelectedItem="{Binding SelectedItem}">
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-
+                    </StackLayout>
 
                     <Label Text="Недавно просмотренные" FontAttributes="Bold" FontSize="22"  Margin="25,20,0,0" />
                     <Label Text="Контент, в котором вы обновляли серию"  FontSize="16"  Margin="25,0,0,-25" />

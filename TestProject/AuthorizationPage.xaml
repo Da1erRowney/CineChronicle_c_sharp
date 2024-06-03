@@ -15,7 +15,7 @@
         
         <ScrollView>
             <VerticalStackLayout Spacing="20" Padding="20" >
-            <Label Text="Мы вас ждали хозяин..." FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" x:Name="TitlePage"/>
+            <Label Text="Мы вас ждали путник..." FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" x:Name="TitlePage"/>
             <Label Text="Управление аккаунтом" FontSize="18" Margin="25,-15,0,0"/>
             <Border 
                 Margin="0,100,0,0"

@@ -41,7 +41,7 @@ public partial class InformationPage : ContentPage
             InformationLayout.IsVisible = false;
             EmailName.Text = "Пользователь отсутствует";
             NoteAuthAccountLayout.IsVisible = true;
-            imageIcon.Source  = "";
+            imageIcon.Source  = "nonicon.png";
             ButtonExit.IsVisible = false;
             ButtonAuth.Text = "Авторизация";
             ButtonAuth.WidthRequest = 150;
@@ -50,9 +50,9 @@ public partial class InformationPage : ContentPage
 
     private async void AuthButton_Clicked(object sender, EventArgs e)
     {
-        AuthorizationPage authorization = new AuthorizationPage();
-
-        await Navigation.PushAsync(authorization);
+        var currentInformationPage = this;
+        var authorization = new AuthorizationPage(currentInformationPage);
+        await Navigation.PushModalAsync(authorization);
     }
 
     private async void ExitAccountButton_Clicked(object sender, EventArgs e)

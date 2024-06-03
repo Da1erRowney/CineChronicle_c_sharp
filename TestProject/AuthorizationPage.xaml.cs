@@ -6,11 +6,16 @@ namespace TestProject;
 
 public partial class AuthorizationPage : ContentPage
 {
-
+    private readonly InformationPage _informationPage;
     public AuthorizationPage()
 	{
 		InitializeComponent();
         CheckedAuthUser();
+    }
+    public AuthorizationPage(InformationPage informationPage)
+    {
+        InitializeComponent();
+        _informationPage = informationPage;
     }
 
     public async void CheckedAuthUser()
@@ -70,10 +75,18 @@ public partial class AuthorizationPage : ContentPage
 
         databaseService.InsertAuth(authenticated);
         await DisplayAlert("Успех", "Аккаунт создан, вы успешно вошли в аккаунт", "OK");
-        await Navigation.PushAsync(new InformationPage());
+
+        ReturnAfterAuth();
     }
 
-  
+    private async void ReturnAfterAuth()
+    {
+        //InformationPage informationPage = new InformationPage();
+        //await Navigation.PushAsync(informationPage);
+        await _informationPage.CheckedAuthUser();
+        await Navigation.PopModalAsync();
+
+    }
     private async void OnEntranceClicked(object sender, EventArgs e)
     {
 
@@ -107,11 +120,8 @@ public partial class AuthorizationPage : ContentPage
 
             databaseService.UpdateAuth(newAuthUser);
             await DisplayAlert("Успех", "Вы успешно вошли в аккаунт", "OK");
-            InformationPage informationPage = new InformationPage();
-            await Navigation.PushAsync(informationPage);
 
-            //await Navigation.PopModalAsync();
-            //await informationPage.CheckedAuthUser();
+            ReturnAfterAuth();
 
         }
         else
@@ -121,11 +131,8 @@ public partial class AuthorizationPage : ContentPage
 
             databaseService.UpdateAuth(newAuthUser);
             await DisplayAlert("Успех", "Вы успешно вошли в аккаунт", "OK");
-            InformationPage informationPage = new InformationPage();
-            await Navigation.PushAsync(informationPage);
 
-            //await Navigation.PopModalAsync();
-            //await informationPage.CheckedAuthUser();
+            ReturnAfterAuth();
         }
     }
     public static bool ValidateEmail(string email)
@@ -152,7 +159,7 @@ public partial class AuthorizationPage : ContentPage
 
     private void OnReturnTapped(object sender, EventArgs e)
     {
-        TitlePage.Text = "Мы вас ждали хозяин...";
+        TitlePage.Text = "Мы вас ждали путник...";
         CreateLayout.IsVisible = false;
         EntranceBorder.IsVisible = true;
 

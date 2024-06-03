@@ -42,9 +42,6 @@ namespace TestProject
         public List<Content> ContentProcessall { get; set; }
         public List<Content> ContentNotStartall { get; set; }
 
-        public List<Content> firstColumnData { get; set; }
-        public List<Content> secondColumnData { get; set; }
-
         private List<Content> _contentSearch;
         public List<Content> ContentSort { get; set; }
         public List<Content> ContentSearch
@@ -65,11 +62,8 @@ namespace TestProject
             InitializeComponent();
             Filling();
         }
-
         public void Filling()
         {
-          
-            
             _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
 
@@ -77,66 +71,41 @@ namespace TestProject
             ContentAll = contents.Take(8).ToList();
             ContentAllall = contents.ToList();
 
-            List<Content> filteredContents = contents.Where(c => c.Type == "Сериал").ToList();
-            ContentSerial = filteredContents.Take(8).ToList();
-            ContentSerialall = filteredContents.ToList();
+            ContentSerialall = databaseService.GetContentByType("Сериал").ToList();
+            ContentAnimeall = databaseService.GetContentByType("Аниме").ToList();
+            ContentFilmall = databaseService.GetContentByType("Фильм").ToList();
+            ContentDoramaall = databaseService.GetContentByType("Дорама").ToList();
+            ContentMultall = databaseService.GetContentByType("Мультсериал").ToList();
+            ContentDocumall = databaseService.GetContentByType("Документалка").ToList();
+            ContentOtherall = databaseService.GetContentByType("Прочее").ToList();
+            ContentViewedall = databaseService.GetContentByWatchStatus("Просмотрено").ToList();
+            ContentProcessall = databaseService.GetContentByWatchStatus("Смотрю").ToList();
+            ContentNotStartall = databaseService.GetContentByWatchStatus("Не начинал").ToList();
 
-            filteredContents = contents.Where(c => c.Type == "Аниме").ToList();
-            ContentAnime = filteredContents.Take(8).ToList();
-            ContentAnimeall = filteredContents.ToList();
+            ContentSerial   = ContentSerialall.Take(8).ToList();
+            ContentAnime    = ContentAnimeall.Take(8).ToList();
+            ContentFilm     = ContentFilmall.Take(8).ToList();
+            ContentDorama   = ContentDoramaall.Take(8).ToList();
+            ContentMult     = ContentMultall.Take(8).ToList();
+            ContentDocum    = ContentDocumall.Take(8).ToList();
+            ContentOther    = ContentOtherall.Take(8).ToList();
+            ContentViewed   = ContentViewedall.Take(8).ToList();
+            ContentProcess  = ContentProcessall.Take(8).ToList();
+            ContentNotStart = ContentNotStartall.Take(8).ToList();
 
-            filteredContents = contents.Where(c => c.Type == "Фильм").ToList();
-            ContentFilm = filteredContents.Take(8).ToList();
-            ContentFilmall = filteredContents.ToList();
 
-            filteredContents = contents.Where(c => c.Type == "Дорама").ToList();
-            ContentDorama = filteredContents.Take(8).ToList();
-            ContentDoramaall = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.Type == "Мультсериал").ToList();
-            ContentMult = filteredContents.Take(8).ToList();
-            ContentMultall = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.Type == "Документалка").ToList();
-            ContentDocum = filteredContents.Take(8).ToList();
-            ContentDocumall = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.Type == "Прочее").ToList();
-            ContentOther = filteredContents.Take(8).ToList();
-            ContentOtherall = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.WatchStatus == "Просмотрено").ToList();
-            ContentViewed = filteredContents.Take(8).ToList();
-            ContentViewedall = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.WatchStatus == "Смотрю").ToList();
-            ContentProcess = filteredContents.Take(8).ToList();
-            ContentProcessall = filteredContents.ToList();
-
-            filteredContents = contents.Where(c => c.WatchStatus == "Не начинал").ToList();
-            ContentNotStart = filteredContents.Take(8).ToList();
-            ContentNotStartall = filteredContents.ToList();
 
             OnPropertyChanged(nameof(ContentAll));
             OnPropertyChanged(nameof(ContentSerial));
             OnPropertyChanged(nameof(ContentAnime));
             OnPropertyChanged(nameof(ContentDorama));
             OnPropertyChanged(nameof(ContentMult));
+            OnPropertyChanged(nameof(ContentFilm));
             OnPropertyChanged(nameof(ContentDocum));
             OnPropertyChanged(nameof(ContentOther));
             OnPropertyChanged(nameof(ContentViewed));
             OnPropertyChanged(nameof(ContentProcess));
             OnPropertyChanged(nameof(ContentNotStart));
-            OnPropertyChanged(nameof(ContentAllall));
-            OnPropertyChanged(nameof(ContentSerialall));
-            OnPropertyChanged(nameof(ContentAnimeall));
-            OnPropertyChanged(nameof(ContentDoramaall));
-            OnPropertyChanged(nameof(ContentMultall));
-            OnPropertyChanged(nameof(ContentDocumall));
-            OnPropertyChanged(nameof(ContentOtherall));
-            OnPropertyChanged(nameof(ContentViewedall));
-            OnPropertyChanged(nameof(ContentProcessall));
-            OnPropertyChanged(nameof(ContentNotStartall));
             OnPropertyChanged(nameof(ContentSort));
 
             string search = searchBar.Text;
@@ -251,7 +220,7 @@ namespace TestProject
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            //Filling();
+            Filling();
         }
         private void VisibleFalse()
         {
@@ -289,52 +258,49 @@ namespace TestProject
 
         }
 
-        private async void АнимеButton_Clicked(object sender, EventArgs e)
+        public async void GetContent(string type, string name)
+        {
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            List<Content> contents = databaseService.GetContentByType(type).ToList();
+            ContentSort = contents;
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, name);
+            await Navigation.PushAsync(viewContentPage);
+        }
+
+        private void АнимеButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Всё ваше Аниме";
-            ContentSort = ContentAnimeall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
+            GetContent("Аниме", nameCategory);
         }
 
-        private async void ФильмыButton_Clicked(object sender, EventArgs e)
+        private void ФильмыButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Все ваши Фильмы";
-            ContentSort = ContentFilmall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
+            GetContent("Фильм", nameCategory);
         }
 
-        private async void СериалыButton_Clicked(object sender, EventArgs e)
+        private void СериалыButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Все ваши Сериалы";
-            ContentSort = ContentSerialall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
+            GetContent("Сериал", nameCategory);
         }
 
-        private async void ДорамыButton_Clicked(object sender, EventArgs e)
+        private void ДорамыButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Все ваши Дорамы";
-            ContentSort = ContentDoramaall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
+            GetContent("Дорама", nameCategory);
         }
 
-        private async void МультсериалыButton_Clicked(object sender, EventArgs e)
+        private void МультсериалыButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Все ваши Мультсериалы";
-            ContentSort = ContentMultall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
+            GetContent("Мультсериал", nameCategory);
         }
 
-        private async void ДокументалкиButton_Clicked(object sender, EventArgs e)
+        private void ДокументалкиButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Все ваши Документальные фильмы";
-            ContentSort = ContentDocumall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
+            GetContent("Документалка", nameCategory);
         }
         private async void ВесьКонтентClicked(object sender, EventArgs e)
         {
@@ -343,38 +309,30 @@ namespace TestProject
             ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
             await Navigation.PushAsync(viewContentPage);
         }
-        private async void ПрочееButton_Clicked(object sender, EventArgs e)
+        private void ПрочееButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Ваш прочий контент";
-            ContentSort = ContentOtherall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
+            GetContent("Прочее", nameCategory);
         }
 
-        private async void ПросмотреноButton_Clicked(object sender, EventArgs e)
+        private void ПросмотреноButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Просмотренный контент";
-            ContentSort = ContentViewedall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
+            GetContent("Просмотрено", nameCategory);
         }
 
-        private async void ВпроцессеButton_Clicked(object sender, EventArgs e)
+        private void ВпроцессеButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Контент, который вы начали смотреть";
-            ContentSort = ContentProcessall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
+            GetContent("Смотрю", nameCategory);
         }
 
-        private async void НеначатоButton_Clicked(object sender, EventArgs e)
+        private void НеначатоButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Не начатый контент";
-            ContentSort = ContentNotStartall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
-
+            GetContent("Не начинал", nameCategory);
         }
+
         private async void OnItemSelectedAll(Content item, int selectedIndex)
         {
             if (item == null)
@@ -593,8 +551,6 @@ namespace TestProject
         }
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
-
             string searchQuery = searchBar.Text;
             if (searchQuery != "")
             {
@@ -610,9 +566,6 @@ namespace TestProject
                 Filling();
                 ViewData();
             }
-
-           
-
         }
 
         private void ItemButtonClickedSort(object sender, EventArgs e)
@@ -661,8 +614,6 @@ namespace TestProject
                 List<Content> filteredContents = contents.Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
                 ContentSort = filteredContents.ToList();
                 BindingContext = this;
-
-
             }
             else
             {

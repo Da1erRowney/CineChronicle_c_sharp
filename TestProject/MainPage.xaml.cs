@@ -32,7 +32,6 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
 
-        
         _databaseService = new DatabaseServiceContent(_databasePath);
         _databaseService.CreateTables();
         DatabaseServiceContent databaseService = new DatabaseServiceContent(_databasePath);
@@ -50,7 +49,7 @@ public partial class MainPage : ContentPage
             GetRecommendation();
             DisplayListRecommendation();
         }
-        // Если база данных пуста, создаем контент с заданными значениями
+
         if (allContent.Count == 0)
         {
             Content emptyContent = new Content

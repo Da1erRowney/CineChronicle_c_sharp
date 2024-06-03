@@ -1183,7 +1183,7 @@ namespace TestProject
 
                 databaseService.CloseConnection();
 
-                await Navigation.PushAsync(new MainPage());
+                await Navigation.PopAsync();
             }
         }
 

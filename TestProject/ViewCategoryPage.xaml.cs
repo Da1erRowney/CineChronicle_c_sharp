@@ -41,8 +41,6 @@ public partial class ViewCategoryPage : ContentPage
     }
     private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
-
-
         string searchQuery = searchBar.Text;
         if (searchQuery != "")
         {
@@ -54,9 +52,7 @@ public partial class ViewCategoryPage : ContentPage
             searchBar.Text = "";
             ContentCategory = ContentCategoryReserve;
             OnPropertyChanged(nameof(ContentCategory));
-
         }
-
     }
     private void SearchContent(object sender, EventArgs e)
     {
@@ -72,8 +68,6 @@ public partial class ViewCategoryPage : ContentPage
             ContentCategory = filteredContents.ToList();
             BindingContext = this;
             OnPropertyChanged(nameof(ContentCategory));
-
-
         }
         else
         {

@@ -41,7 +41,14 @@ namespace DataContent
         {
             return _connection.Table<Content>().FirstOrDefault(c => c.Id == id);
         }
-
+        public List<Content> GetContentByType(string type)
+        {
+            return _connection.Table<Content>().Where(c => c.Type == type).ToList();
+        }
+        public List<Content> GetContentByWatchStatus(string watchStatus)
+        {
+            return _connection.Table<Content>().Where(c => c.WatchStatus == watchStatus).ToList();
+        }
         public void UpdateContent(Content content)
         {
             _connection.Update(content);

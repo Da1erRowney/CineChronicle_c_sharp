@@ -25,16 +25,9 @@
                         </Frame>
                         <Label  Text="Аккаунт пользователя" FontSize="20" Margin="0,0,0,0" HorizontalOptions="Center"/>
                         <Label  x:Name="EmailName" FontSize="17" Margin="0,0,0,0" HorizontalOptions="Center"/>
-                        <Button FontSize="17" x:Name="ButtonAuth" Text="Сменить аккаунт" Clicked="AuthButton_Clicked" WidthRequest="200" HorizontalOptions="FillAndExpand" Margin="0,25,0,0" >
-                            <Button.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1" Radius="50" Offset="0,0"/>
-                            </Button.Shadow>
+                        <Button FontSize="17" x:Name="ButtonAuth" Text="Сменить аккаунт" Clicked="AuthButton_Clicked" WidthRequest="200" HorizontalOptions="FillAndExpand" Margin="0,25,0,0" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100">
                         </Button>
-                        <Button FontSize="17" x:Name="ButtonExit" Text="Выйти из аккаунта" Clicked="ExitAccountButton_Clicked" WidthRequest="150" HorizontalOptions="FillAndExpand" Margin="0,15,0,0" IsVisible="false" >
-                            
-                            <Button.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1" Radius="50" Offset="0,0"/>
-                            </Button.Shadow>
+                        <Button FontSize="17" x:Name="ButtonExit" Text="Выйти из аккаунта" Clicked="ExitAccountButton_Clicked" WidthRequest="150" HorizontalOptions="FillAndExpand" Margin="0,15,0,0" IsVisible="false" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100">
                         </Button>
                     </StackLayout>
                 </Border>

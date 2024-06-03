@@ -96,11 +96,9 @@
                 </StackLayout>
 
                 <!-- Кнопка "Добавить" -->
-                <Button Text="Сохранить" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" Margin="0,100,0,50" >
-                    <Button.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="50" Offset="0,0"/>
-                    </Button.Shadow>
-                </Button>
+                    <Button Text="Сохранить" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150" Margin="0,100,0,50" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100">
+
+                    </Button>
                 </StackLayout>
                 <Border.Shadow>
                     <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>

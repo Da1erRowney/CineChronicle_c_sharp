@@ -266,6 +266,14 @@ namespace TestProject
             ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, name);
             await Navigation.PushAsync(viewContentPage);
         }
+        public async void GetContentStatus(string type, string name)
+        {
+            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            List<Content> contents = databaseService.GetContentByWatchStatus(type).ToList();
+            ContentSort = contents;
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, name);
+            await Navigation.PushAsync(viewContentPage);
+        }
 
         private void АнимеButton_Clicked(object sender, EventArgs e)
         {
@@ -315,22 +323,23 @@ namespace TestProject
             GetContent("Прочее", nameCategory);
         }
 
+
         private void ПросмотреноButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Просмотренный контент";
-            GetContent("Просмотрено", nameCategory);
+            GetContentStatus("Просмотрено", nameCategory);
         }
 
         private void ВпроцессеButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Контент, который вы начали смотреть";
-            GetContent("Смотрю", nameCategory);
+            GetContentStatus("Смотрю", nameCategory);
         }
 
         private void НеначатоButton_Clicked(object sender, EventArgs e)
         {
             string nameCategory = "Не начатый контент";
-            GetContent("Не начинал", nameCategory);
+            GetContentStatus("Не начинал", nameCategory);
         }
 
         private async void OnItemSelectedAll(Content item, int selectedIndex)
@@ -563,7 +572,7 @@ namespace TestProject
                 Sort.IsVisible = false;
                 ContentSort = null; // Установка источника данных в null
                 OnPropertyChanged(nameof(ContentSort));
-                Filling();
+                //Filling();
                 ViewData();
             }
         }
@@ -623,7 +632,7 @@ namespace TestProject
                 Sort.IsVisible = false;
                 ContentSort = null; // Установка источника данных в null
                 OnPropertyChanged(nameof(ContentSort));
-                Filling();
+                //Filling();
                 ViewData();
             }
         }

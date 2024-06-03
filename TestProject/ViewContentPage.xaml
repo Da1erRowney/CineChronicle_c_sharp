@@ -306,14 +306,14 @@
                 <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="0,50,0,0">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,0">
                         <!-- Кнопка Удалить -->
-                        <Button Opacity="0.8" Text="Удалить" x:Name="DeleteButton" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18" />
+                        <Button Opacity="0.8" Text="Удалить" x:Name="DeleteButton" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100"/>
 
                         <!-- Кнопка Изменить -->
-                        <Button Opacity="0.8" x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18"  />
+                        <Button Opacity="0.8" x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100" />
                         
                     </StackLayout>
                     <!-- Кнопка Отмена -->
-                    <Button Opacity="0.8" FontSize="18" x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" />
+                    <Button Opacity="0.8" FontSize="18" x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100" />
                     <StackLayout.Shadow>
                         <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
                     </StackLayout.Shadow>

@@ -62,12 +62,9 @@
                             <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
                             </Label.GestureRecognizers>
                         </Label>
-                    
-                        <Button Text="Войти" FontSize="17" Clicked="OnEntranceClicked" HorizontalOptions="FillAndExpand"  WidthRequest="300" Margin="0,50,0,0" >
-                    <Button.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="50" Offset="0,0"/>
-                    </Button.Shadow>
-                </Button>
+
+                        <Button Text="Войти" FontSize="17" Clicked="OnEntranceClicked" HorizontalOptions="FillAndExpand"  WidthRequest="300" Margin="0,50,0,0" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100">
+                        </Button>
                     <StackLayout Orientation="Horizontal" Margin="70,50,0,0">
                         <Label Text="У вас нет аккаунта? " FontSize="17" Margin="0,0,0,0" HorizontalOptions="Center" TextColor="DimGray"/>
                         <Label Text="Создать" FontSize="17" Margin="10,0,0,0" HorizontalOptions="Center">
@@ -134,11 +131,8 @@
                     </StackLayout>
 
 
-                    <Button Text="Создать" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="300" Margin="0,50,0,0" >
-                        <Button.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="50" Offset="0,0"/>
-                        </Button.Shadow>
-                    </Button>
+                            <Button Text="Создать" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="300" Margin="0,50,0,0" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100">
+                            </Button>
                     
                     <StackLayout Orientation="Horizontal" Margin="130,50,0,0">
                        

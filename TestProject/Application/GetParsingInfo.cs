@@ -29,6 +29,7 @@ namespace CineChronicle.Application
         public async void GetInfo(string query, string type, string sourcePars, bool isInfo, bool debug = false)
         {
             string url = "";
+            //Формируем ссылку в зависимости от источника
             switch (sourcePars, isInfo)
             {
                 case ("Википедия", true):
@@ -37,29 +38,29 @@ namespace CineChronicle.Application
                 case ("Википедия", false):
                     url = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
                     break;
-                case ("Киного", true):
+                case ("Kinogo", true):
                     url = $"https://kinogo.biz/search/{Uri.EscapeDataString(query)}";
                     break;
-                case ("Джутсу", true):
+                case ("Jutsu", true):
                     Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                     url = $"https://jut.su/search/?searchid=1893616&text={Uri.EscapeDataString(query)}";
                     break;
-                case ("АнимеГо", true):
+                case ("AnimeGo", true):
                     url = "https://animego.org/search/all?q=" + query;
                     break;
                 case ("АнимеГо", false):
                     url = $"https://animego.org/search/all?q={Uri.EscapeDataString(query)}";
                     break;
-                case ("Премьер", false):
+                case ("PremierGo", false):
                     url = $"https://premier.one/search?query={Uri.EscapeDataString(query)}";
                     break;
-                case ("Трейлер", false):
+                case ("YouTube", _):
                     url = $"https://www.youtube.com/results?search_query={query}+{type}+трейлер";
                     break;
-                case ("Лордс", false):
+                case ("LordsFilm", false):
                     //url = $"https://www.google.by/search?q= {Uri.EscapeDataString(query)} Постер&tbm=isch&ved=2ahUKEwiZtra589-EAxW8if0HHa5CCkYQ2-cCegQIABAA&oq=а&gs_lp=EgNpbWciAtCwSJwUUJsSWKoTcAB4AJABAJgBsAGgAbABqgEDMC4xuAEDyAEA-AEBigILZ3dzLXdpei1pbWeoAgDCAgoQABiABBiKBRhDiAYB&sclient=img&ei=-4ToZdnMOryT9u8ProWpsAQ";
                     break;
-                case ("ДатаВыхода", true):
+                case ("DateExit", _):
                     url = $"https://www.toramp.com/ru/search/?q={query}";
                     break;
                 default:
@@ -67,6 +68,7 @@ namespace CineChronicle.Application
                     break;
             }
 
+            //Парсим информацию
             if (!string.IsNullOrEmpty(url))
             using (HttpClient client = new HttpClient())
             {
@@ -103,7 +105,7 @@ namespace CineChronicle.Application
                                     image = imageUrl;
                                 }
                                 break;
-                            case ("Киного", true):
+                            case ("Kinogo", true):
                                 node = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='excerpt']");
                                 if (node != null)
                                 {
@@ -114,7 +116,7 @@ namespace CineChronicle.Application
                                     description = "Описание не найдено";
                                 }
                                 break;
-                            case ("Джутсу", true):
+                            case ("Jutsu", true):
                                 byte[] responseBytes = await response.Content.ReadAsByteArrayAsync();
                                 string htmlContents = Encoding.GetEncoding("windows-1251").GetString(responseBytes);
 
@@ -130,7 +132,7 @@ namespace CineChronicle.Application
                                     description = $"Информация о {query} не найдена";
                                 }
                                 break;
-                            case ("АнимеГо", true):
+                            case ("AnimeGo", true):
                                 HtmlNodeCollection nodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='h5 font-weight-normal mb-2 card-title text-truncate']/a");
 
                                 if (nodes != null && nodes.Count > 0)
@@ -177,14 +179,14 @@ namespace CineChronicle.Application
                                     }
                                 }
                                 break;
-                            case ("АнимеГо", false):
+                            case ("AnimeGo", false):
                                 node = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='anime-grid-lazy lazy']");
                                 if (node != null)
                                 {
                                     image = node.GetAttributeValue("data-original", "");
                                 }
                                 break;
-                            case ("Премьер", false):
+                            case ("PremierGo", false):
                                 node = htmlDocument.DocumentNode.SelectSingleNode("//div[contains(@class, 'e-poster__image-wrap')]/figure/img");
 
                                 if (node != null)
@@ -192,7 +194,7 @@ namespace CineChronicle.Application
                                     image = node.GetAttributeValue("src", "");
                                 }
                                 break;
-                            case ("Трейлер", false):
+                            case ("YouTube", _):
                                 extractedLink = "";
                                 string pattern = "\\\\/vi\\\\/([^\\/\\\\\"]+)";
                                 Match Tmatch = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
@@ -203,7 +205,7 @@ namespace CineChronicle.Application
                                     youTube = $"https://www.youtube.com/embed/{extractedLink}";
                                 }
                                 break;
-                            case ("ДатаВыхода", true):
+                            case ("DateExit", _):
                                 node = htmlDocument.DocumentNode.SelectSingleNode($"//div[@class='content']//a[contains(., '{query}')]");
                                 DateExitIsSuccess(node, client, query, type, htmlDocument);
                                 break;

@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace DataContent
+namespace CineChronicle.Tables
 {
     public class User
     {
@@ -10,5 +10,4 @@ namespace DataContent
 
         public string NameIcon { get; set; }
     }
-
 }

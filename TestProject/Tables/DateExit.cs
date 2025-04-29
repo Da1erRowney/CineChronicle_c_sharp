@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace DataContent
+namespace CineChronicle.Tables
 {
     public class DateExit
     {
@@ -10,6 +10,4 @@ namespace DataContent
         public string DateRelease { get; set; }
         public string SendStatus { get; set; }
     }
-
-
 }

@@ -1,10 +1,10 @@
 namespace TestProject;
 using SQLite;
-using DataContent;
 using Microsoft.Maui.Controls;
 using static Microsoft.Maui.Controls.Internals.Profile;
 using System.Diagnostics;
 using System.Xml.Linq;
+using CineChronicle.Tables;
 
 public partial class ViewCategoryPage : ContentPage
 {
@@ -36,7 +36,7 @@ public partial class ViewCategoryPage : ContentPage
     {
         var button = (Button)sender;
         var item = (Content)button.CommandParameter;
-        var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)ContentCategoryCollectionView.ItemsSource).IndexOf(item);
+        var selectedIndex = new List<Content>((IEnumerable<Content>)ContentCategoryCollectionView.ItemsSource).IndexOf(item);
         OnItemSelectedSort(item, selectedIndex);
     }
     private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)

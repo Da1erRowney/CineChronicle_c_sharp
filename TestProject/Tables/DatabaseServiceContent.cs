@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataContent
+namespace CineChronicle.Tables
 {
     public class DatabaseServiceContent
     {
@@ -25,8 +25,8 @@ namespace DataContent
         {
             _connection?.Close();
         }
-        public void DeleteTable() 
-        { 
+        public void DeleteTable()
+        {
             _connection.DropTable<User>();
             _connection.DropTable<Authorized>();
         }
@@ -121,6 +121,4 @@ namespace DataContent
         }
 
     }
-
-
 }

@@ -1,4 +1,3 @@
-using DataContent;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +9,7 @@ using Microsoft.Maui.Platform;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Windows.Input;
+using CineChronicle.Tables;
 
 namespace TestProject
 {
@@ -357,7 +357,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)AllContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)AllContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedAll(item, selectedIndex);
         }
 
@@ -366,7 +366,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)SerialContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)SerialContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedSerial(item, selectedIndex);
         }
 
@@ -385,7 +385,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)AnimeContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)AnimeContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedAnime(item, selectedIndex);
         }
 
@@ -404,7 +404,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)FilmContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)FilmContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedFilm(item, selectedIndex);
         }
 
@@ -423,7 +423,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)DoramaContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)DoramaContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedDorama(item, selectedIndex);
         }
 
@@ -442,7 +442,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)MultContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)MultContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedMult(item, selectedIndex);
         }
 
@@ -461,7 +461,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)DocumContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)DocumContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedDocum(item, selectedIndex);
         }
 
@@ -480,7 +480,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)OtherContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)OtherContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedOther(item, selectedIndex);
         }
 
@@ -499,7 +499,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)ViewedContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)ViewedContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedViewed(item, selectedIndex);
         }
 
@@ -518,7 +518,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)ProcessContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)ProcessContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedProcess(item, selectedIndex);
         }
 
@@ -537,7 +537,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)NotStartContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)NotStartContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedNotStart(item, selectedIndex);
         }
 
@@ -581,7 +581,7 @@ namespace TestProject
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<DataContent.Content>)SortContentCollectionView.ItemsSource).IndexOf(item);
+            var selectedIndex = new List<Content>((IEnumerable<Content>)SortContentCollectionView.ItemsSource).IndexOf(item);
             OnItemSelectedSort(item, selectedIndex);
         }
         private async void OnItemSelectedSort(Content item, int selectedIndex)

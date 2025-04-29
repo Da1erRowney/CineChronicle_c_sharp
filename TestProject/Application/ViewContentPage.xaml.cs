@@ -1,17 +1,8 @@
-using DataContent;
+using CineChronicle.Tables;
 using HtmlAgilityPack;
-using System.Net.Http;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Xaml;
-using System;
-using System.Windows.Input;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Net;
-using Google.Apis.YouTube.v3;
-using Google.Apis.Services;
-using System.Xml;
-using System.Web;
+using System.Windows.Input;
 
 
 namespace TestProject
@@ -25,8 +16,6 @@ namespace TestProject
         private ContentRecommendation recom;
         private DateExit data;
         string videoUrl = null;
-
-
 
         public ViewContentPage(Content content)
         {
@@ -51,9 +40,6 @@ namespace TestProject
             EditButton.IsVisible = false;
             DeleteButton.IsVisible = false;
             AddButton.IsVisible = true;
-
-
-
         }
 
         public async void GetWikipediaInfo(string query)
@@ -678,7 +664,6 @@ namespace TestProject
         private async void GetTrailers(string query, string type)
         {
             string url = $"https://www.youtube.com/results?search_query={query}+{type}+ענויכונ";
-            string extractedLink = "";
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -697,8 +682,7 @@ namespace TestProject
 
                         if (match.Success)
                         {
-                            extractedLink = match.Groups[1].Value;
-                            videoUrl = $"https://www.youtube.com/watch?v={extractedLink}";
+                            videoUrl = $"https://www.youtube.com/watch?v={match.Groups[1].Value}";
 
                             await Browser.OpenAsync(new Uri(videoUrl), BrowserLaunchMode.SystemPreferred);
                         }

@@ -75,37 +75,33 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="AllContentPage.xaml.cs">
+	  <Compile Update="Application\AllContentPages\AllContentPage.xaml.cs">
 	    <DependentUpon>AllContentPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="AddMoreContentPage.xaml">
+	  <MauiXaml Update="Application\AddContentPages\AddMoreContentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="AllContentPage.xaml">
+	  <MauiXaml Update="Application\AllContentPages\AllContentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="AuthorizationPage.xaml">
+	  <MauiXaml Update="Application\InformationPages\AuthorizationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="InformationPage.xaml">
+	  <MauiXaml Update="Application\InformationPages\InformationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="SettingPage.xaml">
+	  <MauiXaml Update="Application\SettingPages\SettingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ViewCategoryPage.xaml">
+	  <MauiXaml Update="Application\AllContentPages\ViewCategoryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ViewContentPage.xaml">
+	  <MauiXaml Update="Application\ViewContentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Page\" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows10.0.19041.0'">

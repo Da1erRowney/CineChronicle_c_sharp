@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace DataContent
+namespace CineChronicle.Tables
 {
     public class UserSettings
     {
@@ -8,6 +8,4 @@ namespace DataContent
         public string Email { get; set; }
         public string Theme { get; set; }
     }
-
-
 }

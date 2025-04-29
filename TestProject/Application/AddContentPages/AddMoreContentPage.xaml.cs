@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using SQLite;
-using DataContent;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Windows.Input;
+using CineChronicle.Tables;
 
-
-namespace TestProject { 
+namespace TestProject
+{
 
     public partial class AddMoreContentPage : ContentPage { 
 

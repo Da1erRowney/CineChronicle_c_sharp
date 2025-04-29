@@ -1,5 +1,4 @@
-using DataContent;
-
+using CineChronicle.Tables;
 using System.Text.RegularExpressions;
 
 namespace TestProject;

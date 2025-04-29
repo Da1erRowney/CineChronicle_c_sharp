@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace DataContent
+namespace CineChronicle.Tables
 {
     public class Content
     {
@@ -13,12 +13,10 @@ namespace DataContent
         public int LastWatchedSeason { get; set; }
         public string NextEpisodeReleaseDate { get; set; }
         public string WatchStatus { get; set; }
-        public string Link { get; set; }  
+        public string Link { get; set; }
         public string DateAdded { get; set; }
         public string SeriesChangeDate { get; set; }
         public string Image { get; set; }
         public string SmallDecription { get; set; }
     }
-
-
 }

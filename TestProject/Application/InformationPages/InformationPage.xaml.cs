@@ -1,6 +1,5 @@
 #pragma warning disable CS4008
-using DataContent;
-using System.Net;
+using CineChronicle.Tables;
 
 namespace TestProject;
 

@@ -65,36 +65,7 @@ namespace TestProject
 
         private async void GetTrailers(string query, string type)
         {
-            string url = $"https://www.youtube.com/results?search_query={query}+{type}+òðåéëåð";
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(url);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string htmlContent = await response.Content.ReadAsStringAsync();
-
-                        HtmlDocument htmlDocument = new HtmlDocument();
-                        htmlDocument.LoadHtml(htmlContent);
-
-                        string pattern = "\\\\/vi\\\\/([^\\/\\\\\"]+)";
-                        Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
-
-                        if (match.Success)
-                        {
-                            videoUrl = $"https://www.youtube.com/watch?v={match.Groups[1].Value}";
-
-                            await Browser.OpenAsync(new Uri(videoUrl), BrowserLaunchMode.SystemPreferred);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+         await Browser.OpenAsync(new Uri(parser?.GetTrailer), BrowserLaunchMode.SystemPreferred); 
         }
 
         public async void DataExitNextEpisod(string query)

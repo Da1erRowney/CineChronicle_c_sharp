@@ -8,16 +8,16 @@ namespace CineChronicle.Application
     public class GetParsingInfo
     {
         //Контент
-        public string description { get; set; } = string.Empty;
-        public string image { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Image { get; set; } = string.Empty;
 
         //Трейлер
-        public string youTube { get; set; } = string.Empty;
+        public string YouTube { get; set; } = string.Empty;
 
         //Дата выхода
-        public string nextEpisodeReleaseDate { get; set; } = string.Empty;
-        public string countLabel { get; set; } = string.Empty;
-        public string dateRelease { get; set; } = string.Empty;
+        public string NextEpisodeReleaseDate { get; set; } = string.Empty;
+        public string CountLabel { get; set; } = string.Empty;
+        public string DateRelease { get; set; } = string.Empty;
 
         /// <summary>
         /// Находим информацию и постер контента
@@ -94,26 +94,26 @@ namespace CineChronicle.Application
 
                                 if (node != null)
                                 {
-                                    string imageUrl = node.GetAttributeValue("src", "");
+                                    string ImageUrl = node.GetAttributeValue("src", "");
 
                                     // Проверяем, содержит ли URL префикс "https://"
-                                    if (!imageUrl.StartsWith("https://"))
+                                    if (!ImageUrl.StartsWith("https://"))
                                     {
                                         // Добавляем префикс "https://", если его нет
-                                        imageUrl = "https:" + imageUrl;
+                                        ImageUrl = "https:" + ImageUrl;
                                     }
-                                    image = imageUrl;
+                                    Image = ImageUrl;
                                 }
                                 break;
                             case ("Kinogo", true):
                                 node = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='excerpt']");
                                 if (node != null)
                                 {
-                                    description = node.InnerText.Trim();
+                                    Description = node.InnerText.Trim();
                                 }
                                 else
                                 {
-                                    description = "Описание не найдено";
+                                    Description = "Описание не найдено";
                                 }
                                 break;
                             case ("Jutsu", true):
@@ -125,11 +125,11 @@ namespace CineChronicle.Application
 
                                 if (match.Success)
                                 {
-                                    description = match.Groups[1].Value;
+                                    Description = match.Groups[1].Value;
                                 }
                                 else
                                 {
-                                    description = $"Информация о {query} не найдена";
+                                    Description = $"Информация о {query} не найдена";
                                 }
                                 break;
                             case ("AnimeGo", true):
@@ -159,7 +159,7 @@ namespace CineChronicle.Application
                                                 {
                                                     extractedText = matchs.Groups[1].Value.Trim();
                                                     extractedText = HtmlEntity.DeEntitize(extractedText);
-                                                    description = Regex.Replace(extractedText, "<.*?>", String.Empty);
+                                                    Description = Regex.Replace(extractedText, "<.*?>", String.Empty);
                                                 }
                                                 else
                                                 {
@@ -170,7 +170,7 @@ namespace CineChronicle.Application
                                                     {
                                                         string extractedTexts = matchss.Groups[1].Value;
                                                         extractedTexts = HtmlEntity.DeEntitize(extractedTexts);
-                                                        description = Regex.Replace(extractedTexts, "<.*?>", String.Empty);
+                                                        Description = Regex.Replace(extractedTexts, "<.*?>", String.Empty);
                                                     }
                                                 }
 
@@ -183,15 +183,15 @@ namespace CineChronicle.Application
                                 node = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='anime-grid-lazy lazy']");
                                 if (node != null)
                                 {
-                                    image = node.GetAttributeValue("data-original", "");
+                                    Image = node.GetAttributeValue("data-original", "");
                                 }
                                 break;
                             case ("PremierGo", false):
-                                node = htmlDocument.DocumentNode.SelectSingleNode("//div[contains(@class, 'e-poster__image-wrap')]/figure/img");
+                                node = htmlDocument.DocumentNode.SelectSingleNode("//div[contains(@class, 'e-poster__Image-wrap')]/figure/img");
 
                                 if (node != null)
                                 {
-                                    image = node.GetAttributeValue("src", "");
+                                    Image = node.GetAttributeValue("src", "");
                                 }
                                 break;
                             case ("YouTube", _):
@@ -202,7 +202,7 @@ namespace CineChronicle.Application
                                 if (Tmatch.Success)
                                 {
                                     extractedLink = Tmatch.Groups[1].Value;
-                                    youTube = $"https://www.youtube.com/embed/{extractedLink}";
+                                    YouTube = $"https://www.youTube.com/embed/{extractedLink}";
                                 }
                                 break;
                             case ("DateExit", _):
@@ -219,7 +219,7 @@ namespace CineChronicle.Application
                                 WikInfoIsWrong(query, type);
                                 break;
                             default:
-                                description = "Ошибка при получении страницы";
+                                Description = "Ошибка при получении страницы";
                                 break;
                         }
                         if (debug)
@@ -247,7 +247,7 @@ namespace CineChronicle.Application
             if (node != null && node.InnerText != nameContent && !node.InnerText.Trim().EndsWith(":"))
             {
                 string firstParagraphText = node.InnerText;
-                description = HtmlEntity.DeEntitize(firstParagraphText); // Находим описание для контента
+                Description = HtmlEntity.DeEntitize(firstParagraphText); // Находим описание для контента
             }
             else
             {
@@ -275,19 +275,19 @@ namespace CineChronicle.Application
                                 HtmlDocument htmlDocuments = new HtmlDocument();
                                 htmlDocuments.LoadHtml(htmlContents);
                                 // Находим элемент img с атрибутом src, содержащим ссылку на изображение
-                                HtmlNode imageNodes = htmlDocuments.DocumentNode.SelectSingleNode("//img[contains(@src, 'upload.wikimedia.org')]");
+                                HtmlNode ImageNodes = htmlDocuments.DocumentNode.SelectSingleNode("//img[contains(@src, 'upload.wikimedia.org')]");
 
-                                if (imageNodes != null)
+                                if (ImageNodes != null)
                                 {
-                                    string imageUrls = imageNodes.GetAttributeValue("src", "");
+                                    string ImageUrls = ImageNodes.GetAttributeValue("src", "");
 
                                     // Проверяем, содержит ли URL префикс "https://"
-                                    if (!imageUrls.StartsWith("https://"))
+                                    if (!ImageUrls.StartsWith("https://"))
                                     {
                                         // Добавляем префикс "https://", если его нет
-                                        imageUrls = "https:" + imageUrls;
+                                        ImageUrls = "https:" + ImageUrls;
                                     }
-                                    image = imageUrls;
+                                    Image = ImageUrls;
                                 }
                             }
                             else
@@ -310,12 +310,12 @@ namespace CineChronicle.Application
                             if (listItemText.Contains("телесериал") || listItemText.Contains("дорама") || listItemText.Contains("мультсериал") || listItemText.Contains("фильм"))
                             {
                                 listItemText = HtmlEntity.DeEntitize(listItemText); //Находим описание
-                                description = listItemText;
+                                Description = listItemText;
                                 return;
                             }
                         }
                     }
-                    description = $"Информация о {query} не найдена";
+                    Description = $"Информация о {query} не найдена";
 
                 }
 
@@ -336,7 +336,7 @@ namespace CineChronicle.Application
                             HtmlNode firstParagrap1h = htmlDocument1.DocumentNode.SelectSingleNode("//p");
 
                             string firstParagraphText = firstParagrap1h.InnerText;
-                            description = HtmlEntity.DeEntitize(firstParagraphText);
+                            Description = HtmlEntity.DeEntitize(firstParagraphText);
                         }
                     }
                 }
@@ -367,7 +367,7 @@ namespace CineChronicle.Application
                     if (firstParagrap1h != null && firstParagrap1h.InnerText != nameContent1 && !firstParagrap1h.InnerText.Trim().EndsWith(":"))
                     {
                         string firstParagraphText = firstParagrap1h.InnerText;
-                        description = HtmlEntity.DeEntitize(firstParagraphText);
+                        Description = HtmlEntity.DeEntitize(firstParagraphText);
                     }
                     else
                     {
@@ -387,18 +387,18 @@ namespace CineChronicle.Application
 
                                 if (listItemText.Contains(search))
                                 {
-                                    description = HtmlEntity.DeEntitize(listItemText);
+                                    Description = HtmlEntity.DeEntitize(listItemText);
                                     return;
                                 }
                             }
                         }
-                        description = $"Информация о {query} не найдена";
+                        Description = $"Информация о {query} не найдена";
                     }
                 }
 
                 else
                 {
-                    description = $"Информация о {query} не найдена";
+                    Description = $"Информация о {query} не найдена";
                 }
             }
         }
@@ -450,9 +450,9 @@ namespace CineChronicle.Application
                                 // Формируем строку для вывода
                                 string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
 
-                                nextEpisodeReleaseDate = output;
-                                countLabel = countText;
-                                dateRelease = releaseDate.ToShortDateString();
+                                NextEpisodeReleaseDate = output;
+                                CountLabel = countText;
+                                DateRelease = releaseDate.ToShortDateString();
                             }
                         }
 
@@ -460,13 +460,13 @@ namespace CineChronicle.Application
                         {
                             exitEpisod = exitEpisod.Replace(".", ".");
 
-                            nextEpisodeReleaseDate = exitEpisod;
-                            countLabel = countText;
+                            NextEpisodeReleaseDate = exitEpisod;
+                            CountLabel = countText;
                         }
                     }
                     else
                     {
-                        nextEpisodeReleaseDate = $"Информация о {query} не найдена";
+                        NextEpisodeReleaseDate = $"Информация о {query} не найдена";
                     }
 
                     if (type == "Сериал" || type == "Дорама" || type == "Мультсериал")
@@ -474,15 +474,15 @@ namespace CineChronicle.Application
                         HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
                         if (imgIn != null)
                         {
-                            string imageUrl = imgIn.GetAttributeValue("src", "");
+                            string ImageUrl = imgIn.GetAttributeValue("src", "");
 
                             // Проверяем, содержит ли URL префикс "https://"
-                            if (!imageUrl.StartsWith("https://"))
+                            if (!ImageUrl.StartsWith("https://"))
                             {
                                 // Добавляем префикс "https://", если его нет
-                                imageUrl = "https:" + imageUrl;
+                                ImageUrl = "https:" + ImageUrl;
                             }
-                            image = imageUrl;
+                            Image = ImageUrl;
                         }
                         else
                         {
@@ -546,9 +546,9 @@ namespace CineChronicle.Application
                                     string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
 
                                     // Устанавливаем строку в NextEpisodeReleaseDateEntry
-                                    nextEpisodeReleaseDate = output;
-                                    countLabel = countText;
-                                    dateRelease = releaseDate.ToShortDateString();
+                                    NextEpisodeReleaseDate = output;
+                                    CountLabel = countText;
+                                    DateRelease = releaseDate.ToShortDateString();
                                 }
                             }
 
@@ -558,13 +558,13 @@ namespace CineChronicle.Application
                                 exitEpisod = exitEpisod.Replace(".", ".");
 
                                 // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
-                                nextEpisodeReleaseDate = exitEpisod;
-                                countLabel = countText;
+                                NextEpisodeReleaseDate = exitEpisod;
+                                CountLabel = countText;
                             }
                         }
                         else
                         {
-                            nextEpisodeReleaseDate = $"Информация о {query} не найдена";
+                            NextEpisodeReleaseDate = $"Информация о {query} не найдена";
                         }
 
                         if (type == "Сериал" || type == "Дорама" || type == "Мультсериал")
@@ -572,15 +572,15 @@ namespace CineChronicle.Application
                             HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
                             if (imgIn != null)
                             {
-                                string imageUrl = imgIn.GetAttributeValue("src", "");
+                                string ImageUrl = imgIn.GetAttributeValue("src", "");
 
                                 // Проверяем, содержит ли URL префикс "https://"
-                                if (!imageUrl.StartsWith("https://"))
+                                if (!ImageUrl.StartsWith("https://"))
                                 {
                                     // Добавляем префикс "https://", если его нет
-                                    imageUrl = "https:" + imageUrl;
+                                    ImageUrl = "https:" + ImageUrl;
                                 }
-                                image = imageUrl;
+                                Image = ImageUrl;
                             }
                         }
                     }
@@ -615,9 +615,9 @@ namespace CineChronicle.Application
 
         //                if (match.Success)
         //                {
-        //                    string imageUrl = match.Groups[1].Value;
+        //                    string ImageUrl = match.Groups[1].Value;
         //                    // Отображаем изображение на форме
-        //                    PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
+        //                    PosterImage.Source = ImageSource.FromUri(new Uri(ImageUrl));
         //                }
         //                else
         //                {

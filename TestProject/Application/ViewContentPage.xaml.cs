@@ -30,8 +30,6 @@ namespace TestProject
         private DateExit data;
         private GetParsingInfo parser = new();
 
-        private string videoUrl = null;
-
         private bool isEditing = false; // Ôëàã, óêàçûâàþùèé, â ðåæèìå ðåäàêòèðîâàíèÿ èëè íåò
 
         #endregion
@@ -65,7 +63,7 @@ namespace TestProject
 
         private async void GetTrailers(string query, string type)
         {
-         await Browser.OpenAsync(new Uri(parser?.GetTrailer), BrowserLaunchMode.SystemPreferred); 
+         await Browser.OpenAsync(new Uri(parser?.GetTrailer(query,type)), BrowserLaunchMode.SystemPreferred); 
         }
 
         public async void DataExitNextEpisod(string query)

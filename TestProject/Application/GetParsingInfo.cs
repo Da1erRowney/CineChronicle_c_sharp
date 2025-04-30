@@ -20,7 +20,7 @@ namespace CineChronicle.Application
         public string DateRelease { get; set; } = string.Empty;
 
         /// <summary>
-        /// Находим информацию и постер контента
+        /// Получаем описание, постер, трейлеры и дату выхода контента
         /// </summary>
         /// <param name="query">Искомый запрос(название контента)</param>
         /// <param name="type">Тип контента</param>
@@ -70,6 +70,7 @@ namespace CineChronicle.Application
 
             //Парсим информацию
             if (!string.IsNullOrEmpty(url))
+            //Общая часть для всех парсеров
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -83,6 +84,7 @@ namespace CineChronicle.Application
                         HtmlNode node;
                         string extractedText = "";
                         string extractedLink = "";
+                        //Обрабатываем индивидуальные парсинги источников
                         switch (sourcePars, isInfo)
                         {
                             case ("Википедия", true):

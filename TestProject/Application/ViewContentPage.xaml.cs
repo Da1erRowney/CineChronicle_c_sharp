@@ -12,7 +12,7 @@ namespace TestProject
     public partial class ViewContentPage : ContentPage
     {
         #region [Constants]
-        private const string WIK = "Википедия";
+        private const string WIK = "Г‚ГЁГЄГЁГЇГҐГ¤ГЁГї";
         private const string KO = "Kinogo";
         private const string JS = "Jutsu";
         private const string AG = "AnimeGo";
@@ -32,7 +32,7 @@ namespace TestProject
 
         private string videoUrl = null;
 
-        private bool isEditing = false; // Флаг, указывающий, в режиме редактирования или нет
+        private bool isEditing = false; // Г”Г«Г ГЈ, ГіГЄГ Г§Г»ГўГ ГѕГ№ГЁГ©, Гў Г°ГҐГ¦ГЁГ¬ГҐ Г°ГҐГ¤Г ГЄГІГЁГ°Г®ГўГ Г­ГЁГї ГЁГ«ГЁ Г­ГҐГІ
 
         #endregion
 
@@ -41,7 +41,7 @@ namespace TestProject
         {
             this.content = content;
             InitializeComponent();
-            BindingContext = content; // Привязываем объект Content к BindingContext страницы
+            BindingContext = content; // ГЏГ°ГЁГўГїГ§Г»ГўГ ГҐГ¬ Г®ГЎГєГҐГЄГІ Content ГЄ BindingContext Г±ГІГ°Г Г­ГЁГ¶Г»
             SetupLabelTappedEvents();
             OpenLinkCommand = new Command<string>(OpenLink);
         }
@@ -51,7 +51,7 @@ namespace TestProject
             this.recom = content;
             InitializeComponent();
             content.Type = recom.Type;
-            BindingContext = content; // Привязываем объект Content к BindingContext страницы
+            BindingContext = content; // ГЏГ°ГЁГўГїГ§Г»ГўГ ГҐГ¬ Г®ГЎГєГҐГЄГІ Content ГЄ BindingContext Г±ГІГ°Г Г­ГЁГ¶Г»
             SetupLabelTappedEventsRecom();
             OpenLinkCommand = new Command<string>(OpenLink);
             Statics.IsVisible = false;
@@ -65,7 +65,7 @@ namespace TestProject
 
         private async void GetTrailers(string query, string type)
         {
-            string url = $"https://www.youtube.com/results?search_query={query}+{type}+трейлер";
+            string url = $"https://www.youtube.com/results?search_query={query}+{type}+ГІГ°ГҐГ©Г«ГҐГ°";
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -122,7 +122,7 @@ namespace TestProject
                     HtmlDocument htmlDocument = new HtmlDocument();
                     htmlDocument.LoadHtml(htmlContent);
 
-                    // Извлечение ссылки из HTML
+                    // Г€Г§ГўГ«ГҐГ·ГҐГ­ГЁГҐ Г±Г±Г»Г«ГЄГЁ ГЁГ§ HTML
                     HtmlNode linkNode = htmlDocument.DocumentNode.SelectSingleNode($"//div[@class='content']//a[contains(., '{query}')]");
                     if (linkNode != null)
                     {
@@ -136,7 +136,7 @@ namespace TestProject
                             HtmlDocument htmlDocumentIn = new HtmlDocument();
                             htmlDocumentIn.LoadHtml(htmlContentIn);
 
-                            // Извлечение ссылки из HTML
+                            // Г€Г§ГўГ«ГҐГ·ГҐГ­ГЁГҐ Г±Г±Г»Г«ГЄГЁ ГЁГ§ HTML
                             HtmlNode linkNodeIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_3']/em");
                             HtmlNode linkNodeCount = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_0']");
                             if (linkNodeIn != null || linkNodeCount != null)
@@ -144,30 +144,30 @@ namespace TestProject
                                 string exitEpisod = linkNodeIn.InnerText;
                                 string countText = linkNodeCount.InnerText.Trim();
 
-                                int startIndex = exitEpisod.IndexOf("осталось") + "осталось".Length; // Индекс после слова "осталось"
-                                int daysIndex = exitEpisod.IndexOf("дней", startIndex); // Индекс слова "дней" после startIndex
+                                int startIndex = exitEpisod.IndexOf("Г®Г±ГІГ Г«Г®Г±Гј") + "Г®Г±ГІГ Г«Г®Г±Гј".Length; // Г€Г­Г¤ГҐГЄГ± ГЇГ®Г±Г«ГҐ Г±Г«Г®ГўГ  "Г®Г±ГІГ Г«Г®Г±Гј"
+                                int daysIndex = exitEpisod.IndexOf("Г¤Г­ГҐГ©", startIndex); // Г€Г­Г¤ГҐГЄГ± Г±Г«Г®ГўГ  "Г¤Г­ГҐГ©" ГЇГ®Г±Г«ГҐ startIndex
 
                                 if (daysIndex == -1)
                                 {
-                                    daysIndex = exitEpisod.IndexOf("дня", startIndex); // Индекс слова "дня" после startIndex
+                                    daysIndex = exitEpisod.IndexOf("Г¤Г­Гї", startIndex); // Г€Г­Г¤ГҐГЄГ± Г±Г«Г®ГўГ  "Г¤Г­Гї" ГЇГ®Г±Г«ГҐ startIndex
                                 }
 
                                 if (daysIndex == -1)
                                 {
-                                    daysIndex = exitEpisod.IndexOf("день", startIndex); // Индекс слова "день" после startIndex
+                                    daysIndex = exitEpisod.IndexOf("Г¤ГҐГ­Гј", startIndex); // Г€Г­Г¤ГҐГЄГ± Г±Г«Г®ГўГ  "Г¤ГҐГ­Гј" ГЇГ®Г±Г«ГҐ startIndex
                                 }
 
                                 if (daysIndex != -1)
                                 {
-                                    // Извлекаем подстроку между startIndex и daysIndex
+                                    // Г€Г§ГўГ«ГҐГЄГ ГҐГ¬ ГЇГ®Г¤Г±ГІГ°Г®ГЄГі Г¬ГҐГ¦Г¤Гі startIndex ГЁ daysIndex
                                     string daysString = exitEpisod.Substring(startIndex, daysIndex - startIndex).Trim();
 
                                     if (int.TryParse(daysString, out int days))
                                     {
                                         DateTime releaseDate = DateTime.Today.AddDays(days);
 
-                                        // Формируем строку для вывода
-                                        string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
+                                        // Г”Г®Г°Г¬ГЁГ°ГіГҐГ¬ Г±ГІГ°Г®ГЄГі Г¤Г«Гї ГўГ»ГўГ®Г¤Г 
+                                        string output = $"ГЋГ±ГІГ Г«Г®Г±Гј {days} Г¤Г­ГҐГ© Г¤Г® ГўГ»ГµГ®Г¤Г  ({releaseDate.ToShortDateString()})";
 
                                         NextEpisodeReleaseDateEntry.Text = output;
                                         CountLabel.Text = countText;
@@ -205,27 +205,27 @@ namespace TestProject
                             }
                             else
                             {
-                                NextEpisodeReleaseDateEntry.Text = $"Информация о {query} не найдена";
+                                NextEpisodeReleaseDateEntry.Text = $"Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї Г® {query} Г­ГҐ Г­Г Г©Г¤ГҐГ­Г ";
                             }
 
-                            if (type == "Сериал" || type == "Дорама" || type == "Мультсериал")
+                            if (type == "Г‘ГҐГ°ГЁГ Г«" || type == "Г„Г®Г°Г Г¬Г " || type == "ГЊГіГ«ГјГІГ±ГҐГ°ГЁГ Г«")
                             {
                                 HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
                                 if (imgIn != null)
                                 {
                                     string imageUrl = imgIn.GetAttributeValue("src", "");
 
-                                    // Проверяем, содержит ли URL префикс "https://"
+                                    // ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г±Г®Г¤ГҐГ°Г¦ГЁГІ Г«ГЁ URL ГЇГ°ГҐГґГЁГЄГ± "https://"
                                     if (!imageUrl.StartsWith("https://"))
                                     {
-                                        // Добавляем префикс "https://", если его нет
+                                        // Г„Г®ГЎГ ГўГ«ГїГҐГ¬ ГЇГ°ГҐГґГЁГЄГ± "https://", ГҐГ±Г«ГЁ ГҐГЈГ® Г­ГҐГІ
                                         imageUrl = "https:" + imageUrl;
                                     }
-                                    // Устанавливаем изображение в элементы UI
+                                    // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЁГ§Г®ГЎГ°Г Г¦ГҐГ­ГЁГҐ Гў ГЅГ«ГҐГ¬ГҐГ­ГІГ» UI
                                     PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
                                     Background.Source = ImageSource.FromUri(new Uri(imageUrl));
 
-                                    // Обновляем ссылку на изображение в базе данных
+                                    // ГЋГЎГ­Г®ГўГ«ГїГҐГ¬ Г±Г±Г»Г«ГЄГі Г­Г  ГЁГ§Г®ГЎГ°Г Г¦ГҐГ­ГЁГҐ Гў ГЎГ Г§ГҐ Г¤Г Г­Г­Г»Гµ
                                     if (content != null)
                                     {
                                         
@@ -238,13 +238,13 @@ namespace TestProject
                                 }
                                 else
                                 {
-                                    //Console.WriteLine("Изображение не найдено.");
+                                    //Console.WriteLine("Г€Г§Г®ГЎГ°Г Г¦ГҐГ­ГЁГҐ Г­ГҐ Г­Г Г©Г¤ГҐГ­Г®.");
                                 }
                             }
                         }
                         else
                         {
-                            Console.WriteLine("Не удалось выполнить запрос к сайту.");
+                            Console.WriteLine("ГЌГҐ ГіГ¤Г Г«Г®Г±Гј ГўГ»ГЇГ®Г«Г­ГЁГІГј Г§Г ГЇГ°Г®Г± ГЄ Г±Г Г©ГІГі.");
                         }
 
                     }
@@ -263,7 +263,7 @@ namespace TestProject
                                 HtmlDocument htmlDocumentIn = new HtmlDocument();
                                 htmlDocumentIn.LoadHtml(htmlContentIn);
 
-                                // Извлечение ссылки из HTML
+                                // Г€Г§ГўГ«ГҐГ·ГҐГ­ГЁГҐ Г±Г±Г»Г«ГЄГЁ ГЁГ§ HTML
                                 HtmlNode linkNodeIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_3']/em");
                                 HtmlNode linkNodeCount = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_0']");
                                 if (linkNodeIn != null || linkNodeCount != null)
@@ -271,33 +271,33 @@ namespace TestProject
                                     string exitEpisod = linkNodeIn.InnerText;
                                     string countText = linkNodeCount.InnerText.Trim();
 
-                                    int startIndex = exitEpisod.IndexOf("осталось") + "осталось".Length; // Индекс после слова "осталось"
-                                    int daysIndex = exitEpisod.IndexOf("дней", startIndex); // Индекс слова "дней" после startIndex
+                                    int startIndex = exitEpisod.IndexOf("Г®Г±ГІГ Г«Г®Г±Гј") + "Г®Г±ГІГ Г«Г®Г±Гј".Length; // Г€Г­Г¤ГҐГЄГ± ГЇГ®Г±Г«ГҐ Г±Г«Г®ГўГ  "Г®Г±ГІГ Г«Г®Г±Гј"
+                                    int daysIndex = exitEpisod.IndexOf("Г¤Г­ГҐГ©", startIndex); // Г€Г­Г¤ГҐГЄГ± Г±Г«Г®ГўГ  "Г¤Г­ГҐГ©" ГЇГ®Г±Г«ГҐ startIndex
 
                                     if (daysIndex == -1)
                                     {
-                                        daysIndex = exitEpisod.IndexOf("дня", startIndex); // Индекс слова "дня" после startIndex
+                                        daysIndex = exitEpisod.IndexOf("Г¤Г­Гї", startIndex); // Г€Г­Г¤ГҐГЄГ± Г±Г«Г®ГўГ  "Г¤Г­Гї" ГЇГ®Г±Г«ГҐ startIndex
                                     }
 
                                     if (daysIndex == -1)
                                     {
-                                        daysIndex = exitEpisod.IndexOf("день", startIndex); // Индекс слова "день" после startIndex
+                                        daysIndex = exitEpisod.IndexOf("Г¤ГҐГ­Гј", startIndex); // Г€Г­Г¤ГҐГЄГ± Г±Г«Г®ГўГ  "Г¤ГҐГ­Гј" ГЇГ®Г±Г«ГҐ startIndex
                                     }
 
                                     if (daysIndex != -1)
                                     {
-                                        // Извлекаем подстроку между startIndex и daysIndex
+                                        // Г€Г§ГўГ«ГҐГЄГ ГҐГ¬ ГЇГ®Г¤Г±ГІГ°Г®ГЄГі Г¬ГҐГ¦Г¤Гі startIndex ГЁ daysIndex
                                         string daysString = exitEpisod.Substring(startIndex, daysIndex - startIndex).Trim();
 
                                         if (int.TryParse(daysString, out int days))
                                         {
-                                            // Вычисляем дату через указанное количество дней
+                                            // Г‚Г»Г·ГЁГ±Г«ГїГҐГ¬ Г¤Г ГІГі Г·ГҐГ°ГҐГ§ ГіГЄГ Г§Г Г­Г­Г®ГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г¤Г­ГҐГ©
                                             DateTime releaseDate = DateTime.Today.AddDays(days);
 
-                                            // Формируем строку для вывода
-                                            string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
+                                            // Г”Г®Г°Г¬ГЁГ°ГіГҐГ¬ Г±ГІГ°Г®ГЄГі Г¤Г«Гї ГўГ»ГўГ®Г¤Г 
+                                            string output = $"ГЋГ±ГІГ Г«Г®Г±Гј {days} Г¤Г­ГҐГ© Г¤Г® ГўГ»ГµГ®Г¤Г  ({releaseDate.ToShortDateString()})";
 
-                                            // Устанавливаем строку в NextEpisodeReleaseDateEntry
+                                            // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г±ГІГ°Г®ГЄГі Гў NextEpisodeReleaseDateEntry
                                             NextEpisodeReleaseDateEntry.Text = output;
                                             CountLabel.Text = countText;
                                             
@@ -323,10 +323,10 @@ namespace TestProject
                                     else
                                     {
 
-                                        // Заменяем каждую точку на точку с отступом и символ перевода строки
+                                        // Г‡Г Г¬ГҐГ­ГїГҐГ¬ ГЄГ Г¦Г¤ГіГѕ ГІГ®Г·ГЄГі Г­Г  ГІГ®Г·ГЄГі Г± Г®ГІГ±ГІГіГЇГ®Г¬ ГЁ Г±ГЁГ¬ГўГ®Г« ГЇГҐГ°ГҐГўГ®Г¤Г  Г±ГІГ°Г®ГЄГЁ
                                         exitEpisod = exitEpisod.Replace(".", ".");
 
-                                        // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
+                                        // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г®ГІГґГ®Г°Г¬Г ГІГЁГ°Г®ГўГ Г­Г­ГіГѕ Г±ГІГ°Г®ГЄГі Гў NextEpisodeReleaseDateEntry
                                         NextEpisodeReleaseDateEntry.Text = exitEpisod;
                                         CountLabel.Text = countText;
 
@@ -335,28 +335,28 @@ namespace TestProject
                                 }
                                 else
                                 {
-                                    NextEpisodeReleaseDateEntry.Text = $"Информация о {query} не найдена";
+                                    NextEpisodeReleaseDateEntry.Text = $"Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї Г® {query} Г­ГҐ Г­Г Г©Г¤ГҐГ­Г ";
                                 }
 
-                                if (type == "Сериал" || type == "Дорама" || type == "Мультсериал")
+                                if (type == "Г‘ГҐГ°ГЁГ Г«" || type == "Г„Г®Г°Г Г¬Г " || type == "ГЊГіГ«ГјГІГ±ГҐГ°ГЁГ Г«")
                                 {
                                     HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
                                     if (imgIn != null)
                                     {
                                         string imageUrl = imgIn.GetAttributeValue("src", "");
 
-                                        // Проверяем, содержит ли URL префикс "https://"
+                                        // ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г±Г®Г¤ГҐГ°Г¦ГЁГІ Г«ГЁ URL ГЇГ°ГҐГґГЁГЄГ± "https://"
                                         if (!imageUrl.StartsWith("https://"))
                                         {
-                                            // Добавляем префикс "https://", если его нет
+                                            // Г„Г®ГЎГ ГўГ«ГїГҐГ¬ ГЇГ°ГҐГґГЁГЄГ± "https://", ГҐГ±Г«ГЁ ГҐГЈГ® Г­ГҐГІ
                                             imageUrl = "https:" + imageUrl;
                                         }
-                                        // Устанавливаем изображение в элементы UI
+                                        // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЁГ§Г®ГЎГ°Г Г¦ГҐГ­ГЁГҐ Гў ГЅГ«ГҐГ¬ГҐГ­ГІГ» UI
                                         PosterImage.Source = ImageSource.FromUri(new Uri(imageUrl));
                                         Background.Source = ImageSource.FromUri(new Uri(imageUrl));
                                         if (content != null)
                                         {
-                                            // Обновляем ссылку на изображение в базе данных
+                                            // ГЋГЎГ­Г®ГўГ«ГїГҐГ¬ Г±Г±Г»Г«ГЄГі Г­Г  ГЁГ§Г®ГЎГ°Г Г¦ГҐГ­ГЁГҐ Гў ГЎГ Г§ГҐ Г¤Г Г­Г­Г»Гµ
                                             
                                             DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
                                             content = databaseService.GetContentById(content.Id);
@@ -371,7 +371,7 @@ namespace TestProject
                                     }
                                     else
                                     {
-                                        //Console.WriteLine("Изображение не найдено.");
+                                        //Console.WriteLine("Г€Г§Г®ГЎГ°Г Г¦ГҐГ­ГЁГҐ Г­ГҐ Г­Г Г©Г¤ГҐГ­Г®.");
                                     }
                                 }
 
@@ -386,7 +386,7 @@ namespace TestProject
                             }
                             else
                             {
-                                Console.WriteLine("Не удалось выполнить запрос к сайту.");
+                                Console.WriteLine("ГЌГҐ ГіГ¤Г Г«Г®Г±Гј ГўГ»ГЇГ®Г«Г­ГЁГІГј Г§Г ГЇГ°Г®Г± ГЄ Г±Г Г©ГІГі.");
                             }
 
                         }
@@ -394,14 +394,14 @@ namespace TestProject
                 }
                 else
                 {
-                    Console.WriteLine("Не удалось выполнить запрос к сайту.");
+                    Console.WriteLine("ГЌГҐ ГіГ¤Г Г«Г®Г±Гј ГўГ»ГЇГ®Г«Г­ГЁГІГј Г§Г ГЇГ°Г®Г± ГЄ Г±Г Г©ГІГі.");
                 }
             }
         }
 
         private async void SetupLabelTappedEvents()
         {
-            // Вызываем метод для получения информации с Википедии при загрузке страницы
+            // Г‚Г»Г§Г»ГўГ ГҐГ¬ Г¬ГҐГІГ®Г¤ Г¤Г«Гї ГЇГ®Г«ГіГ·ГҐГ­ГЁГї ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГЁ Г± Г‚ГЁГЄГЁГЇГҐГ¤ГЁГЁ ГЇГ°ГЁ Г§Г ГЈГ°ГіГ§ГЄГҐ Г±ГІГ°Г Г­ГЁГ¶Г»
             string title = (BindingContext as Content)?.Title;
             string type = (BindingContext as Content)?.Type;
 
@@ -410,7 +410,7 @@ namespace TestProject
 
         private async void SetupLabelTappedEventsRecom()
         {
-            // Вызываем метод для получения информации с Википедии при загрузке страницы
+            // Г‚Г»Г§Г»ГўГ ГҐГ¬ Г¬ГҐГІГ®Г¤ Г¤Г«Гї ГЇГ®Г«ГіГ·ГҐГ­ГЁГї ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГЁ Г± Г‚ГЁГЄГЁГЇГҐГ¤ГЁГЁ ГЇГ°ГЁ Г§Г ГЈГ°ГіГ§ГЄГҐ Г±ГІГ°Г Г­ГЁГ¶Г»
             string title = (BindingContext as ContentRecommendation)?.Title;
             string type = (BindingContext as ContentRecommendation)?.Type;
 
@@ -421,16 +421,16 @@ namespace TestProject
         {
             switch (type)
             {
-                case "Аниме":
+                case "ГЂГ­ГЁГ¬ГҐ":
                     parser?.GetInfo(title, type, AG, true);
                     parser?.GetInfo(title, type, AG, false);
                     WatchingButton.Source = "anime.png";
                     break;
-                case "Фильм":
-                case "Сериал":
-                case "Дорама":
-                case "Мультсериал":
-                case "Прочее":
+                case "Г”ГЁГ«ГјГ¬":
+                case "Г‘ГҐГ°ГЁГ Г«":
+                case "Г„Г®Г°Г Г¬Г ":
+                case "ГЊГіГ«ГјГІГ±ГҐГ°ГЁГ Г«":
+                case "ГЏГ°Г®Г·ГҐГҐ":
                     parser?.GetInfo(title, type, WIK, false);
                     parser?.GetInfo(title, type, WIK, true);
                     WatchingButton.Source = "movie.png";
@@ -443,26 +443,26 @@ namespace TestProject
             parser?.GetInfo(title, type, YT, false);
             parser?.GetInfo(title, type, DE, false);
 
-            DescriptionLabel.Text = parser?.description;
-            PosterImage.Source = ImageSource.FromUri(new Uri(parser?.image));
-            Background.Source = ImageSource.FromUri(new Uri(parser?.image));
-            TrailerWeb.Source = parser?.youTube;
-            NextEpisodeReleaseDateEntry.Text = parser?.nextEpisodeReleaseDate;
-            CountLabel.Text = parser?.countLabel;
+            DescriptionLabel.Text = parser?.Description;
+            PosterImage.Source = ImageSource.FromUri(new Uri(parser?.Image));
+            Background.Source = ImageSource.FromUri(new Uri(parser?.Image));
+            TrailerWeb.Source = parser?.YouTube;
+            NextEpisodeReleaseDateEntry.Text = parser?.NextEpisodeReleaseDate;
+            CountLabel.Text = parser?.CountLabel;
         }
 
         private async void OpenLink(string link)
         {
             if (!string.IsNullOrEmpty(link))
             {
-                // Открываем ссылку в браузере*-*+9
+                // ГЋГІГЄГ°Г»ГўГ ГҐГ¬ Г±Г±Г»Г«ГЄГі Гў ГЎГ°Г ГіГ§ГҐГ°ГҐ*-*+9
                 await Browser.OpenAsync(new Uri(link), BrowserLaunchMode.SystemPreferred);
             }
         }
 
         private async void DeleteButton_Clicked(object sender, EventArgs e)
         {
-            bool result = await DisplayAlert("Уведомление", $"Вы уверены, что хотите удалить {content.Title}?", "Да", "Нет");
+            bool result = await DisplayAlert("Г“ГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГҐ", $"Г‚Г» ГіГўГҐГ°ГҐГ­Г», Г·ГІГ® ГµГ®ГІГЁГІГҐ ГіГ¤Г Г«ГЁГІГј {content.Title}?", "Г„Г ", "ГЌГҐГІ");
 
             if (result)
             {
@@ -482,12 +482,12 @@ namespace TestProject
         {
             if (isEditing)
             {
-                // Если уже в режиме редактирования, то нужно сохранить изменения
+                // Г…Г±Г«ГЁ ГіГ¦ГҐ Гў Г°ГҐГ¦ГЁГ¬ГҐ Г°ГҐГ¤Г ГЄГІГЁГ°Г®ГўГ Г­ГЁГї, ГІГ® Г­ГіГ¦Г­Г® Г±Г®ГµГ°Г Г­ГЁГІГј ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
                 SaveChanges();
             }
             else
             {
-                // Если не в режиме редактирования, то переключиться в этот режим
+                // Г…Г±Г«ГЁ Г­ГҐ Гў Г°ГҐГ¦ГЁГ¬ГҐ Г°ГҐГ¤Г ГЄГІГЁГ°Г®ГўГ Г­ГЁГї, ГІГ® ГЇГҐГ°ГҐГЄГ«ГѕГ·ГЁГІГјГ±Гї Гў ГЅГІГ®ГІ Г°ГҐГ¦ГЁГ¬
                 StartEditing();
             }
         }
@@ -495,10 +495,10 @@ namespace TestProject
         private void StartEditing()
         {
             isEditing = true;
-            EditButton.Text = "Сохранить";
-            CancelButton.IsVisible = true; // Отобразить кнопку "Отмена"
+            EditButton.Text = "Г‘Г®ГµГ°Г Г­ГЁГІГј";
+            CancelButton.IsVisible = true; // ГЋГІГ®ГЎГ°Г Г§ГЁГІГј ГЄГ­Г®ГЇГЄГі "ГЋГІГ¬ГҐГ­Г "
 
-            // Разблокировать поля ввода
+            // ГђГ Г§ГЎГ«Г®ГЄГЁГ°Г®ГўГ ГІГј ГЇГ®Г«Гї ГўГўГ®Г¤Г 
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
@@ -535,10 +535,10 @@ namespace TestProject
         private void SaveChanges()
         {
             isEditing = false;
-            EditButton.Text = "Изменить";
-            CancelButton.IsVisible = false; // Скрыть кнопку "Отмена"
+            EditButton.Text = "Г€Г§Г¬ГҐГ­ГЁГІГј";
+            CancelButton.IsVisible = false; // Г‘ГЄГ°Г»ГІГј ГЄГ­Г®ГЇГЄГі "ГЋГІГ¬ГҐГ­Г "
 
-            // Блокировать поля ввода
+            // ГЃГ«Г®ГЄГЁГ°Г®ГўГ ГІГј ГЇГ®Г«Гї ГўГўГ®Г¤Г 
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
@@ -570,7 +570,7 @@ namespace TestProject
 
             
 
-            // Создаем экземпляр сервиса базы данных
+            // Г‘Г®Г§Г¤Г ГҐГ¬ ГЅГЄГ§ГҐГ¬ГЇГ«ГїГ° Г±ГҐГ°ГўГЁГ±Г  ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ
             DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
             content = databaseService.GetContentById(content.Id);
             content.Title = TitleEntry.Text;
@@ -589,19 +589,19 @@ namespace TestProject
             }
             switch (content.Type)
             {
-                case "Аниме":
+                case "ГЂГ­ГЁГ¬ГҐ":
                     content.Link = "https://animego.org/search/all?q=" + TitleEntry.Text;
                     break;
-                case "Дорама":
+                case "Г„Г®Г°Г Г¬Г ":
                     content.Link = "https://dorama.land/search?q=" + TitleEntry.Text;
                     break;
-                case "Сериал":
+                case "Г‘ГҐГ°ГЁГ Г«":
                     content.Link = "https://kinogo.biz/search/" + TitleEntry.Text;
                     break;
-                case "Мультсериал":
+                case "ГЊГіГ«ГјГІГ±ГҐГ°ГЁГ Г«":
                     content.Link = "https://kinogo.biz/search/" + TitleEntry.Text;
                     break;
-                case "Фильм":
+                case "Г”ГЁГ«ГјГ¬":
                     content.Link = "https://kinogo.biz/search/" + TitleEntry.Text;
                     break;
                 default:
@@ -618,30 +618,30 @@ namespace TestProject
             databaseService.CloseConnection();
             SetupLabelTappedEvents();
 
-            // Обновить данные в БД
-            // Ваш код для обновления данных в БД
+            // ГЋГЎГ­Г®ГўГЁГІГј Г¤Г Г­Г­Г»ГҐ Гў ГЃГ„
+            // Г‚Г Гё ГЄГ®Г¤ Г¤Г«Гї Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГї Г¤Г Г­Г­Г»Гµ Гў ГЃГ„
         }
 
         private void CancelButton_Clicked(object sender, EventArgs e)
         {
-            // Отменить изменения и переключиться из режима редактирования
+            // ГЋГІГ¬ГҐГ­ГЁГІГј ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЁ ГЇГҐГ°ГҐГЄГ«ГѕГ·ГЁГІГјГ±Гї ГЁГ§ Г°ГҐГ¦ГЁГ¬Г  Г°ГҐГ¤Г ГЄГІГЁГ°Г®ГўГ Г­ГЁГї
             isEditing = false;
-            EditButton.Text = "Изменить";
-            CancelButton.IsVisible = false; // Скрыть кнопку "Отмена"
+            EditButton.Text = "Г€Г§Г¬ГҐГ­ГЁГІГј";
+            CancelButton.IsVisible = false; // Г‘ГЄГ°Г»ГІГј ГЄГ­Г®ГЇГЄГі "ГЋГІГ¬ГҐГ­Г "
 
-            // Получаем путь к базе данных
+            // ГЏГ®Г«ГіГ·Г ГҐГ¬ ГЇГіГІГј ГЄ ГЎГ Г§ГҐ Г¤Г Г­Г­Г»Гµ
             
 
-            // Создаем экземпляр сервиса базы данных
+            // Г‘Г®Г§Г¤Г ГҐГ¬ ГЅГЄГ§ГҐГ¬ГЇГ«ГїГ° Г±ГҐГ°ГўГЁГ±Г  ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ
             DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
 
-            // Получаем данные из базы данных по ID
+            // ГЏГ®Г«ГіГ·Г ГҐГ¬ Г¤Г Г­Г­Г»ГҐ ГЁГ§ ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ ГЇГ® ID
             content = databaseService.GetContentById(content.Id);
 
-            // Проверяем наличие данных в объекте content
+            // ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ Г­Г Г«ГЁГ·ГЁГҐ Г¤Г Г­Г­Г»Гµ Гў Г®ГЎГєГҐГЄГІГҐ content
             if (content != null)
             {
-                // Заполняем поля ввода данными из объекта content
+                // Г‡Г ГЇГ®Г«Г­ГїГҐГ¬ ГЇГ®Г«Гї ГўГўГ®Г¤Г  Г¤Г Г­Г­Г»Г¬ГЁ ГЁГ§ Г®ГЎГєГҐГЄГІГ  content
                 TitleEntry.Text = content.Title;
                 TypeEntry.Text = content.Type;
                 DubbingEntry.Text = content.Dubbing;
@@ -652,7 +652,7 @@ namespace TestProject
 
             }
 
-            // Блокируем поля ввода
+            // ГЃГ«Г®ГЄГЁГ°ГіГҐГ¬ ГЇГ®Г«Гї ГўГўГ®Г¤Г 
             LinkSecondLabel.IsVisible = false;
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
@@ -705,7 +705,7 @@ namespace TestProject
             LastWatchedSeriesEntry.Text = newValue.ToString();
             
 
-            // Создаем экземпляр сервиса базы данных
+            // Г‘Г®Г§Г¤Г ГҐГ¬ ГЅГЄГ§ГҐГ¬ГЇГ«ГїГ° Г±ГҐГ°ГўГЁГ±Г  ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ
             DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
             content = databaseService.GetContentById(content.Id);
             DateTime currentDate = DateTime.UtcNow;
@@ -724,7 +724,7 @@ namespace TestProject
             LastWatchedSeasonEntry.Text = newValue.ToString();
             
 
-            // Создаем экземпляр сервиса базы данных
+            // Г‘Г®Г§Г¤Г ГҐГ¬ ГЅГЄГ§ГҐГ¬ГЇГ«ГїГ° Г±ГҐГ°ГўГЁГ±Г  ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ
             DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
             content = databaseService.GetContentById(content.Id);
             DateTime currentDate = DateTime.UtcNow;

@@ -58,7 +58,7 @@ namespace CineChronicle.Application
                     url = $"https://www.youtube.com/results?search_query={query}+{type}+трейлер";
                     break;
                 case ("LordsFilm", false):
-                    //url = $"https://www.google.by/search?q= {Uri.EscapeDataString(query)} Постер&tbm=isch&ved=2ahUKEwiZtra589-EAxW8if0HHa5CCkYQ2-cCegQIABAA&oq=а&gs_lp=EgNpbWciAtCwSJwUUJsSWKoTcAB4AJABAJgBsAGgAbABqgEDMC4xuAEDyAEA-AEBigILZ3dzLXdpei1pbWeoAgDCAgoQABiABBiKBRhDiAYB&sclient=img&ei=-4ToZdnMOryT9u8ProWpsAQ";
+                    url = $"https://www.google.by/search?q= {Uri.EscapeDataString(query)} Постер&tbm=isch&ved=2ahUKEwiZtra589-EAxW8if0HHa5CCkYQ2-cCegQIABAA&oq=а&gs_lp=EgNpbWciAtCwSJwUUJsSWKoTcAB4AJABAJgBsAGgAbABqgEDMC4xuAEDyAEA-AEBigILZ3dzLXdpei1pbWeoAgDCAgoQABiABBiKBRhDiAYB&sclient=img&ei=-4ToZdnMOryT9u8ProWpsAQ";
                     break;
                 case ("DateExit", _):
                     url = $"https://www.toramp.com/ru/search/?q={query}";
@@ -208,6 +208,9 @@ namespace CineChronicle.Application
                             case ("DateExit", _):
                                 node = htmlDocument.DocumentNode.SelectSingleNode($"//div[@class='content']//a[contains(., '{query}')]");
                                 DateExitIsSuccess(node, client, query, type, htmlDocument);
+                                break;
+                            case ("LordsFilm", false):
+                                // Использовалось раньше для взятия картинки, возможны проблемы с источником, пересмотреть логику снизу
                                 break;
                         }
                     }

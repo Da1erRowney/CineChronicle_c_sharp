@@ -407,7 +407,40 @@ namespace CineChronicle.Application
                 }
             }
         }
+        public async string GetTrailer(string query, string type)
+        {
+            string url = $"https://www.youtube.com/results?search_query={query}+{type}+òðåéëåð";
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
 
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        string pattern = "\\\\/vi\\\\/([^\\/\\\\\"]+)";
+                        Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
+
+                        if (match.Success)
+                        {
+                             return $"https://www.youtube.com/watch?v={match.Groups[1].Value}";
+                        }
+                    }
+                    else
+                    {
+                        return "https://www.youtube.com/watch?v";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
         public async void DateExitIsSuccess(HtmlNode node, HttpClient client, string query, string type, HtmlDocument htmlDocument)
         {
             if (node != null)

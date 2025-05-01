@@ -1,3 +1,4 @@
+using Microsoft.Maui.ApplicationModel;
 namespace TestProject;
 
 public partial class SettingPage : ContentPage

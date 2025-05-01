@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Windows.Input;
 using CineChronicle.Tables;
+using Microsoft.Maui.ApplicationModel;
 
 namespace TestProject
 {

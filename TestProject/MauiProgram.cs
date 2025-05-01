@@ -1,8 +1,4 @@
 ﻿using CommunityToolkit.Maui;
-using Microsoft.Maui;
-
-using System.Diagnostics.Metrics;
-using System.Reflection.Metadata;
 
 namespace TestProject;
 

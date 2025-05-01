@@ -1,5 +1,6 @@
 using CineChronicle.Tables;
 using System.Text.RegularExpressions;
+using Microsoft.Maui.ApplicationModel.Communication;
 
 namespace TestProject;
 

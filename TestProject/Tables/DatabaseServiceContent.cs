@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Maui.ApplicationModel.Communication;
 
 namespace CineChronicle.Tables
 {

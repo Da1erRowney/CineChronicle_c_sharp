@@ -1,5 +1,6 @@
 #pragma warning disable CS4008
 using CineChronicle.Tables;
+using Microsoft.Maui.ApplicationModel.Communication;
 
 namespace TestProject;
 

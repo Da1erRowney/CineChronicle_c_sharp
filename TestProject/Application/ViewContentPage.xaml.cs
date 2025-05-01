@@ -144,21 +144,18 @@ namespace TestProject
                 var task3 = parser.GetInfo(title, type, YT, false);
                 var task4 = parser.GetInfo(title, type, DE, false);
 
-                await Task.WhenAll(task1);
-                await Task.WhenAll(task2);
-                await Task.WhenAll(task3);
-                await Task.WhenAll(task4);
+                await Task.WhenAll(task1,task2,task3,task4);
 
                 await Task.Delay(100);
             }
             finally
             {
-                parser.DescriptionRead -= HandleLoadDescription;
-                parser.ImageRead -= HandleLoadImage;
-                parser.YouTubeRead -= HandleLoadYouTube;
-                parser.NextEpisodeReleaseDateRead -= HandleLoadNextEpisode;
-                parser.CountLabelRead -= HandleLoadCount;
-                parser.DateReleaseRead -= HandleLoadDateRelease;
+                //parser.DescriptionRead -= HandleLoadDescription;
+                //parser.ImageRead -= HandleLoadImage;
+                //parser.YouTubeRead -= HandleLoadYouTube;
+                //parser.NextEpisodeReleaseDateRead -= HandleLoadNextEpisode;
+                //parser.CountLabelRead -= HandleLoadCount;
+                //parser.DateReleaseRead -= HandleLoadDateRelease;
             }
         }
 

@@ -13,7 +13,7 @@ public partial class MainPage : ContentPage
     public List<Content> ContentChange { get; set; }
     public Content SelectedItem { get; set; }
 
-    public static readonly string _databasePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "content.db");
+    public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
 
     public MainPage()
     {

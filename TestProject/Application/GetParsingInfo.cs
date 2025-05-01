@@ -1,6 +1,7 @@
 ﻿using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
@@ -27,6 +28,9 @@ namespace CineChronicle.Application
         public string NextEpisodeReleaseDate { get; set; } = string.Empty;
         public string CountLabel { get; set; } = string.Empty;
         public string DateRelease { get; set; } = string.Empty;
+
+
+        private int countRead = 0;
         #endregion
 
         #region Handle Class
@@ -60,6 +64,7 @@ namespace CineChronicle.Application
             public string DateRelease { get; set; }
         }
         #endregion
+
 
         /// <summary>
         /// Получаем описание, постер, трейлеры и дату выхода контента
@@ -125,7 +130,6 @@ namespace CineChronicle.Application
                         var nextEpisodeResult = new NextEpisodeReleaseDateResult { };
                         var countResult = new CountLabelResult { };
                         var dateReleaseResult = new DateReleaseResult { };
-
 
                         if (response.IsSuccessStatusCode)
                         {
@@ -293,26 +297,26 @@ namespace CineChronicle.Application
                                     node = htmlDocument.DocumentNode.SelectSingleNode($"//div[@class='content']//a[contains(., '{query}')]");
                                     DateExitIsSuccess(node, query, type, htmlDocument);
 
-                                    nextEpisodeResult.NextEpisodeReleaseDate = NextEpisodeReleaseDate;
-                                    NextEpisodeReleaseDateRead?.Invoke(nextEpisodeResult);
+                                    //nextEpisodeResult.NextEpisodeReleaseDate = NextEpisodeReleaseDate;
+                                    //NextEpisodeReleaseDateRead?.Invoke(nextEpisodeResult);
 
-                                    countResult.CountLabel = CountLabel;
-                                    CountLabelRead?.Invoke(countResult);
+                                    //countResult.CountLabel = CountLabel;
+                                    //CountLabelRead?.Invoke(countResult);
 
-                                    dateReleaseResult.DateRelease = DateRelease;
-                                    DateReleaseRead?.Invoke(dateReleaseResult);
+                                    //dateReleaseResult.DateRelease = DateRelease;
+                                    //DateReleaseRead?.Invoke(dateReleaseResult);
 
-                                    if (!string.IsNullOrEmpty(Image))
-                                    {
-                                        imageResult.Image = Image;
-                                        ImageRead?.Invoke(imageResult);
-                                    }
+                                    //if (!string.IsNullOrEmpty(Image))
+                                    //{
+                                    //    imageResult.Image = Image;
+                                    //    ImageRead?.Invoke(imageResult);
+                                    //}
 
-                                    if (!string.IsNullOrEmpty(Description))
-                                    {
-                                        descriptionResult.Description = Description;
-                                        DescriptionRead?.Invoke(descriptionResult);
-                                    }
+                                    //if (!string.IsNullOrEmpty(Description))
+                                    //{
+                                    //    descriptionResult.Description = Description;
+                                    //    DescriptionRead?.Invoke(descriptionResult);
+                                    //}
 
                                     break;
                                 case ("LordsFilm", false):
@@ -325,6 +329,7 @@ namespace CineChronicle.Application
                             switch (sourcePars, isInfo)
                             {
                                 case ("Википедия", true):
+                                    countRead = 0;
                                     WikInfoIsWrong(query, type);
                                     descriptionResult.Description = Description;
                                     DescriptionRead?.Invoke(descriptionResult);
@@ -455,11 +460,11 @@ namespace CineChronicle.Application
                     }
                 }
             }
-
         }
 
         public async void WikInfoIsWrong(string query, string type)
         {
+            if (countRead == 2) return;
             string url1 = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
 
             using (HttpClient client1 = new HttpClient())
@@ -503,10 +508,12 @@ namespace CineChronicle.Application
                                 {
                                     Description = HtmlEntity.DeEntitize(listItemText);
                                     return;
-                                }
+                                } 
                             }
                         }
                         Description = $"Информация о {query} не найдена";
+                        countRead++;
+                        WikInfoIsWrong($"{query} сериал", type);
                     }
                 }
 
@@ -554,6 +561,12 @@ namespace CineChronicle.Application
 
         public async void DateExitIsSuccess(HtmlNode node, string query, string type, HtmlDocument htmlDocument)
         {
+            var descriptionResult = new DescriptionResult { };
+            var imageResult = new ImageResult { };
+            var nextEpisodeResult = new NextEpisodeReleaseDateResult { };
+            var countResult = new CountLabelResult { };
+            var dateReleaseResult = new DateReleaseResult { };
+
             using (HttpClient client = new HttpClient())
             {
                 if (node != null)
@@ -603,22 +616,36 @@ namespace CineChronicle.Application
                                     string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
 
                                     NextEpisodeReleaseDate = output;
+                                    nextEpisodeResult.NextEpisodeReleaseDate = NextEpisodeReleaseDate;
+                                    NextEpisodeReleaseDateRead?.Invoke(nextEpisodeResult);
+
                                     CountLabel = countText;
+                                    countResult.CountLabel = CountLabel;
+                                    CountLabelRead?.Invoke(countResult);
+
                                     DateRelease = releaseDate.ToShortDateString();
+                                    dateReleaseResult.DateRelease = DateRelease;
+                                    DateReleaseRead?.Invoke(dateReleaseResult);
                                 }
                             }
-
                             else
                             {
                                 exitEpisod = exitEpisod.Replace(".", ".");
 
                                 NextEpisodeReleaseDate = exitEpisod;
+                                nextEpisodeResult.NextEpisodeReleaseDate = NextEpisodeReleaseDate;
+                                NextEpisodeReleaseDateRead?.Invoke(nextEpisodeResult);
+
                                 CountLabel = countText;
+                                countResult.CountLabel = CountLabel;
+                                CountLabelRead?.Invoke(countResult);
                             }
                         }
                         else
                         {
                             NextEpisodeReleaseDate = $"Информация о {query} не найдена";
+                            nextEpisodeResult.NextEpisodeReleaseDate = NextEpisodeReleaseDate;
+                            NextEpisodeReleaseDateRead?.Invoke(nextEpisodeResult);
                         }
 
                         if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" || type == "Аниме")
@@ -633,22 +660,36 @@ namespace CineChronicle.Application
                                     ImageUrl = "https:" + ImageUrl;
                                 }
                                 Image = ImageUrl;
+                                imageResult.Image = Image;
+                                ImageRead?.Invoke(imageResult);
                             }
 
                             // Парсим описание
-                            HtmlNode descriptionNode = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='pad_16']/pre[@class='pre_normal_txt']");
-                            if (descriptionNode != null)
+                            // Находим JSON-блок с метаданными
+                            HtmlNode scriptNode = htmlDocumentIn.DocumentNode.SelectSingleNode("//script[@type='application/ld+json']");
+                            if (scriptNode != null)
                             {
-                                Description = WebUtility.HtmlDecode(descriptionNode.InnerText.Trim());
+                                try
+                                {
+                                    // Десериализуем JSON
+                                    var jsonData = JsonConvert.DeserializeObject<dynamic>(scriptNode.InnerText);
+
+                                    // Извлекаем описание
+                                    Description = jsonData?.description?.ToString()?.Trim();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"Ошибка парсинга JSON: {ex.Message}");
+                                }
                             }
+                            descriptionResult.Description = Description;
+                            DescriptionRead?.Invoke(descriptionResult);
                         }
                         else
                         {
                             Console.WriteLine("Не удалось выполнить запрос к сайту.");
                         }
                     }
-
-
                 }
                 else
                 {
@@ -701,8 +742,16 @@ namespace CineChronicle.Application
 
                                         // Устанавливаем строку в NextEpisodeReleaseDateEntry
                                         NextEpisodeReleaseDate = output;
+                                        nextEpisodeResult.NextEpisodeReleaseDate = NextEpisodeReleaseDate;
+                                        NextEpisodeReleaseDateRead?.Invoke(nextEpisodeResult);
+
                                         CountLabel = countText;
+                                        countResult.CountLabel = CountLabel;
+                                        CountLabelRead?.Invoke(countResult);
+
                                         DateRelease = releaseDate.ToShortDateString();
+                                        dateReleaseResult.DateRelease = DateRelease;
+                                        DateReleaseRead?.Invoke(dateReleaseResult);
                                     }
                                 }
 
@@ -714,11 +763,19 @@ namespace CineChronicle.Application
                                     // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
                                     NextEpisodeReleaseDate = exitEpisod;
                                     CountLabel = countText;
+
+                                    nextEpisodeResult.NextEpisodeReleaseDate = NextEpisodeReleaseDate;
+                                    NextEpisodeReleaseDateRead?.Invoke(nextEpisodeResult);
+
+                                    countResult.CountLabel = CountLabel;
+                                    CountLabelRead?.Invoke(countResult);
                                 }
                             }
                             else
                             {
                                 NextEpisodeReleaseDate = $"Информация о {query} не найдена";
+                                nextEpisodeResult.NextEpisodeReleaseDate = NextEpisodeReleaseDate;
+                                NextEpisodeReleaseDateRead?.Invoke(nextEpisodeResult);
                             }
 
                             if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" || type == "Аниме")
@@ -733,14 +790,29 @@ namespace CineChronicle.Application
                                         ImageUrl = "https:" + ImageUrl;
                                     }
                                     Image = ImageUrl;
+                                    imageResult.Image = Image;
+                                    ImageRead?.Invoke(imageResult);
                                 }
 
                                 // Парсим описание
-                                HtmlNode descriptionNode = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='pad_16']/pre[@class='pre_normal_txt']");
-                                if (descriptionNode != null)
+                                HtmlNode scriptNode = htmlDocumentIn.DocumentNode.SelectSingleNode("//script[@type='application/ld+json']");
+                                if (scriptNode != null)
                                 {
-                                    Description = WebUtility.HtmlDecode(descriptionNode.InnerText.Trim());
+                                    try
+                                    {
+                                        // Десериализуем JSON
+                                        var jsonData = JsonConvert.DeserializeObject<dynamic>(scriptNode.InnerText);
+
+                                        // Извлекаем описание
+                                        Description = jsonData?.description?.ToString()?.Trim();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"Ошибка парсинга JSON: {ex.Message}");
+                                    }
                                 }
+                                descriptionResult.Description = Description;
+                                DescriptionRead?.Invoke(descriptionResult);
                             }
                         }
                         else

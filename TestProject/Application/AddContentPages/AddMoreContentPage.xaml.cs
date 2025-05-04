@@ -1,61 +1,231 @@
+using CineChronicle.Application;
+using CineChronicle.Application.SupportClass;
 using CineChronicle.Tables;
 
 namespace TestProject
 {
 
-    public partial class AddMoreContentPage : ContentPage { 
+    public partial class AddMoreContentPage : ContentPage 
+    { 
 
         private DatabaseServiceContent _databaseService;
 
+        #region [Ctor's]
         public AddMoreContentPage()
         {
             InitializeComponent();
-
-
-            
             _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
             LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
-
         }
         public AddMoreContentPage(ContentRecommendation data)
         {
             InitializeComponent();
             TitleEntry.Text = data.Title;
-            if (data.Type == "Сериал")
+            if (data.Type == ContentTypes.SERIAL)
             {
                 // Найти объект элемента "Сериал" в списке элементов TypePicker
-                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == "Сериал");
+                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == ContentTypes.SERIAL);
 
                 // Присвоить найденный объект элемента в SelectedItem
                 TypePicker.SelectedItem = selectedType;
             }
-            else if (data.Type == "Аниме")
+            else if (data.Type == ContentTypes.ANIME)
             {
                 // Найти объект элемента "Сериал" в списке элементов TypePicker
-                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == "Аниме");
+                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == ContentTypes.ANIME);
 
                 // Присвоить найденный объект элемента в SelectedItem
                 TypePicker.SelectedItem = selectedType;
             }
-            else if (data.Type == "Мультсериал")
+            else if (data.Type == ContentTypes.CARTOON)
             {
                 // Найти объект элемента "Сериал" в списке элементов TypePicker
-                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == "Мультсериал");
+                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == ContentTypes.CARTOON);
 
                 // Присвоить найденный объект элемента в SelectedItem
                 TypePicker.SelectedItem = selectedType;
             }
-            
-         
-
-
             
             _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
             LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
 
         }
+        #endregion
+
+        #region [Handle saving content]
+        private async void OnAddClicked(object sender, EventArgs e)
+        {
+            EnabledElements(false);
+            await ShowLoadingAnimation();
+            string title = TitleEntry.Text;
+            string type = TypePicker.SelectedItem?.ToString();
+
+            if (!await CheckNullFields(title, type)) return;
+            if (!await CheckExistingContent(title)) return;
+
+            GetParsingInfo getParsingInfo = new();
+            
+            bool parseSuccess = await getParsingInfo.GetData(type, title);
+            if (!parseSuccess)
+            {
+                await DisplayAlert("Ошибка", "Не удалось получить данные", "OK");
+                EnabledElements(true);
+                await HideLoadingAnimation();
+                return;
+            }
+
+            string link = GetSourcesLink(type);
+            string dubbing = DubbingEntry.Text;
+            string dateAdded = GetTodaysDate().ToString("yyyy-MM-dd HH:mm:ss");
+            string statusWatches = WatchStatusPicker.SelectedItem?.ToString();
+            int lastWatchedSeries = int.TryParse(LastWatchedSeriesEntry.Text, out var series) ? series : 0;
+            int lastWatchedSeason = int.TryParse(LastWatchedSeasonEntry.Text, out var season) ? season : 0;
+
+            // Создаем новый экземпляр контента
+            var newContent = new Content
+            {
+                CountLabel = getParsingInfo.CountLabel,
+                DateAdded = dateAdded,
+                Description = getParsingInfo.Description,
+                Dubbing = dubbing,
+                DateRelease = getParsingInfo.DateRelease,
+                Image = getParsingInfo.Image,
+                LastWatchedSeason = lastWatchedSeason,
+                LastWatchedSeries = lastWatchedSeries,
+                NextEpisodeReleaseDate = getParsingInfo.NextEpisodeReleaseDate,
+                SeriesChangeDate = string.Empty,
+                SourceLink = link,
+                Title = title,
+                Type = string.IsNullOrEmpty(type) ? "Не начинал" : type,
+                WatchStatus = statusWatches,
+                YouTubeLink = getParsingInfo.YouTubeLink
+            };
+
+            _databaseService.InsertContent(newContent);
+
+            ClearInputFields();
+            EnabledElements(true);
+            await HideLoadingAnimation();
+            await DisplayAlert("Уведомление", "Ваши данные сохранены", "Oк");
+
+            // Переход к главному экрану
+            await Shell.Current.GoToAsync("//Main");
+            Navigation.RemovePage(this); 
+        }
+
+        #endregion
+
+        #region [Play/Stop Animation]
+        private async Task ShowLoadingAnimation()
+        {
+            Overlay.IsVisible = true;
+            SavingAnimation.IsVisible = true;
+            SavingAnimation.Opacity = 1; // Убедитесь, что анимация видима
+            await SavingAnimation.FadeTo(1, 0); // Убедитесь, что анимация начинает с полной непрозрачности
+           // SavingAnimation.Play(); // Запустите анимацию, если это возможно
+        }
+
+        private async Task HideLoadingAnimation()
+        {
+            await SavingAnimation.FadeTo(0, 250);
+            SavingAnimation.IsVisible = false;
+            Overlay.IsVisible = false;
+        }
+        #endregion
+
+        #region [Methods for saving content]
+        private void EnabledElements(bool IsEnabled)
+        {
+            TitleEntry.IsEnabled = IsEnabled;
+            TypePicker.IsEnabled = IsEnabled;
+            DubbingEntry.IsEnabled = IsEnabled;
+            WatchStatusPicker.IsEnabled = IsEnabled;
+            LastWatchedSeriesEntry.IsEnabled = IsEnabled;
+            LastWatchedSeasonEntry.IsEnabled = IsEnabled;
+            LinkEntry.IsEnabled = IsEnabled;
+        }
+
+        //Получение сегодняшней даты
+        private static DateTime GetTodaysDate()
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            DateTime newDate = currentDate.AddHours(+3);
+            return newDate;
+        }
+
+        //Получение ссылки для контента
+        private string GetSourcesLink(string type)
+        {
+            if (string.IsNullOrEmpty(LinkEntry.Text))
+            {
+                switch (type)
+                {
+                    case ContentTypes.ANIME:
+                        return "https://animego.org/search/all?q=" + TitleEntry.Text;
+                    case ContentTypes.DORAMA:
+                        return "https://dorama.land/search?q=" + TitleEntry.Text;
+                    case ContentTypes.SERIAL:
+                    case ContentTypes.CARTOON:
+                    case ContentTypes.FILM:
+                        return "https://kinogo.biz/search/" + TitleEntry.Text;
+                    default:
+                        return "https://kinogo.biz/search/" + TitleEntry.Text;
+                }
+            }
+            else
+            {
+                return LinkEntry.Text;
+            }
+        }
+
+        //Проверка на нулевые значения
+        private async Task<bool> CheckNullFields(string title, string type)
+        {
+            if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(type))
+            {
+                await DisplayAlert("Уведомление", "Заполните поля \"Название\" и \"Тип\" для возможности сохранения", "OK");
+                EnabledElements(true);
+                await HideLoadingAnimation();
+                return false;
+            }
+            return true;
+        }
+
+        //Проверка существующего контента
+        private async Task<bool> CheckExistingContent(string title)
+        {
+            List<Content> contents = _databaseService.GetAllContent().ToList();
+
+            List<Content> filteredContents = contents.Where(c => c.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            if (filteredContents.Count != 0)
+            {
+                bool result = await DisplayAlert("Уведомление", $"Похоже {title} уже существует, вы уверены, что хотите создать копию?", "Да", "Нет");
+
+                if (!result)
+                {
+                    ClearInputFields();
+                    EnabledElements(true);
+                    await HideLoadingAnimation();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        //Очистка полей после сохранения
+        private void ClearInputFields()
+        {
+            TitleEntry.Text = string.Empty;
+            DubbingEntry.Text = string.Empty;
+            LastWatchedSeriesEntry.Text = string.Empty;
+            LastWatchedSeasonEntry.Text = string.Empty;
+            LinkEntry.Text = string.Empty;
+        }
+        #endregion
+
+        #region [Other event handlers]
 
         private void LastWatchedSeriesEntry_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -84,158 +254,6 @@ namespace TestProject
                 }
             }
         }
-        private async void OnAddClicked(object sender, EventArgs e)
-        {
-            string m_type = TypePicker.SelectedItem?.ToString();
-            string m_status = WatchStatusPicker.SelectedItem?.ToString();
-
-            if (string.IsNullOrEmpty(TitleEntry.Text) || string.IsNullOrEmpty(m_type) || string.IsNullOrEmpty(m_status))
-            {
-
-                await DisplayAlert("Ошибка", "Заполните Название, Тип и Статус просмотра для возможности сохранения", "OK");
-                return;
-            }
-
-            // Получите выбранную дату из DatePicker
-           
-            DateTime currentDate = DateTime.UtcNow;
-            DateTime newDate = currentDate.AddHours(+3);
-
-            // Преобразуйте выбранную дату в строку с нужным форматом
-           
-
-            // Формируем ссылку в зависимости от выбранного типа контента и заполняем поле LinkEntry
-            string link = "";
-            if (string.IsNullOrEmpty(LinkEntry.Text))
-            {
-                switch (m_type)
-                {
-                    case "Аниме":
-                        link = "https://animego.org/search/all?q=" + TitleEntry.Text;
-                        break;
-                    case "Дорама":
-                        link = "https://dorama.land/search?q=" + TitleEntry.Text;
-                        break;
-                    case "Сериал":
-                        link = "https://kinogo.biz/search/" + TitleEntry.Text;
-                        break;
-                    case "Мультсериал":
-                        link = "https://kinogo.biz/search/" + TitleEntry.Text;
-                        break;
-                    case "Фильм":
-                        link = "https://kinogo.biz/search/" + TitleEntry.Text;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                link = LinkEntry.Text;
-            }
-           
-
-
-            string m_title = TitleEntry.Text;
-            string m_dubbing = DubbingEntry.Text;
-            
-            string m_data = newDate.ToString("yyyy-MM-dd HH:mm:ss");
-            int m_lastWatchedSeries=0;
-            int m_lastWatchedSeason=0;
-
-            if (!string.IsNullOrEmpty(LastWatchedSeriesEntry.Text))
-            {
-                m_lastWatchedSeries = int.Parse(LastWatchedSeriesEntry.Text);
-            }
-            else
-            {
-                
-            }
-
-            if (!string.IsNullOrEmpty(LastWatchedSeasonEntry.Text))
-            {
-                m_lastWatchedSeason = int.Parse(LastWatchedSeasonEntry.Text);
-            }
-            else
-            {
-                
-            }
-            List<Content> contents = _databaseService.GetAllContent().ToList();
-
-            List<Content> filteredContents = contents.Where(c => c.Title.IndexOf(m_title, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-            if( filteredContents.Count !=0 )
-            {
-                bool result = await DisplayAlert("Уведомление", $"Похоже {m_title} уже существует, вы уверены, что хотите создать копию?", "Да", "Нет");
-
-                if (!result)
-                {
-                    TitleEntry.Text = "";
-                    return;
-                }
-            }
-
-            // Создаем новый экземпляр контента
-            var newContent = new Content
-            {
-
-                Title = m_title,
-                Type = m_type,
-                Dubbing = m_dubbing,
-                LastWatchedSeries = m_lastWatchedSeries,
-                LastWatchedSeason = m_lastWatchedSeason,
-                NextEpisodeReleaseDate = "В ожиданании получения информации...",
-                WatchStatus = m_status,
-                Link = link,
-                DateAdded = m_data,
-                SeriesChangeDate = "",
-                Image = "",
-                SmallDecription = ""
-            };
-            _databaseService.InsertContent(newContent);
-            ViewContentPage viewContentPage = new ViewContentPage(newContent);
-            //switch (m_type)
-            //{
-            //    case "Аниме":
-            //        viewContentPage.GetAnemeGoInfo(m_title);
-            //        viewContentPage.GetAnimeGoImage(m_title);
-            //        viewContentPage.DataExitNextEpisod(m_title);
-            //        break;
-            //    case "Фильм":
-            //        viewContentPage.GetWikipediaInfo(m_title);
-            //        viewContentPage.GetWikipediaImage(m_title);
-            //        viewContentPage.DataExitNextEpisod(m_title);
-            //        break;
-            //    case "Сериал":
-            //        viewContentPage.GetWikipediaInfo(m_title);
-            //       // viewContentPage.GetWikipediaImage(m_title);
-            //        viewContentPage.DataExitNextEpisod(m_title);
-            //        break;
-            //    case "Дорама":
-            //        viewContentPage.GetWikipediaInfo(m_title);
-                  
-            //        viewContentPage.DataExitNextEpisod(m_title);
-            //        break;
-            //    case "Мультсериал":
-            //        viewContentPage.GetWikipediaInfo(m_title);
-                   
-            //        viewContentPage.DataExitNextEpisod(m_title);
-            //        break;
-            //    case "Прочее":
-            //        viewContentPage.GetWikipediaInfo(m_title);
-            //        viewContentPage.GetWikipediaImage(m_title);
-            //        viewContentPage.DataExitNextEpisod(m_title);
-            //        break;
-
-            //}
-            TitleEntry.Text ="";
-            DubbingEntry.Text ="";
-            LastWatchedSeriesEntry.Text ="";
-            LastWatchedSeasonEntry.Text ="";
-            LinkEntry.Text ="";
-
-            await DisplayAlert("Успех", "Ваши данные сохранены", "OK");
-            await Navigation.PushAsync(new MainPage());
-        }
-
+        #endregion
     }
 }

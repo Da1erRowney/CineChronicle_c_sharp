@@ -2,50 +2,56 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TestProject"
-             x:Class="TestProject.App"
-             >
+             x:Class="TestProject.App">
     <Application.Resources>
         <ResourceDictionary>
-            
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 
     <Application.MainPage>
-        <Shell FlyoutBehavior="Flyout" FlyoutHeaderBehavior="Fixed" FlyoutVerticalScrollMode="Auto">
-            
-            <FlyoutItem x:Name="Main" Title="Главная страница" Icon="{AppThemeBinding Light='main_page_dark.svg', Dark='main_page_light.svg'}" >
-                <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
-            </FlyoutItem>
+        <Shell FlyoutBehavior="Flyout" 
+               FlyoutHeaderBehavior="Fixed"
+               FlyoutVerticalScrollMode="Auto">
 
-            <FlyoutItem x:Name="Add" Title="Добавить еще" Icon="{AppThemeBinding Light='add_more_content_page_dark.svg', Dark='add_more_content_page_light.svg'}">
-                <ShellContent ContentTemplate="{DataTemplate local:AddMoreContentPage}"/>
-            </FlyoutItem>
-
-            <FlyoutItem x:Name="All" Title="Ваш контент" Icon="{AppThemeBinding Light='all_content_page_dark.svg', Dark='all_content_page_light.svg'}">
-                <ShellContent ContentTemplate="{DataTemplate local:AllContentPage}"/>
-            </FlyoutItem>
-
-            <FlyoutItem x:Name="Information" Title="Информация" Icon="{AppThemeBinding Light='information_page_dark.svg', Dark='information_page_light.svg'}">
-                <ShellContent ContentTemplate="{DataTemplate local:InformationPage}"/>
-            </FlyoutItem>
-
-            <FlyoutItem x:Name="Setting" Title="Настройки" Icon="{AppThemeBinding Light='setting_page_dark.svg', Dark='setting_page_light.svg'}">
-                <ShellContent ContentTemplate="{DataTemplate local:SettingPage}"/>
-            </FlyoutItem>
-
-            <Shell.FlyoutFooter>
-                <StackLayout>
-                    <Label Text="Cine Chronicle 2024" HorizontalOptions="Center" />
+            <!-- Заголовок меню -->
+            <Shell.FlyoutHeader>
+                <StackLayout Padding="10">
+                    <Image Source="logo.png" HeightRequest="60" HorizontalOptions="Center"/>
+                    <Label Text="Cine Chronicle" FontSize="20" HorizontalOptions="Center"/>
                 </StackLayout>
-           </Shell.FlyoutFooter>
+            </Shell.FlyoutHeader>
 
+            <!-- Пункты меню -->
+            <FlyoutItem Title="Главная" Icon="main_dark.svg">
+                <ShellContent Route="Main" ContentTemplate="{DataTemplate local:MainPage}"/>
+            </FlyoutItem>
 
+            <FlyoutItem Title="Добавить" Icon="add_dark.svg">
+                <ShellContent Route="Add" ContentTemplate="{DataTemplate local:AddMoreContentPage}"/>
+            </FlyoutItem>
 
+            <FlyoutItem Title="Весь контент" Icon="content_dark.svg">
+                <ShellContent Route="All" ContentTemplate="{DataTemplate local:AllContentPage}"/>
+            </FlyoutItem>
+            
+            <FlyoutItem Title="Информация" Icon="information_page_dark.svg">
+                <ShellContent Route="Information" ContentTemplate="{DataTemplate local:InformationPage}"/>
+            </FlyoutItem>
+
+            <FlyoutItem Title="Настройки" Icon="setting_page_dark.svg">
+                <ShellContent  Route="Setting" ContentTemplate="{DataTemplate local:SettingPage}"/>
+            </FlyoutItem>
+
+            <!-- Футер -->
+            <Shell.FlyoutFooter>
+                <Label Text="© 2025 Cine Chronicle" 
+                       HorizontalOptions="Center" 
+                       Margin="0,0,0,20"/>
+            </Shell.FlyoutFooter>
         </Shell>
-        
     </Application.MainPage>
 </Application>

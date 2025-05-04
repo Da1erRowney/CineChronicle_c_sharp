@@ -49,14 +49,15 @@
     <None Remove="Resources\Images\plus.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.67.0.3358" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
-    <PackageReference Include="SQLitePCLRaw.core" Version="2.1.8" />
-    <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.8" />
-    <PackageReference Include="YoutubeExplode" Version="6.3.13" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="11.2.0" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.69.0.3764" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+    <PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="2.1.11" />
+    <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.11" />
+    <PackageReference Include="YoutubeExplode" Version="6.5.4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Application\AllContentPages\AllContentPage.xaml.cs">
@@ -88,7 +89,10 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">
     <PackageReference Include="Catel.MVVM">
-      <Version>6.0.3</Version>
+      <Version>6.1.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.Maui.Controls" Version="9.0.60" />
   </ItemGroup>
 </Project>

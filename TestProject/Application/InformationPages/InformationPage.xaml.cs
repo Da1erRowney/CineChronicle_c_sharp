@@ -61,7 +61,7 @@ public partial class InformationPage : ContentPage
             var authUser = databaseService.GetAuthorizedByAuth(true);
             authUser.IsAuthenticated = false;
             databaseService.UpdateAuth(authUser);
-            CheckedAuthUser();
+            await CheckedAuthUser();
             //await Navigation.PushAsync(new InformationPage());
 
     }

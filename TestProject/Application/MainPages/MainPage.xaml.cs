@@ -5,12 +5,15 @@ namespace TestProject;
 
 public partial class MainPage : ContentPage
 {
-    private List<ContentRecommendation> ContentRecommendation = new List<ContentRecommendation>();
-    private ContentRecommendation abc = new();
-
-    private DatabaseServiceContent _databaseService;
+    private List<ContentRecommendation> ContentRecommendation { get; set; }
     public List<Content> ContentAdded { get; set; }
     public List<Content> ContentChange { get; set; }
+
+
+    private ContentRecommendation ContentRecommendationRead = new();
+
+    private DatabaseServiceContent _databaseService;
+   
     public Content SelectedItem { get; set; }
 
     public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
@@ -33,26 +36,16 @@ public partial class MainPage : ContentPage
         }
         else
         {
-            abc.GetRecommendation(ContentRecommendation);
-            DisplayListRecommendation();
+            LoadRecommendationsAsync();
         }
 
         if (allContent.Count == 0)
         {
             Content emptyContent = new Content
             {
-                Title = "Добавьте ваш первый контент",
-                Type = "Пустота",
-                WatchStatus = "Смотрю",
-                Image = "plus.png",
-                Dubbing = null,
-                LastWatchedSeries = 0,
-                LastWatchedSeason = 0,
-                NextEpisodeReleaseDate = null,
-                Link = "",
-                DateAdded = "2024-03-24 01:28:09",
-                SeriesChangeDate = "",
-                SmallDecription = ""
+                Title = "Нажмите, чтобы добавить контент",
+                Type = "Ваш контент",
+                Image = "plus.png"
             };
             _databaseService.InsertContent(emptyContent);
             _databaseService = new DatabaseServiceContent(_databasePath);
@@ -66,14 +59,17 @@ public partial class MainPage : ContentPage
         BindingContext = this;
     }
 
-     //protected override bool OnBackButtonPressed()
-     //{
-     //    // Отменяем обработку стандартного поведения кнопки "Назад"
-     //    NavigationPage.SetHasBackButton(this, false);
-     //    return true;
-     //}
+    //protected override bool OnBackButtonPressed()
+    //{
+    //    // Отменяем обработку стандартного поведения кнопки "Назад"
+    //    NavigationPage.SetHasBackButton(this, false);
+    //    return true;
+    //}
 
-
+    private async void LoadRecommendationsAsync()
+    {
+        ContentRecommendation = await ContentRecommendationRead.GetRecommendationsAsync();
+    }
 
     private async void OnItemSelected(Content item, int selectedIndex)
     {
@@ -95,17 +91,11 @@ public partial class MainPage : ContentPage
             databaseService.CloseConnection();
         }
     }
-    private void ItemButtonClicked(object sender, EventArgs e)
-    {
-        var button = (Button)sender;
-        var item = (Content)button.CommandParameter;
-        var selectedIndex = new List<Content>((IEnumerable<Content>)RecentlyAddedCarouselView.ItemsSource).IndexOf(item);
-        OnItemSelected(item, selectedIndex);
-    }
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
-       
+     
         DisplayListAdded();
         DisplayListChange();
     
@@ -122,10 +112,10 @@ public partial class MainPage : ContentPage
         //await GetRecommendation();
         //RecentlyRecommendationCarouselView.ItemsSource = ContentRecommendation;
     }
-    
+
     private void DisplayListAdded()
     {
-        
+
         _databaseService = new DatabaseServiceContent(_databasePath);
         DatabaseServiceContent databaseService = new DatabaseServiceContent(_databasePath);
         List<Content> allContent = databaseService.GetAllContent().OrderByDescending(c => c.DateAdded).ToList();
@@ -135,7 +125,7 @@ public partial class MainPage : ContentPage
     }
     private void DisplayListChange()
     {
-        
+
         _databaseService = new DatabaseServiceContent(_databasePath);
         DatabaseServiceContent databaseService = new DatabaseServiceContent(_databasePath);
         List<Content> allContentSecond = databaseService.GetAllContent().OrderByDescending(c => c.SeriesChangeDate).ToList();
@@ -143,7 +133,7 @@ public partial class MainPage : ContentPage
         BindingContext = this;
         RecentlyChangeCarouselView.ItemsSource = ContentChange;
     }
-    
+
     private void ItemButtonClickedChange(object sender, EventArgs e)
     {
         var button = (Button)sender;
@@ -151,6 +141,14 @@ public partial class MainPage : ContentPage
         var selectedIndex = new List<Content>((IEnumerable<Content>)RecentlyChangeCarouselView.ItemsSource).IndexOf(item);
         OnItemSelectedChange(item, selectedIndex);
     }
+    private void ItemButtonClicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        var item = (Content)button.CommandParameter;
+        var selectedIndex = new List<Content>((IEnumerable<Content>)RecentlyAddedCarouselView.ItemsSource).IndexOf(item);
+        OnItemSelected(item, selectedIndex);
+    }
+
     private async void OnItemSelectedChange(Content item, int selectedIndex)
     {
         if (item == null)

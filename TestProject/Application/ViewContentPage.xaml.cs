@@ -1,4 +1,5 @@
 using CineChronicle.Application;
+using CineChronicle.Application.SupportClass;
 using CineChronicle.Tables;
 using System.Windows.Input;
 
@@ -9,24 +10,6 @@ namespace TestProject
 
     public partial class ViewContentPage : ContentPage
     {
-        #region [Constants]
-        private const string WIK = "Википедия";
-        private const string KO = "Kinogo";
-        private const string JS = "Jutsu";
-        private const string AG = "AnimeGo";
-        private const string PG = "PremierGo";
-        private const string YT = "YouTube";
-        private const string LF = "LordsFilm";
-        private const string DE = "DateExit";
-
-        private const string ANIME = "Аниме";
-        private const string FILM = "Фильм";
-        private const string SERIAL = "Сериал";
-        private const string DORAMA = "Дорама";
-        private const string OTHER = "Прочее";
-        private const string CARTOON = "Мультсериал";
-        #endregion
-
         #region [Private fields]
         public ICommand OpenLinkCommand { get; private set; }
 
@@ -46,6 +29,7 @@ namespace TestProject
             InitializeComponent();
             BindingContext = content; // Привязываем объект Content к BindingContext страницы
             SetupLabelTappedEvents();
+            Background.Source = content.Image;
             OpenLinkCommand = new Command<string>(OpenLink);
         }
 
@@ -66,10 +50,20 @@ namespace TestProject
         }
         #endregion
 
-
+        private void CheckNullFields()
+        {
+            if (string.IsNullOrEmpty(content.Description))
+            {
+                DecriptionBorder.IsVisible = false;
+            }
+            else
+            {
+                DecriptionBorder.IsVisible = true;
+            }
+        }
         private async void GetTrailers(string query, string type)
         {
-            await Browser.OpenAsync(new Uri(parser.YouTube), BrowserLaunchMode.SystemPreferred); 
+            await Browser.OpenAsync(new Uri(content.YouTubeLink), BrowserLaunchMode.SystemPreferred); 
         }
 
         private async void SetupLabelTappedEvents()
@@ -78,7 +72,8 @@ namespace TestProject
             string title = (BindingContext as Content)?.Title;
             string type = (BindingContext as Content)?.Type;
 
-            GetInfo(type, title);
+            CheckNullFields();
+           // GetInfo(type, title);
         }
 
         private async void SetupLabelTappedEventsRecom()
@@ -87,7 +82,7 @@ namespace TestProject
             string title = (BindingContext as ContentRecommendation)?.Title;
             string type = (BindingContext as ContentRecommendation)?.Type;
 
-            GetInfo(type, title);
+           // GetInfo(type, title);
         }
 
         private void GetInfo(string type, string title)
@@ -95,16 +90,16 @@ namespace TestProject
             string typePars = string.Empty;
             switch (type)
             {
-                case ANIME:
-                    typePars = AG;
+                case ContentTypes.ANIME:
+                    typePars = SourceTypes.AG;
                     WatchingButton.Source = "anime.png";
                     break;
-                case FILM:
-                case SERIAL:
-                case CARTOON:
-                case DORAMA:
-                case OTHER:
-                    typePars = WIK;
+                case ContentTypes.FILM:
+                case ContentTypes.SERIAL:
+                case ContentTypes.CARTOON:
+                case ContentTypes.DORAMA:
+                case ContentTypes.OTHER:
+                    typePars = SourceTypes.WIK;
                     WatchingButton.Source = "movie.png";
                     break;
                 default:
@@ -113,36 +108,17 @@ namespace TestProject
             }
 
             PushParser(type, title, typePars);
-            //ShowInformation();
-        }
-
-        //Отображение информации пользователю
-        private void ShowInformation()
-        {
-            DescriptionLabel.Text = parser?.Description;
-            PosterImage.Source = ImageSource.FromUri(new Uri(parser?.Image));
-            Background.Source = ImageSource.FromUri(new Uri(parser?.Image));
-            TrailerWeb.Source = parser?.YouTube;
-            NextEpisodeReleaseDateEntry.Text = parser?.NextEpisodeReleaseDate;
-            CountLabel.Text = parser?.CountLabel;
         }
 
         //Запуск парсера
         private async void PushParser(string type, string title, string typePars)
         {
-            parser.DescriptionRead += HandleLoadDescription;
-            parser.ImageRead += HandleLoadImage;
-            parser.YouTubeRead += HandleLoadYouTube;
-            parser.NextEpisodeReleaseDateRead += HandleLoadNextEpisode;
-            parser.CountLabelRead += HandleLoadCount;
-            parser.DateReleaseRead += HandleLoadDateRelease;
-
             try
             {
                 var task1 = parser.GetInfo(title, type, typePars, false);
                 var task2 = parser.GetInfo(title, type, typePars, true);
-                var task3 = parser.GetInfo(title, type, YT, false);
-                var task4 = parser.GetInfo(title, type, DE, false);
+                var task3 = parser.GetInfo(title, type, SourceTypes.YT, false);
+                var task4 = parser.GetInfo(title, type, SourceTypes.DE, false);
 
                 await Task.WhenAll(task1,task2,task3,task4);
 
@@ -157,54 +133,6 @@ namespace TestProject
                 //parser.CountLabelRead -= HandleLoadCount;
                 //parser.DateReleaseRead -= HandleLoadDateRelease;
             }
-        }
-
-        private void HandleLoadDescription(GetParsingInfo.DescriptionResult result)
-        {
-            if (!string.IsNullOrEmpty(result.Description))
-            {
-                Console.WriteLine($"Описание: {result.Description}");
-                DescriptionLabel.Text = result.Description;
-            }
-            
-        }
-        private void HandleLoadImage(GetParsingInfo.ImageResult result)
-        {
-            if (!string.IsNullOrEmpty(result.Image))
-            {
-                Console.WriteLine($"Картинка: {result.Image}");
-                PosterImage.Source = ImageSource.FromUri(new Uri(parser?.Image));
-                Background.Source = ImageSource.FromUri(new Uri(parser?.Image));
-            }
-        }
-        private void HandleLoadYouTube(GetParsingInfo.YouTubeResult result)
-        {
-            if (!string.IsNullOrEmpty(result.YouTube))
-            {
-                Console.WriteLine($"Ссылка на трейлер: {result.YouTube}");
-                TrailerWeb.Source = parser?.YouTube;
-            }
-        }
-        private void HandleLoadNextEpisode(GetParsingInfo.NextEpisodeReleaseDateResult result)
-        {
-            if (!string.IsNullOrEmpty(result.NextEpisodeReleaseDate))
-            {
-                Console.WriteLine($"Следующий эпизод: {result.NextEpisodeReleaseDate}");
-                NextEpisodeReleaseDateEntry.Text = parser?.NextEpisodeReleaseDate;
-            }
-        }
-        private void HandleLoadCount(GetParsingInfo.CountLabelResult result)
-        {
-            if (!string.IsNullOrEmpty(result.CountLabel))
-            {
-                Console.WriteLine($"Количество: {result.CountLabel}");
-                CountLabel.Text = parser?.CountLabel;
-            }
-        }
-        private void HandleLoadDateRelease(GetParsingInfo.DateReleaseResult result)
-        {
-            if (!string.IsNullOrEmpty(result.DateRelease))
-                Console.WriteLine($"Дата выхода: {result.DateRelease}");
         }
 
         // Открываем ссылку в браузере
@@ -320,20 +248,20 @@ namespace TestProject
             }
             switch (content.Type)
             {
-                case ANIME:
-                    content.Link = "https://animego.org/search/all?q=" + TitleEntry.Text;
+                case ContentTypes.ANIME:
+                    content.SourceLink = "https://animego.org/search/all?q=" + TitleEntry.Text;
                     break;
-                case DORAMA:
-                    content.Link = "https://dorama.land/search?q=" + TitleEntry.Text;
+                case ContentTypes.DORAMA:
+                    content.SourceLink = "https://dorama.land/search?q=" + TitleEntry.Text;
                     break;
-                case SERIAL:
-                    content.Link = "https://kinogo.biz/search/" + TitleEntry.Text;
+                case ContentTypes.SERIAL:
+                    content.SourceLink = "https://kinogo.biz/search/" + TitleEntry.Text;
                     break;
-                case CARTOON:
-                    content.Link = "https://kinogo.biz/search/" + TitleEntry.Text;
+                case ContentTypes.CARTOON:
+                    content.SourceLink = "https://kinogo.biz/search/" + TitleEntry.Text;
                     break;
-                case FILM:
-                    content.Link = "https://kinogo.biz/search/" + TitleEntry.Text;
+                case ContentTypes.FILM:
+                    content.SourceLink = "https://kinogo.biz/search/" + TitleEntry.Text;
                     break;
                 default:
                     break;
@@ -418,7 +346,7 @@ namespace TestProject
 
         private async void WatchingButton_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync(new Uri(content.Link), BrowserLaunchMode.SystemPreferred);
+            await Browser.OpenAsync(new Uri(content.SourceLink), BrowserLaunchMode.SystemPreferred);
         }
 
         private void StepperSeries_ValueChanged(object sender, ValueChangedEventArgs e)

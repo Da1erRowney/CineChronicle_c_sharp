@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Maui;
+﻿using SkiaSharp.Extended.UI.Controls;
+using CommunityToolkit.Maui;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace TestProject;
 
@@ -9,12 +11,11 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.UseMauiCommunityToolkit()
-              //.UseMauiCommunityToolkitMediaElement()
+            .UseSkiaSharp()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
 			{
-				//fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				//fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddEmbeddedResourceFont(typeof(App).Assembly, "Resources/Images");
                 fonts.AddFont("Roboto-Medium.ttf", "Ofont");
                 fonts.AddFont("fontello.ttf", "Icons");
             });

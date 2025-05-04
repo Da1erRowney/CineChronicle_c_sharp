@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using CineChronicle.Application.SupportClass;
+using HtmlAgilityPack;
 
 namespace TestProject;
 
@@ -8,7 +9,7 @@ public class ContentRecommendation
     public string Title { get; set; }
     public string Type { get; set; }
 
-    public async Task<List<ContentRecommendation>> GetRecommendation(List<ContentRecommendation> ContentRecommendation)
+    public async Task<List<ContentRecommendation>> GetRecommendationsAsync()
     {
         string url = "https://www.toramp.com/";
 
@@ -61,7 +62,6 @@ public class ContentRecommendation
                             recommendations.Add(newContent);
                         }
                     }
-                    ContentRecommendation = recommendations;
                 }
             }
         }
@@ -74,19 +74,19 @@ public class ContentRecommendation
 
         if (title.Contains("(сериал)"))
         {
-            return "Сериал";
+            return ContentTypes.SERIAL;
         }
         else if (title.Contains("(аниме)"))
         {
-            return "Аниме";
+            return ContentTypes.ANIME;
         }
         else if (title.Contains("(мультсериал)"))
         {
-            return "Мультсериал";
+            return ContentTypes.CARTOON;
         }
         else if (title.Contains("(мультфильм)"))
         {
-            return "Мультсериал";
+            return ContentTypes.CARTOON; ;
         }
         else
         {

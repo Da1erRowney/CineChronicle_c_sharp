@@ -4,6 +4,7 @@ using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using System.Data;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
@@ -79,6 +80,18 @@ namespace CineChronicle.Application
                 Console.WriteLine($"Ошибка парсинга: {ex.Message}");
                 throw; 
             }
+
+            if (NextEpisodeReleaseDate.Contains("Нет, продолжения не будет."))
+            {
+                string newStr = $"Будет ли продолжение {title}? {NextEpisodeReleaseDate}";
+                NextEpisodeReleaseDate = newStr;
+            }
+            else
+            {
+                string newStr = $"Статус продолжения {title}.\n{NextEpisodeReleaseDate}";
+                NextEpisodeReleaseDate = newStr;
+            }
+            Description = Regex.Replace(Description, @"&nbsp;", " ");
         }
 
         /// <summary>
@@ -195,7 +208,7 @@ namespace CineChronicle.Application
                                     }
                                     else
                                     {
-                                        Description = $"Информация о {query} не найдена";
+                                        Description = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
                                     }
                                     break;
                                 case (SourceTypes.AG, true):
@@ -312,7 +325,7 @@ namespace CineChronicle.Application
                                     await WikInfoIsWrong(query, type);
                                     break;
                                 default:
-                                    Description = "Ошибка получения информации. Перепроверьте название своего медиа-контента. Возможно вы указали неправильное название. Будьте внимательными :)";
+                                    Description = "Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
                                     break;
                             }
                             if (debug)
@@ -409,7 +422,7 @@ namespace CineChronicle.Application
                             }
                         }
                     }
-                    Description = $"Информация о {query} не найдена";
+                    Description = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
 
                 }
 
@@ -486,7 +499,7 @@ namespace CineChronicle.Application
                                 } 
                             }
                         }
-                        Description = $"Информация о {query} не найдена";
+                        Description = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
                         countRead++;
                         await WikInfoIsWrong($"{query} сериал", type);
                     }
@@ -494,7 +507,7 @@ namespace CineChronicle.Application
 
                 else
                 {
-                    Description = $"Информация о {query} не найдена";
+                    Description = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
                 }
             }
         }
@@ -629,7 +642,7 @@ namespace CineChronicle.Application
                         }
                         else
                         {
-                            NextEpisodeReleaseDate = $"Информация о {query} не найдена";
+                            NextEpisodeReleaseDate = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
                         }
 
                         if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" || type == "Аниме")
@@ -744,7 +757,7 @@ namespace CineChronicle.Application
                             }
                             else
                             {
-                                NextEpisodeReleaseDate = $"Информация о {query} не найдена";
+                                NextEpisodeReleaseDate = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
                             }
 
                             if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" || type == "Аниме")

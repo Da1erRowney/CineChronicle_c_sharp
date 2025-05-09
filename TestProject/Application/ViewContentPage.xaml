@@ -1,299 +1,277 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TestProject"
-             x:Class="TestProject.ViewContentPage" AutomationProperties.IsInAccessibleTree="False" NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False">
-    <Grid  BackgroundColor="Transparent">
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             x:Class="TestProject.ViewContentPage" 
+             AutomationProperties.IsInAccessibleTree="False" 
+             NavigationPage.HasNavigationBar="False" 
+             NavigationPage.HasBackButton="False"
+             Title="{Binding Content.Title}">
+    <Grid BackgroundColor="Transparent">
 
-        <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+        <Image x:Name="Background" Source="{Binding Content.Image}" Aspect="AspectFill" Opacity="0.5" />
+        <RefreshView x:Name="RefreshView" RefreshColor="LightBlue" Refreshing="OnRefreshing">
+            <ScrollView>
+                <VerticalStackLayout Margin="25">
+                    <Border Margin="40,0,40,0"
+                        BackgroundColor="#311b45"
+                        MaximumHeightRequest="600"
+                        Stroke="Black"
+                        StrokeShape="RoundRectangle 30,30,30,30"
+                        StrokeThickness="2">
+                        <Image Aspect="AspectFill" x:Name="PosterImage" Source="{Binding Content.Image}" />
+                        <Border.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="200" Offset="0,0"/>
+                        </Border.Shadow>
+                    </Border>
 
-        <Grid Grid.Row="0" BackgroundColor="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-        </Grid>
-        
-    <ScrollView>
-        <VerticalStackLayout Margin="20">
-
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                   
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <!--Картинка для добавления контента-->
+                        <Image Source="pluscontent.png" WidthRequest="50" HeightRequest="50" Margin="5,5,0,0" x:Name="AddButton" IsVisible="false">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ImageTapped" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </StackLayout>
                     <!--Название контента-->
                     <Entry x:Name="TitleEntry" 
-                           Text="{Binding Title}" 
-                           FontSize="25" 
-                           IsReadOnly="True" 
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center" 
-                           Placeholder="Название"
-                           PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}">
+                           HorizontalOptions="Center"
+                           Text="{Binding Content.Title}" 
+                           FontSize="40" 
+                           IsEnabled="False"
+                           TextColor ="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                           VerticalOptions="Center" >
                         <Entry.Style>
                             <Style TargetType="Entry">
                                 <Style.Triggers>
-                                    <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
+                                    <Trigger TargetType="Entry" Property="IsEnabled" Value="True">
                                         <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </Entry.Style>
                     </Entry>
-                    <!--Картинка для добавления контента (когда это рекомендации)-->
-                    <Image Source="pluscontent.png" WidthRequest="50" HeightRequest="50" Margin="5,5,0,0" x:Name="AddButton" IsVisible="false">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="ImageTapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
-                </StackLayout>
-
-            <Border Margin="25,50,25,50"
-                    Grid.RowSpan="3"
-                    BackgroundColor="#311b45"
-                    Stroke="Black"
-                    StrokeShape ="RoundRectangle 30,30,30,30"
-                    StrokeThickness="2">
-                    <Grid RowDefinitions=".2*,.6*,.2*">
-                        <!-- Изображение для отображения фотографии Постера -->
-                        <Image Aspect="AspectFill" x:Name="PosterImage" Grid.RowSpan="3" Source="{Binding Image}"> </Image>
-                    </Grid>
-                    <Border.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="200" Offset="0,0"/>
-                    </Border.Shadow>
-                </Border>
-
-            <!-- Метка для отображения информации -->
-            <StackLayout>
-                <!--Описание-->
-                <Border 
-                        Opacity="0.8"
-                        Margin="0,0,0,0"
-                        Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-                        x:Name="DecriptionBorder"
-                        Grid.RowSpan="3"
-                        StrokeShape ="RoundRectangle 30,30,30,30"
-                        StrokeThickness="2">
-                        <Grid Margin="10,20,0,10">
-                            <Label x:Name="DescriptionLabel" Text="{Binding Description}"  FontSize="16" />
-                        </Grid>
-                        <Border.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
-                        </Border.Shadow>
-                </Border>
-
-                 <!-- Тип -->
-                <StackLayout Orientation="Horizontal" Margin="0,50,0,0" HorizontalOptions="Center">
-                    <Border Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-                            Opacity="0.8"
-                            Margin="0,0,0,0"   
-                            Grid.RowSpan="3"  
-                            StrokeShape ="RoundRectangle 30,30,30,30"
+                    <StackLayout>
+                        <!--Описание-->
+                        <Border Opacity="0.8"
+                            Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                            x:Name="DecriptionBorder"
+                            StrokeShape="RoundRectangle 30,30,30,30"
                             StrokeThickness="2">
-                            <Grid Margin="20,20,0,20">
-                                <StackLayout Orientation="Vertical" Margin="0,0,0,0">
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="Тип: " VerticalOptions="Center" x:Name="TypeLabel" FontSize="18"/>
-                                        <Entry x:Name="TypeEntry" Text="{Binding Type}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0"/>
-                                        <Picker  Title="Тип: " x:Name="TypePicker" IsVisible="False" Margin="0,0,0,0" FontSize="18"
-                                                 TitleColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}">
-                                            <Picker.ItemsSource>
-                                                <x:Array Type="{x:Type x:String}">
-                                                    <x:String>Сериал</x:String>
-                                                    <x:String>Аниме</x:String>
-                                                    <x:String>Мультсериал</x:String>
-                                                    <x:String>Фильм</x:String>
-                                                    <x:String>Дорама</x:String>
-                                                    <x:String>Документалка</x:String>
-                                                    <x:String>Прочее</x:String>
-                                                </x:Array>
-                                            </Picker.ItemsSource>
-                                            <Picker.Style>
-                                                <Style TargetType="Picker">
-                                                    <Style.Triggers>
-                                                        <Trigger TargetType="Picker" Property="IsVisible" Value="True">
-                                                            <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Picker.Style>
-                                        </Picker>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Vertical" Margin="0,0,0,0" x:Name="Statics">
-                                        <StackLayout Orientation="Horizontal" Margin="0,0,0,0">
-                                            <Label Text="Серия:  " VerticalOptions="Center" FontSize="18"/>
-                                            <!-- Номер последнего просмотренной серии -->
-                                            <Entry x:Name="LastWatchedSeriesEntry" Text="{Binding LastWatchedSeries}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0"
-                                                    PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}">
+                            <Grid Margin="10,20,0,10">
+                                <Label x:Name="DescriptionLabel" Text="{Binding Content.Description}" FontSize="16" />
+                            </Grid>
+                            <Border.Shadow>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
+                            </Border.Shadow>
+                        </Border>
+
+                        <!-- Тип -->
+                        <StackLayout Orientation="Horizontal" Margin="0,50,0,0" HorizontalOptions="Center">
+                            <Border Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                                Opacity="0.8"
+                                StrokeShape="RoundRectangle 30,30,30,30"
+                                StrokeThickness="2">
+                                <Grid Margin="20,20,0,20">
+                                    <StackLayout Orientation="Vertical">
+                                        <Label Text="Ваша информация" FontSize="20" HorizontalOptions="Center" Margin="0,0,0,15"></Label>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Тип: " VerticalOptions="Center" x:Name="TypeLabel" FontSize="18"/>
+                                            <Entry x:Name="TypeEntry" 
+                                                   Text="{Binding Content.Type}" 
+                                                   IsEnabled="False" 
+                                                   VerticalOptions="Center" 
+                                                   FontSize="18" 
+                                                   Margin="0,3,0,0" 
+                                                   TextColor ="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                                            <Picker Title="Тип: " 
+                                                    x:Name="TypePicker" 
+                                                    IsVisible="False" 
+                                                    FontSize="18"
+                                                TitleColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}">
+                                                <Picker.ItemsSource>
+                                                    <x:Array Type="{x:Type x:String}">
+                                                        <x:String>Сериал</x:String>
+                                                        <x:String>Аниме</x:String>
+                                                        <x:String>Мультсериал</x:String>
+                                                        <x:String>Фильм</x:String>
+                                                        <x:String>Дорама</x:String>
+                                                        <x:String>Документалка</x:String>
+                                                        <x:String>Прочее</x:String>
+                                                    </x:Array>
+                                                </Picker.ItemsSource>
+                                            </Picker>
+                                        </StackLayout>
+                                        
+                                        <!-- Озвучка -->
+                                        <StackLayout Orientation="Horizontal" x:Name="DubbingPo">
+                                            <Label Text="Озвучка: " VerticalOptions="Center" FontSize="18"/>
+                                            <Entry x:Name="DubbingEntry" 
+                                                   Text="{Binding Content.Dubbing}" 
+                                                   IsEnabled="False" 
+                                                   VerticalOptions="Center" 
+                                                   FontSize="18" 
+                                                   Margin="0,3,0,0" 
+                                                   TextColor ="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}">
                                                 <Entry.Style>
                                                     <Style TargetType="Entry">
                                                         <Style.Triggers>
-                                                            <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
+                                                            <Trigger TargetType="Entry" Property="IsEnabled" Value="True">
                                                                 <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
                                                             </Trigger>
                                                         </Style.Triggers>
                                                     </Style>
                                                 </Entry.Style>
                                             </Entry>
-                                            <Stepper Scale="0.7" Margin="-20,0,0,0"   x:Name="StepperSeries" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeries, Mode=TwoWay}"  ValueChanged="StepperSeries_ValueChanged"/>
+                                        </StackLayout>
+                                        <!-- Статус просмотра -->
+                                        <StackLayout Orientation="Horizontal" Margin="0,0,0,0" x:Name="StatusP">
+                                            <Label Text="Ваш статус: " VerticalOptions="Center" x:Name="WatchStatusLabel" FontSize="18"/>
+                                            <Entry x:Name="WatchStatusEntry" Text="{Binding Content.WatchStatus}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0"/>
+                                            <Picker Title="Выберите статус просмотра" x:Name="WatchStatusPicker" IsVisible="false" FontSize="18"
+                                                        TitleColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" >
+                                                <Picker.ItemsSource >
+                                                    <x:Array Type="{x:Type x:String}" >
+                                                        <x:String>Просмотрено</x:String>
+                                                        <x:String>Смотрю</x:String>
+                                                        <x:String>Не начинал</x:String>
+                                                    </x:Array>
+                                                </Picker.ItemsSource>
+                                            </Picker>
                                         </StackLayout>
                                         
+                                        <!-- Номер последнего просмотренной серии -->
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Серия:  " VerticalOptions="Center" FontSize="18"/>
+                                            <Entry x:Name="LastWatchedSeriesEntry" Text="{Binding Content.LastWatchedSeries}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0">
+                                                <Entry.Style>
+                                                    <Style TargetType="Entry">
+                                                        <Style.Triggers>
+                                                            <Trigger TargetType="Entry" Property="IsReadOnly" Value="False">
+                                                                <Setter Property="BackgroundColor" Value="DarkSeaGreen"  />
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Entry.Style>
+                                            </Entry>
+                                            <Stepper Scale="0.7" x:Name="StepperSeries" Minimum="0" Maximum="1000" Increment="1" Value="{Binding Content.LastWatchedSeries, Mode=TwoWay}" ValueChanged="StepperSeries_ValueChanged"/>
+                                        </StackLayout>
+
                                         <!-- Номер последнего просмотренного сезона -->
                                         <StackLayout Orientation="Horizontal">
                                             <Label Text="Сезон:  " VerticalOptions="Center" FontSize="18"/>
-                                            <Entry x:Name="LastWatchedSeasonEntry" Text="{Binding LastWatchedSeason}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0"
-                                                    PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}">
+                                            <Entry x:Name="LastWatchedSeasonEntry" Text="{Binding Content.LastWatchedSeason}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0">
                                                 <Entry.Style>
                                                     <Style TargetType="Entry">
                                                         <Style.Triggers>
-                                                            <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
+                                                            <Trigger TargetType="Entry" Property="IsReadOnly" Value="False">
                                                                 <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
                                                             </Trigger>
                                                         </Style.Triggers>
                                                     </Style>
                                                 </Entry.Style>
                                             </Entry>
-                                            <Stepper Scale="0.7" Margin="-20,0,0,0"  x:Name="StepperSeason" Minimum="0" Maximum="100" Increment="1" Value="{Binding LastWatchedSeason, Mode=TwoWay}"  ValueChanged="StepperSeason_ValueChanged" />
+                                            <Stepper Scale="0.7" x:Name="StepperSeason" Minimum="0" Maximum="10000" Increment="1" Value="{Binding Content.LastWatchedSeason, Mode=TwoWay}" ValueChanged="StepperSeason_ValueChanged" />
                                         </StackLayout>
+                                        
                                     </StackLayout>
+                                </Grid>
+                                <Border.Shadow>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
+                                </Border.Shadow>
+                            </Border>
+                        </StackLayout>
 
-                                    <!-- Озвучка -->
-                                    <StackLayout Orientation="Horizontal" x:Name="DubbingPo">
-                                        <Label Text="Озвучка: " VerticalOptions="Center" FontSize="18"/>
-                                        <Entry x:Name="DubbingEntry" Text="{Binding Dubbing}" IsReadOnly="True" VerticalOptions="Center"  Placeholder="Ваша озвучка" FontSize="18" Margin="0,3,0,0"
-                                               PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}">
-                                            <Entry.Style>
-                                                <Style TargetType="Entry">
-                                                    <Style.Triggers>
-                                                        <Trigger TargetType="Entry" Property="IsReadOnly" Value="False" >
-                                                            <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Entry.Style>
-                                        </Entry>
-                                    </StackLayout>
+                        <Border Opacity="0.8" Margin="0,50,0,0" HorizontalOptions="Center" Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" x:Name="InfoBorder"
+                            StrokeShape="RoundRectangle 30,30,30,30" StrokeThickness="2">
+                            <Grid Margin="20,20,0,20">
+                                <StackLayout Orientation="Vertical">
+                                    <Label FontSize="20" HorizontalOptions="Center" Margin="0,0,0,30">
+                                        <Label.Text>
+                                            <Binding Path="Content.Title" StringFormat="Информация об {0}" />
+                                        </Label.Text>
+                                    </Label>
+                                    <Label Text="{Binding Content.NextEpisodeReleaseDate}" VerticalOptions="Center" x:Name="DataLabel" FontSize="18" />
+                                    <Label x:Name="CountLabel" Text="{Binding Content.CountLabel}" FontSize="18" Margin="0,30,0,30" />
+
                                 </StackLayout>
                             </Grid>
                             <Border.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
                             </Border.Shadow>
-                    </Border>
-                </StackLayout>
+                        </Border>
 
-                <Border Opacity="0.8" Margin="0,50,0,0"
-                            HorizontalOptions="Center"
-                            Grid.RowSpan="3"
-                            Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-                            StrokeShape ="RoundRectangle 30,30,30,30"
-                            StrokeThickness="2">
-                        
-                        <Grid Margin="20,20,0,20">
-                            <!-- Дата выхода следующей серии -->
-                                <StackLayout Orientation="Vertical" Margin="0,0,0,0">
-                                <StackLayout Orientation="Vertical" Margin="0,0,0,0">
-                                    <Label Text="Дата выхода следующей серии: " VerticalOptions="Center"  x:Name="DataLabel" FontSize="18"/>
-                                    <Label x:Name="NextEpisodeReleaseDateEntry" Text="{Binding NextEpisodeReleaseDate}"  VerticalOptions="Center" FontSize="18" />
-                                    <Label x:Name="CountLabel" Text="{Binding CountLabel}" FontSize="16" />
-                                </StackLayout>
+                        <!--Трейлер на YouTube-->
+                        <Border Opacity="0.8" Margin="0,50,0,0" x:Name="TrailerWebBorder" HorizontalOptions="Center" Stroke="Black" StrokeShape="RoundRectangle 30,30,30,30" StrokeThickness="2">
+                            <WebView x:Name="TrailerWeb" Source="{Binding Content.YouTubeLink}" HeightRequest="300" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Opacity="1.0" Radius="100" Offset="0,0"/>
+                            </Border.Shadow>
+                        </Border>
 
-                                <!-- Статус просмотра -->
-                                    <StackLayout Orientation="Horizontal" Margin="0,0,0,0" x:Name="StatusP">
-                                                <Label Text="Статус просмотра: " VerticalOptions="Center" x:Name="WatchStatusLabel"  FontSize="18"/>
-                                                <Entry x:Name="WatchStatusEntry" Text="{Binding WatchStatus}" IsReadOnly="True" VerticalOptions="Center"  FontSize="18" Margin="0,3,0,0"
-                                                        PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}"/>
-                                                <Picker Title="Статус просмотра: " x:Name="WatchStatusPicker" IsVisible="false" FontSize="18"
-                                                        TitleColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}">
-                                            <Picker.ItemsSource>
-                                                <x:Array Type="{x:Type x:String}">
-                                                    <x:String>Просмотрено</x:String>
-                                                    <x:String>Смотрю</x:String>
-                                                    <x:String>Не начинал</x:String>
-                                                </x:Array>
-                                            </Picker.ItemsSource>
-                                                    <Picker.Style>
-                                                        <Style TargetType="Picker">
-                                                            <Style.Triggers>
-                                                                <Trigger TargetType="Picker" Property="IsVisible" Value="True">
-                                                                    <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
-                                                                </Trigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Picker.Style>
-                                                </Picker>
+                        <Border Opacity="0.8" Margin="0,50,0,0" x:Name="ViewContent" HorizontalOptions="Center" Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                            StrokeShape="RoundRectangle 30,30,30,30" StrokeThickness="2">
+                            
+                            <Grid Margin="20,20,0,20" HorizontalOptions="Center">
+                                <StackLayout Orientation="Vertical">
+                                <Label Text="Источники для просмотра" HorizontalOptions="Center" FontSize="20" Margin="0,0,20,15"></Label>
+                                <StackLayout Orientation="Horizontal" Margin="20,0,20,0" HorizontalOptions="Center">
+                                    <StackLayout Orientation="Vertical" HorizontalOptions="Start" VerticalOptions="Center" Margin="0,0,0,0">
+                                        <Label Text="Просмотр" VerticalOptions="Center" x:Name="WatchingLabel" FontSize="18"/>
+                                        <ImageButton x:Name="WatchingButton" Clicked="WatchingButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="50" HeightRequest="50"/>
+                                    </StackLayout>
+
+                                    <!-- Трейлер -->
+                                    <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="40,0,20,0">
+                                        <Label Text="Трейлер" VerticalOptions="Center" x:Name="TrailerLabel" FontSize="18"/>
+                                        <ImageButton Clicked="TrailerButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="50" HeightRequest="50"/>
                                     </StackLayout>
                                 </StackLayout>
-                        </Grid>
-                        <Border.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
-                        </Border.Shadow>
-                    </Border>
-                      
-                <!--Трейлер на YouTube-->  
-                <Border Opacity="0.8" Margin="0,50,0,0"
-                            x:Name="TrailerWebBorder"
-                            HorizontalOptions="Center"
-                            Grid.RowSpan="3"
-                            Stroke="Black"
-                            StrokeShape ="RoundRectangle 30,30,30,30"
-                            StrokeThickness="2">
-                        <Grid  Margin="0,0,0,0">
-                            <WebView x:Name="TrailerWeb" Source="{Binding YouTubeLink}" HeightRequest="300" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
-                        </Grid>
-                        <Border.Shadow>
-                            <Shadow Brush="Black" Opacity="1.0" Radius="100" Offset="0,0"/>
-                        </Border.Shadow>
-                    </Border>
-                    
-                <Border Opacity="0.8" Margin="0,50,0,0" x:Name="ViewContent"
-                        HorizontalOptions="Center"
-                        Grid.RowSpan="3"
-                        Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-                        StrokeShape ="RoundRectangle 30,30,30,30"
-                        StrokeThickness="2">
-                        <Grid  Margin="20,20,0,20" HorizontalOptions="Center">
-                            <!-- Ссылка на сайт -->
-                    <StackLayout Orientation="Horizontal" Margin="20,0,20,0" HorizontalOptions="Center">
-                        <StackLayout Orientation="Vertical" HorizontalOptions="Start" VerticalOptions="Center" Margin="0,0,0,0">
-                                    <Label Text="Просмотр" VerticalOptions="Center" x:Name="WatchingLabel" FontSize="18"/>
-                            <ImageButton x:Name="WatchingButton" Clicked="WatchingButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="50" HeightRequest="50"/>
-                        </StackLayout>
+                                </StackLayout>
+                            </Grid>
+                            <Border.Shadow>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
+                            </Border.Shadow>
+                        </Border>
 
-
-                        <!-- Трейлер -->
-                                <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="40,0,20,0">
-                                    <Label Text="Трейлер" VerticalOptions="Center" x:Name="TrailerLabel" FontSize="18"/>
-                            <ImageButton Clicked="TrailerButton_Clicked" Source="youtube.png" Margin="10,0,0,0" WidthRequest="50" HeightRequest="50"/>
+                        <!-- Ссылка на сайт -->
+                        <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
+                            <Label Text="Ссылка на сайт: " VerticalOptions="Center" IsVisible="false" x:Name="LinkSecondLabel" FontSize="18"/>
+                            <Entry x:Name="LinkEntry" Text="{Binding Content.Link}" IsVisible="false" IsReadOnly="True" VerticalOptions="Center" />
                         </StackLayout>
                     </StackLayout>
-                        </Grid>
-                        <Border.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
-                        </Border.Shadow>
-                    </Border>
 
-                <!-- Ссылка на сайт -->
-                <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
-                <Label Text="Ссылка на сайт: " VerticalOptions="Center" IsVisible="false" x:Name="LinkSecondLabel" FontSize="18"/>
-                <Entry x:Name="LinkEntry" Text="{Binding Link}" IsVisible="false" IsReadOnly="True" VerticalOptions="Center" />
-                </StackLayout>
-            </StackLayout>
+                    <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="0,50,0,0">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,0">
+                            <!-- Кнопка Удалить -->
+                            <Button Opacity="0.8" Text="Удалить" x:Name="DeleteButton" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18" CornerRadius="100"/>
 
-            <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="0,50,0,0">
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,0">
-                        <!-- Кнопка Удалить -->
-                        <Button Opacity="0.8" Text="Удалить" x:Name="DeleteButton" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100"/>
-
-                        <!-- Кнопка Изменить -->
-                        <Button Opacity="0.8" x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100" />
-                        
+                            <!-- Кнопка Изменить -->
+                            <Button Opacity="0.8" x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18" CornerRadius="100" />
+                        </StackLayout>
+                        <!-- Кнопка Отмена -->
+                        <Button Opacity="0.8" FontSize="18" x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" CornerRadius="100" />
                     </StackLayout>
-                    <!-- Кнопка Отмена -->
-                    <Button Opacity="0.8" FontSize="18" x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100" />
-                    <StackLayout.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
-                    </StackLayout.Shadow>
-                </StackLayout>
 
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+        <!-- Overlay (фон) -->
+        <BoxView x:Name="Overlay"
+            BackgroundColor="#80000000"
+            Opacity="0.5"
+            IsVisible="False"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"/>
 
-            </VerticalStackLayout>
-    </ScrollView>
-     </Grid>
+        <!-- Lottie Animation -->
+        <skia:SKLottieView x:Name="SavingAnimation"
+                      Source="loading_animation.json"
+                      RepeatCount="-1"
+                      IsVisible="False"
+                      WidthRequest="150"
+                      HeightRequest="150"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Center"/>
+    </Grid>
 </ContentPage>

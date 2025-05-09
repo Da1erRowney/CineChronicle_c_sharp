@@ -98,8 +98,8 @@ namespace TestProject
                 SeriesChangeDate = string.Empty,
                 SourceLink = link,
                 Title = title,
-                Type = string.IsNullOrEmpty(type) ? "Не начинал" : type,
-                WatchStatus = statusWatches,
+                Type = type,
+                WatchStatus = string.IsNullOrEmpty(statusWatches) ? "Не начинал" : statusWatches,
                 YouTubeLink = getParsingInfo.YouTubeLink
             };
 

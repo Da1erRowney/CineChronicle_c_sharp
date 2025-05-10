@@ -209,7 +209,7 @@ namespace TestProject
         {
             var currentContent = content;
             currentContent.WatchStatus = WatchStatusPicker.SelectedItem?.ToString() ?? "Не начинал";
-            currentContent.Type = TypePicker.SelectedItem.ToString();
+            currentContent.Type = TypePicker.SelectedItem?.ToString();
             currentContent.Title.TrimEnd();
 
             // Проверяем, поменяли ли мы тип или название для получения новых данных из парсерса

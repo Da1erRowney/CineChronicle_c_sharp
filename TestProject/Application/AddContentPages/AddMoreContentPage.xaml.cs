@@ -63,7 +63,7 @@ namespace TestProject
             await ShowLoadingAnimation();
             string title = TitleEntry.Text;
             string type = TypePicker.SelectedItem?.ToString();
-
+            title.TrimEnd();
             if (!await CheckNullFields(title, type)) return;
             if (!await CheckExistingContent(title)) return;
 

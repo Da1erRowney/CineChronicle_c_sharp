@@ -31,7 +31,7 @@
             </Grid>
         </Border>
 
-        <RefreshView x:Name="RefreshView" RefreshColor="LightBlue" Refreshing="OnRefreshing">
+        <RefreshView x:Name="RefreshView" RefreshColor="Black" Refreshing="OnRefreshing">
             <ScrollView>
                 <VerticalStackLayout Margin="25">
                     

@@ -45,7 +45,7 @@
                         StrokeThickness="2">
                         <Image Aspect="AspectFill" x:Name="PosterImage" Source="{Binding Content.Image}" />
                         <Border.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="200" Offset="0,0"/>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.1" Radius="10" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
                     
@@ -100,7 +100,7 @@
                                 <Label x:Name="DescriptionLabel" Text="{Binding Content.Description}" FontSize="16" />
                             </Grid>
                             <Border.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.1" Radius="10" Offset="0,0"/>
                             </Border.Shadow>
                         </Border>
 
@@ -215,7 +215,7 @@
                                     </StackLayout>
                                 </Grid>
                                 <Border.Shadow>
-                                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.1" Radius="10" Offset="0,0"/>
                                 </Border.Shadow>
                             </Border>
                         </StackLayout>
@@ -235,7 +235,7 @@
                                 </StackLayout>
                             </Grid>
                             <Border.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.1" Radius="10" Offset="0,0"/>
                             </Border.Shadow>
                         </Border>
 
@@ -260,7 +260,7 @@
                                                     </Grid>
 
                             <Border.Shadow>
-                                <Shadow Brush="#40000000" Radius="20" Offset="0,10"/>
+                                <Shadow Brush="#40000000" Radius="10" Offset="0,10"/>
                             </Border.Shadow>
                         </Border>
 
@@ -286,7 +286,7 @@
                                 </StackLayout>
                             </Grid>
                             <Border.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="100" Offset="0,0"/>
+                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.1" Radius="10" Offset="0,0"/>
                             </Border.Shadow>
                         </Border>
 

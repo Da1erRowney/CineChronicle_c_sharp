@@ -8,14 +8,38 @@
              NavigationPage.HasBackButton="False"
              Title="{Binding Content.Title}">
     <Grid BackgroundColor="Transparent">
+        
+        <Image x:Name="Background" Source="{Binding Content.Image}" Aspect="AspectFill" Opacity="0.5" IsVisible="False" />
+        <!-- Трейлер на YouTube -->
+        <Border
+            x:Name="TrailerWebBackground"
+            IsVisible="True"
+            HorizontalOptions="Center"
+            VerticalOptions="Start"
+            Stroke="Black"
+            StrokeShape="RoundRectangle 30"
+            StrokeThickness="2"
+            Opacity="0.8"
+            HeightRequest="1100"
+            MinimumWidthRequest="2000"
+            Padding="0">
 
-        <Image x:Name="Background" Source="{Binding Content.Image}" Aspect="AspectFill" Opacity="0.5" />
+            <!-- 16:9 Aspect Ratio Container -->
+            <Grid>
+                <WebView 
+                    Source="{Binding Content.YouTubeBackground}"/>
+            </Grid>
+        </Border>
+
         <RefreshView x:Name="RefreshView" RefreshColor="LightBlue" Refreshing="OnRefreshing">
             <ScrollView>
                 <VerticalStackLayout Margin="25">
+                    
+                    <!--Постер-->
                     <Border Margin="40,0,40,0"
                         BackgroundColor="#311b45"
-                        MaximumHeightRequest="600"
+                        MaximumHeightRequest="500"
+                            MaximumWidthRequest="600"
                         Stroke="Black"
                         StrokeShape="RoundRectangle 30,30,30,30"
                         StrokeThickness="2">
@@ -24,34 +48,48 @@
                             <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5" Radius="200" Offset="0,0"/>
                         </Border.Shadow>
                     </Border>
-
+                    
+                    <!--Картинка для добавления контента-->
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                        <!--Картинка для добавления контента-->
+                        
                         <Image Source="pluscontent.png" WidthRequest="50" HeightRequest="50" Margin="5,5,0,0" x:Name="AddButton" IsVisible="false">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="ImageTapped" />
                             </Image.GestureRecognizers>
                         </Image>
                     </StackLayout>
-                    <!--Название контента-->
-                    <Entry x:Name="TitleEntry" 
+
+                    <!--Название контента отображение-->
+                    <Label x:Name="TitleLabel" 
                            HorizontalOptions="Center"
                            Text="{Binding Content.Title}" 
+                           Margin="0,0,0,40"
                            FontSize="40" 
                            IsEnabled="False"
                            TextColor ="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                           VerticalOptions="Center"/>
+                    
+                        <!--Название контента-->
+                            <Entry x:Name="TitleEntry" 
+                           HorizontalOptions="Center"
+                           Text="{Binding Content.Title}" 
+                           FontSize="25" 
+                           IsVisible="False"
+                           IsEnabled="False"
+                           TextColor ="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                            VerticalOptions="Center" >
-                        <Entry.Style>
-                            <Style TargetType="Entry">
-                                <Style.Triggers>
-                                    <Trigger TargetType="Entry" Property="IsEnabled" Value="True">
-                                        <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Entry.Style>
-                    </Entry>
-                    <StackLayout>
+                                <Entry.Style>
+                                    <Style TargetType="Entry">
+                                        <Style.Triggers>
+                                            <Trigger TargetType="Entry" Property="IsEnabled" Value="True">
+                                                <Setter Property="BackgroundColor" Value="DarkSeaGreen" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Entry.Style>
+                            </Entry>
+                            <StackLayout>
+                                
                         <!--Описание-->
                         <Border Opacity="0.8"
                             Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
@@ -201,14 +239,32 @@
                             </Border.Shadow>
                         </Border>
 
-                        <!--Трейлер на YouTube-->
-                        <Border Opacity="0.8" Margin="0,50,0,0" x:Name="TrailerWebBorder" HorizontalOptions="Center" Stroke="Black" StrokeShape="RoundRectangle 30,30,30,30" StrokeThickness="2">
-                            <WebView x:Name="TrailerWeb" Source="{Binding Content.YouTubeLink}" HeightRequest="300" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                        <!-- Трейлер на YouTube -->
+                        <Border 
+                            Margin="0,50,0,0"
+                            x:Name="TrailerWebBorder"
+                            Stroke="Black"
+                            StrokeShape="RoundRectangle 30"
+                            StrokeThickness="2"
+                            Opacity="0.8"
+                            HeightRequest="300" 
+                            VerticalOptions="FillAndExpand" 
+                            HorizontalOptions="FillAndExpand"
+                            Padding="0">
+
+                                                    <!-- 16:9 Aspect Ratio Container -->
+                                                    <Grid>
+                                                        <WebView 
+                                    x:Name="TrailerWeb"
+                                    Source="{Binding Content.YouTubeLink}"/>
+                                                    </Grid>
+
                             <Border.Shadow>
-                                <Shadow Brush="Black" Opacity="1.0" Radius="100" Offset="0,0"/>
+                                <Shadow Brush="#40000000" Radius="20" Offset="0,10"/>
                             </Border.Shadow>
                         </Border>
 
+                        <!-- Источники -->
                         <Border Opacity="0.8" Margin="0,50,0,0" x:Name="ViewContent" HorizontalOptions="Center" Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
                             StrokeShape="RoundRectangle 30,30,30,30" StrokeThickness="2">
                             

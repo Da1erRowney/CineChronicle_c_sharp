@@ -1,7 +1,7 @@
 ﻿using CineChronicle.Application.SupportClass;
 using HtmlAgilityPack;
 
-namespace TestProject;
+namespace CineChronicle.Application.MainPage;
 
 public class ContentRecommendation
 {

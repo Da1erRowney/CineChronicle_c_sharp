@@ -22,6 +22,7 @@ namespace CineChronicle.Tables
         private string type;                                                        // Тип
         private string watchStatus;                                                 // Статус просмотра
         private string youTubeLink;                                                 // Ссылка на YouTube
+        private string youTubeBackground;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -170,6 +171,15 @@ namespace CineChronicle.Tables
             {
                 youTubeLink = value;
                 OnPropertyChanged(nameof(YouTubeLink));
+            }
+        }
+        public string YouTubeBackground
+        {
+            get => youTubeBackground;
+            set
+            {
+                youTubeBackground = value;
+                OnPropertyChanged(nameof(YouTubeBackground));
             }
         }
     }

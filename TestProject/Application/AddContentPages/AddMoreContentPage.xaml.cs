@@ -1,4 +1,6 @@
+using AngleSharp.Browser;
 using CineChronicle.Application;
+using CineChronicle.Application.MainPage;
 using CineChronicle.Application.SupportClass;
 using CineChronicle.Tables;
 
@@ -75,7 +77,20 @@ namespace TestProject
                 await HideLoadingAnimation();
                 return;
             }
-
+            // Если название неправильно указано
+            if (string.IsNullOrEmpty(getParsingInfo.Description) || getParsingInfo.RealTitle != title)
+            {
+                bool result = await DisplayAlert("Проверка названия",
+                        $"Вы уверены, что ваш контент называется '{title}', а не '{getParsingInfo.RealTitle}'?\n\n" +
+                        "Если правильное название второе, нажмите \"Да\"",
+                        "Да",
+                        "Нет");
+                if (result)
+                {
+                    title = getParsingInfo.RealTitle;
+                    bool parseSuccessawait = await getParsingInfo.GetData(type, title);
+                }
+            }
             string link = GetSourcesLink(type);
             string dubbing = DubbingEntry.Text;
             string dateAdded = GetTodaysDate().ToString("yyyy-MM-dd HH:mm:ss");
@@ -100,7 +115,8 @@ namespace TestProject
                 Title = title,
                 Type = type,
                 WatchStatus = string.IsNullOrEmpty(statusWatches) ? "Не начинал" : statusWatches,
-                YouTubeLink = getParsingInfo.YouTubeLink
+                YouTubeLink = getParsingInfo.YouTubeLink,
+                YouTubeBackground = getParsingInfo.YouTubeBackground
             };
 
             _databaseService.InsertContent(newContent);

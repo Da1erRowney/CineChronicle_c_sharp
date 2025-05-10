@@ -1,4 +1,5 @@
 using CineChronicle.Application;
+using CineChronicle.Application.MainPage;
 using CineChronicle.Application.SupportClass;
 using CineChronicle.Application.ViewModel;
 using CineChronicle.Tables;
@@ -29,7 +30,8 @@ namespace TestProject
         {
             InitializeComponent();
             this.content = content;
-            SetupLabelTappedEvents();
+
+            CheckPage();
         }
 
         public ViewContentPage(ContentRecommendation content)
@@ -39,7 +41,7 @@ namespace TestProject
             content.Type = recom.Type;
             BindingContext = content; // Привязываем объект Content к BindingContext страницы
 
-            SetupLabelTappedEventsRecom();
+            CheckPage();
             SelectRecomendetContent(); // Скрываем для рекомендаций не нужные элементы
         }
 
@@ -72,19 +74,29 @@ namespace TestProject
         #endregion
 
         #region [Main Ctor's Methods]
-        /// <summary>
-        /// Скрываем поле с описанием, если оно пустое
-        /// Ставим базовый фон, если Image пуст
-        /// </summary>
-        private void CheckNullFields()
-        {
-            BindingContext = new YourViewModel(content); 
 
+        /// <summary>
+        /// 1. Привязываем обновленные данные в BindingContext
+        /// 2. Обновляем переменные хранящие старые значения (до изменения)
+        /// 3. Обновляем команду для перехода по ссылке
+        /// 4. Скрываем поле с описанием, если оно пустое
+        /// 5. Ставим базовый фон, если Image пуст
+        /// 6. Обновляем картинку в источнике
+        /// 7. Скрываем строку с озвучкой если оно пустое
+        /// </summary>
+        private void CheckPage()
+        {
+            // 1
+            BindingContext = new ViewContentPageRefreshModel(content);              
+
+            // 2
             _oldName = content.Title;
             _oldType = content.Type;
 
+            // 3
             OpenLinkCommand = new Command<string>(OpenLink);
 
+            // 4
             if (string.IsNullOrEmpty(content.Description))
             {
                 DecriptionBorder.IsVisible = false;
@@ -94,11 +106,17 @@ namespace TestProject
                 DecriptionBorder.IsVisible = true;
             }
 
+            // 5
             if (string.IsNullOrEmpty(content.Image))
             {
                 Background.Source = "gradientfive.jpg";
             }
+            else
+            {
+                Background.Source = content.Image;
+            }
 
+            // 6
             switch (content.Type)
             {
                 case ContentTypes.ANIME:
@@ -116,6 +134,7 @@ namespace TestProject
                     break;
             }
 
+            // 7
             if (string.IsNullOrEmpty(content.Dubbing))
             {
                 DubbingPo.IsVisible = false;
@@ -124,17 +143,20 @@ namespace TestProject
             {
                 DubbingPo.IsVisible = true;
             }
+
+            bool showVideos = Preferences.Get("ShowVideos", true);
+            if (showVideos)
+            {
+                TrailerWebBackground.IsVisible = true;
+                Background.IsVisible = false;
+            }
+            else
+            {
+                TrailerWebBackground.IsVisible = false;
+                Background.IsVisible = true;
+            }
         }
 
-        private async void SetupLabelTappedEvents()
-        {
-            CheckNullFields();
-        }
-
-        private async void SetupLabelTappedEventsRecom()
-        {
-            CheckNullFields();
-        }
         #endregion
 
         #region [Methods]
@@ -164,10 +186,11 @@ namespace TestProject
 
         private void UpdateContentData()
         {
-            DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             DateTime currentDate = DateTime.UtcNow;
             DateTime newDate = currentDate.AddHours(+3);
             content.SeriesChangeDate = newDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+            DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             _databaseService.UpdateContent(content);
             _databaseService.CloseConnection();
         }
@@ -177,30 +200,50 @@ namespace TestProject
             IsEditing(false, "Изменить");
 
             HideElements(false);
-
             ReturnVisibleAfterChanges();
+
             await GetNewDataAndSave();
         }
 
         private async Task GetNewDataAndSave()
         {
-            DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             var currentContent = content;
             currentContent.WatchStatus = WatchStatusPicker.SelectedItem?.ToString() ?? "Не начинал";
             currentContent.Type = TypePicker.SelectedItem.ToString();
             currentContent.Title.TrimEnd();
+
+            // Проверяем, поменяли ли мы тип или название для получения новых данных из парсерса
             if (_oldName != currentContent.Title || _oldType!= currentContent.Type)
             {
                 await ShowLoadingAnimation();
                 bool parseSuccess = await parser.GetData(currentContent.Type, currentContent.Title);
+
+                // Если название неправильно указано
+                if (string.IsNullOrEmpty(parser.Description) || parser.RealTitle != currentContent.Title)
+                {
+                    bool result = await DisplayAlert("Проверка названия",
+                            $"Вы уверены, что ваш контент называется '{currentContent.Title}', а не '{parser.RealTitle}'?\n\n" +
+                            "Если правильное название второе, нажмите \"Да\"",
+                            "Да",
+                            "Нет");
+                    if (result)
+                    {
+                        currentContent.Title = parser.RealTitle;
+                        bool parseSuccessawait = await parser.GetData(currentContent.Type,currentContent.Title);
+                    }
+                }
+
                 currentContent.CountLabel = parser.CountLabel;
                 currentContent.Description = parser.Description;
                 currentContent.DateRelease = parser.DateRelease;
                 currentContent.Image = parser.Image;
                 currentContent.NextEpisodeReleaseDate = parser.NextEpisodeReleaseDate;
                 currentContent.YouTubeLink = parser.YouTubeLink;
+                currentContent.YouTubeBackground = parser.YouTubeBackground;
                 await HideLoadingAnimation();
             }
+
+            // Проверяем, поменяли ли мы тип, для получения новой ссылки на источник
             if (_oldType != currentContent.Type)
             {
                 // Обновляем ссылку на источник
@@ -221,11 +264,13 @@ namespace TestProject
                         break;
                 }
             }
+
             // Обновляем контент в базе данных
+            DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             _databaseService.UpdateContent(currentContent);
             _databaseService.CloseConnection();
 
-            SetupLabelTappedEvents();
+            CheckPage();
         }
         #endregion
 
@@ -236,7 +281,6 @@ namespace TestProject
             SavingAnimation.IsVisible = true;
             SavingAnimation.Opacity = 1; // Убедитесь, что анимация видима
             await SavingAnimation.FadeTo(1, 0); // Убедитесь, что анимация начинает с полной непрозрачности
-                                                // SavingAnimation.Play(); // Запустите анимацию, если это возможно
         }
 
         private async Task HideLoadingAnimation()
@@ -257,7 +301,8 @@ namespace TestProject
             if (result)
             {
                 TapDelete();
-                await Navigation.PopAsync();
+                await Shell.Current.GoToAsync("//Main");
+                Navigation.RemovePage(this);
             }
         }
 
@@ -273,7 +318,7 @@ namespace TestProject
             BindingContext = null;
             DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             content = _databaseService.GetContentById(content.Id);
-            BindingContext = new YourViewModel(content);
+            BindingContext = new ViewContentPageRefreshModel(content);
 
             // Возвращаем компонентам свойства
             IsEditing(false, "Изменить");
@@ -304,8 +349,9 @@ namespace TestProject
         // Обработчик добавления данных, если представление рекомендаций
         private async void ImageTapped(object sender, EventArgs e)
         {
-            AddMoreContentPage addMoreContentPage = new AddMoreContentPage(recom);
-            await Navigation.PushAsync(addMoreContentPage);
+            AddMoreContentPage addMoreContentPage = new AddMoreContentPage(recom); //?
+            await Shell.Current.GoToAsync("//Add");
+            Navigation.RemovePage(this);
         }
         #endregion
 
@@ -338,13 +384,14 @@ namespace TestProject
             ViewContent.IsVisible = true;
             DecriptionBorder.IsVisible = true;
             TypeEntry.IsVisible = true;
-            //TypeLabel.IsVisible = true;
+
             WatchStatusEntry.IsVisible = true;
-            //WatchStatusLabel.IsVisible = true;
             InfoBorder.IsVisible = true;
             DataLabel.IsVisible = true;
             CountLabel.IsVisible = true;
             TitleEntry.IsEnabled = false;
+            TitleEntry.IsVisible = false;
+            TitleLabel.IsVisible = true;
             DubbingEntry.IsEnabled = false;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;
@@ -368,10 +415,10 @@ namespace TestProject
             InfoBorder.IsVisible = isVisible;
             ViewContent.IsVisible = isVisible;
             TypeEntry.IsVisible = isVisible;
-            //TypeLabel.IsVisible = isVisible;
             WatchStatusEntry.IsVisible = isVisible;
-            //WatchStatusLabel.IsVisible = isVisible;
 
+            TitleLabel.IsVisible = isVisible;
+            TitleEntry.IsVisible = !isVisible;
             TitleEntry.IsEnabled = !isVisible;
             DubbingEntry.IsEnabled = !isVisible;
             DubbingPo.IsVisible = !isVisible;
@@ -389,7 +436,6 @@ namespace TestProject
 
         private void SelectRecomendetContent()
         {
-            //Statics.IsVisible = false;
             DubbingPo.IsVisible = false;
             StatusP.IsVisible = false;
             EditButton.IsVisible = false;

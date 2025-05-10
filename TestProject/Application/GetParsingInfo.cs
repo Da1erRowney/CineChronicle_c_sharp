@@ -6,6 +6,7 @@ using HtmlAgilityPack;
 using Newtonsoft.Json;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -19,9 +20,11 @@ namespace CineChronicle.Application
         public string Description { get; set; } = string.Empty;
         public string Image { get; set; } = string.Empty;
         public string YouTubeLink { get; set; } = string.Empty;
+        public string YouTubeBackground { get; set; } = string.Empty;
         public string NextEpisodeReleaseDate { get; set; } = string.Empty;
         public string CountLabel { get; set; } = string.Empty;
         public string DateRelease { get; set; } = string.Empty;
+        public string RealTitle { get; set; } = string.Empty;
 
 
         private int countRead = 0;
@@ -86,12 +89,16 @@ namespace CineChronicle.Application
                 string newStr = $"Будет ли продолжение {title}? {NextEpisodeReleaseDate}";
                 NextEpisodeReleaseDate = newStr;
             }
+            else if(string.IsNullOrEmpty(NextEpisodeReleaseDate) || NextEpisodeReleaseDate.Contains("не найдена"))
+            {
+                NextEpisodeReleaseDate =  $"Информация об {title} не найдена";
+            }
             else
             {
                 string newStr = $"Статус продолжения {title}.\n{NextEpisodeReleaseDate}";
                 NextEpisodeReleaseDate = newStr;
             }
-            Description = Regex.Replace(Description, @"&nbsp;", " ");
+                Description = Regex.Replace(Description, @"&nbsp;", " ");
         }
 
         /// <summary>
@@ -294,12 +301,30 @@ namespace CineChronicle.Application
 
                                         var searchListRequest = youtubeService.Search.List("snippet");
                                         searchListRequest.Q = $"{query} {type} трейлер";
-                                        searchListRequest.MaxResults = 1;
+                                        searchListRequest.MaxResults = 2;
 
                                         var searchListResponse = await searchListRequest.ExecuteAsync();
                                         if (searchListResponse.Items.Count > 0)
                                         {
                                             YouTubeLink = $"https://www.youtube.com/embed/{searchListResponse.Items[0].Id.VideoId}";
+                                            //YouTubeBackground = $"https://www.youtube.com/embed/{searchListResponse.Items[1].Id.VideoId}?" +
+                                            //"autoplay=1&" +
+                                            //"loop=1&" +
+                                            //"mute=1&" +
+                                            //"controls=0&" +
+                                            //"rel=0&";
+                                            string videoId = searchListResponse.Items[1].Id.VideoId;
+
+                                            YouTubeBackground = $"https://www.youtube.com/embed/{videoId}?" +
+                                                "autoplay=1&" +
+                                                "mute=1&" +
+                                                "loop=1&" +
+                                                "controls=0&" +
+                                                "rel=0&" +
+                                                $"playlist={videoId}&" +
+                                                "enablejsapi=1&" +
+                                                "fs=0&" +
+                                                "vq=hd1080"; // Принудительное HD 1080p
                                         }
                                     }
                                     catch (Exception ex)
@@ -452,7 +477,7 @@ namespace CineChronicle.Application
 
         public async Task WikInfoIsWrong(string query, string type)
         {
-            if (countRead == 2) return;
+            if (countRead == 3) return;
             string url1 = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
 
             using (HttpClient client1 = new HttpClient())
@@ -501,7 +526,19 @@ namespace CineChronicle.Application
                         }
                         Description = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
                         countRead++;
-                        await WikInfoIsWrong($"{query} сериал", type);
+                        if (countRead == 1)
+                        {
+                            await WikInfoIsWrong($"{query} сериал", type);
+                        }
+                        if (countRead == 2)
+                        {
+                            query = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(query.ToLower());
+                            await WikInfoIsWrong(query, type);
+                        }
+                        if(countRead == 3)
+                        {
+                            return;
+                        }
                     }
                 }
 
@@ -666,14 +703,14 @@ namespace CineChronicle.Application
                             {
                                 try
                                 {
-                                    // Десериализуем JSON
                                     var jsonData = JsonConvert.DeserializeObject<dynamic>(scriptNode.InnerText);
                                     var description  = jsonData?.description?.ToString()?.Trim();
-                                    if (!string.IsNullOrEmpty(description)) 
+                                    if (!string.IsNullOrEmpty(description))
                                     {
                                         // Извлекаем описание
                                         Description = description;
                                     }
+                                    RealTitle = jsonData?.name;
                                 }
                                 catch (Exception ex)
                                 {
@@ -782,9 +819,8 @@ namespace CineChronicle.Application
                                     {
                                         // Десериализуем JSON
                                         var jsonData = JsonConvert.DeserializeObject<dynamic>(scriptNode.InnerText);
-
-                                        // Извлекаем описание
                                         Description = jsonData?.description?.ToString()?.Trim();
+                                        RealTitle = jsonData?.name;
                                     }
                                     catch (Exception ex)
                                     {

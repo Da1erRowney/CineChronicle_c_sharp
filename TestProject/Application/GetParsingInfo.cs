@@ -1,5 +1,4 @@
-﻿using AngleSharp.Browser;
-using CineChronicle.Application.SupportClass;
+﻿using CineChronicle.Application.SupportClass;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using HtmlAgilityPack;
@@ -108,7 +107,7 @@ namespace CineChronicle.Application
         /// <param name="type">Тип контента</param>
         /// <param name="sourcePars">Источник из которого берем инфу</param>
         /// <param name="isInfo">Если информация, иначе картинка(постер)</param>
-        public async Task GetInfo(string query, string type, string sourcePars, bool isInfo, bool debug = false)
+        private async Task GetInfo(string query, string type, string sourcePars, bool isInfo, bool debug = false)
         {
             string url = "";
             //Формируем ссылку в зависимости от источника
@@ -306,15 +305,11 @@ namespace CineChronicle.Application
                                         var searchListResponse = await searchListRequest.ExecuteAsync();
                                         if (searchListResponse.Items.Count > 0)
                                         {
+                                            // Получение трейлера для отображения и перехода по кнопке
                                             YouTubeLink = $"https://www.youtube.com/embed/{searchListResponse.Items[0].Id.VideoId}";
-                                            //YouTubeBackground = $"https://www.youtube.com/embed/{searchListResponse.Items[1].Id.VideoId}?" +
-                                            //"autoplay=1&" +
-                                            //"loop=1&" +
-                                            //"mute=1&" +
-                                            //"controls=0&" +
-                                            //"rel=0&";
-                                            string videoId = searchListResponse.Items[1].Id.VideoId;
 
+                                            // Получение трейлера для фона
+                                            string videoId = searchListResponse.Items[1].Id.VideoId;
                                             YouTubeBackground = $"https://www.youtube.com/embed/{videoId}?" +
                                                 "autoplay=1&" +
                                                 "mute=1&" +
@@ -326,10 +321,15 @@ namespace CineChronicle.Application
                                                 "fs=0&" +
                                                 "vq=hd1080"; // Принудительное HD 1080p
                                         }
+                                        else
+                                        {
+                                            await GetUniqueVideoIds(query, type);
+                                        }
                                     }
                                     catch (Exception ex)
                                     {
                                         Console.WriteLine($"Ошибка YouTube API: {ex.Message}");
+                                        await GetUniqueVideoIds(query,type);
                                     }
                                     break;
                                 case (SourceTypes.LF, false):
@@ -372,7 +372,7 @@ namespace CineChronicle.Application
             }
         }
 
-        public async Task WikInfoIsSuccess(HtmlNode node, HtmlDocument htmlDocument, string query)
+        private async Task WikInfoIsSuccess(HtmlNode node, HtmlDocument htmlDocument, string query)
         {
             string nameContent = $"{query}:\n";
 
@@ -475,7 +475,7 @@ namespace CineChronicle.Application
             }
         }
 
-        public async Task WikInfoIsWrong(string query, string type)
+        private async Task WikInfoIsWrong(string query, string type)
         {
             if (countRead == 3) return;
             string url1 = $"https://ru.wikipedia.org/wiki/{Uri.EscapeDataString(query)}";
@@ -549,40 +549,77 @@ namespace CineChronicle.Application
             }
         }
 
-        //Получение трейлера для перехода по кнопке
-        public async Task<string> GetTrailer(string query, string type)
+        // Резервный метод получения трейлера с YouTube когда квота превысила лимит
+        public async Task GetUniqueVideoIds(string query, string type, int maxCount = 2)
         {
-            string url = $"https://www.youtube.com/results?search_query={query}+{type}+трейлер";
-            using (HttpClient client = new HttpClient())
+            string searchUrl = $"https://www.youtube.com/results?search_query={WebUtility.UrlEncode(query)}+{WebUtility.UrlEncode(type)}+трейлер&sp=CAASBhABGAEgAQ%253D%253D";
+            var uniqueIds = new HashSet<string>();
+            try
             {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(url);
+                using HttpClient client = new();
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36");
+                client.Timeout = TimeSpan.FromSeconds(10);
 
-                    if (response.IsSuccessStatusCode)
+                string html = await client.GetStringAsync(searchUrl);
+
+                // Основной паттерн для поиска videoId
+                var videoMatches = Regex.Matches(html, @"""videoId""\s*:\s*""([a-zA-Z0-9_-]{11})""");
+
+                foreach (Match match in videoMatches)
+                {
+                    if (!match.Success || uniqueIds.Count >= maxCount) continue;
+
+                    string videoId = match.Groups[1].Value;
+
+                    // Проверка что это не Shorts
+                    if (!IsShortsVideo(html, videoId))
                     {
-                        string htmlContent = await response.Content.ReadAsStringAsync();
-
-                        HtmlDocument htmlDocument = new HtmlDocument();
-                        htmlDocument.LoadHtml(htmlContent);
-
-                        string pattern = "\\\\vi\\\\/([^\\/\\\\\"]+)";
-                        Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
-
-                        if (match.Success)
-                        {
-                            return $"https://www.youtube.com/watch?v={match.Groups[1].Value}";
-                        }
+                        uniqueIds.Add(videoId);
                     }
-                    return "https://www.youtube.com/watch?v"; // Возвращаем URL по умолчанию
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return null;
-                }
+                var urlAddresses = uniqueIds.ToArray();
+
+                YouTubeLink = $"https://www.youtube.com/embed/{urlAddresses[0]}";
+                YouTubeBackground = $"https://www.youtube.com/embed/{urlAddresses[1]}?" +
+                                                "autoplay=1&" +
+                                                "mute=1&" +
+                                                "loop=1&" +
+                                                "controls=0&" +
+                                                "rel=0&" +
+                                                $"playlist={urlAddresses[1]}&" +
+                                                "enablejsapi=1&" +
+                                                "fs=0&" +
+                                                "vq=hd1080"; // Принудительное HD 1080p
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
+
+        private bool IsShortsVideo(string html, string videoId)
+        {
+            // Паттерн 1: Проверка /shorts/ в URL
+            if (Regex.IsMatch(html, $@"""webCommandMetadata"":\{{[^}}]*""url"":""/shorts/{videoId}"))
+            {
+                return true;
+            }
+
+            // Паттерн 2: Проверка специальных маркеров Shorts
+            if (Regex.IsMatch(html, $@"""isShorts"":\s*true[^}}]*""videoId"":""{videoId}"""))
+            {
+                return true;
+            }
+
+            // Паттерн 3: Проверка в HTML-атрибутах
+            if (Regex.IsMatch(html, $@"<a\s[^>]*href=""(/shorts/{videoId}|/watch\?v={videoId}[^""]*\bp=shorts)"""))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         string ExtractDescription(string htmlContent)
         {
             var htmlDoc = new HtmlDocument();
@@ -614,7 +651,7 @@ namespace CineChronicle.Application
 
             return string.Empty;
         }
-        public async Task DateExitIsSuccess(HtmlNode node, string query, string type, HtmlDocument htmlDocument)
+        private async Task DateExitIsSuccess(HtmlNode node, string query, string type, HtmlDocument htmlDocument)
         {
             using (HttpClient client = new HttpClient())
             {

@@ -11,7 +11,7 @@
         
         <Image x:Name="Background" Source="{Binding Content.Image}" Aspect="AspectFill" Opacity="0.5" IsVisible="False" />
         <!-- Трейлер на YouTube -->
-        <Border
+            <Border
             x:Name="TrailerWebBackground"
             IsVisible="True"
             HorizontalOptions="Center"
@@ -20,15 +20,15 @@
             StrokeShape="RoundRectangle 30"
             StrokeThickness="2"
             Opacity="0.8"
-            HeightRequest="1100"
-            MinimumWidthRequest="2000"
+            HeightRequest="1000"
+            MinimumWidthRequest="1760"
             Padding="0">
 
             <!-- 16:9 Aspect Ratio Container -->
             <Grid>
                 <WebView 
                     Source="{Binding Content.YouTubeBackground}"/>
-            </Grid>
+        </Grid>
         </Border>
 
         <RefreshView x:Name="RefreshView" RefreshColor="Black" Refreshing="OnRefreshing">

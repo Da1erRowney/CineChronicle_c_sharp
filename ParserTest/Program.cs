@@ -37,129 +37,131 @@ namespace ParserTest
             program.GetInfoTest();
         }
 
-        public void GetInfoTest()
+        public async void GetInfoTest()
         {
+            parser.GetUniqueVideoIds("Магическая битва", "Аниме");
+            Console.ReadKey();
             // Arrange
             //PushParser(ANIME, "Магическая битва", AG);
 
             // Act
-            
-
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("╔══════════════════════════════════╗");
-                Console.WriteLine("║        ПАРСЕР ДАННЫХ v1.0         ║");
-                Console.WriteLine("╠══════════════════════════════════╣");
-                Console.WriteLine("║ Выберите источник:               ║");
-                Console.WriteLine("║ 1. Википедия                     ║");
-                Console.WriteLine("║ 2. Kinogo                        ║");
-                Console.WriteLine("║ 3. Jutsu                         ║");
-                Console.WriteLine("║ 4. AnimeGo                       ║");
-                Console.WriteLine("║ 5. PremierGo                     ║");
-                Console.WriteLine("║ 6. YouTube                       ║");
-                Console.WriteLine("║ 7. LordsFilm                     ║");
-                Console.WriteLine("║ 8. DateExit                      ║");
-                Console.WriteLine("║                                  ║");
-                Console.WriteLine("║ z. Выход                         ║");
-                Console.WriteLine("╚══════════════════════════════════╝");
-                Console.Write("Ваш выбор: ");
-
-                string sourceChoice = Console.ReadLine();
-
-                if (sourceChoice.ToLower() == "z")
-                {
-                    Console.WriteLine("Завершение работы...");
-                    return;
-                }
-
-                string source = sourceChoice switch
-                {
-                    "1" => "Википедия",
-                    "2" => "Kinogo",
-                    "3" => "Jutsu",
-                    "4" => "AnimeGo",
-                    "5" => "PremierGo",
-                    "6" => "YouTube",
-                    "7" => "LordsFilm",
-                    "8" => "DateExit",
-                    _ => null
-                };
-
-                if (source == null)
-                {
-                    Console.WriteLine("Неверный выбор! Нажмите любую клавишу...");
-                    Console.ReadKey();
-                    continue;
-                }
-
-                Console.Clear();
-                Console.WriteLine("╔══════════════════════════════════╗");
-                Console.WriteLine("║        ВЫБЕРИТЕ ТИП КОНТЕНТА      ║");
-                Console.WriteLine("╠══════════════════════════════════╣");
-                Console.WriteLine("║ 1. Аниме                         ║");
-                Console.WriteLine("║ 2. Фильм                         ║");
-                Console.WriteLine("║ 3. Сериал                        ║");
-                Console.WriteLine("║ 4. Дорама                        ║");
-                Console.WriteLine("║ 5. Мультсериал                   ║");
-                Console.WriteLine("║ 6. Прочее                        ║");
-                Console.WriteLine("║                                  ║");
-                Console.WriteLine("║ z. Назад                         ║");
-                Console.WriteLine("╚══════════════════════════════════╝");
-                Console.Write("Ваш выбор: ");
-
-                string typeChoice = Console.ReadLine();
-
-                if (typeChoice.ToLower() == "z")
-                    continue;
-
-                string type = typeChoice switch
-                {
-                    "1" => "Аниме",
-                    "2" => "Фильм",
-                    "3" => "Сериал",
-                    "4" => "Дорама",
-                    "5" => "Мультсериал",
-                    "6" => "Прочее",
-                    _ => null
-                };
-
-                if (type == null)
-                {
-                    Console.WriteLine("Неверный выбор! Нажмите любую клавишу...");
-                    Console.ReadKey();
-                    continue;
-                }
-
-                Console.Clear();
-                Console.WriteLine("╔══════════════════════════════════╗");
-                Console.WriteLine("║        ВВЕДИТЕ НАЗВАНИЕ          ║");
-                Console.WriteLine("╚══════════════════════════════════╝");
-                Console.Write("> ");
-                string title = Console.ReadLine();
-
-                // Вызов парсера
-                PushParser(type,title, source);
-
-                //var description = parser?.Description;
-                //var image = parser?.Image;
-                //var youTube = parser?.YouTube;
-                //var nextEpisodeReleaseDate = parser?.NextEpisodeReleaseDate;
-                //var countLabel = parser?.CountLabel;
-
-                //Console.WriteLine("Название: " + title);
-                //Console.WriteLine("Описание: " + description);
-                //Console.WriteLine("Картинка: " + image);
-                //Console.WriteLine("Ссылка трейлера: " + youTube);
-                //Console.WriteLine("Дата выхода эпизода: " + nextEpisodeReleaseDate);
-                //Console.WriteLine("Количество: " + countLabel);
 
 
-                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
-                Console.ReadKey();
-            }
+            //Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+            //while (true)
+            //{
+            //    Console.Clear();
+            //    Console.WriteLine("╔══════════════════════════════════╗");
+            //    Console.WriteLine("║        ПАРСЕР ДАННЫХ v1.0         ║");
+            //    Console.WriteLine("╠══════════════════════════════════╣");
+            //    Console.WriteLine("║ Выберите источник:               ║");
+            //    Console.WriteLine("║ 1. Википедия                     ║");
+            //    Console.WriteLine("║ 2. Kinogo                        ║");
+            //    Console.WriteLine("║ 3. Jutsu                         ║");
+            //    Console.WriteLine("║ 4. AnimeGo                       ║");
+            //    Console.WriteLine("║ 5. PremierGo                     ║");
+            //    Console.WriteLine("║ 6. YouTube                       ║");
+            //    Console.WriteLine("║ 7. LordsFilm                     ║");
+            //    Console.WriteLine("║ 8. DateExit                      ║");
+            //    Console.WriteLine("║                                  ║");
+            //    Console.WriteLine("║ z. Выход                         ║");
+            //    Console.WriteLine("╚══════════════════════════════════╝");
+            //    Console.Write("Ваш выбор: ");
+
+            //    string sourceChoice = Console.ReadLine();
+
+            //    if (sourceChoice.ToLower() == "z")
+            //    {
+            //        Console.WriteLine("Завершение работы...");
+            //        return;
+            //    }
+
+            //    string source = sourceChoice switch
+            //    {
+            //        "1" => "Википедия",
+            //        "2" => "Kinogo",
+            //        "3" => "Jutsu",
+            //        "4" => "AnimeGo",
+            //        "5" => "PremierGo",
+            //        "6" => "YouTube",
+            //        "7" => "LordsFilm",
+            //        "8" => "DateExit",
+            //        _ => null
+            //    };
+
+            //    if (source == null)
+            //    {
+            //        Console.WriteLine("Неверный выбор! Нажмите любую клавишу...");
+            //        Console.ReadKey();
+            //        continue;
+            //    }
+
+            //    Console.Clear();
+            //    Console.WriteLine("╔══════════════════════════════════╗");
+            //    Console.WriteLine("║        ВЫБЕРИТЕ ТИП КОНТЕНТА      ║");
+            //    Console.WriteLine("╠══════════════════════════════════╣");
+            //    Console.WriteLine("║ 1. Аниме                         ║");
+            //    Console.WriteLine("║ 2. Фильм                         ║");
+            //    Console.WriteLine("║ 3. Сериал                        ║");
+            //    Console.WriteLine("║ 4. Дорама                        ║");
+            //    Console.WriteLine("║ 5. Мультсериал                   ║");
+            //    Console.WriteLine("║ 6. Прочее                        ║");
+            //    Console.WriteLine("║                                  ║");
+            //    Console.WriteLine("║ z. Назад                         ║");
+            //    Console.WriteLine("╚══════════════════════════════════╝");
+            //    Console.Write("Ваш выбор: ");
+
+            //    string typeChoice = Console.ReadLine();
+
+            //    if (typeChoice.ToLower() == "z")
+            //        continue;
+
+            //    string type = typeChoice switch
+            //    {
+            //        "1" => "Аниме",
+            //        "2" => "Фильм",
+            //        "3" => "Сериал",
+            //        "4" => "Дорама",
+            //        "5" => "Мультсериал",
+            //        "6" => "Прочее",
+            //        _ => null
+            //    };
+
+            //    if (type == null)
+            //    {
+            //        Console.WriteLine("Неверный выбор! Нажмите любую клавишу...");
+            //        Console.ReadKey();
+            //        continue;
+            //    }
+
+            //    Console.Clear();
+            //    Console.WriteLine("╔══════════════════════════════════╗");
+            //    Console.WriteLine("║        ВВЕДИТЕ НАЗВАНИЕ          ║");
+            //    Console.WriteLine("╚══════════════════════════════════╝");
+            //    Console.Write("> ");
+            //    string title = Console.ReadLine();
+
+            //    // Вызов парсера
+            //    PushParser(type,title, source);
+
+            //    //var description = parser?.Description;
+            //    //var image = parser?.Image;
+            //    //var youTube = parser?.YouTube;
+            //    //var nextEpisodeReleaseDate = parser?.NextEpisodeReleaseDate;
+            //    //var countLabel = parser?.CountLabel;
+
+            //    //Console.WriteLine("Название: " + title);
+            //    //Console.WriteLine("Описание: " + description);
+            //    //Console.WriteLine("Картинка: " + image);
+            //    //Console.WriteLine("Ссылка трейлера: " + youTube);
+            //    //Console.WriteLine("Дата выхода эпизода: " + nextEpisodeReleaseDate);
+            //    //Console.WriteLine("Количество: " + countLabel);
+
+
+            //    Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+            //    Console.ReadKey();
+            //}
 
         }
 

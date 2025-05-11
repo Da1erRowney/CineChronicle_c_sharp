@@ -1,6 +1,9 @@
 ﻿using HtmlAgilityPack;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -503,38 +506,74 @@ namespace ParserTest
         }
 
         //Получение трейлера для перехода по кнопке
-        public async Task<string> GetTrailer(string query, string type)
+        public async Task GetUniqueVideoIds(string query, string type, int maxCount = 2)
         {
-            string url = $"https://www.youtube.com/results?search_query={query}+{type}+трейлер";
-            using (HttpClient client = new HttpClient())
+            string searchUrl = $"https://www.youtube.com/results?search_query={WebUtility.UrlEncode(query)}+{WebUtility.UrlEncode(type)}+трейлер&sp=CAASBhABGAEgAQ%253D%253D";
+            var uniqueIds = new HashSet<string>();
+            try
             {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(url);
+                using HttpClient client = new();
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36");
+                client.Timeout = TimeSpan.FromSeconds(10);
 
-                    if (response.IsSuccessStatusCode)
+                string html = await client.GetStringAsync(searchUrl);
+
+                // Основной паттерн для поиска videoId
+                var videoMatches = Regex.Matches(html, @"""videoId""\s*:\s*""([a-zA-Z0-9_-]{11})""");
+
+                foreach (Match match in videoMatches)
+                {
+                    if (!match.Success || uniqueIds.Count >= maxCount) continue;
+
+                    string videoId = match.Groups[1].Value;
+
+                    // Проверка что это не Shorts
+                    if (!IsShortsVideo(html, videoId))
                     {
-                        string htmlContent = await response.Content.ReadAsStringAsync();
-
-                        HtmlDocument htmlDocument = new HtmlDocument();
-                        htmlDocument.LoadHtml(htmlContent);
-
-                        string pattern = "\\\\vi\\\\/([^\\/\\\\\"]+)";
-                        Match match = Regex.Match(htmlDocument.DocumentNode.OuterHtml, pattern);
-
-                        if (match.Success)
-                        {
-                            return $"https://www.youtube.com/watch?v={match.Groups[1].Value}";
-                        }
+                        uniqueIds.Add(videoId);
                     }
-                    return "https://www.youtube.com/watch?v"; // Возвращаем URL по умолчанию
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return null;
-                }
+                var urlAddresses = uniqueIds.ToArray();
+
+                string youtubeLink = $"https://www.youtube.com/embed/{urlAddresses[0]}";
+                string youtubeBackground = $"https://www.youtube.com/embed/{urlAddresses[1]}?" +
+                                                "autoplay=1&" +
+                                                "mute=1&" +
+                                                "loop=1&" +
+                                                "controls=0&" +
+                                                "rel=0&" +
+                                                $"playlist={urlAddresses[1]}&" +
+                                                "enablejsapi=1&" +
+                                                "fs=0&" +
+                                                "vq=hd1080";
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        private bool IsShortsVideo(string html, string videoId)
+        {
+            // Паттерн 1: Проверка /shorts/ в URL
+            if (Regex.IsMatch(html, $@"""webCommandMetadata"":\{{[^}}]*""url"":""/shorts/{videoId}"))
+            {
+                return true;
+            }
+
+            // Паттерн 2: Проверка специальных маркеров Shorts
+            if (Regex.IsMatch(html, $@"""isShorts"":\s*true[^}}]*""videoId"":""{videoId}"""))
+            {
+                return true;
+            }
+
+            // Паттерн 3: Проверка в HTML-атрибутах
+            if (Regex.IsMatch(html, $@"<a\s[^>]*href=""(/shorts/{videoId}|/watch\?v={videoId}[^""]*\bp=shorts)"""))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public async void DateExitIsSuccess(HtmlNode node, HttpClient client, string query, string type, HtmlDocument htmlDocument)

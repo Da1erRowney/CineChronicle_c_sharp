@@ -154,7 +154,7 @@ namespace TestProject
             {
                 TrailerWebBackground.IsVisible = false;
                 Background.IsVisible = true;
-            }
+            } 
         }
 
         #endregion

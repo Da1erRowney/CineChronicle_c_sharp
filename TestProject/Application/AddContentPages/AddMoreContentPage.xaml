@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             x:Class="TestProject.AddMoreContentPage">
+
+    <Grid BackgroundColor="Transparent">
+        
+        <!-- Адаптивный фон -->
+        <Image x:Name="Background" 
+               Source="gradientfive.jpg" 
+               Aspect="AspectFill" 
+               Opacity="0.5"/>
+
+        <ScrollView>
+            <VerticalStackLayout Spacing="15" Padding="20">
+                <!-- Заголовки -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="На пути к успеху..." 
+                           FontAttributes="Bold" 
+                           FontSize="Title"
+                           HorizontalOptions="Start"/>
+                    <Label Text="Добавьте свой контент" 
+                           FontSize="Subtitle"
+                           HorizontalOptions="Start"/>
+                </VerticalStackLayout>
+
+                <!-- Основная форма -->
+                <Border 
+                    Margin="0,20"
+                    Opacity="0.9"
+                    Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                    StrokeShape="RoundRectangle 30"
+                    StrokeThickness="2"
+                    Padding="15">
+
+                    <Border.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" 
+                                Opacity="0.5" 
+                                Radius="100" 
+                                Offset="0,0"/>
+                    </Border.Shadow>
+
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                          RowSpacing="15"
+                          ColumnDefinitions="Auto,*,Auto"
+                          ColumnSpacing="10">
+
+                        <!-- Заголовок формы -->
+                        <Label Text="Добавление контента" 
+                               FontAttributes="Bold" 
+                               FontSize="Title"
+                               HorizontalOptions="Center"
+                               Grid.ColumnSpan="3"/>
+
+                        <!-- Название -->
+                        <Label Text="Название:" 
+                               FontSize="Body"
+                               VerticalOptions="Center"
+                               Grid.Row="1"/>
+                        <Entry Placeholder="Введите название" 
+                               x:Name="TitleEntry"
+                               FontSize="Body"
+                               PlaceholderColor="Gray"
+                               Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+                        <!-- Тип -->
+                        <Label Text="Тип:" 
+                               FontSize="Body"
+                               VerticalOptions="Center"
+                               Grid.Row="2"/>
+                        <Picker Title="Выберите тип"
+                               x:Name="TypePicker"
+                               FontSize="Body"
+                               TitleColor="Gray"
+                               Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Сериал</x:String>
+                                    <x:String>Аниме</x:String>
+                                    <x:String>Мультсериал</x:String>
+                                    <x:String>Фильм</x:String>
+                                    <x:String>Дорама</x:String>
+                                    <x:String>Документалка</x:String>
+                                    <x:String>Прочее</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+
+                        <!-- Озвучка -->
+                        <Label Text="Озвучка:" 
+                               FontSize="Body"
+                               VerticalOptions="Center"
+                               Grid.Row="3"/>
+                        <Entry Placeholder="Введите озвучку" 
+                               x:Name="DubbingEntry"
+                               FontSize="Body"
+                               PlaceholderColor="Gray"
+                               Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+                        <!-- Серия и сезон -->
+                        <Label Text="Серия:" 
+                               FontSize="Body"
+                               VerticalOptions="Center"
+                               Grid.Row="4"/>
+                        <Entry Placeholder="Номер серии" 
+                               x:Name="LastWatchedSeriesEntry"
+                               Keyboard="Numeric"
+                               FontSize="Body"
+                               PlaceholderColor="Gray"
+                               Grid.Row="4" Grid.Column="1"/>
+
+                        <Label Text="Сезон:" 
+                               FontSize="Body"
+                               VerticalOptions="Center"
+                               Grid.Row="5"/>
+                        <Entry Placeholder="Номер сезона" 
+                               x:Name="LastWatchedSeasonEntry"
+                               Keyboard="Numeric"
+                               FontSize="Body"
+                               PlaceholderColor="Gray"
+                               Grid.Row="5" Grid.Column="1"/>
+
+                        <!-- Ссылка -->
+                        <Label Text="Ссылка:" 
+                               FontSize="Body"
+                               VerticalOptions="Center"
+                               Grid.Row="6"/>
+                        <Entry Placeholder="https://..." 
+                               x:Name="LinkEntry"
+                               FontSize="Body"
+                               PlaceholderColor="Gray"
+                               Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+                        <!-- Статус -->
+                        <Label Text="Статус:" 
+                               FontSize="Body"
+                               VerticalOptions="Center"
+                               Grid.Row="7"/>
+                        <Picker Title="Выберите статус"
+                               x:Name="WatchStatusPicker"
+                               FontSize="Body"
+                               TitleColor="Gray"
+                               Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Просмотрено</x:String>
+                                    <x:String>Смотрю</x:String>
+                                    <x:String>Не начинал</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </Grid>
+                </Border>
+
+                <!-- Кнопка -->
+                <Button Text="Сохранить" 
+                        FontSize="Body"
+                        Clicked="OnAddClicked" 
+                        HorizontalOptions="Center"
+                        WidthRequest="200"
+                        Margin="0,20"
+                        CornerRadius="20"/>
+            </VerticalStackLayout>
+        </ScrollView>
+        
+        <!-- Overlay (фон) -->
+        <BoxView x:Name="Overlay"
+                 BackgroundColor="#80000000"
+                 Opacity="0.5"
+                 IsVisible="False"
+                 AbsoluteLayout.LayoutBounds="0,0,1,1"
+                 AbsoluteLayout.LayoutFlags="All"/>
+
+        <!-- Lottie Animation -->
+        <skia:SKLottieView x:Name="SavingAnimation"
+                           Source="loading_animation.json"
+                           RepeatCount="-1"
+                           IsVisible="False"
+                           WidthRequest="150"
+                           HeightRequest="150"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TestProject.SettingPage"
+             xmlns:local="clr-namespace:TestProject">
+    <Grid BackgroundColor="Transparent">
+        <Image x:Name="Background" Grid.Row="1" Source="gradientfive.jpg" Aspect="AspectFill" 
+               AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+
+        <Grid Grid.Row="0" BackgroundColor="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+        </Grid>
+
+        <VerticalStackLayout Spacing="20" Padding="20">
+            <Label Text="Ваши настройки" FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" />
+            <Label Text="Когда-нибудь что-то будет добавлено..." FontSize="18" Margin="25,-15,0,0"/>
+
+            <!-- Настройка темы -->
+            <Border 
+                Margin="0,25,0,0"
+                Opacity="0.9"
+                Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                x:Name="ThemeBorder"
+                MinimumHeightRequest="150"
+                StrokeShape="RoundRectangle 30,30,30,30"
+                StrokeThickness="2">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Сменить тему" Margin="25,25,0,0" FontSize="17"/>
+                        <Switch x:Name="ThemeSwitch" Toggled="OnThemeToggled" Margin="5,16,0,0" />
+                    </StackLayout>
+                    <Label HorizontalOptions="Start"
+                           Text="Возможность менять тему приложения с светлой на тёмную. Лично я рекомендую dark side..." 
+                           Margin="25,-15,0,0" FontSize="12"
+                           WidthRequest="250"/>
+                </StackLayout>
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" 
+                            Opacity="0.5" Radius="100" Offset="0,0"/>
+                </Border.Shadow>
+            </Border>
+
+            <!-- Новая настройка для видео-роликов -->
+            <Border 
+                Margin="0,25,0,0"
+                Opacity="0.9"
+                Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                x:Name="VideoBorder"
+                MinimumHeightRequest="150"
+                StrokeShape="RoundRectangle 30,30,30,30"
+                StrokeThickness="2">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Отображение видео-роликов" Margin="25,25,0,0" FontSize="17"/>
+                        <Switch x:Name="VideoSwitch" Toggled="OnVideoToggled" Margin="5,16,0,0" 
+                                IsToggled="True"/>
+                        <!-- По умолчанию включено -->
+                    </StackLayout>
+                    <Label HorizontalOptions="Start"
+                           Text="Включите, чтобы показывать видео-ролики на страницах контента. При отключении будут отображаться только постеры." 
+                           Margin="25,-15,0,0" FontSize="12"
+                           WidthRequest="250"/>
+                </StackLayout>
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" 
+                            Opacity="0.5" Radius="100" Offset="0,0"/>
+                </Border.Shadow>
+            </Border>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

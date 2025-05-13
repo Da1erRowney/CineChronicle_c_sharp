@@ -4,227 +4,238 @@
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              Title="Cine Chronicle">
 
+    <ContentPage.Resources>
+        <!-- Общие стили -->
+        <Style x:Key="SectionTitleStyle" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Margin" Value="25,0,0,10"/>
+        </Style>
+
+        <Style x:Key="SectionSubtitleStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="25,0,0,-25"/>
+        </Style>
+
+        <Style x:Key="ContentCardStyle" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="Black"/>
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="StrokeThickness" Value="2"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 30"/>
+            <Setter Property="Shadow">
+                <Setter.Value>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}" 
+                            Opacity="0.7" Radius="20" Offset="0,0"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
     <Page.Behaviors>
-        <mct:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Black}}" StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}" x:Name="statusBar"/>
-    </Page.Behaviors>    
-    
-    <Grid  BackgroundColor="Transparent">
+        <mct:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Black}}" 
+                              StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}"/>
+    </Page.Behaviors>
 
-        <Image x:Name="Background" Grid.Row ="1" Source="gradientseven.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+    <Grid BackgroundColor="Transparent">
+        <!-- Фоновое изображение -->
+        <Image x:Name="Background" Source="gradientseven.jpg" Aspect="AspectFill" Opacity="0.5"/>
 
-        <Grid Grid.Row="0" BackgroundColor="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-        </Grid>
-        
-        <Grid x:Name="area">
+        <!-- Основная область контента -->
+        <ScrollView>
+            <StackLayout>
+                <!-- Оффлайн баннер -->
+                <Border x:Name="IsDeviceOfflineBorder"
+                        Opacity="1"
+                        Background="{AppThemeBinding Light=#F5F5F5, Dark=#2D2D2D}"
+                        Stroke="{AppThemeBinding Light=#FF4444, Dark=#FF6666}"
+                        StrokeThickness="1.5"
+                        StrokeShape="RoundRectangle 16"
+                        Padding="15"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        Margin="20"
+                        HeightRequest="100"
+                        MinimumWidthRequest="300">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="8">
+                        <HorizontalStackLayout Grid.Row="0" Spacing="10" VerticalOptions="Center">
+                            <Label x:Name="IsDeviceOfflineLabel1"
+                                   Text="Отсутствует интернет соединение"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#333333, Dark=#EEEEEE}"/>
+                        </HorizontalStackLayout>
 
-            <ScrollView>
-                <StackLayout>
-                    <StackLayout x:Name="MobilePhoneRec">
-                        <Label Text="Рекомендованный контент" FontAttributes="Bold" FontSize="22"  Margin="25,0,0,0" />
-                        <Label Text="Самое популярное на этой неделе"  FontSize="16"  Margin="25,0,0,-25" />
+                        <Label Grid.Row="1"
+                               x:Name="IsDeviceOfflineLabel2"
+                               Text="Работаем в оффлайн-режиме"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"
+                               Margin="45,0,0,0"/>
+                    </Grid>
+                </Border>
 
-                        <CollectionView 
-                            Margin="0,50,0,0"
-                            x:Name="RecentlyRecommendationCarouselView"
-                            Grid.Row="2"
-                            ItemsSource="{Binding ContentRecommendation}"
-                            SelectionMode="Single"
-                            SelectedItem="{Binding SelectedItem}">
-                            <CollectionView.ItemsLayout >
-                                <GridItemsLayout  Orientation="Horizontal" Span="2" />
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Border
+                <!-- Рекомендованный контент -->
+                <StackLayout x:Name="MobilePhoneRec">
+                    <Label Text="Рекомендованный контент" Style="{StaticResource SectionTitleStyle}"/>
+                    <Label Text="Самое популярное на этой неделе" Style="{StaticResource SectionSubtitleStyle}"/>
+
+                    <CollectionView Margin="0,50,0,0"
+                                   x:Name="RecentlyRecommendationCarouselView"
+                                   ItemsSource="{Binding ContentRecommendation}"
+                                   SelectionMode="Single"
+                                   SelectedItem="{Binding SelectedItem}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Horizontal" Span="2"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border Style="{StaticResource ContentCardStyle}"
                                             Margin="25,0,25,0"
-                                            Stroke="black"
-                                            Grid.RowSpan="3"
-                                            BackgroundColor="Black"
                                             HeightRequest="150"
-                                            StrokeShape ="RoundRectangle 30,30,30,30"
-                                            StrokeThickness="2"
                                             WidthRequest="150">
-                                            <Grid RowDefinitions=".2*,.6*,.2*">
-                                                <Image Aspect="Fill" Source="{Binding ImageUrl}" Grid.RowSpan="3" />
-                                                <RoundRectangle
-                                                    Grid.RowSpan ="3"
-                                                    CornerRadius ="30"
-                                                    HeightRequest="150"
-                                                    WidthRequest="150"
-                                                    Opacity=".7">
-                                                    <RoundRectangle.Fill>
-                                                        <LinearGradientBrush EndPoint="0,1">
-                                                            <GradientStop Offset="0" Color="Transparent"></GradientStop>
-                                                            <GradientStop Offset="1" Color="#030005"></GradientStop>
-                                                        </LinearGradientBrush>
-                                                    </RoundRectangle.Fill>
-                                                </RoundRectangle>
+                                        <Grid RowDefinitions=".2*,.6*,.2*">
+                                            <Image Aspect="Fill" Source="{Binding ImageUrl}" Grid.RowSpan="3"/>
+                                            <RoundRectangle Grid.RowSpan="3"
+                                                            CornerRadius="30"
+                                                            HeightRequest="150"
+                                                            WidthRequest="150"
+                                                            Opacity=".7">
+                                                <RoundRectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="0,1">
+                                                        <GradientStop Offset="0" Color="Transparent"/>
+                                                        <GradientStop Offset="1" Color="#030005"/>
+                                                    </LinearGradientBrush>
+                                                </RoundRectangle.Fill>
+                                            </RoundRectangle>
 
-                                                <VerticalStackLayout Grid.Row="2" Margin="10,-20,0,0">
-                                                    <Label FontSize="14" Text="{Binding Title}" TextColor="White" />
-                                                    <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="10" />
-                                                </VerticalStackLayout>
-                                            </Grid>
+                                            <VerticalStackLayout Grid.Row="2" Margin="10,-20,0,0">
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor="White"/>
+                                                <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="10"/>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Border>
 
-                                            <Border.Shadow>
-                                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"  Opacity=".7" Radius="20" Offset="0,0"/>
-                                            </Border.Shadow>
-                                        </Border>
-                                        
-                                        <Button 
-                                            BackgroundColor="Transparent" 
+                                    <Button BackgroundColor="Transparent" 
                                             Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyRecommendationCarouselView}}"
                                             CommandParameter="{Binding .}"
                                             Clicked="ItemButtonClickedRecommendation"/>
-                                        
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </StackLayout>
-
-                    <Label Text="Недавно просмотренные" FontAttributes="Bold" FontSize="22"  Margin="25,20,0,0" />
-                    <Label Text="Контент, в котором вы обновляли серию"  FontSize="16"  Margin="25,0,0,-25" />
-
-
-                    <CollectionView 
-                        Margin="0,0,0,0"
-                        x:Name="RecentlyChangeCarouselView"
-                        Grid.Row="2"
-                        ItemsSource="{Binding ContentChange}"
-                        SelectionMode="Single"
-                        SelectedItem="{Binding SelectedItem}">
-                        <CollectionView.ItemsLayout >
-                            <LinearItemsLayout
-                                ItemSpacing="0"
-                                Orientation="Horizontal"/>
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Border
-                                        Margin="25,50,25,50"
-                                        Stroke="black"
-                                        Grid.RowSpan="3"
-                                        BackgroundColor="Black"
-                                        HeightRequest="300"
-                                        StrokeShape ="RoundRectangle 30,30,30,30"
-                                        StrokeThickness="2"
-                                        WidthRequest="250">
-                                        <Grid RowDefinitions=".2*,.6*,.2*">
-                                            <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle
-                                                Grid.RowSpan ="3"
-                                                CornerRadius ="30"
-                                                HeightRequest="350"
-                                                WidthRequest="300"
-                                                Opacity=".7">
-                                                <RoundRectangle.Fill>
-                                                    <LinearGradientBrush EndPoint="0,1">
-                                                        <GradientStop Offset="0" Color="Transparent"></GradientStop>
-                                                        <GradientStop Offset="1" Color="#030005"></GradientStop>
-                                                    </LinearGradientBrush>
-                                                </RoundRectangle.Fill>
-                                            </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="12" TextColor="White">
-                                                    <Label.Text>
-                                                        <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
-                                                            <Binding Path="LastWatchedSeason" />
-                                                            <Binding Path="LastWatchedSeries" />
-                                                        </MultiBinding>
-                                                    </Label.Text>
-                                                </Label>
-                                            </VerticalStackLayout>
-                                        </Grid>
-                                        <Border.Shadow>
-                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"  Opacity=".7" Radius="20" Offset="0,0"/>
-                                        </Border.Shadow>
-                                    </Border>
-                                    <Button 
-                                        BackgroundColor="Transparent" 
-                                        Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyChangeCarouselView}}"
-                                        CommandParameter="{Binding .}"
-                                        Clicked="ItemButtonClickedChange"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-
-                    <Label Text="Недавно добавленные" FontAttributes="Bold"  FontSize="22"  Margin="25,0,0,10" />
-                    <Label Text="Контент, который вы недавно добавили"  FontSize="16"  Margin="25,-9,0,-25" />
-                    <CollectionView 
-                        Margin="0,0,0,0"
-                        x:Name="RecentlyAddedCarouselView"
-                        Grid.Row="2"
-                        ItemsSource="{Binding ContentAdded}"
-                        SelectionMode="Single"
-                        SelectedItem="{Binding SelectedItem}">
-                        <CollectionView.ItemsLayout >
-                            <LinearItemsLayout
-                                ItemSpacing="0"
-                                Orientation="Horizontal"  />
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Border
-                                        Margin="25,50,25,50"
-                                        Grid.RowSpan="3"
-                                        BackgroundColor="Black"
-                                        HeightRequest="300"
-                                        Stroke="Black"
-                                        StrokeShape ="RoundRectangle 30,30,30,30"
-                                        StrokeThickness="2"
-                                        WidthRequest="250">
-                                        <Grid RowDefinitions=".2*,.6*,.2*">
-                                            <Image  Source="{Binding Image}" Grid.RowSpan="3" Aspect="Fill"/>
-                                            <RoundRectangle
-                                                Grid.RowSpan ="3"
-                                                CornerRadius ="30"
-                                                HeightRequest="350"
-                                                WidthRequest="300"
-                                                Opacity=".7">
-                                                <RoundRectangle.Fill>
-                                                    <LinearGradientBrush EndPoint="0,1">
-                                                        <GradientStop Offset="0" Color="Transparent"></GradientStop>
-                                                        <GradientStop Offset="1" Color="#030005"></GradientStop>
-                                                    </LinearGradientBrush>
-                                                </RoundRectangle.Fill>
-                                            </RoundRectangle>
-                                            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12" />
-                                                <Label FontSize="16" Text="{Binding Title}" TextColor= "White"/>
-                                            </VerticalStackLayout>
-                                        </Grid>
-                                        <Border.Shadow>
-                                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}" Opacity=".7" Radius="20" Offset="0,0"/>
-                                        </Border.Shadow>
-                                    </Border>
-                                    <Button 
-                                    BackgroundColor="Transparent" 
-                                    Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyAddedCarouselView}}"
-                                    CommandParameter="{Binding .}"
-                                    Clicked="ItemButtonClicked"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </StackLayout>
-            </ScrollView>
-        </Grid>
-    </Grid>
 
+                <!-- Недавно просмотренные -->
+                <Label Text="Недавно просмотренные" Style="{StaticResource SectionTitleStyle}"/>
+                <Label Text="Контент, в котором вы обновляли серию" Style="{StaticResource SectionSubtitleStyle}"/>
+
+                <CollectionView x:Name="RecentlyChangeCarouselView"
+                               ItemsSource="{Binding ContentChange}"
+                               SelectionMode="Single"
+                               SelectedItem="{Binding SelectedItem}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Border Style="{StaticResource ContentCardStyle}"
+                                        Margin="25,50,25,50"
+                                        HeightRequest="300"
+                                        WidthRequest="250">
+                                    <Grid RowDefinitions=".2*,.6*,.2*">
+                                        <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3"/>
+                                        <RoundRectangle Grid.RowSpan="3"
+                                                        CornerRadius="30"
+                                                        HeightRequest="350"
+                                                        WidthRequest="300"
+                                                        Opacity=".7">
+                                            <RoundRectangle.Fill>
+                                                <LinearGradientBrush EndPoint="0,1">
+                                                    <GradientStop Offset="0" Color="Transparent"/>
+                                                    <GradientStop Offset="1" Color="#030005"/>
+                                                </LinearGradientBrush>
+                                            </RoundRectangle.Fill>
+                                        </RoundRectangle>
+
+                                        <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
+                                            <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12"/>
+                                            <Label FontSize="16" Text="{Binding Title}" TextColor="White"/>
+                                            <Label FontSize="12" TextColor="White">
+                                                <Label.Text>
+                                                    <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
+                                                        <Binding Path="LastWatchedSeason"/>
+                                                        <Binding Path="LastWatchedSeries"/>
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                            </Label>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+
+                                <Button BackgroundColor="Transparent" 
+                                        Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyChangeCarouselView}}"
+                                        CommandParameter="{Binding .}"
+                                        Clicked="ItemButtonClickedChange"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Недавно добавленные -->
+                <Label Text="Недавно добавленные" Style="{StaticResource SectionTitleStyle}"/>
+                <Label Text="Контент, который вы недавно добавили" Style="{StaticResource SectionSubtitleStyle}"/>
+
+                <CollectionView x:Name="RecentlyAddedCarouselView"
+                               ItemsSource="{Binding ContentAdded}"
+                               SelectionMode="Single"
+                               SelectedItem="{Binding SelectedItem}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Border Style="{StaticResource ContentCardStyle}"
+                                        Margin="25,50,25,50"
+                                        HeightRequest="300"
+                                        WidthRequest="250">
+                                    <Grid RowDefinitions=".2*,.6*,.2*">
+                                        <Image Source="{Binding Image}" Grid.RowSpan="3" Aspect="Fill"/>
+                                        <RoundRectangle Grid.RowSpan="3"
+                                                        CornerRadius="30"
+                                                        HeightRequest="350"
+                                                        WidthRequest="300"
+                                                        Opacity=".7">
+                                            <RoundRectangle.Fill>
+                                                <LinearGradientBrush EndPoint="0,1">
+                                                    <GradientStop Offset="0" Color="Transparent"/>
+                                                    <GradientStop Offset="1" Color="#030005"/>
+                                                </LinearGradientBrush>
+                                            </RoundRectangle.Fill>
+                                        </RoundRectangle>
+
+                                        <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
+                                            <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12"/>
+                                            <Label FontSize="16" Text="{Binding Title}" TextColor="White"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+
+                                <Button BackgroundColor="Transparent" 
+                                        Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyAddedCarouselView}}"
+                                        CommandParameter="{Binding .}"
+                                        Clicked="ItemButtonClicked"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

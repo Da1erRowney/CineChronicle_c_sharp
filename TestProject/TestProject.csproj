@@ -40,6 +40,7 @@
     <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
+    <MauiSplashScreen Remove="Resources\Images\notwificonnection.jpg" />
     <MauiSplashScreen Remove="Resources\Images\plus.png" />
   </ItemGroup>
   <ItemGroup>

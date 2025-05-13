@@ -2,34 +2,80 @@
 using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
 using HtmlAgilityPack;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace TestProject;
 
 public partial class MainPage : ContentPage
 {
     public Content SelectedItem { get; set; }
-
+    public CineChronicle.Application.DeviceInfo _device = new();
     public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
 
     public MainPage()
     {
         InitializeComponent();
-        BindingContext = new ViewContentMainPageModel();
     }
-
     protected override void OnAppearing()
     {
         base.OnAppearing();
 
-        BindingContext = new ViewContentMainPageModel();
-
-        if (Device.RuntimePlatform == "WinUI")
+        // Подписываемся на события
+        MessagingCenter.Subscribe<App>(this, "InternetConnected", (sender) =>
         {
-            MobilePhoneRec.IsVisible = false;
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                Debug.WriteLine("Соединение с интернетом есть.");
+
+                IsDeviceOfflineBorder.IsVisible = false;
+                _device.NotifyUse = false;
+                MobilePhoneRec.IsVisible = _device.TypeDevice != "WinUI";
+                BindingContext = new ViewContentMainPageModel();
+            });
+        });
+
+        MessagingCenter.Subscribe<App>(this, "InternetDisconnected", (sender) =>
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                Debug.WriteLine("Нет соединения с интернетом. Показываем алерт.");
+                MobilePhoneRec.IsVisible = false;
+                _device.NotifyUse = true;
+                IsDeviceOfflineBorder.IsVisible = true;
+                BindingContext = new ViewContentMainPageModel();
+            });
+        });
+
+        // Проверяем состояние при открытии
+        CheckInitialConnection();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        MessagingCenter.Unsubscribe<App>(this, "InternetConnected");
+        MessagingCenter.Unsubscribe<App>(this, "InternetDisconnected");
+    }
+
+    private void CheckInitialConnection()
+    {
+        var current = Connectivity.NetworkAccess;
+        if (current != NetworkAccess.Internet)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                IsDeviceOfflineBorder.IsVisible = true;
+                MobilePhoneRec.IsVisible = false;
+                BindingContext = new ViewContentMainPageModel();
+            });
         }
         else
         {
-            MobilePhoneRec.IsVisible = true;
+            IsDeviceOfflineBorder.IsVisible = false;
+            _device.NotifyUse = false;
+            MobilePhoneRec.IsVisible = _device.TypeDevice != "WinUI";
+            BindingContext = new ViewContentMainPageModel();
         }
     }
 
@@ -70,9 +116,7 @@ public partial class MainPage : ContentPage
             ViewContentPage viewContentPage = new ViewContentPage(SelectedItem);
             await Navigation.PushAsync(viewContentPage);
         }
-    }
-    
-   
+    } 
 }
 
 

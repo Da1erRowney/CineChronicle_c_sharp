@@ -13,6 +13,7 @@ namespace CineChronicle.Application.ViewModels
         public List<ContentRecommendation> ContentRecommendation { get; set; }
         public List<Content> ContentAdded { get; set; }
         public List<Content> ContentChange { get; set; }
+        private DeviceInfo _device = new();
 
         public ViewContentMainPageModel() 
         {
@@ -28,7 +29,7 @@ namespace CineChronicle.Application.ViewModels
                 .OrderByDescending(c => c.SeriesChangeDate)
                 .Take(5)
                 .ToList();
-
+            CheckInternetConnection();
             if (ContentAdded == null || !ContentAdded.Any())
             {
                 Content ifContentNull = new Content
@@ -39,17 +40,34 @@ namespace CineChronicle.Application.ViewModels
                 };
                 _databaseService.InsertContent(ifContentNull);
             }
-            //_databaseService.CloseConnection();
+        }
 
-            if (Device.RuntimePlatform == "WinUI")
+        private void CheckInternetConnection()
+        {
+            if (!_device.CheckInternetConnection())
             {
-
+                if (ContentAdded != null)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        ContentAdded[i].Image = "notwificonnection.jpg";
+                    }
+                }
+                if (ContentChange != null)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        ContentChange[i].Image = "notwificonnection.jpg";
+                    }
+                }
             }
             else
             {
-                LoadRecommendationsAsync();
+                if (Device.RuntimePlatform != "WinUI")
+                {
+                    LoadRecommendationsAsync();
+                }
             }
-
         }
         public static Content GetContentById(int id)
         {

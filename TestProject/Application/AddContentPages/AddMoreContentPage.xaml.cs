@@ -61,36 +61,42 @@ namespace TestProject
         {
             EnabledElements(false);
             await ShowLoadingAnimation();
-            string title = TitleEntry.Text;
+            string title = TitleEntry?.Text;
             string type = TypePicker.SelectedItem?.ToString();
             title = title.TrimEnd();
             if (!await CheckNullFields(title, type)) return;
             if (!await CheckExistingContent(title)) return;
 
+            CineChronicle.Application.DeviceInfo device = new();
             GetParsingInfo getParsingInfo = new();
-            
-            bool parseSuccess = await getParsingInfo.GetData(type, title);
-            if (!parseSuccess)
+
+            // Парсим данные если есть интернет подключение
+            if (device.CheckInternetConnection())
             {
-                await DisplayAlert("Ошибка", "Не удалось получить данные", "OK");
-                EnabledElements(true);
-                await HideLoadingAnimation();
-                return;
-            }
-            // Если название неправильно указано
-            if (string.IsNullOrEmpty(getParsingInfo.Description) || getParsingInfo.RealTitle != title)
-            {
-                bool result = await DisplayAlert("Проверка названия",
-                        $"Вы уверены, что ваш контент называется '{title}', а не '{getParsingInfo.RealTitle}'?\n\n" +
-                        "Если правильное название второе, нажмите \"Да\"",
-                        "Да",
-                        "Нет");
-                if (result)
+                bool parseSuccess = await getParsingInfo.GetData(type, title);
+                if (!parseSuccess)
                 {
-                    title = getParsingInfo.RealTitle;
-                    bool parseSuccessawait = await getParsingInfo.GetData(type, title);
+                    await DisplayAlert("Ошибка", "Не удалось получить данные", "OK");
+                    EnabledElements(true);
+                    await HideLoadingAnimation();
+                    return;
+                }
+                // Если название неправильно указано
+                if (string.IsNullOrEmpty(getParsingInfo.Description) || getParsingInfo.RealTitle != title)
+                {
+                    bool result = await DisplayAlert("Проверка названия",
+                            $"Вы уверены, что ваш контент называется '{title}', а не '{getParsingInfo.RealTitle}'?\n\n" +
+                            "Если правильное название второе, нажмите \"Да\"",
+                            "Да",
+                            "Нет");
+                    if (result)
+                    {
+                        title = getParsingInfo.RealTitle;
+                        bool parseSuccessawait = await getParsingInfo.GetData(type, title);
+                    }
                 }
             }
+
             string link = GetSourcesLink(type);
             string dubbing = DubbingEntry.Text;
             string dateAdded = GetTodaysDate().ToString("yyyy-MM-dd HH:mm:ss");
@@ -101,22 +107,22 @@ namespace TestProject
             // Создаем новый экземпляр контента
             var newContent = new Content
             {
-                CountLabel = getParsingInfo.CountLabel,
+                CountLabel = getParsingInfo?.CountLabel,
                 DateAdded = dateAdded,
-                Description = getParsingInfo.Description,
+                Description = getParsingInfo?.Description,
                 Dubbing = dubbing,
-                DateRelease = getParsingInfo.DateRelease,
-                Image = getParsingInfo.Image,
+                DateRelease = getParsingInfo?.DateRelease,
+                Image = string.IsNullOrEmpty(getParsingInfo?.Image) ? "notwificonnection.jpg" : getParsingInfo.Image,
                 LastWatchedSeason = lastWatchedSeason,
                 LastWatchedSeries = lastWatchedSeries,
-                NextEpisodeReleaseDate = getParsingInfo.NextEpisodeReleaseDate,
+                NextEpisodeReleaseDate = getParsingInfo?.NextEpisodeReleaseDate,
                 SeriesChangeDate = string.Empty,
                 SourceLink = link,
                 Title = title,
                 Type = type,
                 WatchStatus = string.IsNullOrEmpty(statusWatches) ? "Не начинал" : statusWatches,
-                YouTubeLink = getParsingInfo.YouTubeLink,
-                YouTubeBackground = getParsingInfo.YouTubeBackground
+                YouTubeLink = getParsingInfo?.YouTubeLink,
+                YouTubeBackground = getParsingInfo?.YouTubeBackground
             };
 
             _databaseService.InsertContent(newContent);

@@ -220,6 +220,7 @@
                             </Border>
                         </StackLayout>
 
+                        <!--Информация об ....-->
                         <Border Opacity="0.8" Margin="0,50,0,0" HorizontalOptions="Center" Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" x:Name="InfoBorder"
                             StrokeShape="RoundRectangle 30,30,30,30" StrokeThickness="2">
                             <Grid Margin="20,20,0,20">

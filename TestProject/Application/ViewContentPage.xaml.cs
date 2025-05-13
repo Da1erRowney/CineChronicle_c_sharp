@@ -4,6 +4,7 @@ using CineChronicle.Application.SupportClass;
 using CineChronicle.Application.ViewModel;
 using CineChronicle.Tables;
 using System.Windows.Input;
+using DeviceInfo = CineChronicle.Application.DeviceInfo;
 
 
 namespace TestProject
@@ -18,6 +19,7 @@ namespace TestProject
         private Content content;
         private DateExit data;
         private GetParsingInfo parser = new();
+        DeviceInfo _device = new();
 
         private bool isEditing = false; // Флаг, указывающий, в режиме редактирования или нет
         private string _oldName;
@@ -26,7 +28,7 @@ namespace TestProject
         #endregion
 
         #region [Ctor's]
-        public ViewContentPage(Content content)
+         public ViewContentPage(Content content)
         {
             InitializeComponent();
             this.content = content;
@@ -53,7 +55,11 @@ namespace TestProject
             try
             {
                 _oldType = ""; // Инициализируйте значением по умолчанию
-
+                if (!_device.CheckInternetConnection())
+                {
+                    await DisplayAlert("Ошибка", "Отсутствует интернет соединение", "OK");
+                    return;
+                }
                 if (GetNewDataAndSave != null) // Проверка, если это делегат
                 {
                     await GetNewDataAndSave();
@@ -80,9 +86,14 @@ namespace TestProject
         /// 2. Обновляем переменные хранящие старые значения (до изменения)
         /// 3. Обновляем команду для перехода по ссылке
         /// 4. Скрываем поле с описанием, если оно пустое
-        /// 5. Ставим базовый фон, если Image пуст
+        /// 5. Если есть соединение с интернетом отображаем данные, иначе ставим базовую картинку
+        /// 5.1 Проверяем статус в настройках видео, если стоит видео, отображаем видео
+        /// 5.1.2 Если постер отсутсвует, ставим на фон базовую картинку
+        /// 5.2 Если нет сети, отображаем базовую картинку
+        /// 5.3 Если постера в оффлайне нет, ставим базовую картинку
         /// 6. Обновляем картинку в источнике
         /// 7. Скрываем строку с озвучкой если оно пустое
+        /// 8. Если данные из блока Информация об... null, то скрываем этот блок
         /// </summary>
         private void CheckPage()
         {
@@ -107,13 +118,52 @@ namespace TestProject
             }
 
             // 5
-            if (string.IsNullOrEmpty(content.Image))
+            if (_device.CheckInternetConnection())
             {
-                Background.Source = "gradientfive.jpg";
+                // 5.1
+                bool showVideos = Preferences.Get("ShowVideos", true);
+                if (showVideos)
+                {
+                    TrailerWebBackground.IsVisible = true;
+                    Background.IsVisible = false;
+                }
+                else
+                {
+                    TrailerWebBackground.IsVisible = false;
+                    Background.IsVisible = true;
+                    // 5.1.2
+                    if (string.IsNullOrEmpty(content.Image))
+                    {
+                        Background.Source = "gradientfive.jpg";
+                    }
+                    else
+                    {
+                        Background.Source = content.Image;
+                    }
+                }
+                TrailerWebBorder.IsVisible = true;
+                ViewContent.IsVisible = true;
+
+                if (!string.IsNullOrEmpty(content.Image))
+                {
+                    PosterImage.Source = content.Image;
+                }
             }
             else
             {
-                Background.Source = content.Image;
+                // 5.2
+                TrailerWebBackground.IsVisible = false;
+                Background.IsVisible = true;
+                Background.Source = "gradientfive.jpg";
+
+                // 5.3
+                if (string.IsNullOrEmpty(content.Image))
+                {
+                    PosterImage.Source = "notwificonnection.jpg";
+                }
+
+                TrailerWebBorder.IsVisible = false;
+                ViewContent.IsVisible = false;
             }
 
             // 6
@@ -142,19 +192,17 @@ namespace TestProject
             else
             {
                 DubbingPo.IsVisible = true;
-            }
+            }   
 
-            bool showVideos = Preferences.Get("ShowVideos", true);
-            if (showVideos)
+            // 8
+            if(string.IsNullOrEmpty(content.CountLabel) && string.IsNullOrEmpty(content.NextEpisodeReleaseDate))
             {
-                TrailerWebBackground.IsVisible = true;
-                Background.IsVisible = false;
+                InfoBorder.IsVisible = false;
             }
             else
             {
-                TrailerWebBackground.IsVisible = false;
-                Background.IsVisible = true;
-            } 
+                InfoBorder.IsVisible = true;
+            }
         }
 
         #endregion
@@ -216,30 +264,33 @@ namespace TestProject
             if (_oldName != currentContent.Title || _oldType!= currentContent.Type)
             {
                 await ShowLoadingAnimation();
-                bool parseSuccess = await parser.GetData(currentContent.Type, currentContent.Title);
-
-                // Если название неправильно указано
-                if (string.IsNullOrEmpty(parser.Description) || parser.RealTitle != currentContent.Title)
+                if (_device.CheckInternetConnection())
                 {
-                    bool result = await DisplayAlert("Проверка названия",
-                            $"Вы уверены, что ваш контент называется '{currentContent.Title}', а не '{parser.RealTitle}'?\n\n" +
-                            "Если правильное название второе, нажмите \"Да\"",
-                            "Да",
-                            "Нет");
-                    if (result)
+                    bool parseSuccess = await parser.GetData(currentContent.Type, currentContent.Title);
+
+                    // Если название неправильно указано
+                    if (string.IsNullOrEmpty(parser.Description) || parser.RealTitle != currentContent.Title)
                     {
-                        currentContent.Title = parser.RealTitle;
-                        bool parseSuccessawait = await parser.GetData(currentContent.Type,currentContent.Title);
+                        bool result = await DisplayAlert("Проверка названия",
+                                $"Вы уверены, что ваш контент называется '{currentContent.Title}', а не '{parser.RealTitle}'?\n\n" +
+                                "Если правильное название второе, нажмите \"Да\"",
+                                "Да",
+                                "Нет");
+                        if (result)
+                        {
+                            currentContent.Title = parser.RealTitle;
+                            bool parseSuccessawait = await parser.GetData(currentContent.Type, currentContent.Title);
+                        }
                     }
                 }
 
-                currentContent.CountLabel = parser.CountLabel;
-                currentContent.Description = parser.Description;
-                currentContent.DateRelease = parser.DateRelease;
-                currentContent.Image = parser.Image;
-                currentContent.NextEpisodeReleaseDate = parser.NextEpisodeReleaseDate;
-                currentContent.YouTubeLink = parser.YouTubeLink;
-                currentContent.YouTubeBackground = parser.YouTubeBackground;
+                currentContent.CountLabel = parser?.CountLabel;
+                currentContent.Description = parser?.Description;
+                currentContent.DateRelease = parser?.DateRelease;
+                currentContent.Image = parser?.Image;
+                currentContent.NextEpisodeReleaseDate = parser?.NextEpisodeReleaseDate;
+                currentContent.YouTubeLink = parser?.YouTubeLink;
+                currentContent.YouTubeBackground = parser?.YouTubeBackground;
                 await HideLoadingAnimation();
             }
 
@@ -324,6 +375,9 @@ namespace TestProject
             IsEditing(false, "Изменить");
             HideElements(true);
             HideElelmetsAfterCansel();
+
+            CheckPage();
+
         }
 
         private async void TrailerButton_Clicked(object sender, EventArgs e)

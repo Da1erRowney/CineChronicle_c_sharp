@@ -50,14 +50,20 @@ namespace CineChronicle.Application.ViewModels
                 {
                     for (int i = 0; i < 5; i++)
                     {
-                        ContentAdded[i].Image = "notwificonnection.jpg";
+                        if (string.IsNullOrEmpty(ContentAdded[i].Image))
+                        {
+                            ContentAdded[i].Image = "notwificonnection.jpg";
+                        }
                     }
                 }
                 if (ContentChange != null)
                 {
                     for (int i = 0; i < 5; i++)
                     {
-                        ContentChange[i].Image = "notwificonnection.jpg";
+                        if (string.IsNullOrEmpty(ContentChange[i].Image))
+                        {
+                            ContentChange[i].Image = "notwificonnection.jpg";
+                        }
                     }
                 }
             }

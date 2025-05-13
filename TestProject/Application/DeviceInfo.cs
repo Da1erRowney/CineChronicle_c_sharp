@@ -3,7 +3,6 @@
     public class DeviceInfo
     {
         public string TypeDevice { get; set; }
-        private bool HaveInternetConnection { get; set; }
         public bool NotifyUse { get; set; } = false;
 
         public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
@@ -11,7 +10,6 @@
         public DeviceInfo()
         {
             TypeDevice = GetDeviceType();
-            HaveInternetConnection = CheckInternetConnection();
         }
 
         private string GetDeviceType()

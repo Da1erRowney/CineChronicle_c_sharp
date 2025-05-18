@@ -81,7 +81,7 @@ namespace TestProject
                     return;
                 }
                 // Если название неправильно указано
-                if (string.IsNullOrEmpty(getParsingInfo.Description) || getParsingInfo.RealTitle != title)
+                if (string.IsNullOrEmpty(getParsingInfo.Description) || (getParsingInfo.RealTitle != title && !string.IsNullOrEmpty(getParsingInfo.RealTitle)))
                 {
                     bool result = await DisplayAlert("Проверка названия",
                             $"Вы уверены, что ваш контент называется '{title}', а не '{getParsingInfo.RealTitle}'?\n\n" +

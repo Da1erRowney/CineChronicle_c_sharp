@@ -330,7 +330,7 @@ namespace TestProject
                     bool parseSuccess = await parser.GetData(currentContent.Type, currentContent.Title);
 
                     // Если название неправильно указано
-                    if (string.IsNullOrEmpty(parser.Description) || parser.RealTitle != currentContent.Title)
+                    if (string.IsNullOrEmpty(parser.Description) || (parser.RealTitle != currentContent.Title && !string.IsNullOrEmpty(parser.RealTitle)))
                     {
                         bool result = await DisplayAlert("Проверка названия",
                                 $"Вы уверены, что ваш контент называется '{currentContent.Title}', а не '{parser.RealTitle}'?\n\n" +

@@ -26,6 +26,9 @@ namespace CineChronicle.Application
         public string RealTitle { get; set; } = string.Empty;
         public string OriginalTitle { get; set; } = string.Empty;
 
+        private const string Warning = "Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
+        private const string FinalyWarning = "Похоже система не обнаружила текущий контент. Такое бывает, но крайне редко. Приносим свои извинения. Попробуйте обновить контент свайпом. Если проблема не пропала, то свяжитесь с нами - cine.chronicle.sup@gmail.com";
+
 
         private int countRead = 0;
         #endregion
@@ -91,18 +94,24 @@ namespace CineChronicle.Application
             }
             else if(string.IsNullOrEmpty(NextEpisodeReleaseDate) || NextEpisodeReleaseDate.Contains("не найдена"))
             {
-                NextEpisodeReleaseDate =  $"Информация об {title} не найдена";
+                NextEpisodeReleaseDate =  $"Информация об {title} не найдена. "+ FinalyWarning;
             }
             else
             {
                 string newStr = $"Статус продолжения {title}.\n{NextEpisodeReleaseDate}";
                 NextEpisodeReleaseDate = newStr;
             }
-            if (Description == "Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)" && OriginalTitle!=null)
+
+            if (Description == Warning && !string.IsNullOrEmpty(OriginalTitle))
             {
                 await GetInfo(OriginalTitle, type, typePars, true);
             }
-                Description = Regex.Replace(Description, @"&nbsp;", " ");
+            else if(Description == Warning)
+            {
+                Description = FinalyWarning;
+            }
+
+            Description = Regex.Replace(Description, @"&nbsp;", " ");
         }
 
         /// <summary>
@@ -184,15 +193,19 @@ namespace CineChronicle.Application
 
                                     if (node != null)
                                     {
-                                        string ImageUrl = node.GetAttributeValue("src", "");
-
-                                        // Проверяем, содержит ли URL префикс "https://"
-                                        if (!ImageUrl.StartsWith("https://"))
+                                        if (string.IsNullOrEmpty(Image))
                                         {
-                                            // Добавляем префикс "https://", если его нет
-                                            ImageUrl = "https:" + ImageUrl;
+                                            string ImageUrl = node.GetAttributeValue("src", "");
+
+                                            // Проверяем, содержит ли URL префикс "https://"
+                                            if (!ImageUrl.StartsWith("https://"))
+                                            {
+                                                // Добавляем префикс "https://", если его нет
+                                                ImageUrl = "https:" + ImageUrl;
+                                            }
+
+                                            Image = ImageUrl;
                                         }
-                                        Image = ImageUrl;
                                     }
                                     break;
                                 case (SourceTypes.KO, true):
@@ -203,7 +216,7 @@ namespace CineChronicle.Application
                                     }
                                     else
                                     {
-                                        Description = "Описание не найдено";
+                                        Description = Warning;
                                     }
                                     break;
                                 case (SourceTypes.JS, true):
@@ -219,7 +232,7 @@ namespace CineChronicle.Application
                                     }
                                     else
                                     {
-                                        Description = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
+                                        Description = Warning;
                                     }
                                     break;
                                 case (SourceTypes.AG, true):
@@ -380,7 +393,7 @@ namespace CineChronicle.Application
                                     await WikInfoIsWrong(query, type);
                                     break;
                                 default:
-                                    Description = "Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
+                                    Description = Warning;
                                     break;
                             }
                             if (debug)
@@ -441,15 +454,18 @@ namespace CineChronicle.Application
 
                                 if (ImageNodes != null)
                                 {
-                                    string ImageUrls = ImageNodes.GetAttributeValue("src", "");
-
-                                    // Проверяем, содержит ли URL префикс "https://"
-                                    if (!ImageUrls.StartsWith("https://"))
+                                    if (string.IsNullOrEmpty(Image))
                                     {
-                                        // Добавляем префикс "https://", если его нет
-                                        ImageUrls = "https:" + ImageUrls;
+                                        string ImageUrls = ImageNodes.GetAttributeValue("src", "");
+
+                                        // Проверяем, содержит ли URL префикс "https://"
+                                        if (!ImageUrls.StartsWith("https://"))
+                                        {
+                                            // Добавляем префикс "https://", если его нет
+                                            ImageUrls = "https:" + ImageUrls;
+                                        }
+                                        Image = ImageUrls;
                                     }
-                                    Image = ImageUrls;
                                 }
                             }
                             else
@@ -477,7 +493,7 @@ namespace CineChronicle.Application
                             }
                         }
                     }
-                    Description = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
+                    Description = Warning;
 
                 }
 
@@ -554,7 +570,10 @@ namespace CineChronicle.Application
                                 } 
                             }
                         }
-                        Description = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
+                        if (string.IsNullOrEmpty(Description))
+                        {
+                            Description = Warning;
+                        }
                         countRead++;
                         if (countRead == 1)
                         {
@@ -574,7 +593,10 @@ namespace CineChronicle.Application
 
                 else
                 {
-                    Description = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
+                    if (string.IsNullOrEmpty(Description))
+                    {
+                        Description = Warning;
+                    }
                 }
             }
         }
@@ -681,6 +703,7 @@ namespace CineChronicle.Application
 
             return string.Empty;
         }
+
         private async Task DateExitIsSuccess(HtmlNode node, string query, string type, HtmlDocument htmlDocument)
         {
             using (HttpClient client = new HttpClient())
@@ -693,101 +716,11 @@ namespace CineChronicle.Application
 
                     if (responseIn.IsSuccessStatusCode)
                     {
-                        string htmlContentIn = await responseIn.Content.ReadAsStringAsync();
-
-                        HtmlDocument htmlDocumentIn = new HtmlDocument();
-                        htmlDocumentIn.LoadHtml(htmlContentIn);
-
-                        // Извлечение ссылки из HTML
-                        HtmlNode linkNodeIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_3']/em");
-                        HtmlNode linkNodeCount = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_0']");
-                        if (linkNodeIn != null || linkNodeCount != null)
-                        {
-                            string exitEpisod = linkNodeIn.InnerText;
-                            string countText = linkNodeCount.InnerText.Trim();
-
-                            int startIndex = exitEpisod.IndexOf("осталось") + "осталось".Length; // Индекс после слова "осталось"
-                            int daysIndex = exitEpisod.IndexOf("дней", startIndex); // Индекс слова "дней" после startIndex
-
-                            if (daysIndex == -1)
-                            {
-                                daysIndex = exitEpisod.IndexOf("дня", startIndex); // Индекс слова "дня" после startIndex
-                            }
-
-                            if (daysIndex == -1)
-                            {
-                                daysIndex = exitEpisod.IndexOf("день", startIndex); // Индекс слова "день" после startIndex
-                            }
-
-                            if (daysIndex != -1)
-                            {
-                                // Извлекаем подстроку между startIndex и daysIndex
-                                string daysString = exitEpisod.Substring(startIndex, daysIndex - startIndex).Trim();
-
-                                if (int.TryParse(daysString, out int days))
-                                {
-                                    DateTime releaseDate = DateTime.Today.AddDays(days);
-
-                                    // Формируем строку для вывода
-                                    string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
-
-                                    NextEpisodeReleaseDate = output;
-                                    CountLabel = countText;
-                                    DateRelease = releaseDate.ToShortDateString();
-                                }
-                            }
-                            else
-                            {
-                                exitEpisod = exitEpisod.Replace(".", ".");
-
-                                NextEpisodeReleaseDate = exitEpisod;
-                                CountLabel = countText;
-                            }
-                        }
-                        else
-                        {
-                            NextEpisodeReleaseDate = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
-                        }
-
-                        if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" || type == "Аниме")
-                        {
-                            // Парсим изображение
-                            HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
-                            if (imgIn != null)
-                            {
-                                string ImageUrl = imgIn.GetAttributeValue("src", "");
-                                if (!ImageUrl.StartsWith("https://"))
-                                {
-                                    ImageUrl = "https:" + ImageUrl;
-                                }
-                                Image = ImageUrl;
-                            }
-
-                            // Парсим описание
-                            // Находим JSON-блок с метаданными
-                            HtmlNode scriptNode = htmlDocumentIn.DocumentNode.SelectSingleNode("//script[@type='application/ld+json']");
-                            if (scriptNode != null)
-                            {
-                                try
-                                {
-                                    var jsonData = JsonConvert.DeserializeObject<dynamic>(scriptNode.InnerText);
-                                    if (jsonData?.description?.ToString()?.Trim() != null)
-                                    {
-                                        Description = jsonData?.description?.ToString()?.Trim();
-                                    }
-                                    RealTitle = jsonData?.name;
-                                    OriginalTitle = jsonData?.alternateName;
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine($"Ошибка парсинга JSON: {ex.Message}");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Не удалось выполнить запрос к сайту.");
-                        }
+                        await FormirateGeneralStringDE(type, responseIn);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Не удалось выполнить запрос к сайту.");
                     }
                 }
                 else
@@ -800,112 +733,123 @@ namespace CineChronicle.Application
 
                         if (responseIn.IsSuccessStatusCode)
                         {
-                            string htmlContentIn = await responseIn.Content.ReadAsStringAsync();
-
-                            HtmlDocument htmlDocumentIn = new HtmlDocument();
-                            htmlDocumentIn.LoadHtml(htmlContentIn);
-
-                            // Извлечение ссылки из HTML
-                            HtmlNode linkNodeIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_3']/em");
-                            HtmlNode linkNodeCount = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_0']");
-                            if (linkNodeIn != null || linkNodeCount != null)
-                            {
-                                string exitEpisod = linkNodeIn.InnerText;
-                                string countText = linkNodeCount.InnerText.Trim();
-
-                                int startIndex = exitEpisod.IndexOf("осталось") + "осталось".Length; // Индекс после слова "осталось"
-                                int daysIndex = exitEpisod.IndexOf("дней", startIndex); // Индекс слова "дней" после startIndex
-
-                                if (daysIndex == -1)
-                                {
-                                    daysIndex = exitEpisod.IndexOf("дня", startIndex); // Индекс слова "дня" после startIndex
-                                }
-
-                                if (daysIndex == -1)
-                                {
-                                    daysIndex = exitEpisod.IndexOf("день", startIndex); // Индекс слова "день" после startIndex
-                                }
-
-                                if (daysIndex != -1)
-                                {
-                                    // Извлекаем подстроку между startIndex и daysIndex
-                                    string daysString = exitEpisod.Substring(startIndex, daysIndex - startIndex).Trim();
-
-                                    if (int.TryParse(daysString, out int days))
-                                    {
-                                        // Вычисляем дату через указанное количество дней
-                                        DateTime releaseDate = DateTime.Today.AddDays(days);
-
-                                        // Формируем строку для вывода
-                                        string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
-
-                                        // Устанавливаем строку в NextEpisodeReleaseDateEntry
-                                        NextEpisodeReleaseDate = output;
-
-                                        CountLabel = countText;
-
-                                        DateRelease = releaseDate.ToShortDateString();
-                                    }
-                                }
-
-                                else
-                                {
-                                    // Заменяем каждую точку на точку с отступом и символ перевода строки
-                                    exitEpisod = exitEpisod.Replace(".", ".");
-
-                                    // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
-                                    NextEpisodeReleaseDate = exitEpisod;
-                                    CountLabel = countText;
-                                }
-                            }
-                            else
-                            {
-                                NextEpisodeReleaseDate = $"Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
-                            }
-
-                            if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" || type == "Аниме")
-                            {
-                                // Парсим изображение
-                                HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
-                                if (imgIn != null)
-                                {
-                                    string ImageUrl = imgIn.GetAttributeValue("src", "");
-                                    if (!ImageUrl.StartsWith("https://"))
-                                    {
-                                        ImageUrl = "https:" + ImageUrl;
-                                    }
-                                    Image = ImageUrl;
-                                }
-
-                                // Парсим описание
-                                HtmlNode scriptNode = htmlDocumentIn.DocumentNode.SelectSingleNode("//script[@type='application/ld+json']");
-                                if (scriptNode != null)
-                                {
-                                    try
-                                    {
-                                        // Десериализуем JSON
-                                        var jsonData = JsonConvert.DeserializeObject<dynamic>(scriptNode.InnerText);
-                                        if (jsonData?.description?.ToString()?.Trim() != null)
-                                        {
-                                            Description = jsonData?.description?.ToString()?.Trim();
-                                        }
-                                        RealTitle = jsonData?.name;
-                                        OriginalTitle = jsonData?.alternateName;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine($"Ошибка парсинга JSON: {ex.Message}");
-                                    }
-                                };
-                            }
+                            await FormirateGeneralStringDE(type, responseIn);
                         }
                         else
                         {
                             Console.WriteLine("Не удалось выполнить запрос к сайту.");
                         }
-
                     }
                 }
+            }
+        }
+
+        private async Task FormirateGeneralStringDE(string type, HttpResponseMessage responseIn)
+        {
+            string htmlContentIn = await responseIn.Content.ReadAsStringAsync();
+
+            HtmlDocument htmlDocumentIn = new HtmlDocument();
+            htmlDocumentIn.LoadHtml(htmlContentIn);
+
+            // Извлечение ссылки из HTML
+            HtmlNode linkNodeIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_3']/em");
+            HtmlNode linkNodeCount = htmlDocumentIn.DocumentNode.SelectSingleNode("//p[@class='mb_0']");
+            if (linkNodeIn != null || linkNodeCount != null)
+            {
+                string exitEpisod = linkNodeIn.InnerText;
+                string countText = linkNodeCount.InnerText.Trim();
+
+                int startIndex = exitEpisod.IndexOf("осталось") + "осталось".Length; // Индекс после слова "осталось"
+                int daysIndex = exitEpisod.IndexOf("дней", startIndex); // Индекс слова "дней" после startIndex
+
+                if (daysIndex == -1)
+                {
+                    daysIndex = exitEpisod.IndexOf("дня", startIndex); // Индекс слова "дня" после startIndex
+                }
+
+                if (daysIndex == -1)
+                {
+                    daysIndex = exitEpisod.IndexOf("день", startIndex); // Индекс слова "день" после startIndex
+                }
+
+                if (daysIndex != -1)
+                {
+                    // Извлекаем подстроку между startIndex и daysIndex
+                    string daysString = exitEpisod.Substring(startIndex, daysIndex - startIndex).Trim();
+
+                    if (int.TryParse(daysString, out int days))
+                    {
+                        DateTime releaseDate = DateTime.Today.AddDays(days);
+
+                        // Формируем строку для вывода
+                        string output = $"Осталось {days} дней до выхода ({releaseDate.ToShortDateString()})";
+
+                        NextEpisodeReleaseDate = output;
+                        CountLabel = countText;
+                        DateRelease = releaseDate.ToShortDateString();
+                    }
+                }
+                else
+                {
+                    exitEpisod = FormirateString(exitEpisod, countText);
+                }
+            }
+            else
+            {
+                NextEpisodeReleaseDate = Warning;
+            }
+
+            GetMainDataDE(htmlDocumentIn, type);
+        }
+
+        private string FormirateString(string exitEpisod, string countText)
+        {
+            // Заменяем каждую точку на точку с отступом и символ перевода строки
+            exitEpisod = exitEpisod.Replace(".", ".");
+
+            // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
+            NextEpisodeReleaseDate = exitEpisod;
+            CountLabel = countText;
+            return exitEpisod;
+        }
+
+        private void GetMainDataDE(HtmlDocument htmlDocumentIn, string type)
+        {
+            if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" || type == "Аниме")
+            {
+                //// Парсим изображение
+                //HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
+                //if (imgIn != null)
+                //{
+                //    string ImageUrl = imgIn.GetAttributeValue("src", "");
+                //    if (!ImageUrl.StartsWith("https://"))
+                //    {
+                //        ImageUrl = "https:" + ImageUrl;
+                //    }
+                //    Image = ImageUrl;
+                //}
+                // Парсим описание
+
+                HtmlNode scriptNode = htmlDocumentIn.DocumentNode.SelectSingleNode("//script[@type='application/ld+json']");
+                if (scriptNode != null)
+                {
+                    try
+                    {
+                        // Десериализуем JSON
+                        var jsonData = JsonConvert.DeserializeObject<dynamic>(scriptNode.InnerText);
+                        if (jsonData?.description?.ToString()?.Trim() != null)
+                        {
+                            Description = jsonData?.description?.ToString()?.Trim();
+                        }
+                        RealTitle = jsonData?.name;
+                        Image = jsonData?.image;
+                        OriginalTitle = jsonData?.alternateName;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Ошибка парсинга JSON: {ex.Message}");
+                    }
+                };
             }
         }
     }

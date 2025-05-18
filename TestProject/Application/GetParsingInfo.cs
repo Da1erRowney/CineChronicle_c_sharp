@@ -71,7 +71,7 @@ namespace CineChronicle.Application
         {
             try
             {
-                var tasks = new[]
+                 var tasks = new[]
                 {
                     GetInfo(title, type, typePars, false),
                     GetInfo(title, type, typePars, true),
@@ -393,7 +393,10 @@ namespace CineChronicle.Application
                                     await WikInfoIsWrong(query, type);
                                     break;
                                 default:
-                                    Description = Warning;
+                                    if (string.IsNullOrEmpty(Description))
+                                    {
+                                        Description = Warning;
+                                    }
                                     break;
                             }
                             if (debug)

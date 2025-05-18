@@ -32,12 +32,12 @@ namespace CineChronicle.Application.ViewModels
         {
             ContentAdded = _databaseService.GetAllContent()
                 .OrderByDescending(c => c.DateAdded)
-                .Take(5)
+                .Take(8)
                 .ToList();
 
             ContentChange = _databaseService.GetAllContent()
                 .OrderByDescending(c => c.SeriesChangeDate)
-                .Take(5)
+                .Take(8)
                 .ToList();
 
             if (ContentAdded == null || !ContentAdded.Any())

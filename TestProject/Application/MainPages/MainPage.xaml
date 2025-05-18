@@ -75,76 +75,24 @@
                     </Grid>
                 </Border>
 
-                <!-- Рекомендованный контент -->
-                <StackLayout x:Name="MobilePhoneRec">
-                    <Label Text="Рекомендованный контент" Style="{StaticResource SectionTitleStyle}"/>
-                    <Label Text="Самое популярное на этой неделе" Style="{StaticResource SectionSubtitleStyle}"/>
-
-                    <CollectionView Margin="0,50,0,50"
-                                   x:Name="RecentlyRecommendationCarouselView"
-                                   ItemsSource="{Binding ContentRecommendation}"
-                                   SelectionMode="Single"
-                                   SelectedItem="{Binding SelectedItem}">
-                        <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Horizontal" Span="2"/>
-                        </CollectionView.ItemsLayout>
-
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Border Style="{StaticResource ContentCardStyle}"
-                                            Margin="25,0,25,0"
-                                            HeightRequest="150"
-                                            WidthRequest="150">
-                                        <Grid RowDefinitions=".2*,.6*,.2*">
-                                            <Image Aspect="Fill" Source="{Binding ImageUrl}" Grid.RowSpan="3"/>
-                                            <RoundRectangle Grid.RowSpan="3"
-                                                            CornerRadius="30"
-                                                            HeightRequest="150"
-                                                            WidthRequest="150"
-                                                            Opacity=".7">
-                                                <RoundRectangle.Fill>
-                                                    <LinearGradientBrush EndPoint="0,1">
-                                                        <GradientStop Offset="0" Color="Transparent"/>
-                                                        <GradientStop Offset="1" Color="#030005"/>
-                                                    </LinearGradientBrush>
-                                                </RoundRectangle.Fill>
-                                            </RoundRectangle>
-
-                                            <VerticalStackLayout Grid.Row="2" Margin="10,-25,0,0">
-                                                <Label FontSize="14" Text="{Binding Title}" TextColor="White"/>
-                                                <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="10"/>
-                                            </VerticalStackLayout>
-                                        </Grid>
-                                    </Border>
-
-                                    <Button BackgroundColor="Transparent" 
-                                            Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyRecommendationCarouselView}}"
-                                            CommandParameter="{Binding .}"
-                                            Clicked="ItemButtonClickedRecommendation"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </StackLayout>
-
                 <!-- Недавно просмотренные -->
                 <Label Text="Недавно просмотренные" Style="{StaticResource SectionTitleStyle}"/>
-                <Label Text="Контент, в котором вы обновляли серию" Style="{StaticResource SectionSubtitleStyle}"/>
+                <Label Text="Контент, который вы обновляли либо меняли серию" Style="{StaticResource SectionSubtitleStyle}"/>
 
                 <CollectionView x:Name="RecentlyChangeCarouselView"
                                ItemsSource="{Binding ContentChange}"
                                SelectionMode="Single"
-                               SelectedItem="{Binding SelectedItem}">
+                               SelectedItem="{Binding SelectedItem}"
+                                 Margin="0,50,0,50">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
+                        <GridItemsLayout Orientation="Horizontal" Span="2"/>
                     </CollectionView.ItemsLayout>
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
-                                        Margin="25,50,25,50"
+                                        Margin="25,10,25,10"
                                         HeightRequest="250"
                                         WidthRequest="250">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
@@ -193,16 +141,18 @@
                 <CollectionView x:Name="RecentlyAddedCarouselView"
                                ItemsSource="{Binding ContentAdded}"
                                SelectionMode="Single"
-                               SelectedItem="{Binding SelectedItem}">
+                               SelectedItem="{Binding SelectedItem}"
+                                Margin="0,50,0,50">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal"/>
+                        <GridItemsLayout Orientation="Horizontal" Span="2"/>
                     </CollectionView.ItemsLayout>
+                    
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
-                                        Margin="25,50,25,50"
+                                        Margin="25,10,25,10"
                                         HeightRequest="250"
                                         WidthRequest="250">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
@@ -235,6 +185,105 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                
+                <!-- Рекомендованный контент -->
+                <StackLayout x:Name="MobilePhoneRec">
+                    <Label Text="Рекомендованный контент" Style="{StaticResource SectionTitleStyle}"/>
+                    <Label Text="Самое популярное на этой неделе" Style="{StaticResource SectionSubtitleStyle}"/>
+
+                    <CollectionView Margin="0,50,0,50"
+                    x:Name="RecentlyRecommendationCarouselView"
+                    ItemsSource="{Binding ContentRecommendation}"
+                    SelectionMode="Single"
+                    SelectedItem="{Binding SelectedItem}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Horizontal" Span="4"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border Style="{StaticResource ContentCardStyle}"
+                             Margin="25,10,25,10"
+                             HeightRequest="250"
+                             WidthRequest="250">
+                                        <Grid RowDefinitions=".2*,.6*,.2*">
+                                            <Image Aspect="Fill" Source="{Binding ImageUrl}" Grid.RowSpan="3"/>
+                                            <RoundRectangle Grid.RowSpan="3"
+                                             CornerRadius="30"
+                                             HeightRequest="250"
+                                             WidthRequest="250"
+                                             Opacity=".7">
+                                                <RoundRectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="0,1">
+                                                        <GradientStop Offset="0" Color="Transparent"/>
+                                                        <GradientStop Offset="1" Color="#030005"/>
+                                                    </LinearGradientBrush>
+                                                </RoundRectangle.Fill>
+                                            </RoundRectangle>
+
+                                            <VerticalStackLayout Grid.Row="2" Margin="10,0,0,0">
+                                                <Label FontSize="16" Text="{Binding Title}" TextColor="White"/>
+                                                <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="10"/>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Border>
+
+                                    <Button BackgroundColor="Transparent" 
+                             Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyRecommendationCarouselView}}"
+                             CommandParameter="{Binding .}"
+                             Clicked="ItemButtonClickedRecommendation"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+                <Grid 
+                    BackgroundColor="{AppThemeBinding Light= #919191, Dark=Black}"
+                    Padding="20"
+                   
+                    RowDefinitions="Auto,Auto,Auto,Auto">
+
+                    <!-- Логотип и название -->
+                    <Label 
+                        Grid.ColumnSpan="2"
+                        Text="CineChronicle 2025"
+                        TextColor = "{AppThemeBinding Light=Black, Dark=White}"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Margin="0,0,0,10"/>
+
+                    <!-- Контакты -->
+                    <Label 
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Gmail: cine.chronicle.sup@gmail.com"
+                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                        FontSize="14"
+                        HorizontalTextAlignment="Center"/>
+                    
+                    <Label 
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Text="Telegram: @daler_rowney"
+                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                        FontSize="14"
+                        HorizontalTextAlignment="Center"/>
+
+
+                    <!-- Креативная строка -->
+                    <Label 
+                        Grid.Row="3"
+                        Grid.ColumnSpan="2"
+                        Text="Твори кино-чудеса вместе с нами! 🎬"
+                        FontSize="16"
+                        FontAttributes="Italic"
+                        HorizontalTextAlignment="Center"
+                        Margin="0,10,0,0"/>
+
+                </Grid>
             </StackLayout>
         </ScrollView>
     </Grid>

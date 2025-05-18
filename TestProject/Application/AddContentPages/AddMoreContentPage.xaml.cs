@@ -117,12 +117,12 @@ namespace TestProject
                 NextEpisodeReleaseDate = getParsingInfo?.NextEpisodeReleaseDate,
                 OriginalTitle = getParsingInfo?.OriginalTitle,
                 SeriesChangeDate = string.Empty,
-                SourceLink = link,
+                SourceLink = string.IsNullOrEmpty(getParsingInfo.ExtractUrlWatch) ? link : getParsingInfo?.ExtractUrlWatch,
                 Title = title,
                 Type = type,
                 WatchStatus = string.IsNullOrEmpty(statusWatches) ? "Не начинал" : statusWatches,
                 YouTubeLink = getParsingInfo?.YouTubeLink,
-                YouTubeBackground = getParsingInfo?.YouTubeBackground
+                YouTubeBackground = getParsingInfo?.YouTubeBackground,
             };
 
             _databaseService.InsertContent(newContent);

@@ -229,6 +229,7 @@ namespace TestProject
 
         private async Task CheckPageRecommendated()
         {
+            SelectRecomendetContent();
             if (_device.CheckInternetConnection())
             {
                 await GetDataRecom();
@@ -258,7 +259,6 @@ namespace TestProject
            // InternetChecking();
             CheckContentType(recommendated.Type);
             HideContentDescription(parser?.Description);
-            SelectRecomendetContent();
         }
         private async Task GetDataRecom()
         {
@@ -344,7 +344,7 @@ namespace TestProject
                         }
                     }
                 }
-
+                currentContent.SourceLink = parser?.ExtractUrlWatch;
                 currentContent.CountLabel = parser?.CountLabel;
                 currentContent.Description = parser?.Description;
                 currentContent.DateRelease = parser?.DateRelease;

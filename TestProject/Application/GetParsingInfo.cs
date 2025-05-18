@@ -25,6 +25,7 @@ namespace CineChronicle.Application
         public string DateRelease { get; set; } = string.Empty;
         public string RealTitle { get; set; } = string.Empty;
         public string OriginalTitle { get; set; } = string.Empty;
+        public string ExtractUrlWatch { get; set; } = string.Empty;
 
         private const string Warning = "Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)";
         private const string FinalyWarning = "Похоже система не обнаружила текущий контент. Такое бывает, но крайне редко. Приносим свои извинения. Попробуйте обновить контент свайпом. Если проблема не пропала, то свяжитесь с нами - cine.chronicle.sup@gmail.com";
@@ -242,50 +243,59 @@ namespace CineChronicle.Application
                                     {
                                         foreach (HtmlNode aNode in nodes)
                                         {
-                                            extractedText = aNode.InnerText.Trim();
-                                            extractedLink = aNode.GetAttributeValue("href", "");
-
-                                            url = extractedLink;
-
-                                            using (HttpClient clientы = new HttpClient())
+                                            if (string.IsNullOrEmpty(Description))
                                             {
-                                                HttpResponseMessage responseы = await clientы.GetAsync(url);
+                                                extractedText = aNode.InnerText.Trim();
+                                               extractedLink = aNode.GetAttributeValue("href", "");
+                                               
+                                               url = extractedLink;
 
-                                                if (responseы.IsSuccessStatusCode)
+                                           
+                                                using (HttpClient clientы = new HttpClient())
                                                 {
-                                                    string htmlContentSearch = await responseы.Content.ReadAsStringAsync();
+                                                    HttpResponseMessage responseы = await clientы.GetAsync(url);
 
-                                                    string aPattern = @"<div data-readmore=""content"">\s+(.*?)\s+</div></div></div><div class=""mt-3"">";
-                                                    Match matchs = Regex.Match(htmlContentSearch, aPattern, RegexOptions.Singleline);
+                                                    if (responseы.IsSuccessStatusCode)
+                                                    {
+                                                        string htmlContentSearch = await responseы.Content.ReadAsStringAsync();
 
-                                                    if (matchs.Success)
-                                                    {
-                                                        extractedText = matchs.Groups[1].Value.Trim();
-                                                        extractedText = HtmlEntity.DeEntitize(extractedText);
-                                                        Description = Regex.Replace(extractedText, "<.*?>", String.Empty);
-                                                    }
-                                                    else if (!string.IsNullOrEmpty(htmlContentSearch))
-                                                    {
-                                                        string description = ExtractDescription(htmlContentSearch);
-                                                        if (!string.IsNullOrEmpty(description))
+                                                        string aPattern = @"<div data-readmore=""content"">\s+(.*?)\s+</div></div></div><div class=""mt-3"">";
+                                                        Match matchs = Regex.Match(htmlContentSearch, aPattern, RegexOptions.Singleline);
+
+                                                        if (matchs.Success)
                                                         {
-                                                            Description = description;
+                                                            extractedText = matchs.Groups[1].Value.Trim();
+                                                            extractedText = HtmlEntity.DeEntitize(extractedText);
+                                                            Description = Regex.Replace(extractedText, "<.*?>", String.Empty);
+                                                            ExtractUrlWatch = url;
                                                             return;
-                                                        }   
-                                                    }
-                                                    else
-                                                    {
-                                                        string patterns = @"<div data-readmore=""content"">(.*?)</div></div></div><div class=""mt-3"">";
-                                                        Match matchss = Regex.Match(htmlContentSearch, patterns, RegexOptions.Singleline);
-
-                                                        if (matchss.Success)
-                                                        {
-                                                            string extractedTexts = matchss.Groups[1].Value;
-                                                            extractedTexts = HtmlEntity.DeEntitize(extractedTexts);
-                                                            Description = Regex.Replace(extractedTexts, "<.*?>", String.Empty);
                                                         }
-                                                    }
+                                                        else if (!string.IsNullOrEmpty(htmlContentSearch))
+                                                        {
+                                                            string description = ExtractDescription(htmlContentSearch);
+                                                            if (!string.IsNullOrEmpty(description))
+                                                            {
+                                                                Description = description;
+                                                                ExtractUrlWatch = url;
+                                                                return;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            string patterns = @"<div data-readmore=""content"">(.*?)</div></div></div><div class=""mt-3"">";
+                                                            Match matchss = Regex.Match(htmlContentSearch, patterns, RegexOptions.Singleline);
 
+                                                            if (matchss.Success)
+                                                            {
+                                                                string extractedTexts = matchss.Groups[1].Value;
+                                                                extractedTexts = HtmlEntity.DeEntitize(extractedTexts);
+                                                                Description = Regex.Replace(extractedTexts, "<.*?>", String.Empty);
+                                                                ExtractUrlWatch = url;
+                                                                return;
+                                                            }
+                                                        }
+
+                                                    }
                                                 }
                                             }
                                         }

@@ -24,6 +24,7 @@ namespace CineChronicle.Application
         public string CountLabel { get; set; } = string.Empty;
         public string DateRelease { get; set; } = string.Empty;
         public string RealTitle { get; set; } = string.Empty;
+        public string OriginalTitle { get; set; } = string.Empty;
 
 
         private int countRead = 0;
@@ -96,6 +97,10 @@ namespace CineChronicle.Application
             {
                 string newStr = $"Статус продолжения {title}.\n{NextEpisodeReleaseDate}";
                 NextEpisodeReleaseDate = newStr;
+            }
+            if (Description == "Ошибка получения информации. Такое случается когда вы неправильно указали название или тип своего медиа-контента Будьте внимательными :)" && OriginalTitle!=null)
+            {
+                await GetInfo(OriginalTitle, type, typePars, true);
             }
                 Description = Regex.Replace(Description, @"&nbsp;", " ");
         }
@@ -291,45 +296,70 @@ namespace CineChronicle.Application
                                 case (SourceTypes.YT, _):
                                     try
                                     {
-
                                         var youtubeService = new YouTubeService(new BaseClientService.Initializer()
                                         {
                                             ApiKey = "AIzaSyCI4_NOPQS-6Vzg2-wTZNhqMTW38KCvogU",
                                             ApplicationName = "CineChronicle"
                                         });
 
+                                        // 1. Поиск видео
                                         var searchListRequest = youtubeService.Search.List("snippet");
                                         searchListRequest.Q = $"{query} {type} трейлер";
-                                        searchListRequest.MaxResults = 2;
+                                        searchListRequest.MaxResults = 5;
+                                        searchListRequest.Type = "video";
+                                        searchListRequest.VideoEmbeddable = SearchResource.ListRequest.VideoEmbeddableEnum.True__;
 
                                         var searchListResponse = await searchListRequest.ExecuteAsync();
-                                        if (searchListResponse.Items.Count > 0)
+                                        if (searchListResponse.Items.Count == 0)
                                         {
-                                            // Получение трейлера для отображения и перехода по кнопке
-                                            YouTubeLink = $"https://www.youtube.com/embed/{searchListResponse.Items[0].Id.VideoId}";
+                                            await GetUniqueVideoIds(query, type);
+                                            return;
+                                        }
 
-                                            // Получение трейлера для фона
-                                            string videoId = searchListResponse.Items[1].Id.VideoId;
-                                            YouTubeBackground = $"https://www.youtube.com/embed/{videoId}?" +
-                                                "autoplay=1&" +
-                                                "mute=1&" +
-                                                "loop=1&" +
-                                                "controls=0&" +
-                                                "rel=0&" +
-                                                $"playlist={videoId}&" +
-                                                "enablejsapi=1&" +
-                                                "fs=0&" +
-                                                "vq=hd1080"; // Принудительное HD 1080p
+                                        // 2. Проверка статуса видео
+                                        var videoIds = searchListResponse.Items.Select(i => i.Id.VideoId).ToList();
+                                        var videosRequest = youtubeService.Videos.List("contentDetails,status");
+                                        videosRequest.Id = string.Join(",", videoIds);
+
+                                        var videosResponse = await videosRequest.ExecuteAsync();
+                                        var validVideos = videosResponse.Items
+                                            .Where(v => v.Status?.Embeddable == true &&
+                                                       v.Status?.PrivacyStatus == "public" &&
+                                                       (v.ContentDetails?.RegionRestriction == null ||
+                                                        !v.ContentDetails.RegionRestriction.Blocked.Contains("RU")))
+                                            .OrderByDescending(v => v.Status?.UploadStatus == "processed")
+                                            .ToList();
+
+                                        if (validVideos.Count == 0)
+                                        {
+                                            await GetUniqueVideoIds(query, type);
+                                            return;
+                                        }
+
+                                        // 3. Выбор лучшего видео
+                                        var bestVideo = validVideos.First();
+                                        YouTubeLink = $"https://www.youtube.com/embed/{bestVideo.Id}";
+
+                                        // 4. Для фона берем следующее подходящее видео (если есть)
+                                        if (validVideos.Count > 1)
+                                        {
+                                            var backgroundVideo = validVideos[1];
+                                            YouTubeBackground = $"https://www.youtube.com/embed/{backgroundVideo.Id}?" +
+                                                "autoplay=1&mute=1&loop=1&controls=0&rel=0&" +
+                                                $"playlist={backgroundVideo.Id}&enablejsapi=1&fs=0&vq=hd1080";
                                         }
                                         else
                                         {
-                                            await GetUniqueVideoIds(query, type);
+                                            // Если только одно видео - используем его для фона тоже
+                                            YouTubeBackground = $"https://www.youtube.com/embed/{bestVideo.Id}?" +
+                                                "autoplay=1&mute=1&loop=1&controls=0&rel=0&" +
+                                                $"playlist={bestVideo.Id}&enablejsapi=1&fs=0&vq=hd1080";
                                         }
                                     }
                                     catch (Exception ex)
                                     {
                                         Console.WriteLine($"Ошибка YouTube API: {ex.Message}");
-                                        await GetUniqueVideoIds(query,type);
+                                        await GetUniqueVideoIds(query, type);
                                     }
                                     break;
                                 case (SourceTypes.LF, false):
@@ -741,13 +771,12 @@ namespace CineChronicle.Application
                                 try
                                 {
                                     var jsonData = JsonConvert.DeserializeObject<dynamic>(scriptNode.InnerText);
-                                    var description  = jsonData?.description?.ToString()?.Trim();
-                                    if (!string.IsNullOrEmpty(description))
+                                    if (jsonData?.description?.ToString()?.Trim() != null)
                                     {
-                                        // Извлекаем описание
-                                        Description = description;
+                                        Description = jsonData?.description?.ToString()?.Trim();
                                     }
                                     RealTitle = jsonData?.name;
+                                    OriginalTitle = jsonData?.alternateName;
                                 }
                                 catch (Exception ex)
                                 {
@@ -856,8 +885,12 @@ namespace CineChronicle.Application
                                     {
                                         // Десериализуем JSON
                                         var jsonData = JsonConvert.DeserializeObject<dynamic>(scriptNode.InnerText);
-                                        Description = jsonData?.description?.ToString()?.Trim();
+                                        if (jsonData?.description?.ToString()?.Trim() != null)
+                                        {
+                                            Description = jsonData?.description?.ToString()?.Trim();
+                                        }
                                         RealTitle = jsonData?.name;
+                                        OriginalTitle = jsonData?.alternateName;
                                     }
                                     catch (Exception ex)
                                     {

@@ -15,7 +15,7 @@ namespace TestProject
     {
         #region [Private fields]
         public ICommand OpenLinkCommand { get; private set; }
-        private ContentRecommendation recom;
+        private ContentRecommendation recommendated;
         private Content content;
         private DateExit data;
         private GetParsingInfo parser = new();
@@ -28,7 +28,7 @@ namespace TestProject
         #endregion
 
         #region [Ctor's]
-         public ViewContentPage(Content content)
+        public ViewContentPage(Content content)
         {
             InitializeComponent();
             this.content = content;
@@ -36,15 +36,12 @@ namespace TestProject
             CheckPage();
         }
 
-        public ViewContentPage(ContentRecommendation content)
+        public ViewContentPage(ContentRecommendation recommendated)
         {
-            this.recom = content;
             InitializeComponent();
-            content.Type = recom.Type;
-            BindingContext = content; // Привязываем объект Content к BindingContext страницы
+            this.recommendated = recommendated;
 
-            CheckPage();
-            SelectRecomendetContent(); // Скрываем для рекомендаций не нужные элементы
+            CheckPageRecommendated();
         }
 
         #endregion
@@ -98,7 +95,7 @@ namespace TestProject
         private void CheckPage()
         {
             // 1
-            BindingContext = new ViewContentPageRefreshModel(content);              
+            BindingContext = new ViewContentPageRefreshModel(content);
 
             // 2
             _oldName = content.Title;
@@ -108,16 +105,23 @@ namespace TestProject
             OpenLinkCommand = new Command<string>(OpenLink);
 
             // 4
-            if (string.IsNullOrEmpty(content.Description))
-            {
-                DecriptionBorder.IsVisible = false;
-            }
-            else
-            {
-                DecriptionBorder.IsVisible = true;
-            }
+            HideContentDescription(content.Description);
 
             // 5
+            InternetChecking();
+
+            // 6
+            CheckContentType(content.Type);
+
+            // 7
+            HideDubbing(content.Dubbing);
+
+            // 8
+            HideDataContent();
+        }
+
+        private void InternetChecking()
+        {
             if (_device.CheckInternetConnection())
             {
                 // 5.1
@@ -165,9 +169,35 @@ namespace TestProject
                 TrailerWebBorder.IsVisible = false;
                 ViewContent.IsVisible = false;
             }
+        }
 
-            // 6
-            switch (content.Type)
+        private void HideDataContent()
+        {
+            if (string.IsNullOrEmpty(content.CountLabel) && string.IsNullOrEmpty(content.NextEpisodeReleaseDate))
+            {
+                InfoBorder.IsVisible = false;
+            }
+            else
+            {
+                InfoBorder.IsVisible = true;
+            }
+        }
+
+        private void HideDubbing(string dubbing)
+        {
+            if (string.IsNullOrEmpty(dubbing))
+            {
+                DubbingPo.IsVisible = false;
+            }
+            else
+            {
+                DubbingPo.IsVisible = true;
+            }
+        }
+
+        private void CheckContentType(string type)
+        {
+            switch (type)
             {
                 case ContentTypes.ANIME:
                     WatchingButton.Source = "anime.png";
@@ -183,28 +213,59 @@ namespace TestProject
                     WatchingButton.Source = "movie.png";
                     break;
             }
+        }
 
-            // 7
-            if (string.IsNullOrEmpty(content.Dubbing))
+        private void HideContentDescription(string description)
+        {
+            if (string.IsNullOrEmpty(description))
             {
-                DubbingPo.IsVisible = false;
+                DecriptionBorder.IsVisible = false;
             }
             else
             {
-                DubbingPo.IsVisible = true;
-            }   
-
-            // 8
-            if(string.IsNullOrEmpty(content.CountLabel) && string.IsNullOrEmpty(content.NextEpisodeReleaseDate))
-            {
-                InfoBorder.IsVisible = false;
-            }
-            else
-            {
-                InfoBorder.IsVisible = true;
+                DecriptionBorder.IsVisible = true;
             }
         }
 
+        private async Task CheckPageRecommendated()
+        {
+            if (_device.CheckInternetConnection())
+            {
+                await GetDataRecom();
+            }
+            bool showVideos = Preferences.Get("ShowVideos", true);
+            if (showVideos)
+            {
+                TrailerWebBackground.IsVisible = true;
+                Background.IsVisible = false;
+            }
+            else
+            {
+                TrailerWebBackground.IsVisible = false;
+                Background.IsVisible = true;
+                // 5.1.2
+                if (string.IsNullOrEmpty(recommendated.ImageUrl))
+                {
+                    Background.Source = "gradientfive.jpg";
+                }
+                else
+                {
+                    Background.Source = recommendated.ImageUrl;
+                }
+            }
+            BindingContext = new ViewContentPageRefreshModel(recommendated, parser);
+
+           // InternetChecking();
+            CheckContentType(recommendated.Type);
+            HideContentDescription(parser?.Description);
+            SelectRecomendetContent();
+        }
+        private async Task GetDataRecom()
+        {
+            await ShowLoadingAnimation();
+            bool parseSuccess = await parser.GetData(recommendated.Type, recommendated.Title);
+            await HideLoadingAnimation();
+        }
         #endregion
 
         #region [Methods]
@@ -291,6 +352,7 @@ namespace TestProject
                 currentContent.NextEpisodeReleaseDate = parser?.NextEpisodeReleaseDate;
                 currentContent.YouTubeLink = parser?.YouTubeLink;
                 currentContent.YouTubeBackground = parser?.YouTubeBackground;
+                currentContent.OriginalTitle = parser?.OriginalTitle;
                 await HideLoadingAnimation();
             }
 
@@ -403,9 +465,9 @@ namespace TestProject
         // Обработчик добавления данных, если представление рекомендаций
         private async void ImageTapped(object sender, EventArgs e)
         {
-            AddMoreContentPage addMoreContentPage = new AddMoreContentPage(recom); //?
-            await Shell.Current.GoToAsync("//Add");
-            Navigation.RemovePage(this);
+            AddMoreContentPage addMoreContentPage = new AddMoreContentPage(recommendated); //?
+
+            await Navigation.PushAsync(addMoreContentPage);
         }
         #endregion
 
@@ -446,6 +508,7 @@ namespace TestProject
             TitleEntry.IsEnabled = false;
             TitleEntry.IsVisible = false;
             TitleLabel.IsVisible = true;
+            OriginalTitleLabel.IsVisible = true;
             DubbingEntry.IsEnabled = false;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;
@@ -472,6 +535,7 @@ namespace TestProject
             WatchStatusEntry.IsVisible = isVisible;
 
             TitleLabel.IsVisible = isVisible;
+            OriginalTitleLabel.IsVisible = isVisible;
             TitleEntry.IsVisible = !isVisible;
             TitleEntry.IsEnabled = !isVisible;
             DubbingEntry.IsEnabled = !isVisible;
@@ -490,8 +554,7 @@ namespace TestProject
 
         private void SelectRecomendetContent()
         {
-            DubbingPo.IsVisible = false;
-            StatusP.IsVisible = false;
+            OurInformationBlock.IsVisible = false;
             EditButton.IsVisible = false;
             DeleteButton.IsVisible = false;
             AddButton.IsVisible = true;

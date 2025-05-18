@@ -68,8 +68,16 @@
                            IsEnabled="False"
                            TextColor ="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                            VerticalOptions="Center"/>
-                    
-                        <!--Название контента-->
+                    <Label x:Name="OriginalTitleLabel" 
+                            HorizontalOptions="Center"
+                            Text="{Binding Content.OriginalTitle}" 
+                            Margin="0,0,0,40"
+                            FontSize="30" 
+                            IsEnabled="False"
+                            TextColor ="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                            VerticalOptions="Center"/>
+
+                    <!--Название контента-->
                             <Entry x:Name="TitleEntry" 
                            HorizontalOptions="Center"
                            Text="{Binding Content.Title}" 
@@ -105,7 +113,7 @@
                         </Border>
 
                         <!-- Тип -->
-                        <StackLayout Orientation="Horizontal" Margin="0,50,0,0" HorizontalOptions="Center">
+                        <StackLayout Orientation="Horizontal" Margin="0,50,0,0" HorizontalOptions="Center" x:Name="OurInformationBlock">
                             <Border Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
                                 Opacity="0.8"
                                 StrokeShape="RoundRectangle 30,30,30,30"

@@ -15,11 +15,21 @@ namespace CineChronicle.Application.ViewModels
         public List<Content> ContentChange { get; set; }
         private DeviceInfo _device = new();
 
-        public ViewContentMainPageModel() 
+        public ViewContentMainPageModel()
         {
             _databaseService = new DatabaseServiceContent(_databasePath);
             _databaseService.CreateTables();
 
+            InitializeSyncData();
+        }
+
+        public async Task InitializeAsync()
+        {
+            await CheckInternetConnectionAsync();
+        }
+
+        private void InitializeSyncData()
+        {
             ContentAdded = _databaseService.GetAllContent()
                 .OrderByDescending(c => c.DateAdded)
                 .Take(5)
@@ -29,7 +39,7 @@ namespace CineChronicle.Application.ViewModels
                 .OrderByDescending(c => c.SeriesChangeDate)
                 .Take(5)
                 .ToList();
-            CheckInternetConnection();
+
             if (ContentAdded == null || !ContentAdded.Any())
             {
                 Content ifContentNull = new Content
@@ -42,7 +52,7 @@ namespace CineChronicle.Application.ViewModels
             }
         }
 
-        private void CheckInternetConnection()
+        private async Task CheckInternetConnectionAsync()
         {
             if (!_device.CheckInternetConnection())
             {
@@ -69,20 +79,23 @@ namespace CineChronicle.Application.ViewModels
             }
             else
             {
-                if (Device.RuntimePlatform != "WinUI")
+                if (ContentRecommendation == null)
                 {
-                    LoadRecommendationsAsync();
+                    ContentRecommendation = await ContentRecommendationRead.GetRecommendationsAsync();
+                    OnPropertyChanged(nameof(ContentRecommendation));
                 }
             }
         }
+
         public static Content GetContentById(int id)
         {
            return _databaseService.GetContentById(id);
         }
-        private async void LoadRecommendationsAsync()
-        {
-            ContentRecommendation = await ContentRecommendationRead.GetRecommendationsAsync();
-        }
 
+        public static List<Content> FindSameContent(string title)
+        {
+            title = title.TrimEnd();
+            return _databaseService.GetContentByTitle(title);
+        }
     }
 }

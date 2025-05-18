@@ -9,7 +9,7 @@
         <Style x:Key="SectionTitleStyle" TargetType="Label">
             <Setter Property="FontAttributes" Value="Bold"/>
             <Setter Property="FontSize" Value="22"/>
-            <Setter Property="Margin" Value="25,0,0,10"/>
+            <Setter Property="Margin" Value="25,0,0,0"/>
         </Style>
 
         <Style x:Key="SectionSubtitleStyle" TargetType="Label">
@@ -80,7 +80,7 @@
                     <Label Text="Рекомендованный контент" Style="{StaticResource SectionTitleStyle}"/>
                     <Label Text="Самое популярное на этой неделе" Style="{StaticResource SectionSubtitleStyle}"/>
 
-                    <CollectionView Margin="0,50,0,0"
+                    <CollectionView Margin="0,50,0,50"
                                    x:Name="RecentlyRecommendationCarouselView"
                                    ItemsSource="{Binding ContentRecommendation}"
                                    SelectionMode="Single"
@@ -111,7 +111,7 @@
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
 
-                                            <VerticalStackLayout Grid.Row="2" Margin="10,-20,0,0">
+                                            <VerticalStackLayout Grid.Row="2" Margin="10,-25,0,0">
                                                 <Label FontSize="14" Text="{Binding Title}" TextColor="White"/>
                                                 <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="10"/>
                                             </VerticalStackLayout>
@@ -145,14 +145,14 @@
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
                                         Margin="25,50,25,50"
-                                        HeightRequest="300"
+                                        HeightRequest="250"
                                         WidthRequest="250">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
                                         <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3"/>
                                         <RoundRectangle Grid.RowSpan="3"
                                                         CornerRadius="30"
-                                                        HeightRequest="350"
-                                                        WidthRequest="300"
+                                                        HeightRequest="250"
+                                                        WidthRequest="250"
                                                         Opacity=".7">
                                             <RoundRectangle.Fill>
                                                 <LinearGradientBrush EndPoint="0,1">
@@ -162,7 +162,7 @@
                                             </RoundRectangle.Fill>
                                         </RoundRectangle>
 
-                                        <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
+                                        <VerticalStackLayout Grid.Row="2" Margin="20,-10,0,0">
                                             <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12"/>
                                             <Label FontSize="16" Text="{Binding Title}" TextColor="White"/>
                                             <Label FontSize="12" TextColor="White">
@@ -203,14 +203,14 @@
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
                                         Margin="25,50,25,50"
-                                        HeightRequest="300"
+                                        HeightRequest="250"
                                         WidthRequest="250">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
                                         <Image Source="{Binding Image}" Grid.RowSpan="3" Aspect="Fill"/>
                                         <RoundRectangle Grid.RowSpan="3"
                                                         CornerRadius="30"
-                                                        HeightRequest="350"
-                                                        WidthRequest="300"
+                                                        HeightRequest="250"
+                                                        WidthRequest="250"
                                                         Opacity=".7">
                                             <RoundRectangle.Fill>
                                                 <LinearGradientBrush EndPoint="0,1">
@@ -220,7 +220,7 @@
                                             </RoundRectangle.Fill>
                                         </RoundRectangle>
 
-                                        <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
+                                        <VerticalStackLayout Grid.Row="2" Margin="20,-5,0,0">
                                             <Label TextColor="White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="12"/>
                                             <Label FontSize="16" Text="{Binding Title}" TextColor="White"/>
                                         </VerticalStackLayout>

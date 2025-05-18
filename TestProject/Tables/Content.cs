@@ -12,10 +12,12 @@ namespace CineChronicle.Tables
         private string description;                                                 // Описание контента
         private string dubbing;                                                     // Озвучка
         private string dateRelease;                                                 // Строка даты выхода?
+        private string emailUser = "";                                              // Пользователь 
         private string image;                                                       // Постер
         private int lastWatchedSeason = 0;                                          // Последний просмотренный сезон
         private int lastWatchedSeries = 0;                                          // Последняя просмотренная серия
         private string nextEpisodeReleaseDate;                                      // Дата выхода следующего эпизода
+        private string originalTitle;                                               // Оригинальное название
         private string seriesChangeDate;                                            // Дата изменения контента
         private string sourceLink;                                                  // Ссылка
         private string title;                                                       // Название
@@ -23,6 +25,7 @@ namespace CineChronicle.Tables
         private string watchStatus;                                                 // Статус просмотра
         private string youTubeLink;                                                 // Ссылка на YouTube
         private string youTubeBackground;
+        
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -92,6 +95,15 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(DateRelease));
             }
         }
+        public string EmailUser
+        {
+            get => emailUser;
+            set
+            {
+                emailUser = value;
+                OnPropertyChanged(nameof(EmailUser));
+            }
+        }
         public string Image
         {
             get => image;
@@ -126,6 +138,15 @@ namespace CineChronicle.Tables
             {
                 nextEpisodeReleaseDate = value;
                 OnPropertyChanged(nameof(NextEpisodeReleaseDate));
+            }
+        }
+        public string OriginalTitle
+        {
+            get => originalTitle;
+            set
+            {
+                originalTitle = value;
+                OnPropertyChanged(nameof(OriginalTitle));
             }
         }
         public string SeriesChangeDate
@@ -164,15 +185,6 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(WatchStatus));
             }
         }
-        public string YouTubeLink
-        {
-            get => youTubeLink;
-            set
-            {
-                youTubeLink = value;
-                OnPropertyChanged(nameof(YouTubeLink));
-            }
-        }
         public string YouTubeBackground
         {
             get => youTubeBackground;
@@ -182,5 +194,16 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(YouTubeBackground));
             }
         }
+        public string YouTubeLink
+        {
+            get => youTubeLink;
+            set
+            {
+                youTubeLink = value;
+                OnPropertyChanged(nameof(YouTubeLink));
+            }
+        }
+     
+       
     }
 }

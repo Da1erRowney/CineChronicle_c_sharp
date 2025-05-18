@@ -1,9 +1,7 @@
 ﻿using CineChronicle.Application.MainPage;
 using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
-using HtmlAgilityPack;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace TestProject;
 
@@ -17,6 +15,7 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
     }
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -28,10 +27,7 @@ public partial class MainPage : ContentPage
             {
                 Debug.WriteLine("Соединение с интернетом есть.");
 
-                IsDeviceOfflineBorder.IsVisible = false;
-                _device.NotifyUse = false;
-                MobilePhoneRec.IsVisible = _device.TypeDevice != "WinUI";
-                BindingContext = new ViewContentMainPageModel();
+                ConnectionInternet();
             });
         });
 
@@ -40,15 +36,35 @@ public partial class MainPage : ContentPage
             MainThread.BeginInvokeOnMainThread(async () =>
             {
                 Debug.WriteLine("Нет соединения с интернетом. Показываем алерт.");
-                MobilePhoneRec.IsVisible = false;
-                _device.NotifyUse = true;
-                IsDeviceOfflineBorder.IsVisible = true;
-                BindingContext = new ViewContentMainPageModel();
+                NotConnectionInternet();
             });
         });
 
         // Проверяем состояние при открытии
         CheckInitialConnection();
+    }
+
+    private void ConnectionInternet()
+    {
+        IsDeviceOfflineBorder.IsVisible = false;
+        _device.NotifyUse = false;
+        MobilePhoneRec.IsVisible = true;
+        InitializeViewModel();
+    }
+
+    private void NotConnectionInternet()
+    {
+        MobilePhoneRec.IsVisible = false;
+        _device.NotifyUse = true;
+        IsDeviceOfflineBorder.IsVisible = true;
+        InitializeViewModel();
+    }
+
+    private async void InitializeViewModel()
+    {
+        var viewModel = new ViewContentMainPageModel();
+        this.BindingContext = viewModel;
+        await viewModel.InitializeAsync();
     }
 
     protected override void OnDisappearing()
@@ -65,17 +81,12 @@ public partial class MainPage : ContentPage
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                IsDeviceOfflineBorder.IsVisible = true;
-                MobilePhoneRec.IsVisible = false;
-                BindingContext = new ViewContentMainPageModel();
+                NotConnectionInternet();
             });
         }
         else
         {
-            IsDeviceOfflineBorder.IsVisible = false;
-            _device.NotifyUse = false;
-            MobilePhoneRec.IsVisible = _device.TypeDevice != "WinUI";
-            BindingContext = new ViewContentMainPageModel();
+            ConnectionInternet();
         }
     }
 
@@ -96,11 +107,23 @@ public partial class MainPage : ContentPage
         OnItemClick(item.Id);
     }
 
-    private async void ItemButtonClickedRecommendation(object sender, EventArgs e)
+    private void ItemButtonClickedRecommendation(object sender, EventArgs e)
     {
         var selectedItem = (ContentRecommendation)((Button)sender).CommandParameter;
-        var viewContentPage = new ViewContentPage(selectedItem);
+        List <Content> content = ViewContentMainPageModel.FindSameContent(selectedItem.Title);
+        if (content?.Count == 0)
+        {
+            var viewContentPage = new ViewContentPage(selectedItem);
+            OnRecomClick(viewContentPage);
+        }
+        else
+        {
+            OnItemClick(content[0].Id);
+        }
+    }
 
+    private async void OnRecomClick(ViewContentPage viewContentPage)
+    {
         await Navigation.PushAsync(viewContentPage);
     }
 

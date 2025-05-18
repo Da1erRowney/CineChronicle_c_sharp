@@ -1,4 +1,3 @@
-using AngleSharp.Browser;
 using CineChronicle.Application;
 using CineChronicle.Application.MainPage;
 using CineChronicle.Application.SupportClass;
@@ -116,6 +115,7 @@ namespace TestProject
                 LastWatchedSeason = lastWatchedSeason,
                 LastWatchedSeries = lastWatchedSeries,
                 NextEpisodeReleaseDate = getParsingInfo?.NextEpisodeReleaseDate,
+                OriginalTitle = getParsingInfo?.OriginalTitle,
                 SeriesChangeDate = string.Empty,
                 SourceLink = link,
                 Title = title,
@@ -132,9 +132,10 @@ namespace TestProject
             await HideLoadingAnimation();
             await DisplayAlert("Уведомление", "Ваши данные сохранены", "Oк");
 
+            Navigation.RemovePage(this);
             // Переход к главному экрану
             await Shell.Current.GoToAsync("//Main");
-            Navigation.RemovePage(this); 
+            
         }
 
         #endregion

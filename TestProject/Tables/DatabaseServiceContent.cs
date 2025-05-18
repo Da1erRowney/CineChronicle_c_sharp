@@ -47,6 +47,11 @@ namespace CineChronicle.Tables
         {
             return _connection.Table<Content>().Where(c => c.WatchStatus == watchStatus).ToList();
         }
+        public List<Content> GetContentByTitle(string title)
+        {
+            return _connection.Table<Content>().Where(c => c.Title == title).ToList();
+        }
+
         public void UpdateContent(Content content)
         {
             _connection.Update(content);

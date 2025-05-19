@@ -1,0 +1,12 @@
+﻿using SQLite;
+
+namespace CineChronicle.Tables
+{
+    public class UserContent
+    {
+        [PrimaryKey,AutoIncrement]
+        public int Id {get; set; }
+        public int UserId { get; set; }
+        public int ContentId {get; set;}
+    }
+}

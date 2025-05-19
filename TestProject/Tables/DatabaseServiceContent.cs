@@ -18,6 +18,7 @@ namespace CineChronicle.Tables
             _connection.CreateTable<User>();
             _connection.CreateTable<Authorized>();
             _connection.CreateTable<UserSettings>();
+            _connection.CreateTable<UserContent>();
         }
         public void CloseConnection()
         {

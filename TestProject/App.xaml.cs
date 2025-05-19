@@ -1,10 +1,13 @@
-﻿namespace TestProject;
+﻿using CineChronicle.Tables;
+
+namespace TestProject;
 
 public partial class App : Application
 {
     public App()
     {
         InitializeComponent();
+
         Connectivity.ConnectivityChanged += OnConnectivityChanged;
     }
     private void OnConnectivityChanged(object sender, ConnectivityChangedEventArgs e)

@@ -13,12 +13,12 @@ namespace CineChronicle.Application.ViewModels
         public List<ContentRecommendation> ContentRecommendation { get; set; }
         public List<Content> ContentAdded { get; set; }
         public List<Content> ContentChange { get; set; }
+        public List<Content> ContentRelease { get; set; }
         private DeviceInfo _device = new();
 
         public ViewContentMainPageModel()
         {
             _databaseService = new DatabaseServiceContent(_databasePath);
-            _databaseService.CreateTables();
 
             InitializeSyncData();
         }
@@ -30,13 +30,27 @@ namespace CineChronicle.Application.ViewModels
 
         private void InitializeSyncData()
         {
+            // Недавно добавленный контента
             ContentAdded = _databaseService.GetAllContent()
                 .OrderByDescending(c => c.DateAdded)
                 .Take(8)
                 .ToList();
 
+            // Недавно измененный
             ContentChange = _databaseService.GetAllContent()
                 .OrderByDescending(c => c.SeriesChangeDate)
+                .Take(8)
+                .ToList();
+
+            // Скоро выйдет
+            ContentRelease = _databaseService.GetAllContent()
+                .Select(c => new {
+                    Content = c,
+                    ParsedDate = DateTime.TryParse(c.DateRelease, out var date) ? date : (DateTime?)null
+                })
+                .Where(x => x.ParsedDate != null)
+                .OrderBy(x => x.ParsedDate)
+                .Select(x => x.Content)
                 .Take(8)
                 .ToList();
 
@@ -73,6 +87,16 @@ namespace CineChronicle.Application.ViewModels
                         if (string.IsNullOrEmpty(ContentChange[i].Image))
                         {
                             ContentChange[i].Image = "notwificonnection.jpg";
+                        }
+                    }
+                }
+                if (ContentRelease != null)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (string.IsNullOrEmpty(ContentRelease[i].Image))
+                        {
+                            ContentRelease[i].Image = "notwificonnection.jpg";
                         }
                     }
                 }

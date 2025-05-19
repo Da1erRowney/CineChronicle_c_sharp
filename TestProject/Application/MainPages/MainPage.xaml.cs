@@ -8,7 +8,6 @@ namespace TestProject;
 public partial class MainPage : ContentPage
 {
     public Content SelectedItem { get; set; }
-    public CineChronicle.Application.DeviceInfo _device = new();
     public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
 
     public MainPage()
@@ -47,7 +46,6 @@ public partial class MainPage : ContentPage
     private void ConnectionInternet()
     {
         IsDeviceOfflineBorder.IsVisible = false;
-        _device.NotifyUse = false;
         MobilePhoneRec.IsVisible = true;
         InitializeViewModel();
     }
@@ -55,7 +53,6 @@ public partial class MainPage : ContentPage
     private void NotConnectionInternet()
     {
         MobilePhoneRec.IsVisible = false;
-        _device.NotifyUse = true;
         IsDeviceOfflineBorder.IsVisible = true;
         InitializeViewModel();
     }
@@ -89,17 +86,18 @@ public partial class MainPage : ContentPage
             ConnectionInternet();
         }
     }
-
     private void ItemButtonClickedChange(object sender, EventArgs e)
     {
         HandleClick(sender);
     }
-
     private void ItemButtonClicked(object sender, EventArgs e)
     {
         HandleClick(sender);
     }
-
+    private void ItemButtonClickedRelease(object sender, EventArgs e)
+    {
+        HandleClick(sender);
+    }
     private void HandleClick(object sender)
     {
         var button = (Button)sender;

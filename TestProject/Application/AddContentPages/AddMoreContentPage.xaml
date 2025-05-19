@@ -5,7 +5,6 @@
              x:Class="TestProject.AddMoreContentPage">
 
     <Grid BackgroundColor="Transparent">
-        
         <!-- Адаптивный фон -->
         <Image x:Name="Background" 
                Source="gradientfive.jpg" 
@@ -22,24 +21,16 @@
                            HorizontalOptions="Start"/>
                     <Label Text="Добавьте свой контент" 
                            FontSize="Subtitle"
+                           TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"
                            HorizontalOptions="Start"/>
                 </VerticalStackLayout>
 
                 <!-- Основная форма -->
-                <Border 
-                    Margin="0,20"
-                    Opacity="0.9"
-                    Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-                    StrokeShape="RoundRectangle 30"
-                    StrokeThickness="2"
-                    Padding="15">
-
-                    <Border.Shadow>
-                        <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" 
-                                Opacity="0.5" 
-                                Radius="100" 
-                                Offset="0,0"/>
-                    </Border.Shadow>
+                <Border Margin="0,20"
+                        Opacity="0.9"
+                        StrokeShape="RoundRectangle 30"
+                        Padding="15"
+                        Background="{AppThemeBinding Light=White, Dark=Black}">
 
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                           RowSpacing="15"
@@ -51,7 +42,8 @@
                                FontAttributes="Bold" 
                                FontSize="Title"
                                HorizontalOptions="Center"
-                               Grid.ColumnSpan="3"/>
+                               Grid.ColumnSpan="3"
+                               Margin="0,0,0,10"/>
 
                         <!-- Название -->
                         <Label Text="Название:" 
@@ -70,10 +62,11 @@
                                VerticalOptions="Center"
                                Grid.Row="2"/>
                         <Picker Title="Выберите тип"
-                               x:Name="TypePicker"
-                               FontSize="Body"
-                               TitleColor="Gray"
-                               Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+                            x:Name="TypePicker"
+                            FontSize="Body"
+                            TitleColor="Gray"
+                            Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                            SelectedIndexChanged="TypePicker_SelectedIndexChanged">
                             <Picker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
                                     <x:String>Сериал</x:String>
@@ -98,50 +91,58 @@
                                PlaceholderColor="Gray"
                                Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-                        <!-- Серия и сезон -->
-                        <Label Text="Серия:" 
+                        <!-- Серия и сезон на одной строке -->
+                        <Label x:Name="SeriaLabel"
+                                Text="Серия/Сезон:" 
                                FontSize="Body"
                                VerticalOptions="Center"
                                Grid.Row="4"/>
-                        <Entry Placeholder="Номер серии" 
-                               x:Name="LastWatchedSeriesEntry"
-                               Keyboard="Numeric"
-                               FontSize="Body"
-                               PlaceholderColor="Gray"
-                               Grid.Row="4" Grid.Column="1"/>
+                        <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+                              x:Name="SeriaEntrys"
+                              ColumnDefinitions="*,10,*">
+                            <Entry Placeholder="Серия" 
+                                   x:Name="LastWatchedSeriesEntry"
+                                   Keyboard="Numeric"
+                                   FontSize="Body"
+                                   PlaceholderColor="Gray"
+                                   Grid.Column="0"/>
 
-                        <Label Text="Сезон:" 
-                               FontSize="Body"
-                               VerticalOptions="Center"
-                               Grid.Row="5"/>
-                        <Entry Placeholder="Номер сезона" 
-                               x:Name="LastWatchedSeasonEntry"
-                               Keyboard="Numeric"
-                               FontSize="Body"
-                               PlaceholderColor="Gray"
-                               Grid.Row="5" Grid.Column="1"/>
+                            <Label Text="/" 
+                                   FontSize="Body"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   Grid.Column="1"/>
+
+                            <Entry Placeholder="Сезон" 
+                                   x:Name="LastWatchedSeasonEntry"
+                                   Keyboard="Numeric"
+                                   FontSize="Body"
+                                   PlaceholderColor="Gray"
+                                   Grid.Column="2"/>
+                        </Grid>
 
                         <!-- Ссылка -->
                         <Label Text="Ссылка:" 
                                FontSize="Body"
                                VerticalOptions="Center"
-                               Grid.Row="6"/>
-                        <Entry Placeholder="https://..." 
+                               Grid.Row="5"/>
+                        <Entry Placeholder="https:// ваш любимый источник" 
                                x:Name="LinkEntry"
                                FontSize="Body"
                                PlaceholderColor="Gray"
-                               Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
+                               Keyboard="Url"
+                               Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"/>
 
                         <!-- Статус -->
                         <Label Text="Статус:" 
                                FontSize="Body"
                                VerticalOptions="Center"
-                               Grid.Row="7"/>
+                               Grid.Row="6"/>
                         <Picker Title="Выберите статус"
                                x:Name="WatchStatusPicker"
                                FontSize="Body"
                                TitleColor="Gray"
-                               Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2">
+                               Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2">
                             <Picker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
                                     <x:String>Просмотрено</x:String>
@@ -159,11 +160,13 @@
                         Clicked="OnAddClicked" 
                         HorizontalOptions="Center"
                         WidthRequest="200"
+                        HeightRequest="50"
                         Margin="0,20"
-                        CornerRadius="20"/>
+                        CornerRadius="25"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"/>
             </VerticalStackLayout>
         </ScrollView>
-        
+
         <!-- Overlay (фон) -->
         <BoxView x:Name="Overlay"
                  BackgroundColor="#80000000"

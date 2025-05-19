@@ -118,6 +118,19 @@ namespace TestProject
 
             // 8
             HideDataContent();
+
+            if(content.Type == ContentTypes.FILM)
+            {
+                SeriesBorders.IsVisible = false;
+                SeasonBorders.IsVisible = false;
+            }
+            else
+            {
+                SeriesBorders.IsVisible = true;
+                SeasonBorders.IsVisible = true;
+            }
+
+            //WatchStatusPicker.SelectedItem = content.WatchStatus;
         }
 
         private void InternetChecking()
@@ -173,7 +186,7 @@ namespace TestProject
 
         private void HideDataContent()
         {
-            if (string.IsNullOrEmpty(content.CountLabel) && string.IsNullOrEmpty(content.NextEpisodeReleaseDate))
+            if ((string.IsNullOrEmpty(content.CountLabel) && string.IsNullOrEmpty(content.NextEpisodeReleaseDate)) || content.Type == ContentTypes.FILM)
             {
                 InfoBorder.IsVisible = false;
             }
@@ -344,6 +357,7 @@ namespace TestProject
                         }
                     }
                 }
+
                 currentContent.SourceLink = parser?.ExtractUrlWatch;
                 currentContent.CountLabel = parser?.CountLabel;
                 currentContent.Description = parser?.Description;
@@ -405,6 +419,23 @@ namespace TestProject
         #endregion
 
         #region [Handle Method's]
+
+        private void StatusPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            int selectedIndex = picker.SelectedIndex;
+
+            if (selectedIndex != -1)
+            {
+                string selectedType = (string)picker.ItemsSource[selectedIndex];
+                content.WatchStatus = selectedType;
+
+                DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                _databaseService.UpdateContent(content);
+                _databaseService.CloseConnection();
+
+            }
+        }
 
         //Кнопка удаления контента
         private async void DeleteButton_Clicked(object sender, EventArgs e)
@@ -478,7 +509,7 @@ namespace TestProject
             LinkEntry.IsVisible = false;
             LinkEntry.IsReadOnly = false;
             TypePicker.IsVisible = false;
-            WatchStatusPicker.IsVisible = false;
+            //WatchStatusPicker.IsVisible = false;
         }
 
         private void StartEditing()
@@ -490,8 +521,8 @@ namespace TestProject
             TypePicker.IsVisible = true;
             TypePicker.SelectedItem = content.Type;
 
-            WatchStatusPicker.IsVisible = true;
-            WatchStatusPicker.SelectedItem = content.WatchStatus;
+            //WatchStatusPicker.IsVisible = true;
+            //WatchStatusPicker.SelectedItem = content.WatchStatus;
         }
 
         private void ReturnVisibleAfterChanges()
@@ -501,7 +532,6 @@ namespace TestProject
             DecriptionBorder.IsVisible = true;
             TypeEntry.IsVisible = true;
 
-            WatchStatusEntry.IsVisible = true;
             InfoBorder.IsVisible = true;
             DataLabel.IsVisible = true;
             CountLabel.IsVisible = true;
@@ -512,12 +542,12 @@ namespace TestProject
             DubbingEntry.IsEnabled = false;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;
-            WatchStatusEntry.IsReadOnly = true;
         }
         private void IsEditing(bool status, string str)
         {
             isEditing = status;
             EditButton.Text = str;
+            EditsButton.Text = str;
             CancelButton.IsVisible = status;
         }
         private void HideElements(bool isVisible)
@@ -532,7 +562,6 @@ namespace TestProject
             InfoBorder.IsVisible = isVisible;
             ViewContent.IsVisible = isVisible;
             TypeEntry.IsVisible = isVisible;
-            WatchStatusEntry.IsVisible = isVisible;
 
             TitleLabel.IsVisible = isVisible;
             OriginalTitleLabel.IsVisible = isVisible;
@@ -546,10 +575,8 @@ namespace TestProject
             DataLabel.IsVisible = isVisible;
             CountLabel.IsVisible = isVisible;
 
-            WatchStatusEntry.IsReadOnly = isVisible;
-
             TypePicker.IsVisible = isVisible;
-            WatchStatusPicker.IsVisible = isVisible;
+            //WatchStatusPicker.IsVisible = isVisible;
         }
 
         private void SelectRecomendetContent()

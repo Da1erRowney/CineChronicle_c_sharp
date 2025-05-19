@@ -97,11 +97,11 @@ namespace TestProject
             }
 
             string link = GetSourcesLink(type);
-            string dubbing = DubbingEntry.Text;
+            string dubbing = DubbingEntry?.Text;
             string dateAdded = GetTodaysDate().ToString("yyyy-MM-dd HH:mm:ss");
             string statusWatches = WatchStatusPicker.SelectedItem?.ToString();
-            int lastWatchedSeries = int.TryParse(LastWatchedSeriesEntry.Text, out var series) ? series : 0;
-            int lastWatchedSeason = int.TryParse(LastWatchedSeasonEntry.Text, out var season) ? season : 0;
+            int lastWatchedSeries = int.TryParse(LastWatchedSeriesEntry?.Text, out var series) ? series : 0;
+            int lastWatchedSeason = int.TryParse(LastWatchedSeasonEntry?.Text, out var season) ? season : 0;
 
             // Создаем новый экземпляр контента
             var newContent = new Content
@@ -249,6 +249,30 @@ namespace TestProject
         #endregion
 
         #region [Other event handlers]
+
+        private void TypePicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            int selectedIndex = picker.SelectedIndex;
+
+            if (selectedIndex != -1)
+            {
+                string selectedType = (string)picker.ItemsSource[selectedIndex];
+
+                if (selectedType == ContentTypes.FILM || selectedType == "Документалка")
+                {
+                    SeriaEntrys.IsVisible = false;
+                    SeriaLabel.IsVisible = false;
+                    LastWatchedSeasonEntry.Text = "0";
+                    LastWatchedSeriesEntry.Text = "0";
+                }
+                else
+                {
+                    SeriaEntrys.IsVisible = true;
+                    SeriaLabel.IsVisible = true;
+                }
+            }
+        }
 
         private void LastWatchedSeriesEntry_TextChanged(object sender, TextChangedEventArgs e)
         {

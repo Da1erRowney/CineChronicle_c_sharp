@@ -174,9 +174,10 @@
                                         <!-- Статус просмотра -->
                                         <StackLayout Orientation="Horizontal" Margin="0,0,0,0" x:Name="StatusP">
                                             <Label Text="Ваш статус: " VerticalOptions="Center" x:Name="WatchStatusLabel" FontSize="18"/>
-                                            <Entry x:Name="WatchStatusEntry" Text="{Binding Content.WatchStatus}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0"/>
-                                            <Picker Title="Выберите статус просмотра" x:Name="WatchStatusPicker" IsVisible="false" FontSize="18"
-                                                        TitleColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" >
+                                            <Picker Title="Выберите статус просмотра" x:Name="WatchStatusPicker" IsVisible="true" FontSize="18" VerticalOptions="Center" Margin="0,3,0,0"
+                                                    TitleColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                                                    SelectedItem="{Binding Content.WatchStatus}"
+                                                    SelectedIndexChanged="StatusPicker_SelectedIndexChanged" >
                                                 <Picker.ItemsSource >
                                                     <x:Array Type="{x:Type x:String}" >
                                                         <x:String>Просмотрено</x:String>
@@ -188,7 +189,7 @@
                                         </StackLayout>
                                         
                                         <!-- Номер последнего просмотренной серии -->
-                                        <StackLayout Orientation="Horizontal">
+                                        <StackLayout Orientation="Horizontal" x:Name="SeriesBorders">
                                             <Label Text="Серия:  " VerticalOptions="Center" FontSize="18"/>
                                             <Entry x:Name="LastWatchedSeriesEntry" Text="{Binding Content.LastWatchedSeries}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0">
                                                 <Entry.Style>
@@ -205,7 +206,7 @@
                                         </StackLayout>
 
                                         <!-- Номер последнего просмотренного сезона -->
-                                        <StackLayout Orientation="Horizontal">
+                                        <StackLayout Orientation="Horizontal" x:Name="SeasonBorders">
                                             <Label Text="Сезон:  " VerticalOptions="Center" FontSize="18"/>
                                             <Entry x:Name="LastWatchedSeasonEntry" Text="{Binding Content.LastWatchedSeason}" IsReadOnly="True" VerticalOptions="Center" FontSize="18" Margin="0,3,0,0">
                                                 <Entry.Style>
@@ -221,6 +222,8 @@
                                             <Stepper Scale="0.7" x:Name="StepperSeason" Minimum="0" Maximum="10000" Increment="1" Value="{Binding Content.LastWatchedSeason, Mode=TwoWay}" ValueChanged="StepperSeason_ValueChanged" />
                                         </StackLayout>
                                         
+                                        <!-- Кнопка Изменить -->
+                                        <Button Opacity="0.8" x:Name="EditsButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="0,20,0,0" WidthRequest="150" FontSize="18" CornerRadius="100"/>
                                     </StackLayout>
                                 </Grid>
                                 <Border.Shadow>

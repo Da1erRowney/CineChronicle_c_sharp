@@ -83,7 +83,9 @@
                                ItemsSource="{Binding ContentChange}"
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedItem}"
-                                 Margin="0,50,0,50">
+                                 Margin="0,50,0,50"
+                                VerticalOptions="Center"
+                                HorizontalOptions="StartAndExpand">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Horizontal" Span="2"/>
                     </CollectionView.ItemsLayout>
@@ -94,13 +96,13 @@
                                 <Border Style="{StaticResource ContentCardStyle}"
                                         Margin="25,10,25,10"
                                         HeightRequest="250"
-                                        WidthRequest="250">
+                                        WidthRequest="200">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
                                         <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3"/>
                                         <RoundRectangle Grid.RowSpan="3"
                                                         CornerRadius="30"
                                                         HeightRequest="250"
-                                                        WidthRequest="250"
+                                                        WidthRequest="200"
                                                         Opacity=".7">
                                             <RoundRectangle.Fill>
                                                 <LinearGradientBrush EndPoint="0,1">
@@ -142,7 +144,9 @@
                                ItemsSource="{Binding ContentAdded}"
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedItem}"
-                                Margin="0,50,0,50">
+                                Margin="0,50,0,50"
+                                VerticalOptions="Center"
+                                HorizontalOptions="StartAndExpand">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Horizontal" Span="2"/>
                     </CollectionView.ItemsLayout>
@@ -154,13 +158,13 @@
                                 <Border Style="{StaticResource ContentCardStyle}"
                                         Margin="25,10,25,10"
                                         HeightRequest="250"
-                                        WidthRequest="250">
+                                        WidthRequest="200">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
                                         <Image Source="{Binding Image}" Grid.RowSpan="3" Aspect="Fill"/>
                                         <RoundRectangle Grid.RowSpan="3"
                                                         CornerRadius="30"
                                                         HeightRequest="250"
-                                                        WidthRequest="250"
+                                                        WidthRequest="200"
                                                         Opacity=".7">
                                             <RoundRectangle.Fill>
                                                 <LinearGradientBrush EndPoint="0,1">
@@ -186,6 +190,60 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 
+                <!-- Релизы контентов -->
+                <Label Text="Что нового?" Style="{StaticResource SectionTitleStyle}"/>
+                <Label Text="Последние релизы и предстоящие премьеры вашего контента" Style="{StaticResource SectionSubtitleStyle}"/>
+
+                <CollectionView x:Name="RecentlyReleaseCarouselView"
+                               ItemsSource="{Binding ContentRelease}"
+                               SelectionMode="Single"
+                               SelectedItem="{Binding SelectedItem}"
+                                Margin="0,50,0,50"
+                                VerticalOptions="Center"
+                                HorizontalOptions="StartAndExpand">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Horizontal" Span="2"/>
+                    </CollectionView.ItemsLayout>
+
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Border Style="{StaticResource ContentCardStyle}"
+                                        Margin="25,10,25,10"
+                                        HeightRequest="250"
+                                        WidthRequest="200">
+                                    <Grid RowDefinitions=".2*,.6*,.2*">
+                                        <Image Source="{Binding Image}" Grid.RowSpan="3" Aspect="Fill"/>
+                                        <RoundRectangle Grid.RowSpan="3"
+                                                        CornerRadius="30"
+                                                        HeightRequest="250"
+                                                        WidthRequest="200"
+                                                        Opacity=".7">
+                                            <RoundRectangle.Fill>
+                                                <LinearGradientBrush EndPoint="0,1">
+                                                    <GradientStop Offset="0" Color="Transparent"/>
+                                                    <GradientStop Offset="1" Color="#030005"/>
+                                                </LinearGradientBrush>
+                                            </RoundRectangle.Fill>
+                                        </RoundRectangle>
+
+                                        <VerticalStackLayout Grid.Row="2" Margin="20,-5,0,0">
+                                            <Label TextColor="White" Text="{Binding DateRelease, StringFormat='Выход: {0}'}" FontSize="12"/>
+                                            <Label FontSize="16" Text="{Binding Title}" TextColor="White"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+
+                                <Button BackgroundColor="Transparent" 
+                                        Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyReleaseCarouselView}}"
+                                        CommandParameter="{Binding .}"
+                                        Clicked="ItemButtonClickedRelease"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
                 <!-- Рекомендованный контент -->
                 <StackLayout x:Name="MobilePhoneRec">
                     <Label Text="Рекомендованный контент" Style="{StaticResource SectionTitleStyle}"/>
@@ -195,7 +253,8 @@
                     x:Name="RecentlyRecommendationCarouselView"
                     ItemsSource="{Binding ContentRecommendation}"
                     SelectionMode="Single"
-                    SelectedItem="{Binding SelectedItem}">
+                    SelectedItem="{Binding SelectedItem}"
+                                    HorizontalOptions="Center">
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout Orientation="Horizontal" Span="4"/>
                         </CollectionView.ItemsLayout>
@@ -206,13 +265,13 @@
                                     <Border Style="{StaticResource ContentCardStyle}"
                              Margin="25,10,25,10"
                              HeightRequest="250"
-                             WidthRequest="250">
+                             WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.2*">
                                             <Image Aspect="Fill" Source="{Binding ImageUrl}" Grid.RowSpan="3"/>
                                             <RoundRectangle Grid.RowSpan="3"
                                              CornerRadius="30"
                                              HeightRequest="250"
-                                             WidthRequest="250"
+                                             WidthRequest="200"
                                              Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">

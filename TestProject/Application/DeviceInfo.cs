@@ -3,7 +3,6 @@
     public class DeviceInfo
     {
         public string TypeDevice { get; set; }
-        public bool NotifyUse { get; set; } = false;
 
         public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
 

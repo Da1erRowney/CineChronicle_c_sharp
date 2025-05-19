@@ -9,16 +9,36 @@ namespace CineChronicle.Tables
         public DatabaseServiceContent(string _databasePath)
         {
             _connection = new SQLiteConnection(_databasePath);
+            CreateTables();
         }
+
         //Таблицы
         public void CreateTables()
         {
-            _connection.CreateTable<Content>();
-            _connection.CreateTable<DateExit>();
-            _connection.CreateTable<User>();
-            _connection.CreateTable<Authorized>();
-            _connection.CreateTable<UserSettings>();
-            _connection.CreateTable<UserContent>();
+            if (!TableExists<Content>()) _connection.CreateTable<Content>();
+            if (!TableExists<DateExit>()) _connection.CreateTable<DateExit>();
+            if (!TableExists<User>()) _connection.CreateTable<User>();
+            if (!TableExists<Authorized>()) _connection.CreateTable<Authorized>();
+            if (!TableExists<UserSettings>()) _connection.CreateTable<UserSettings>();
+            if (!TableExists<UserContents>()) _connection.CreateTable<UserContents>();
+        }
+        private bool TableExists<T>()
+        {
+            var tableName = typeof(T).Name;
+            var query = $"SELECT name FROM sqlite_master WHERE type='table' AND name='{tableName}';";
+            var result = _connection.ExecuteScalar<string>(query);
+            return result != null;
+        }
+        public void DropAllTables()
+        {
+            _connection.Execute("DROP TABLE IF EXISTS Content");
+            _connection.Execute("DROP TABLE IF EXISTS DateExit");
+            _connection.Execute("DROP TABLE IF EXISTS User");
+            _connection.Execute("DROP TABLE IF EXISTS Authorized");
+            _connection.Execute("DROP TABLE IF EXISTS UserSettings");
+            _connection.Execute("DROP TABLE IF EXISTS UserContents");
+
+            _connection.Execute("VACUUM");
         }
         public void CloseConnection()
         {

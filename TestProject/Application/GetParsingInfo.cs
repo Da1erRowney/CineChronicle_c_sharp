@@ -72,15 +72,22 @@ namespace CineChronicle.Application
         {
             try
             {
-                 var tasks = new[]
-                {
-                    GetInfo(title, type, typePars, false),
-                    GetInfo(title, type, typePars, true),
-                    GetInfo(title, type, SourceTypes.YT, false),
-                    GetInfo(title, type, SourceTypes.DE, false)
-                };
+                // Создаем список задач динамически
+                var tasks = new List<Task>();
 
-                await Task.WhenAll(tasks);
+                // Добавляем обязательные задачи
+                tasks.Add(GetInfo(title, type, typePars, false));
+                tasks.Add(GetInfo(title, type, typePars, true));
+                tasks.Add(GetInfo(title, type, SourceTypes.YT, false));
+
+                // Добавляем условную задачу
+                if (type != ContentTypes.FILM)
+                {
+                    tasks.Add(GetInfo(title, type, SourceTypes.DE, false));
+                }
+
+                // Ожидаем завершения всех задач, игнорируя null
+                await Task.WhenAll(tasks.Where(t => t != null));
             }
             catch (Exception ex)
             {

@@ -9,9 +9,9 @@ namespace CineChronicle.Tables
         public int Id { get; set; }                                                 // Айди
         private string countLabel;                                                  // Количество серий??
         private string dateAdded;                                                   // Дата добавления
+        private string dateRelease;                                                 // Строка даты выхода?
         private string description;                                                 // Описание контента
         private string dubbing;                                                     // Озвучка
-        private string dateRelease;                                                 // Строка даты выхода?
         private string emailUser = "";                                              // Пользователь 
         private string image;                                                       // Постер
         private int lastWatchedSeason = 0;                                          // Последний просмотренный сезон
@@ -68,6 +68,15 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(DateAdded));
             }
         }
+        public string DateRelease
+        {
+            get => dateRelease;
+            set
+            {
+                dateRelease = value;
+                OnPropertyChanged(nameof(DateRelease));
+            }
+        }
         public string Description
         {
             get => description;
@@ -84,15 +93,6 @@ namespace CineChronicle.Tables
             {
                 dubbing = value;
                 OnPropertyChanged(nameof(Dubbing));
-            }
-        }
-        public string DateRelease
-        {
-            get => dateRelease;
-            set
-            {
-                dateRelease = value;
-                OnPropertyChanged(nameof(DateRelease));
             }
         }
         public string EmailUser

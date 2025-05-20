@@ -131,7 +131,7 @@
                                 <Button BackgroundColor="Transparent" 
                                         Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyChangeCarouselView}}"
                                         CommandParameter="{Binding .}"
-                                        Clicked="ItemButtonClickedChange"/>
+                                        Clicked="ItemButtonClicked"/>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -243,7 +243,7 @@
                                 <Button BackgroundColor="Transparent" 
                                         Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference RecentlyReleaseCarouselView}}"
                                         CommandParameter="{Binding .}"
-                                        Clicked="ItemButtonClickedRelease"/>
+                                        Clicked="ItemButtonClicked"/>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

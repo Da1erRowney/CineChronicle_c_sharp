@@ -117,23 +117,32 @@ public partial class MainPage : ContentPage
             ConnectionInternet();
         }
     }
-    private void ItemButtonClickedChange(object sender, EventArgs e)
-    {
-        HandleClick(sender);
-    }
+
     private void ItemButtonClicked(object sender, EventArgs e)
     {
         HandleClick(sender);
     }
-    private void ItemButtonClickedRelease(object sender, EventArgs e)
-    {
-        HandleClick(sender);
-    }
+
     private void HandleClick(object sender)
     {
         var button = (Button)sender;
         var item = (Content)button.CommandParameter;
         OnItemClick(item.Id);
+    }
+
+    private async void OnItemClick(int id)
+    {
+        SelectedItem = ViewContentMainPageModel.GetContentById(id);
+        if (SelectedItem.Type == "Ваш контент")
+        {
+            ViewContentMainPageModel.DeleteBaseContent();
+            await Navigation.PushAsync(new AddMoreContentPage());
+        }
+        else
+        {
+            ViewContentPage viewContentPage = new ViewContentPage(SelectedItem);
+            await Navigation.PushAsync(viewContentPage);
+        }
     }
 
     private void ItemButtonClickedRecommendation(object sender, EventArgs e)
@@ -156,20 +165,7 @@ public partial class MainPage : ContentPage
         await Navigation.PushAsync(viewContentPage);
     }
 
-    private async void OnItemClick(int id)
-    {
-        SelectedItem = ViewContentMainPageModel.GetContentById(id);
-        if (SelectedItem.Type == "Ваш контент")
-        {
-            ViewContentMainPageModel.DeleteBaseContent();
-            await Navigation.PushAsync(new AddMoreContentPage());
-        }
-        else
-        {
-            ViewContentPage viewContentPage = new ViewContentPage(SelectedItem);
-            await Navigation.PushAsync(viewContentPage);
-        }
-    } 
+   
 }
 
 

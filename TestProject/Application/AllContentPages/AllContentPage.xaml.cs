@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Xaml;
-using SQLite;
-using Microsoft.Maui.Platform;
-using System.Diagnostics;
-using System.ComponentModel;
-using System.Windows.Input;
+using CineChronicle.Application.SupportClass;
+using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
-using Microsoft.Maui.ApplicationModel;
+using System.Globalization;
+using System.Net.Mime;
+using System.Xml.Linq;
 
 namespace TestProject
 {
@@ -19,29 +12,6 @@ namespace TestProject
     { 
     
         public string Choise ="All";
-        public List<Content> ContentAll { get; set; }
-        public List<Content> ContentSerial { get; set; }
-        public List<Content> ContentAnime { get; set; }
-        public List<Content> ContentFilm { get; set; }
-        public List<Content> ContentDorama { get; set; }
-        public List<Content> ContentMult { get; set; }
-        public List<Content> ContentDocum { get; set; }
-        public List<Content> ContentOther { get; set; }
-        public List<Content> ContentViewed { get; set; }
-        public List<Content> ContentProcess { get; set; }
-        public List<Content> ContentNotStart { get; set; }
-
-        public List<Content> ContentAllall { get; set; }
-        public List<Content> ContentSerialall { get; set; }
-        public List<Content> ContentAnimeall { get; set; }
-        public List<Content> ContentFilmall { get; set; }
-        public List<Content> ContentDoramaall { get; set; }
-        public List<Content> ContentMultall { get; set; }
-        public List<Content> ContentDocumall { get; set; }
-        public List<Content> ContentOtherall { get; set; }
-        public List<Content> ContentViewedall { get; set; }
-        public List<Content> ContentProcessall { get; set; }
-        public List<Content> ContentNotStartall { get; set; }
 
         private List<Content> _contentSearch;
         public List<Content> ContentSort { get; set; }
@@ -56,61 +26,21 @@ namespace TestProject
         }
         public Content SelectedItem { get; set; }
 
-        private DatabaseServiceContent _databaseService;
+        private DatabaseServiceContent _databaseService = new DatabaseServiceContent(CineChronicle.Application.DeviceInfo._databasePath);
 
         public AllContentPage()
         {
             InitializeComponent();
-            Filling();
         }
-        public void Filling()
+
+        protected override void OnAppearing()
         {
-            _databaseService = new DatabaseServiceContent(MainPage._databasePath);
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            base.OnAppearing();
 
-            List<Content> contents = databaseService.GetAllContent().ToList();
-            ContentAll = contents.Take(8).ToList();
-            ContentAllall = contents.ToList();
-
-            ContentSerialall = databaseService.GetContentByType("Сериал").ToList();
-            ContentAnimeall = databaseService.GetContentByType("Аниме").ToList();
-            ContentFilmall = databaseService.GetContentByType("Фильм").ToList();
-            ContentDoramaall = databaseService.GetContentByType("Дорама").ToList();
-            ContentMultall = databaseService.GetContentByType("Мультсериал").ToList();
-            ContentDocumall = databaseService.GetContentByType("Документалка").ToList();
-            ContentOtherall = databaseService.GetContentByType("Прочее").ToList();
-            ContentViewedall = databaseService.GetContentByWatchStatus("Просмотрено").ToList();
-            ContentProcessall = databaseService.GetContentByWatchStatus("Смотрю").ToList();
-            ContentNotStartall = databaseService.GetContentByWatchStatus("Не начинал").ToList();
-
-            ContentSerial   = ContentSerialall.Take(8).ToList();
-            ContentAnime    = ContentAnimeall.Take(8).ToList();
-            ContentFilm     = ContentFilmall.Take(8).ToList();
-            ContentDorama   = ContentDoramaall.Take(8).ToList();
-            ContentMult     = ContentMultall.Take(8).ToList();
-            ContentDocum    = ContentDocumall.Take(8).ToList();
-            ContentOther    = ContentOtherall.Take(8).ToList();
-            ContentViewed   = ContentViewedall.Take(8).ToList();
-            ContentProcess  = ContentProcessall.Take(8).ToList();
-            ContentNotStart = ContentNotStartall.Take(8).ToList();
-
-
-
-            OnPropertyChanged(nameof(ContentAll));
-            OnPropertyChanged(nameof(ContentSerial));
-            OnPropertyChanged(nameof(ContentAnime));
-            OnPropertyChanged(nameof(ContentDorama));
-            OnPropertyChanged(nameof(ContentMult));
-            OnPropertyChanged(nameof(ContentFilm));
-            OnPropertyChanged(nameof(ContentDocum));
-            OnPropertyChanged(nameof(ContentOther));
-            OnPropertyChanged(nameof(ContentViewed));
-            OnPropertyChanged(nameof(ContentProcess));
-            OnPropertyChanged(nameof(ContentNotStart));
-            OnPropertyChanged(nameof(ContentSort));
+            BindingContext = new ViewContentAllPageModel();
 
             string search = searchBar.Text;
-            if (search != null && search !="")
+            if (search != null && search != "")
             {
                 Sort.IsVisible = true;
                 VisibleFalse();
@@ -120,109 +50,102 @@ namespace TestProject
                 Sort.IsVisible = false;
                 ViewData();
             }
-
-            BindingContext = this;
         }
-       
            
+        // Скрытие блоков, где контент пуст
         private void ViewData()
         {
 
-            if (ContentAll.Count == 0)
-            {
-                All.IsVisible = false;
-            }
-            else
-            {
-                All.IsVisible = true;
-            }
-            if (ContentSerial.Count == 0)
-            {
-                Serial.IsVisible = false;
-            }
-            else
-            {
-                Serial.IsVisible = true;
-            }
-            if (ContentAnime.Count == 0)
-            {
-                Anime.IsVisible = false;
-            }
-            else
-            {
-                Anime.IsVisible = true;
-            }
-            if (ContentFilm.Count == 0)
-            {
-                Film.IsVisible = false;
-            }
-            else
-            {
-                Film.IsVisible = true;
-            }
-            if (ContentDorama.Count == 0)
-            {
-                Dorama.IsVisible = false;
-            }
-            else
-            {
-                Dorama.IsVisible = true;
-            }
-            if (ContentMult.Count == 0)
-            {
-                Mult.IsVisible = false;
-            }
-            else
-            {
-                Mult.IsVisible = true;
-            }
-            if (ContentDocum.Count == 0)
-            {
-                Docum.IsVisible = false;
-            }
-            else
-            {
-                Docum.IsVisible = true;
-            }
-            if (ContentOther.Count == 0)
-            {
-                Other.IsVisible = false;
-            }
-            else
-            {
-                Other.IsVisible = true;
-            }
-            if (ContentViewed.Count == 0)
-            {
-                Viewed.IsVisible = false;
-            }
-            else
-            {
-                Viewed.IsVisible = true;
-            }
-            if (ContentProcess.Count == 0)
-            {
-                Process.IsVisible = false;
-            }
-            else
-            {
-                Process.IsVisible = true;
-            }
-            if (ContentNotStart.Count == 0)
-            {
-                NotStart.IsVisible = false;
-            }
-            else
-            {
-                NotStart.IsVisible = true;
-            }
+            //if (ContentAll.Count == 0)
+            //{
+            //    All.IsVisible = false;
+            //}
+            //else
+            //{
+            //    All.IsVisible = true;
+            //}
+            //if (ContentSerial.Count == 0)
+            //{
+            //    Serial.IsVisible = false;
+            //}
+            //else
+            //{
+            //    Serial.IsVisible = true;
+            //}
+            //if (ContentAnime.Count == 0)
+            //{
+            //    Anime.IsVisible = false;
+            //}
+            //else
+            //{
+            //    Anime.IsVisible = true;
+            //}
+            //if (ContentFilm.Count == 0)
+            //{
+            //    Film.IsVisible = false;
+            //}
+            //else
+            //{
+            //    Film.IsVisible = true;
+            //}
+            //if (ContentDorama.Count == 0)
+            //{
+            //    Dorama.IsVisible = false;
+            //}
+            //else
+            //{
+            //    Dorama.IsVisible = true;
+            //}
+            //if (ContentMult.Count == 0)
+            //{
+            //    Mult.IsVisible = false;
+            //}
+            //else
+            //{
+            //    Mult.IsVisible = true;
+            //}
+            //if (ContentDocum.Count == 0)
+            //{
+            //    Docum.IsVisible = false;
+            //}
+            //else
+            //{
+            //    Docum.IsVisible = true;
+            //}
+            //if (ContentOther.Count == 0)
+            //{
+            //    Other.IsVisible = false;
+            //}
+            //else
+            //{
+            //    Other.IsVisible = true;
+            //}
+            //if (ContentViewed.Count == 0)
+            //{
+            //    Viewed.IsVisible = false;
+            //}
+            //else
+            //{
+            //    Viewed.IsVisible = true;
+            //}
+            //if (ContentProcess.Count == 0)
+            //{
+            //    Process.IsVisible = false;
+            //}
+            //else
+            //{
+            //    Process.IsVisible = true;
+            //}
+            //if (ContentNotStart.Count == 0)
+            //{
+            //    NotStart.IsVisible = false;
+            //}
+            //else
+            //{
+            //    NotStart.IsVisible = true;
+            //}
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            Filling();
-        }
         private void VisibleFalse()
         {
             All.IsVisible = false;
@@ -238,7 +161,7 @@ namespace TestProject
             NotStart.IsVisible = false;
         }
 
-
+        // Возврат показа всего
         private async void ВсеButton_Clicked(object sender, EventArgs e)
         {
             All.IsVisible = true;
@@ -252,6 +175,8 @@ namespace TestProject
             Viewed.IsVisible = true;
             Process.IsVisible = true;
             NotStart.IsVisible = true;
+
+
             Sort.IsVisible = false;
             ViewData();
             searchBar.Text = "";
@@ -259,298 +184,45 @@ namespace TestProject
 
         }
 
-        public async void GetContent(string type, string name)
+        #region [Category]
+        private async void CategoryButton_Clicked(object sender, EventArgs e)
         {
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
-            List<Content> contents = databaseService.GetContentByType(type).ToList();
-            ContentSort = contents;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, name);
-            await Navigation.PushAsync(viewContentPage);
-        }
-        public async void GetContentStatus(string type, string name)
-        {
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
-            List<Content> contents = databaseService.GetContentByWatchStatus(type).ToList();
-            ContentSort = contents;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, name);
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ViewContentAllPageModel.PrepareCategory(sender), ViewContentAllPageModel._categoryData[1]);
             await Navigation.PushAsync(viewContentPage);
         }
 
-        private void АнимеButton_Clicked(object sender, EventArgs e)
+
+        #endregion
+
+        #region [Content]
+        private void ItemButtonClicked(object sender, EventArgs e)
         {
-            string nameCategory = "Всё ваше Аниме";
-            GetContent("Аниме", nameCategory);
+            HandleClick(sender);
         }
 
-        private void ФильмыButton_Clicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Все ваши Фильмы";
-            GetContent("Фильм", nameCategory);
-        }
-
-        private void СериалыButton_Clicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Все ваши Сериалы";
-            GetContent("Сериал", nameCategory);
-        }
-
-        private void ДорамыButton_Clicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Все ваши Дорамы";
-            GetContent("Дорама", nameCategory);
-        }
-
-        private void МультсериалыButton_Clicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Все ваши Мультсериалы";
-            GetContent("Мультсериал", nameCategory);
-        }
-
-        private void ДокументалкиButton_Clicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Все ваши Документальные фильмы";
-            GetContent("Документалка", nameCategory);
-        }
-        private async void ВесьКонтентClicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Весь ваш контент";
-            ContentSort = ContentAllall;
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ContentSort, nameCategory);
-            await Navigation.PushAsync(viewContentPage);
-        }
-        private void ПрочееButton_Clicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Ваш прочий контент";
-            GetContent("Прочее", nameCategory);
-        }
-
-
-        private void ПросмотреноButton_Clicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Просмотренный контент";
-            GetContentStatus("Просмотрено", nameCategory);
-        }
-
-        private void ВпроцессеButton_Clicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Контент, который вы начали смотреть";
-            GetContentStatus("Смотрю", nameCategory);
-        }
-
-        private void НеначатоButton_Clicked(object sender, EventArgs e)
-        {
-            string nameCategory = "Не начатый контент";
-            GetContentStatus("Не начинал", nameCategory);
-        }
-
-        private async void OnItemSelectedAll(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentAll[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-            
-        }
-
-        private void ItemButtonClickedAll(object sender, EventArgs e)
+        private void HandleClick(object sender)
         {
             var button = (Button)sender;
             var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)AllContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedAll(item, selectedIndex);
+            OnItemClick(item.Id);
         }
 
-
-        private void ItemButtonClickedSerial(object sender, EventArgs e)
+        private async void OnItemClick(int id)
         {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)SerialContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedSerial(item, selectedIndex);
+            SelectedItem = ViewContentAllPageModel.GetContentById(id);
+            if (SelectedItem.Type == "Ваш контент")
+            {
+                ViewContentAllPageModel.DeleteBaseContent();
+                await Navigation.PushAsync(new AddMoreContentPage());
+            }
+            else
+            {
+                ViewContentPage viewContentPage = new ViewContentPage(SelectedItem);
+                await Navigation.PushAsync(viewContentPage);
+            }
         }
+        #endregion
 
-        private async void OnItemSelectedSerial(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentSerial[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
-
-
-        private void ItemButtonClickedAnime(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)AnimeContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedAnime(item, selectedIndex);
-        }
-
-        private async void OnItemSelectedAnime(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentAnime[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
-
-
-        private void ItemButtonClickedFilm(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)FilmContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedFilm(item, selectedIndex);
-        }
-
-        private async void OnItemSelectedFilm(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentFilm[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
-
-
-        private void ItemButtonClickedDorama(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)DoramaContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedDorama(item, selectedIndex);
-        }
-
-        private async void OnItemSelectedDorama(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentDorama[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
-
-
-        private void ItemButtonClickedMult(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)MultContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedMult(item, selectedIndex);
-        }
-
-        private async void OnItemSelectedMult(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentMult[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
-
-
-        private void ItemButtonClickedDocum(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)DocumContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedDocum(item, selectedIndex);
-        }
-
-        private async void OnItemSelectedDocum(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentDocum[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
-
-
-        private void ItemButtonClickedOther(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)OtherContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedOther(item, selectedIndex);
-        }
-
-        private async void OnItemSelectedOther(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentOther[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
-
-
-        private void ItemButtonClickedViewed(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)ViewedContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedViewed(item, selectedIndex);
-        }
-
-        private async void OnItemSelectedViewed(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentViewed[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
-
-
-        private void ItemButtonClickedProcess(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)ProcessContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedProcess(item, selectedIndex);
-        }
-
-        private async void OnItemSelectedProcess(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentProcess[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
-
-
-        private void ItemButtonClickedNotStart(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var item = (Content)button.CommandParameter;
-            var selectedIndex = new List<Content>((IEnumerable<Content>)NotStartContentCollectionView.ItemsSource).IndexOf(item);
-            OnItemSelectedNotStart(item, selectedIndex);
-        }
-
-        private async void OnItemSelectedNotStart(Content item, int selectedIndex)
-        {
-            if (item == null)
-                return;
-
-            Content selectedContent = ContentNotStart[selectedIndex];
-            ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-            await Navigation.PushAsync(viewContentPage);
-        }
         private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item is Content selectedContent)
@@ -597,7 +269,6 @@ namespace TestProject
 
         private void SearchContent(object sender, EventArgs e)
         {
-            
             _databaseService = new DatabaseServiceContent(MainPage._databasePath);
             DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
             string searchQuery = searchBar.Text;

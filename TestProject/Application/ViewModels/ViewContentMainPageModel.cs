@@ -6,21 +6,23 @@ namespace CineChronicle.Application.ViewModels
 {
     public class ViewContentMainPageModel : ObservableObject
     {
-        
-        public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
+        #region [Private Fields]
         private GetContentRecommendation ContentRecommendationRead = new();
+        private DeviceInfo _device = new();
+
         private static DatabaseServiceContent _databaseService;
+
+        public static bool[] isContentNull = new bool[3];
+
         public List<ContentRecommendation> ContentRecommendation { get; set; }
         public List<Content> ContentAdded { get; set; }
         public List<Content> ContentChange { get; set; }
         public List<Content> ContentRelease { get; set; }
-
-        public static bool[] isContentNull = new bool[3];
-        private DeviceInfo _device = new();
+        #endregion
 
         public ViewContentMainPageModel()
         {
-            _databaseService = new DatabaseServiceContent(_databasePath);
+            _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
 
             InitializeSyncData();
         }

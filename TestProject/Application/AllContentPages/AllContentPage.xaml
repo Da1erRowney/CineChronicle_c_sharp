@@ -112,7 +112,7 @@
                     <StackLayout x:Name="All" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                         <Label x:Name="MainLabel" Text="Весь ваш контент!"  FontAttributes="Bold" VerticalOptions="Center"  FontSize="22" Margin="50,0,0,0" >
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ВесьКонтентClicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentAllall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -156,7 +156,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference AllContentCollectionView}}" CommandParameter="{Binding .}"
-                                        Clicked="ItemButtonClickedAll"/>
+                                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -166,7 +166,7 @@
                     <StackLayout x:Name="Serial" Orientation="Vertical" Padding="10"  Margin="-10,25,-10,0">
                         <Label x:Name="SerialLabel" Text="Сериалы" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="СериалыButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentSerialall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -206,7 +206,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference SerialContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedSerial"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -217,7 +217,7 @@
                     <StackLayout x:Name="Anime" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                         <Label  x:Name="AnimeLabel" Text="Аниме" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="АнимеButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentAnimeall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -258,7 +258,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference AnimeContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedAnime"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -269,7 +269,7 @@
                     <StackLayout x:Name="Film" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                         <Label x:Name="FilmLabel" Text="Фильмы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ФильмыButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentFilmall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -302,7 +302,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference FilmContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedFilm"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -313,7 +313,7 @@
                     <StackLayout x:Name="Dorama" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                         <Label x:Name="DoramaLabel" Text="Дорамы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ДорамыButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentDoramaall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -352,7 +352,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference DoramaContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedDorama"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -363,7 +363,7 @@
                     <StackLayout x:Name="Mult" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                         <Label x:Name="MultLabel" Text="Мультсериалы" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="МультсериалыButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentMultall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -404,7 +404,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference MultContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedMult"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -415,7 +415,7 @@
                     <StackLayout x:Name="Docum" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                         <Label x:Name="DocumLabel" Text="Документалки" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ДокументалкиButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentDocumall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -454,7 +454,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference DocumContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedDocum"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -465,7 +465,7 @@
                     <StackLayout x:Name="Other" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                         <Label x:Name="OtherLabel" Text="Прочее" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ПрочееButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentOtherall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -504,7 +504,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference OtherContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedOther"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -515,7 +515,7 @@
                     <StackLayout x:Name="Viewed" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                         <Label x:Name="ViewedLabel" Text="Просмотрено" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ПросмотреноButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentViewedall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -554,7 +554,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference ViewedContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedViewed"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -565,7 +565,7 @@
                     <StackLayout x:Name="Process" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="ProcessLabel" Text="Вы смотрите" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ВпроцессеButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentProcessall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -604,7 +604,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference ProcessContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedProcess"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -615,7 +615,7 @@
                     <StackLayout x:Name="NotStart" Orientation="Vertical" Padding="10" Margin="-10,25,-10,0">
                     <Label x:Name="NotStartLabel" Text="Вы еще не начали смотреть" VerticalOptions="Center"  FontAttributes="Bold" FontSize="22" Margin="50,0,0,0">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="НеначатоButton_Clicked" />
+                            <TapGestureRecognizer Tapped="CategoryButton_Clicked" />
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Text="{Binding ContentNotStartall.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="18" Margin="50,0,0,25"/>
@@ -654,7 +654,7 @@
                                             </Border.Shadow>
                                         </Border>
                                         <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference NotStartContentCollectionView}}" CommandParameter="{Binding .}"
-                        Clicked="ItemButtonClickedNotStart"/>
+                        Clicked="ItemButtonClicked"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>

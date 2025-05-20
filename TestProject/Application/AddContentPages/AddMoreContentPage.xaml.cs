@@ -15,11 +15,17 @@ namespace TestProject
         public AddMoreContentPage()
         {
             InitializeComponent();
-            _databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            Init();
+        }
+
+        private void Init()
+        {
+            _databaseService = new DatabaseServiceContent(CineChronicle.Application.DeviceInfo._databasePath);
             LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
             LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
         }
-        public AddMoreContentPage(ContentRecommendation data)
+
+        public AddMoreContentPage(CineChronicle.Tables.ContentRecommendation data)
         {
             InitializeComponent();
             TitleEntry.Text = data.Title;
@@ -47,11 +53,8 @@ namespace TestProject
                 // Присвоить найденный объект элемента в SelectedItem
                 TypePicker.SelectedItem = selectedType;
             }
-            
-            _databaseService = new DatabaseServiceContent(MainPage._databasePath);
-            LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
-            LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
 
+            Init();
         }
         #endregion
 

@@ -1,16 +1,24 @@
 ﻿using CineChronicle.Application.SupportClass;
+using CineChronicle.Tables;
 using HtmlAgilityPack;
 
 namespace CineChronicle.Application.MainPage;
 
-public class ContentRecommendation
+public class GetContentRecommendation
 {
-    public string ImageUrl { get; set; }
-    public string Title { get; set; }
-    public string Type { get; set; }
 
     public async Task<List<ContentRecommendation>> GetRecommendationsAsync()
     {
+        DatabaseServiceContent _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
+
+        // Если рекомендации не пусты и не прошло 7 дней с добавления
+        if (!_databaseService.IsRecomContentValid()) return _databaseService.GetAllRecomContent();
+
+        DeviceInfo deviceInfo = new();
+        if (!deviceInfo.CheckInternetConnection()) return _databaseService.GetAllRecomContent();
+
+        _databaseService.ClearRecomContent();
+
         string url = "https://www.toramp.com/";
 
         List<ContentRecommendation> recommendations = new List<ContentRecommendation>();
@@ -53,20 +61,22 @@ public class ContentRecommendation
                                 // Символ `/` не найден в строке title
                             }
                             title = titleBeforeSlash;
+
                             var newContent = new ContentRecommendation
                             {
                                 ImageUrl = imageSrc,
                                 Title = title,
-                                Type = type
+                                Type = type,
+                                DateChange = DateTime.Now
                             };
-                            recommendations.Add(newContent);
+                             _databaseService.InsertRecomContent(newContent);
                         }
                     }
                 }
             }
         }
 
-        return recommendations;
+        return _databaseService.GetAllRecomContent();
     }
 
     public string GetContentType(string title)

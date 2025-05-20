@@ -12,7 +12,7 @@ namespace CineChronicle.Application.ViewModel
         {
             Content = content;
         }
-        public ViewContentPageRefreshModel(ContentRecommendation contentRecommendation, GetParsingInfo parser)
+        public ViewContentPageRefreshModel(Tables.ContentRecommendation contentRecommendation, GetParsingInfo parser)
         {
             Content content = new();
             content.Title = contentRecommendation.Title;

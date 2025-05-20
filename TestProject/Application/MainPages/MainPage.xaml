@@ -76,6 +76,7 @@
                 </Border>
 
                 <!-- Недавно просмотренные -->
+                <StackLayout x:Name="CWatched">
                 <Label Text="Недавно просмотренные" Style="{StaticResource SectionTitleStyle}"/>
                 <Label Text="Контент, который вы обновляли либо меняли серию" Style="{StaticResource SectionSubtitleStyle}"/>
 
@@ -135,8 +136,10 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
+                </StackLayout>
+                
                 <!-- Недавно добавленные -->
+                <StackLayout x:Name="CAdded">
                 <Label Text="Недавно добавленные" Style="{StaticResource SectionTitleStyle}"/>
                 <Label Text="Контент, который вы недавно добавили" Style="{StaticResource SectionSubtitleStyle}"/>
 
@@ -189,8 +192,10 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                </StackLayout>
                 
                 <!-- Релизы контентов -->
+                <StackLayout x:Name="CRelease">
                 <Label Text="Что нового?" Style="{StaticResource SectionTitleStyle}"/>
                 <Label Text="Последние релизы и предстоящие премьеры вашего контента" Style="{StaticResource SectionSubtitleStyle}"/>
 
@@ -243,6 +248,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                </StackLayout>
                 
                 <!-- Рекомендованный контент -->
                 <StackLayout x:Name="MobilePhoneRec">

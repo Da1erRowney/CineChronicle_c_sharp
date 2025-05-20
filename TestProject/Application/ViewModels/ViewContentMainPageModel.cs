@@ -8,12 +8,14 @@ namespace CineChronicle.Application.ViewModels
     {
         
         public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
-        private ContentRecommendation ContentRecommendationRead = new();
+        private GetContentRecommendation ContentRecommendationRead = new();
         private static DatabaseServiceContent _databaseService;
         public List<ContentRecommendation> ContentRecommendation { get; set; }
         public List<Content> ContentAdded { get; set; }
         public List<Content> ContentChange { get; set; }
         public List<Content> ContentRelease { get; set; }
+
+        public static bool[] isContentNull = new bool[3];
         private DeviceInfo _device = new();
 
         public ViewContentMainPageModel()
@@ -35,7 +37,7 @@ namespace CineChronicle.Application.ViewModels
                 .OrderByDescending(c => c.DateAdded)
                 .Take(8)
                 .ToList();
-
+            
             // Недавно измененный
             ContentChange = _databaseService.GetAllContent()
                 .OrderByDescending(c => c.SeriesChangeDate)
@@ -53,6 +55,33 @@ namespace CineChronicle.Application.ViewModels
                 .Select(x => x.Content)
                 .Take(8)
                 .ToList();
+
+            if (ContentAdded.Count == 0)
+            {
+                isContentNull[0] = true;
+            }
+            else
+            {
+                isContentNull[0] = false;
+            }
+
+            if (ContentChange.Count == 0)
+            {
+                isContentNull[1] = true;
+            }
+            else
+            {
+                isContentNull[1] = false;
+            }
+
+            if (ContentRelease.Count == 0)
+            {
+                isContentNull[2] = true;
+            }
+            else
+            {
+                isContentNull[2] = false;
+            }
 
             if (ContentAdded == null || !ContentAdded.Any())
             {
@@ -72,43 +101,45 @@ namespace CineChronicle.Application.ViewModels
             {
                 if (ContentAdded != null)
                 {
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < ContentAdded.Count; i++)
                     {
-                        if (string.IsNullOrEmpty(ContentAdded[i].Image))
+                        if (string.IsNullOrEmpty(ContentAdded[i]!.Image))
                         {
-                            ContentAdded[i].Image = "notwificonnection.jpg";
+                            ContentAdded[i]!.Image = "notwificonnection.jpg";
                         }
                     }
                 }
                 if (ContentChange != null)
                 {
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < ContentChange.Count; i++)
                     {
-                        if (string.IsNullOrEmpty(ContentChange[i].Image))
+                        if (string.IsNullOrEmpty(ContentChange[i]!.Image))
                         {
-                            ContentChange[i].Image = "notwificonnection.jpg";
+                            ContentChange[i]!.Image = "notwificonnection.jpg";
                         }
                     }
                 }
                 if (ContentRelease != null)
                 {
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < ContentRelease.Count; i++)
                     {
-                        if (string.IsNullOrEmpty(ContentRelease[i].Image))
+                        if (string.IsNullOrEmpty(ContentRelease[i]!.Image))
                         {
-                            ContentRelease[i].Image = "notwificonnection.jpg";
+                            ContentRelease[i]!.Image = "notwificonnection.jpg";
                         }
                     }
                 }
             }
-            else
+            if (ContentRecommendation == null)
             {
-                if (ContentRecommendation == null)
-                {
-                    ContentRecommendation = await ContentRecommendationRead.GetRecommendationsAsync();
-                    OnPropertyChanged(nameof(ContentRecommendation));
-                }
+                ContentRecommendation = await ContentRecommendationRead.GetRecommendationsAsync();
+                OnPropertyChanged(nameof(ContentRecommendation));
             }
+        }
+
+        public static void DeleteBaseContent()
+        {
+           _databaseService.DeleteContent( _databaseService.GetContentByTitle("Нажмите, чтобы добавить контент")[0]);
         }
 
         public static Content GetContentById(int id)

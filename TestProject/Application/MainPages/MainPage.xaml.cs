@@ -52,7 +52,6 @@ public partial class MainPage : ContentPage
 
     private void NotConnectionInternet()
     {
-        MobilePhoneRec.IsVisible = false;
         IsDeviceOfflineBorder.IsVisible = true;
         InitializeViewModel();
     }
@@ -62,6 +61,38 @@ public partial class MainPage : ContentPage
         var viewModel = new ViewContentMainPageModel();
         this.BindingContext = viewModel;
         await viewModel.InitializeAsync();
+
+        PrepapePage();
+    }
+
+    private void PrepapePage()
+    {
+        if (ViewContentMainPageModel.isContentNull[0])
+        {
+            CAdded.IsVisible = false;
+        }
+        else
+        {
+            CAdded.IsVisible = true;
+        }
+
+        if (ViewContentMainPageModel.isContentNull[1])
+        {
+            CWatched.IsVisible = false;
+        }
+        else
+        {
+            CWatched.IsVisible = true;
+        }
+
+        if (ViewContentMainPageModel.isContentNull[2])
+        {
+            CRelease.IsVisible = false;
+        }
+        else
+        {
+            CRelease.IsVisible = true;
+        }
     }
 
     protected override void OnDisappearing()
@@ -128,8 +159,9 @@ public partial class MainPage : ContentPage
     private async void OnItemClick(int id)
     {
         SelectedItem = ViewContentMainPageModel.GetContentById(id);
-        if (SelectedItem.Type == "Пустота")
+        if (SelectedItem.Type == "Ваш контент")
         {
+            ViewContentMainPageModel.DeleteBaseContent();
             await Navigation.PushAsync(new AddMoreContentPage());
         }
         else

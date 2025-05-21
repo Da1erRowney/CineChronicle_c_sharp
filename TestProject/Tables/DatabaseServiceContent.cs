@@ -75,6 +75,21 @@ namespace CineChronicle.Tables
             return _connection.Table<Content>().Where(c => c.Title == title).ToList();
         }
 
+
+        public int GetContentCountByType(string type)
+        {
+            return _connection.Table<Content>().Count(x => x.Type == type);
+        }
+        public int GetContentCount()
+        {
+            return _connection.Table<Content>().Count();
+        }
+        public int GetContentCountByWatchStatus(string watchStatus)
+        {
+            return _connection.Table<Content>().Count(x => x.WatchStatus == watchStatus);
+        }
+
+
         public void UpdateContent(Content content)
         {
             _connection.Update(content);

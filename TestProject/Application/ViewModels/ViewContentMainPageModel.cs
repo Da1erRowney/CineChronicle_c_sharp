@@ -131,8 +131,10 @@ namespace CineChronicle.Application.ViewModels
                         }
                     }
                 }
+                ContentRecommendation = _databaseService.GetAllRecomContent();
+                OnPropertyChanged(nameof(ContentRecommendation));
             }
-            if (ContentRecommendation == null)
+            else
             {
                 ContentRecommendation = await ContentRecommendationRead.GetRecommendationsAsync();
                 OnPropertyChanged(nameof(ContentRecommendation));

@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CineChronicle.Application
 {
@@ -120,6 +121,13 @@ namespace CineChronicle.Application
             }
 
             Description = Regex.Replace(Description, @"&nbsp;", " ");
+            Description = Regex.Replace(Description, @"\[\d+\]", string.Empty);
+
+            // Удаляем числовые ссылки в круглых скобках (если нужно)
+            // text = Regex.Replace(text, @"\(\d+\)", string.Empty);
+
+            // Удаляем множественные пробелы, которые могли образоваться
+            Description = Regex.Replace(Description, @"\s+", " ");
         }
 
         /// <summary>

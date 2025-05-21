@@ -8,7 +8,7 @@ namespace TestProject;
 public partial class MainPage : ContentPage
 {
     public Content SelectedItem { get; set; }
-    public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
+    public static string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
 
     public MainPage()
     {

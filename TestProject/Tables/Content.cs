@@ -9,7 +9,7 @@ namespace CineChronicle.Tables
         public int Id { get; set; }                                                 // Айди
         private string countLabel;                                                  // Количество серий??
         private string dateAdded;                                                   // Дата добавления
-        private string dateRelease;                                                 // Строка даты выхода?
+        private string dateRelease = null;                                          // Строка даты выхода?
         private string description;                                                 // Описание контента
         private string dubbing;                                                     // Озвучка
         private string emailUser = "";                                              // Пользователь 

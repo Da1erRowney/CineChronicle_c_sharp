@@ -1,6 +1,7 @@
 ﻿using CineChronicle.Application.MainPage;
 using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Globalization;
 
 namespace CineChronicle.Application.ViewModels
 {
@@ -27,63 +28,49 @@ namespace CineChronicle.Application.ViewModels
             InitializeSyncData();
         }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsyncRecom()
         {
+            await Task.Delay(1500); // Даёт время на первоначальный рендеринг
             await CheckInternetConnectionAsync();
         }
 
-        private void InitializeSyncData()
+        public async Task InitializeAsyncChange()
         {
-            // Недавно добавленный контента
-            ContentAdded = _databaseService.GetAllContent()
-                .OrderByDescending(c => c.DateAdded)
-                .Take(8)
-                .ToList();
-            
+            await Task.Delay(1500); // Даёт время на первоначальный рендеринг
+
             // Недавно измененный
             ContentChange = _databaseService.GetAllContent()
                 .OrderByDescending(c => c.SeriesChangeDate)
                 .Take(8)
                 .ToList();
 
-            // Скоро выйдет
+            OnPropertyChanged(nameof(ContentChange));
+
+            isContentNull[1] = ContentRelease?.Count == 0;
+        }
+
+        public async Task InitializeAsyncRelease()
+        {
+            await Task.Delay(1500);
+
+            // Лучше использовать отдельный метод в DatabaseService
             ContentRelease = _databaseService.GetAllContent()
-                .Select(c => new {
-                    Content = c,
-                    ParsedDate = DateTime.TryParse(c.DateRelease, out var date) ? date : (DateTime?)null
-                })
-                .Where(x => x.ParsedDate != null)
-                .OrderBy(x => x.ParsedDate)
-                .Select(x => x.Content)
                 .Take(8)
                 .ToList();
 
-            if (ContentAdded.Count == 0)
-            {
-                isContentNull[0] = true;
-            }
-            else
-            {
-                isContentNull[0] = false;
-            }
+            OnPropertyChanged(nameof(ContentRelease));
+            isContentNull[2] = ContentRelease?.Count == 0;
+        }
 
-            if (ContentChange.Count == 0)
-            {
-                isContentNull[1] = true;
-            }
-            else
-            {
-                isContentNull[1] = false;
-            }
+        private void InitializeSyncData()
+        {
+            // Недавно добавленный контент
+            ContentAdded = _databaseService.GetAllContent()
+                .OrderByDescending(c => c.DateAdded)
+                .Take(8)
+                .ToList();
 
-            if (ContentRelease.Count == 0)
-            {
-                isContentNull[2] = true;
-            }
-            else
-            {
-                isContentNull[2] = false;
-            }
+            isContentNull[0] = ContentRelease?.Count == 0;
 
             if (ContentAdded == null || !ContentAdded.Any())
             {
@@ -94,6 +81,12 @@ namespace CineChronicle.Application.ViewModels
                     Image = "plus.png"
                 };
                 _databaseService.InsertContent(ifContentNull);
+
+                // Недавно добавленный контента
+                ContentAdded = _databaseService.GetAllContent()
+                    .OrderByDescending(c => c.DateAdded)
+                    .Take(8)
+                    .ToList();
             }
         }
 
@@ -132,13 +125,13 @@ namespace CineChronicle.Application.ViewModels
                     }
                 }
                 ContentRecommendation = _databaseService.GetAllRecomContent();
-                OnPropertyChanged(nameof(ContentRecommendation));
+                
             }
             else
             {
                 ContentRecommendation = await ContentRecommendationRead.GetRecommendationsAsync();
-                OnPropertyChanged(nameof(ContentRecommendation));
             }
+            OnPropertyChanged(nameof(ContentRecommendation));
         }
 
         public static void DeleteBaseContent()

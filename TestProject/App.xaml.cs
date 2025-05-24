@@ -1,6 +1,4 @@
-﻿using CineChronicle.Tables;
-
-namespace TestProject;
+﻿namespace TestProject;
 
 public partial class App : Application
 {

@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using System.Globalization;
 
 namespace CineChronicle.Tables
 {
@@ -15,13 +16,13 @@ namespace CineChronicle.Tables
         //Таблицы
         public void CreateTables()
         {
-            if (!TableExists<Authorized>()) _connection.CreateTable<Authorized>();
-            if (!TableExists<Content>()) _connection.CreateTable<Content>();
-            if (!TableExists<ContentRecommendation>()) _connection.CreateTable<ContentRecommendation>();
-            if (!TableExists<DateExit>()) _connection.CreateTable<DateExit>();
-            if (!TableExists<User>()) _connection.CreateTable<User>();
-            if (!TableExists<UserSettings>()) _connection.CreateTable<UserSettings>();
-            if (!TableExists<UserContents>()) _connection.CreateTable<UserContents>();
+            //if (!TableExists<Authorized>()) _connection.CreateTable<Authorized>();
+            //if (!TableExists<Content>()) _connection.CreateTable<Content>();
+            //if (!TableExists<ContentRecommendation>()) _connection.CreateTable<ContentRecommendation>();
+            //if (!TableExists<DateExit>()) _connection.CreateTable<DateExit>();
+            //if (!TableExists<User>()) _connection.CreateTable<User>();
+            //if (!TableExists<UserSettings>()) _connection.CreateTable<UserSettings>();
+            //if (!TableExists<UserContents>()) _connection.CreateTable<UserContents>();
         }
         private bool TableExists<T>()
         {
@@ -75,7 +76,6 @@ namespace CineChronicle.Tables
             return _connection.Table<Content>().Where(c => c.Title == title).ToList();
         }
 
-
         public int GetContentCountByType(string type)
         {
             return _connection.Table<Content>().Count(x => x.Type == type);
@@ -123,7 +123,7 @@ namespace CineChronicle.Tables
             return _connection.Table<DateExit>().FirstOrDefault(c => c.Title == title);
         }
 
-
+        
 
         //Рекомендованный контент
         public void InsertRecomContent(ContentRecommendation contentRecommendation)

@@ -137,7 +137,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 </StackLayout>
-                
+
                 <!-- Недавно добавленные -->
                 <StackLayout x:Name="CAdded">
                 <Label Text="Недавно добавленные" Style="{StaticResource SectionTitleStyle}"/>
@@ -153,7 +153,7 @@
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Horizontal" Span="2"/>
                     </CollectionView.ItemsLayout>
-                    
+
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -193,7 +193,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 </StackLayout>
-                
+
                 <!-- Релизы контентов -->
                 <StackLayout x:Name="CRelease">
                 <Label Text="Что нового?" Style="{StaticResource SectionTitleStyle}"/>
@@ -204,8 +204,7 @@
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedItem}"
                                 Margin="0,50,0,50"
-                                VerticalOptions="Center"
-                                HorizontalOptions="StartAndExpand">
+                                VerticalOptions="Center">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Horizontal" Span="2"/>
                     </CollectionView.ItemsLayout>
@@ -249,7 +248,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 </StackLayout>
-                
+
                 <!-- Рекомендованный контент -->
                 <StackLayout x:Name="MobilePhoneRec">
                     <Label Text="Рекомендованный контент" Style="{StaticResource SectionTitleStyle}"/>
@@ -310,7 +309,7 @@
                    
                     RowDefinitions="Auto,Auto,Auto,Auto">
 
-                    <!-- Логотип и название -->
+                     <!--Логотип и название--> 
                     <Label 
                         Grid.ColumnSpan="2"
                         Text="CineChronicle 2025"
@@ -320,7 +319,7 @@
                         HorizontalOptions="Center"
                         Margin="0,0,0,10"/>
 
-                    <!-- Контакты -->
+                     <!--Контакты--> 
                     <Label 
                         Grid.Row="1"
                         Grid.Column="0"
@@ -338,7 +337,7 @@
                         HorizontalTextAlignment="Center"/>
 
 
-                    <!-- Креативная строка -->
+                     <!--Креативная строка--> 
                     <Label 
                         Grid.Row="3"
                         Grid.ColumnSpan="2"

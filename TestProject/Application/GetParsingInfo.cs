@@ -9,14 +9,13 @@ using System.Globalization;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CineChronicle.Application
 {
 
     public class GetParsingInfo
     {
-        #region Private Fields
+        #region [Private Fields]
         public string Description { get; set; } = string.Empty;
         public string Image { get; set; } = string.Empty;
         public string YouTubeLink { get; set; } = string.Empty;

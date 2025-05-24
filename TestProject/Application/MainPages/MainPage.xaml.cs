@@ -1,5 +1,4 @@
-﻿using CineChronicle.Application.MainPage;
-using CineChronicle.Application.ViewModels;
+﻿using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
 using System.Diagnostics;
 
@@ -39,14 +38,14 @@ public partial class MainPage : ContentPage
             });
         });
 
-        // Проверяем состояние при открытии
+        //// Проверяем состояние при открытии
         CheckInitialConnection();
     }
 
     private void ConnectionInternet()
     {
         IsDeviceOfflineBorder.IsVisible = false;
-        MobilePhoneRec.IsVisible = true;
+        //MobilePhoneRec.IsVisible = true;
         InitializeViewModel();
     }
 
@@ -59,9 +58,12 @@ public partial class MainPage : ContentPage
     private async void InitializeViewModel()
     {
         var viewModel = new ViewContentMainPageModel();
-        this.BindingContext = viewModel;
-        await viewModel.InitializeAsync();
+        BindingContext = viewModel;
 
+        await viewModel.InitializeAsyncChange();
+        await viewModel.InitializeAsyncRelease();
+        await viewModel.InitializeAsyncRecom();
+         
         PrepapePage();
     }
 

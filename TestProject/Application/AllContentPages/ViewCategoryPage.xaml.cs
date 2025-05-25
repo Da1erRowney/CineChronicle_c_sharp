@@ -1,10 +1,6 @@
 namespace TestProject;
-using SQLite;
-using Microsoft.Maui.Controls;
-using static Microsoft.Maui.Controls.Internals.Profile;
-using System.Diagnostics;
-using System.Xml.Linq;
 using CineChronicle.Tables;
+using Microsoft.Maui.Controls;
 
 public partial class ViewCategoryPage : ContentPage
 {

@@ -7,7 +7,7 @@ namespace TestProject;
 public partial class MainPage : ContentPage
 {
     public Content SelectedItem { get; set; }
-    public static string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
+    public static string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content1.db");
 
     public MainPage()
     {
@@ -38,14 +38,14 @@ public partial class MainPage : ContentPage
             });
         });
 
-        //// Проверяем состояние при открытии
+        // Проверяем состояние при открытии
         CheckInitialConnection();
     }
 
     private void ConnectionInternet()
     {
         IsDeviceOfflineBorder.IsVisible = false;
-        //MobilePhoneRec.IsVisible = true;
+        MobilePhoneRec.IsVisible = true;
         InitializeViewModel();
     }
 
@@ -58,43 +58,7 @@ public partial class MainPage : ContentPage
     private async void InitializeViewModel()
     {
         var viewModel = new ViewContentMainPageModel();
-        BindingContext = viewModel;
-
-        await viewModel.InitializeAsyncChange();
-        await viewModel.InitializeAsyncRelease();
-        await viewModel.InitializeAsyncRecom();
-         
-        PrepapePage();
-    }
-
-    private void PrepapePage()
-    {
-        if (ViewContentMainPageModel.isContentNull[0])
-        {
-            CAdded.IsVisible = false;
-        }
-        else
-        {
-            CAdded.IsVisible = true;
-        }
-
-        if (ViewContentMainPageModel.isContentNull[1])
-        {
-            CWatched.IsVisible = false;
-        }
-        else
-        {
-            CWatched.IsVisible = true;
-        }
-
-        if (ViewContentMainPageModel.isContentNull[2])
-        {
-            CRelease.IsVisible = false;
-        }
-        else
-        {
-            CRelease.IsVisible = true;
-        }
+        this.BindingContext = viewModel;
     }
 
     protected override void OnDisappearing()

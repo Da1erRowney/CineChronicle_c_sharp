@@ -4,7 +4,7 @@
     {
         public string TypeDevice { get; set; }
 
-        public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content.db");
+        public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content1.db");
 
         public DeviceInfo()
         {

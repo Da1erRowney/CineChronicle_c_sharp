@@ -10,19 +10,20 @@ namespace CineChronicle.Tables
         public DatabaseServiceContent(string _databasePath)
         {
             _connection = new SQLiteConnection(_databasePath);
+            //DropAllTables();
             CreateTables();
         }
 
         //Таблицы
         public void CreateTables()
         {
-            //if (!TableExists<Authorized>()) _connection.CreateTable<Authorized>();
-            //if (!TableExists<Content>()) _connection.CreateTable<Content>();
-            //if (!TableExists<ContentRecommendation>()) _connection.CreateTable<ContentRecommendation>();
-            //if (!TableExists<DateExit>()) _connection.CreateTable<DateExit>();
-            //if (!TableExists<User>()) _connection.CreateTable<User>();
-            //if (!TableExists<UserSettings>()) _connection.CreateTable<UserSettings>();
-            //if (!TableExists<UserContents>()) _connection.CreateTable<UserContents>();
+            if (!TableExists<Authorized>()) _connection.CreateTable<Authorized>();
+            if (!TableExists<Content>()) _connection.CreateTable<Content>();
+            if (!TableExists<ContentRecommendation>()) _connection.CreateTable<ContentRecommendation>();
+            if (!TableExists<DateExit>()) _connection.CreateTable<DateExit>();
+            if (!TableExists<User>()) _connection.CreateTable<User>();
+            if (!TableExists<UserSettings>()) _connection.CreateTable<UserSettings>();
+            if (!TableExists<UserContents>()) _connection.CreateTable<UserContents>();
         }
         private bool TableExists<T>()
         {
@@ -58,7 +59,10 @@ namespace CineChronicle.Tables
         {
             _connection.Insert(content);
         }
-
+        public List<Content> GetAllContent()
+        {
+            return _connection.Table<Content>().ToList();
+        }
         public Content GetContentById(int id)
         {
             return _connection.Table<Content>().FirstOrDefault(c => c.Id == id);
@@ -74,6 +78,12 @@ namespace CineChronicle.Tables
         public List<Content> GetContentByTitle(string title)
         {
             return _connection.Table<Content>().Where(c => c.Title == title).ToList();
+        }
+        public List<Content> GetContentWithReleaseDates()
+        {
+            return _connection.Table<Content>()
+                .Where(c => c.DateRelease != null && c.DateRelease != string.Empty)
+                .ToList();
         }
 
         public int GetContentCountByType(string type)
@@ -100,10 +110,7 @@ namespace CineChronicle.Tables
             _connection.Delete(content);
         }
 
-        public List<Content> GetAllContent()
-        {
-            return _connection.Table<Content>().ToList();
-        }
+
 
         public void InsertDate(DateExit data)
         {

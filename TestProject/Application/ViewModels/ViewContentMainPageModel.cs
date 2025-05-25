@@ -1,7 +1,9 @@
 ﻿using CineChronicle.Application.MainPage;
 using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Windows.Input;
 
 namespace CineChronicle.Application.ViewModels
 {
@@ -10,15 +12,19 @@ namespace CineChronicle.Application.ViewModels
         #region [Private Fields]
         private GetContentRecommendation ContentRecommendationRead = new();
         private DeviceInfo _device = new();
-
         private static DatabaseServiceContent _databaseService;
 
         public static bool[] isContentNull = new bool[3];
 
-        public List<ContentRecommendation> ContentRecommendation { get; set; }
-        public List<Content> ContentAdded { get; set; }
-        public List<Content> ContentChange { get; set; }
-        public List<Content> ContentRelease { get; set; }
+        public ObservableCollection<ContentRecommendation> ContentRecommendation { get; set; }
+        public ObservableCollection<Content> ContentAdded { get; set; }
+        public ObservableCollection<Content> ContentChange { get; set; }
+        public ObservableCollection<Content> ContentRelease { get; set; }
+
+        public bool IsContentAddedVisible => ContentAdded?.Count > 0;
+        public bool IsContentChangeVisible => ContentChange?.Count > 0;
+        public bool IsContentReleaseVisible => ContentRelease?.Count > 0;
+        public bool IsContentRecommendationVisible => ContentRecommendation?.Count > 0;
         #endregion
 
         public ViewContentMainPageModel()
@@ -26,67 +32,75 @@ namespace CineChronicle.Application.ViewModels
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
 
             InitializeSyncData();
+            Task.Run(InitializeAllDataAsync);
+        }
+
+        private async Task InitializeAllDataAsync()
+        {
+            await InitializeAsyncChange();
+            await InitializeAsyncRelease();
+            await InitializeAsyncRecom();
         }
 
         public async Task InitializeAsyncRecom()
         {
-            await Task.Delay(1500); // Даёт время на первоначальный рендеринг
             await CheckInternetConnectionAsync();
         }
 
         public async Task InitializeAsyncChange()
         {
-            await Task.Delay(1500); // Даёт время на первоначальный рендеринг
-
             // Недавно измененный
-            ContentChange = _databaseService.GetAllContent()
-                .OrderByDescending(c => c.SeriesChangeDate)
+            ContentChange = new ObservableCollection<Content>(_databaseService.GetAllContent()
+                .Where(c => c.SeriesChangeDate != "")
                 .Take(8)
-                .ToList();
+                .ToList());
 
             OnPropertyChanged(nameof(ContentChange));
+            OnPropertyChanged(nameof(IsContentChangeVisible));
 
             isContentNull[1] = ContentRelease?.Count == 0;
         }
 
         public async Task InitializeAsyncRelease()
         {
-            await Task.Delay(1500);
-
             // Лучше использовать отдельный метод в DatabaseService
-            ContentRelease = _databaseService.GetAllContent()
+            ContentRelease = new ObservableCollection<Content>(_databaseService.GetContentWithReleaseDates()
                 .Take(8)
-                .ToList();
+                .ToList());
 
             OnPropertyChanged(nameof(ContentRelease));
+            OnPropertyChanged(nameof(IsContentReleaseVisible));
             isContentNull[2] = ContentRelease?.Count == 0;
         }
 
         private void InitializeSyncData()
         {
             // Недавно добавленный контент
-            ContentAdded = _databaseService.GetAllContent()
+            ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent()
                 .OrderByDescending(c => c.DateAdded)
                 .Take(8)
-                .ToList();
+                .ToList());
+
+            OnPropertyChanged(nameof(ContentAdded));
+            OnPropertyChanged(nameof(IsContentAddedVisible));
 
             isContentNull[0] = ContentRelease?.Count == 0;
 
             if (ContentAdded == null || !ContentAdded.Any())
             {
-                Content ifContentNull = new Content
-                {
-                    Title = "Нажмите, чтобы добавить контент",
-                    Type = "Ваш контент",
-                    Image = "plus.png"
-                };
-                _databaseService.InsertContent(ifContentNull);
+            //    Content ifContentNull = new Content
+            //    {
+            //        Title = "Нажмите, чтобы добавить контент",
+            //        Type = "Ваш контент",
+            //        Image = "plus.png"
+            //    };
+            //    _databaseService.InsertContent(ifContentNull);
 
-                // Недавно добавленный контента
-                ContentAdded = _databaseService.GetAllContent()
-                    .OrderByDescending(c => c.DateAdded)
-                    .Take(8)
-                    .ToList();
+            //    // Недавно добавленный контента
+            //    ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent()
+            //        .OrderByDescending(c => c.DateAdded)
+            //        .Take(8)
+            //        .ToList());
             }
         }
 
@@ -124,14 +138,15 @@ namespace CineChronicle.Application.ViewModels
                         }
                     }
                 }
-                ContentRecommendation = _databaseService.GetAllRecomContent();
+                ContentRecommendation = new ObservableCollection<ContentRecommendation>(_databaseService.GetAllRecomContent());
                 
             }
             else
             {
-                ContentRecommendation = await ContentRecommendationRead.GetRecommendationsAsync();
+                ContentRecommendation = new ObservableCollection<ContentRecommendation>(await ContentRecommendationRead.GetRecommendationsAsync());
             }
             OnPropertyChanged(nameof(ContentRecommendation));
+            OnPropertyChanged(nameof(IsContentRecommendationVisible));
         }
 
         public static void DeleteBaseContent()

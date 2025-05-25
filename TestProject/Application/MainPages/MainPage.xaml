@@ -76,7 +76,7 @@
                 </Border>
 
                 <!-- Недавно просмотренные -->
-                <StackLayout x:Name="CWatched">
+                <StackLayout x:Name="CWatched" IsVisible="{Binding IsContentChangeVisible}">
                 <Label Text="Недавно просмотренные" Style="{StaticResource SectionTitleStyle}"/>
                 <Label Text="Контент, который вы обновляли либо меняли серию" Style="{StaticResource SectionSubtitleStyle}"/>
 
@@ -139,7 +139,7 @@
                 </StackLayout>
 
                 <!-- Недавно добавленные -->
-                <StackLayout x:Name="CAdded">
+                <StackLayout x:Name="CAdded" IsVisible="{Binding IsContentAddedVisible}">
                 <Label Text="Недавно добавленные" Style="{StaticResource SectionTitleStyle}"/>
                 <Label Text="Контент, который вы недавно добавили" Style="{StaticResource SectionSubtitleStyle}"/>
 
@@ -195,7 +195,7 @@
                 </StackLayout>
 
                 <!-- Релизы контентов -->
-                <StackLayout x:Name="CRelease">
+                <StackLayout x:Name="CRelease" IsVisible="{Binding IsContentReleaseVisible}">
                 <Label Text="Что нового?" Style="{StaticResource SectionTitleStyle}"/>
                 <Label Text="Последние релизы и предстоящие премьеры вашего контента" Style="{StaticResource SectionSubtitleStyle}"/>
 
@@ -250,7 +250,7 @@
                 </StackLayout>
 
                 <!-- Рекомендованный контент -->
-                <StackLayout x:Name="MobilePhoneRec">
+                <StackLayout x:Name="MobilePhoneRec" IsVisible="{Binding IsContentRecommendationVisible}">
                     <Label Text="Рекомендованный контент" Style="{StaticResource SectionTitleStyle}"/>
                     <Label Text="Самое популярное на этой неделе" Style="{StaticResource SectionSubtitleStyle}"/>
 

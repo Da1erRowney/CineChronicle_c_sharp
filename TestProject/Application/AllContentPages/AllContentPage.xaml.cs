@@ -1,3 +1,4 @@
+using CineChronicle.Application.AllContentPages;
 using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
 

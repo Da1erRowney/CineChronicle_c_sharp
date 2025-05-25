@@ -31,12 +31,12 @@ namespace CineChronicle.Application.ViewModels
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
 
-            InitializeSyncData();
             Task.Run(InitializeAllDataAsync);
         }
 
         private async Task InitializeAllDataAsync()
         {
+            await InitializeAsyncAdded();
             await InitializeAsyncChange();
             await InitializeAsyncRelease();
             await InitializeAsyncRecom();
@@ -49,6 +49,7 @@ namespace CineChronicle.Application.ViewModels
 
         public async Task InitializeAsyncChange()
         {
+            await Task.Delay(500);
             // Недавно измененный
             ContentChange = new ObservableCollection<Content>(_databaseService.GetAllContent()
                 .Where(c => c.SeriesChangeDate != "")
@@ -63,6 +64,7 @@ namespace CineChronicle.Application.ViewModels
 
         public async Task InitializeAsyncRelease()
         {
+            await Task.Delay(500);
             // Лучше использовать отдельный метод в DatabaseService
             ContentRelease = new ObservableCollection<Content>(_databaseService.GetContentWithReleaseDates()
                 .Take(8)
@@ -73,8 +75,9 @@ namespace CineChronicle.Application.ViewModels
             isContentNull[2] = ContentRelease?.Count == 0;
         }
 
-        private void InitializeSyncData()
+        private async Task InitializeAsyncAdded()
         {
+            await Task.Delay(500);
             // Недавно добавленный контент
             ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent()
                 .OrderByDescending(c => c.DateAdded)
@@ -88,19 +91,19 @@ namespace CineChronicle.Application.ViewModels
 
             if (ContentAdded == null || !ContentAdded.Any())
             {
-            //    Content ifContentNull = new Content
-            //    {
-            //        Title = "Нажмите, чтобы добавить контент",
-            //        Type = "Ваш контент",
-            //        Image = "plus.png"
-            //    };
-            //    _databaseService.InsertContent(ifContentNull);
+                Content ifContentNull = new Content
+                {
+                    Title = "Нажмите, чтобы добавить контент",
+                    Type = "Ваш контент",
+                    Image = "plus.png"
+                };
+                _databaseService.InsertContent(ifContentNull);
 
-            //    // Недавно добавленный контента
-            //    ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent()
-            //        .OrderByDescending(c => c.DateAdded)
-            //        .Take(8)
-            //        .ToList());
+                // Недавно добавленный контента
+                ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent()
+                    .OrderByDescending(c => c.DateAdded)
+                    .Take(8)
+                    .ToList());
             }
         }
 

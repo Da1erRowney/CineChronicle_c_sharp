@@ -54,58 +54,121 @@ namespace CineChronicle.Application.ViewModels
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
 
-            InitializeSyncData();
+            Task.Run(InitializeAllDataAsync);
         }
-
-        private void InitializeSyncData()
+        private async Task InitializeAllDataAsync()
         {
-            // Сам контент
-            ContentAll = _databaseService.GetAllContent().Take(8).ToList();
+            await InitializeAsyncAll();
+            await InitializeAsyncSerial();
+            await InitializeAsyncAnime();
+            await InitializeAsyncFilm();
+            await InitializeAsyncDorama();
+            await InitializeAsyncMult();
+            await InitializeAsyncDocum();
+            await InitializeAsyncOther();
+            await InitializeAsyncViewed();
+            await InitializeAsyncProcess();
+            await InitializeAsyncNotStart();
+        }
+        public async Task InitializeAsyncAll()
+        {
+            await Task.Delay(500);
+            ContentAll = _databaseService.GetAllContent().Take(9).ToList();
             ContentAllall = _databaseService.GetContentCount();
             OnPropertyChanged(nameof(IsAllVisible));
-
+            OnPropertyChanged(nameof(ContentAll));
+            OnPropertyChanged(nameof(ContentAllall));
+        }
+        public async Task InitializeAsyncSerial()
+        {
+            await Task.Delay(500);
             ContentSerial = _databaseService.GetContentByType(ContentTypes.SERIAL).Take(8).ToList();
             ContentSerialall = _databaseService.GetContentCountByType(ContentTypes.SERIAL);
             OnPropertyChanged(nameof(IsSerialsVisible));
-
+            OnPropertyChanged(nameof(ContentSerial));
+            OnPropertyChanged(nameof(ContentSerialall));
+        }
+        public async Task InitializeAsyncAnime()
+        {
+            await Task.Delay(500);
             ContentAnime = _databaseService.GetContentByType(ContentTypes.ANIME).Take(8).ToList();
             ContentAnimeall = _databaseService.GetContentCountByType(ContentTypes.ANIME);
             OnPropertyChanged(nameof(IsAnimeVisible));
-
+            OnPropertyChanged(nameof(ContentAnime));
+            OnPropertyChanged(nameof(ContentAnimeall));
+        }
+        public async Task InitializeAsyncFilm()
+        {
+            await Task.Delay(500);
             ContentFilm = _databaseService.GetContentByType(ContentTypes.FILM).Take(8).ToList();
             ContentFilmall = _databaseService.GetContentCountByType(ContentTypes.FILM);
             OnPropertyChanged(nameof(IsFilmVisible));
-
+            OnPropertyChanged(nameof(ContentFilm));
+            OnPropertyChanged(nameof(ContentFilmall));
+        }
+        public async Task InitializeAsyncDorama()
+        {
+            await Task.Delay(500);
             ContentDorama = _databaseService.GetContentByType(ContentTypes.DORAMA).Take(8).ToList();
             ContentDoramaall = _databaseService.GetContentCountByType(ContentTypes.DORAMA);
             OnPropertyChanged(nameof(IsDoramaVisible));
-
+            OnPropertyChanged(nameof(ContentDorama));
+            OnPropertyChanged(nameof(ContentDoramaall));
+        }
+        public async Task InitializeAsyncMult()
+        {
+            await Task.Delay(500);
             ContentMult = _databaseService.GetContentByType(ContentTypes.CARTOON).Take(8).ToList();
             ContentMultall = _databaseService.GetContentCountByType(ContentTypes.CARTOON);
             OnPropertyChanged(nameof(IsMultVisible));
-
+            OnPropertyChanged(nameof(ContentMult));
+            OnPropertyChanged(nameof(ContentMultall));
+        }
+        public async Task InitializeAsyncDocum()
+        {
+            await Task.Delay(500);
             ContentDocum = _databaseService.GetContentByType("Документалка").Take(8).ToList();
             ContentDocumall = _databaseService.GetContentCountByType("Документалка");
             OnPropertyChanged(nameof(IsDocumVisible));
-
+            OnPropertyChanged(nameof(ContentDocum));
+            OnPropertyChanged(nameof(ContentDocumall));
+        }
+        public async Task InitializeAsyncOther()
+        {
+            await Task.Delay(500);
             ContentOther = _databaseService.GetContentByType(ContentTypes.OTHER).Take(8).ToList();
             ContentOtherall = _databaseService.GetContentCountByType(ContentTypes.OTHER);
             OnPropertyChanged(nameof(IsOtherVisible));
-
-
+            OnPropertyChanged(nameof(ContentOther));
+            OnPropertyChanged(nameof(ContentOtherall));
+        }
+        public async Task InitializeAsyncViewed()
+        {
+            await Task.Delay(500);
             ContentViewed = _databaseService.GetContentByWatchStatus("Просмотрено").Take(8).ToList();
             ContentViewedall = _databaseService.GetContentCountByWatchStatus("Просмотрено");
             OnPropertyChanged(nameof(IsViewedVisible));
-
+            OnPropertyChanged(nameof(ContentViewed));
+            OnPropertyChanged(nameof(ContentViewedall));
+        }
+        public async Task InitializeAsyncProcess()
+        {
+            await Task.Delay(500);
             ContentProcess = _databaseService.GetContentByWatchStatus("Смотрю").Take(8).ToList();
             ContentProcessall = _databaseService.GetContentCountByWatchStatus("Смотрю");
             OnPropertyChanged(nameof(IsProcessVisible));
-
+            OnPropertyChanged(nameof(ContentProcess));
+            OnPropertyChanged(nameof(ContentProcessall));
+        }
+        public async Task InitializeAsyncNotStart()
+        {
+            await Task.Delay(500);
             ContentNotStart = _databaseService.GetContentByWatchStatus("Не начинал").Take(8).ToList();
             ContentNotStartall = _databaseService.GetContentCountByWatchStatus("Не начинал");
-            OnPropertyChanged(nameof(IsNotStartVisible));  
+            OnPropertyChanged(nameof(IsNotStartVisible));
+            OnPropertyChanged(nameof(ContentNotStart));
+            OnPropertyChanged(nameof(ContentNotStartall));
         }
-
 
         public static Content GetContentById(int id)
         {

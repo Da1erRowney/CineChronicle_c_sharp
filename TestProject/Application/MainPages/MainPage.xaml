@@ -1,10 +1,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.MainPage"
+             xmlns:local="clr-namespace:CineChronicle.Application.AllContentPages"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              Title="Cine Chronicle">
-
+    
     <ContentPage.Resources>
+        <local:CountToSpanConverter x:Key="CountToSpanConverter" />
         <!-- Общие стили -->
         <Style x:Key="SectionTitleStyle" TargetType="Label">
             <Setter Property="FontAttributes" Value="Bold"/>
@@ -87,11 +89,11 @@
                                  Margin="0,50,0,50"
                                 VerticalOptions="Center"
                                 HorizontalOptions="StartAndExpand">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Horizontal" Span="2"/>
-                    </CollectionView.ItemsLayout>
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Horizontal"  Span="{Binding ContentChange.Count, Converter={StaticResource CountToSpanConverter}}" />
+                        </CollectionView.ItemsLayout>
 
-                    <CollectionView.ItemTemplate>
+                        <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
@@ -150,12 +152,12 @@
                                 Margin="0,50,0,50"
                                 VerticalOptions="Center"
                                 HorizontalOptions="StartAndExpand">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Horizontal" Span="2"/>
-                    </CollectionView.ItemsLayout>
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Horizontal"  Span="{Binding ContentAdded.Count, Converter={StaticResource CountToSpanConverter}}" />
+                        </CollectionView.ItemsLayout>
 
 
-                    <CollectionView.ItemTemplate>
+                        <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
@@ -205,12 +207,12 @@
                                SelectedItem="{Binding SelectedItem}"
                                 Margin="0,50,0,50"
                                 VerticalOptions="Center">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Horizontal" Span="2"/>
-                    </CollectionView.ItemsLayout>
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Horizontal"  Span="{Binding ContentRelease.Count, Converter={StaticResource CountToSpanConverter}}" />
+                        </CollectionView.ItemsLayout>
 
 
-                    <CollectionView.ItemTemplate>
+                        <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
@@ -261,7 +263,7 @@
                     SelectedItem="{Binding SelectedItem}"
                                     HorizontalOptions="Center">
                         <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Horizontal" Span="4"/>
+                            <GridItemsLayout Orientation="Horizontal"  Span="{Binding ContentRecommendation.Count, Converter={StaticResource CountToSpanConverter}}" />
                         </CollectionView.ItemsLayout>
 
                         <CollectionView.ItemTemplate>

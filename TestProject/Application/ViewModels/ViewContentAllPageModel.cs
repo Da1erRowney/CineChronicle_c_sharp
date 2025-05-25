@@ -72,7 +72,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncAll()
         {
-            await Task.Delay(500);
             ContentAll = _databaseService.GetAllContent().Take(9).ToList();
             ContentAllall = _databaseService.GetContentCount();
             OnPropertyChanged(nameof(IsAllVisible));
@@ -81,7 +80,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncSerial()
         {
-            await Task.Delay(500);
             ContentSerial = _databaseService.GetContentByType(ContentTypes.SERIAL).Take(8).ToList();
             ContentSerialall = _databaseService.GetContentCountByType(ContentTypes.SERIAL);
             OnPropertyChanged(nameof(IsSerialsVisible));
@@ -90,7 +88,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncAnime()
         {
-            await Task.Delay(500);
             ContentAnime = _databaseService.GetContentByType(ContentTypes.ANIME).Take(8).ToList();
             ContentAnimeall = _databaseService.GetContentCountByType(ContentTypes.ANIME);
             OnPropertyChanged(nameof(IsAnimeVisible));
@@ -99,7 +96,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncFilm()
         {
-            await Task.Delay(500);
             ContentFilm = _databaseService.GetContentByType(ContentTypes.FILM).Take(8).ToList();
             ContentFilmall = _databaseService.GetContentCountByType(ContentTypes.FILM);
             OnPropertyChanged(nameof(IsFilmVisible));
@@ -108,7 +104,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncDorama()
         {
-            await Task.Delay(500);
             ContentDorama = _databaseService.GetContentByType(ContentTypes.DORAMA).Take(8).ToList();
             ContentDoramaall = _databaseService.GetContentCountByType(ContentTypes.DORAMA);
             OnPropertyChanged(nameof(IsDoramaVisible));
@@ -117,7 +112,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncMult()
         {
-            await Task.Delay(500);
             ContentMult = _databaseService.GetContentByType(ContentTypes.CARTOON).Take(8).ToList();
             ContentMultall = _databaseService.GetContentCountByType(ContentTypes.CARTOON);
             OnPropertyChanged(nameof(IsMultVisible));
@@ -126,7 +120,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncDocum()
         {
-            await Task.Delay(500);
             ContentDocum = _databaseService.GetContentByType("Документалка").Take(8).ToList();
             ContentDocumall = _databaseService.GetContentCountByType("Документалка");
             OnPropertyChanged(nameof(IsDocumVisible));
@@ -135,7 +128,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncOther()
         {
-            await Task.Delay(500);
             ContentOther = _databaseService.GetContentByType(ContentTypes.OTHER).Take(8).ToList();
             ContentOtherall = _databaseService.GetContentCountByType(ContentTypes.OTHER);
             OnPropertyChanged(nameof(IsOtherVisible));
@@ -144,7 +136,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncViewed()
         {
-            await Task.Delay(500);
             ContentViewed = _databaseService.GetContentByWatchStatus("Просмотрено").Take(8).ToList();
             ContentViewedall = _databaseService.GetContentCountByWatchStatus("Просмотрено");
             OnPropertyChanged(nameof(IsViewedVisible));
@@ -153,7 +144,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncProcess()
         {
-            await Task.Delay(500);
             ContentProcess = _databaseService.GetContentByWatchStatus("Смотрю").Take(8).ToList();
             ContentProcessall = _databaseService.GetContentCountByWatchStatus("Смотрю");
             OnPropertyChanged(nameof(IsProcessVisible));
@@ -162,7 +152,6 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncNotStart()
         {
-            await Task.Delay(500);
             ContentNotStart = _databaseService.GetContentByWatchStatus("Не начинал").Take(8).ToList();
             ContentNotStartall = _databaseService.GetContentCountByWatchStatus("Не начинал");
             OnPropertyChanged(nameof(IsNotStartVisible));

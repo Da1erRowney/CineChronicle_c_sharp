@@ -49,7 +49,6 @@ namespace CineChronicle.Application.ViewModels
 
         public async Task InitializeAsyncChange()
         {
-            await Task.Delay(500);
             // Недавно измененный
             ContentChange = new ObservableCollection<Content>(_databaseService.GetAllContent()
                 .Where(c => c.SeriesChangeDate != "")
@@ -64,7 +63,6 @@ namespace CineChronicle.Application.ViewModels
 
         public async Task InitializeAsyncRelease()
         {
-            await Task.Delay(500);
             // Лучше использовать отдельный метод в DatabaseService
             ContentRelease = new ObservableCollection<Content>(_databaseService.GetContentWithReleaseDates()
                 .Take(8)
@@ -77,7 +75,6 @@ namespace CineChronicle.Application.ViewModels
 
         private async Task InitializeAsyncAdded()
         {
-            await Task.Delay(500);
             // Недавно добавленный контент
             ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent()
                 .OrderByDescending(c => c.DateAdded)

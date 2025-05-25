@@ -81,33 +81,37 @@
                                             </VerticalStackLayout>
                                         </Grid>
                                     </Border>
-                                    <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference ContentCategoryCollectionView}}" CommandParameter="{Binding .}"
-        Clicked="ItemButtonClickedSort"/>
+                                    <Button BackgroundColor="Transparent" 
+                                            Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference ContentCategoryCollectionView}}" 
+                                            CommandParameter="{Binding .}"
+                                            Clicked="ItemButtonClickedSort"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
                 </StackLayout>
+                
                 <!-- Навигация по страницам -->
                 <StackLayout Orientation="Horizontal" 
-             HorizontalOptions="Center" 
-             Spacing="20" Margin="0,20,0,0">
+                            HorizontalOptions="Center" 
+                            Spacing="20" Margin="0,20,0,0">
+                    
                     <Button Text="← Назад" 
-                       FontSize="16"
-             Command="{Binding PreviousPageCommand}"
-             IsEnabled="{Binding CurrentPage, Converter={x:Static local:GreaterThanZeroConverter.Instance}}"
-             WidthRequest="150"/>
+                            FontSize="16"
+                            Command="{Binding PreviousPageCommand}"
+                            IsEnabled="{Binding CurrentPage, Converter={x:Static local:GreaterThanZeroConverter.Instance}}"
+                            WidthRequest="150"/>
 
                     <Label Text="{Binding SelectPageForUser, StringFormat='Страница {0}'}" 
-            FontSize="16"
-            VerticalOptions="Center"/>
+                            FontSize="16"
+                            VerticalOptions="Center"/>
 
                     <Button Text="Вперед →" 
                             FontSize="16"
-             Command="{Binding NextPageCommand}"
-             IsEnabled="{Binding HasMoreItems}"
-             WidthRequest="150"/>
+                            Command="{Binding NextPageCommand}"
+                            IsEnabled="{Binding HasMoreItems}"
+                            WidthRequest="150"/>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

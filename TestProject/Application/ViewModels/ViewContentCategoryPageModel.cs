@@ -8,6 +8,7 @@ namespace CineChronicle.Application.ViewModels
 {
     public partial class ViewContentCategoryPageModel : ObservableObject
     {
+        #region [Private Fields]
         private static DatabaseServiceContent _databaseService;
         public ObservableCollection<Content> ContentCategory { get; set; }
         public static int CurrentPage { get; private set; } = 0;
@@ -17,14 +18,18 @@ namespace CineChronicle.Application.ViewModels
         public ICommand LoadMoreCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand PreviousPageCommand { get; }
+        private string NameCategory;
 
         [ObservableProperty]
         private bool isBusy;
+        #endregion
 
+        #region [Ctor's]
         public ViewContentCategoryPageModel(string name, int page = 0)
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
             CurrentPage = page;
+            NameCategory = name; 
 
             string nameType = GetTypeCategory(name);
             IEnumerable<Content> contentItems;
@@ -52,7 +57,9 @@ namespace CineChronicle.Application.ViewModels
             NextPageCommand = new Command(() => LoadNextPage(name), () => HasMoreItems);
             PreviousPageCommand = new Command(() => LoadPreviousPage(name), () => CurrentPage > 0);
         }
+        #endregion
 
+        #region [Pagination]
         // Метод для загрузки предыдущей страницы
         public void LoadPreviousPage(string name)
         {
@@ -136,7 +143,9 @@ namespace CineChronicle.Application.ViewModels
                 IsBusy = false;
             }
         }
+        #endregion
 
+        #region [SomeBody Methods]
         public static string GetTypeCategory(string nameSelected)
         {
             if (nameSelected == "Все ваши Сериалы")
@@ -182,6 +191,9 @@ namespace CineChronicle.Application.ViewModels
 
             return "Весь";
         }
+        #endregion
+
+        #region [Query]
         private static List<Content> GetContentStatus(string type)
         {
             return _databaseService.GetContentByWatchStatus(type).ToList();
@@ -208,5 +220,33 @@ namespace CineChronicle.Application.ViewModels
         {
             _databaseService.DeleteContent(_databaseService.GetContentByTitle("Нажмите, чтобы добавить контент")[0]);
         }
+        public void UpdateContentsByQuery(string searchQuery)
+        {
+            string nameType = GetTypeCategory(NameCategory);
+            IEnumerable<Content> items;
+
+            switch (nameType)
+            {
+                case "Просмотрено":
+                case "Смотрю":
+                case "Не начинал":
+                    items = GetContentStatus(nameType);
+                    break;
+                default:
+                    items = GetContent(nameType);
+                    break;
+            }
+            if (searchQuery != "")
+            {
+                ContentCategory = new ObservableCollection<Content>(items.Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList());
+            }
+            else
+            {
+                ContentCategory = new ObservableCollection<Content>(items);
+            }
+                OnPropertyChanged(nameof(ContentCategory));
+        }
+
+        #endregion
     }
 }

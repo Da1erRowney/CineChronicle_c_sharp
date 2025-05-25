@@ -1,5 +1,4 @@
-﻿using CineChronicle.Application.MainPage;
-using CineChronicle.Tables;
+﻿using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CineChronicle.Application.ViewModel

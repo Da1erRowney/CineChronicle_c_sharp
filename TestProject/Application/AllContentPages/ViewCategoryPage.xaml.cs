@@ -7,10 +7,15 @@ using Microsoft.Maui.Controls;
 
 public partial class ViewCategoryPage : ContentPage
 {
-    private static string _nameCategory {get;set;}
-    public Content SelectedItem { get; set; }
-    private ViewContentCategoryPageModel _model;
+    #region [Private Fields]
 
+    public Content SelectedItem { get; set; }
+
+    private ViewContentCategoryPageModel _model;
+    private static string _nameCategory { get; set; }
+    #endregion
+
+    #region [Ctor's]
     public ViewCategoryPage(string nameCategory)
 	{
 		InitializeComponent();
@@ -24,12 +29,25 @@ public partial class ViewCategoryPage : ContentPage
     {
         base.OnAppearing();
 
-        if (_model == null)
+        string search = searchBar.Text;
+        if (string.IsNullOrEmpty(search))
         {
-            _model = new ViewContentCategoryPageModel(_nameCategory);
-            BindingContext = _model;
+            if (_model == null)
+            {
+                _model = new ViewContentCategoryPageModel(_nameCategory);
+                BindingContext = _model;
+            }
+            else
+            {
+                BindingContext = _model;
+            }
+        }
+        else
+        {
+
         }
     }
+    #endregion
 
     #region [Content]
     private void ItemButtonClickedSort(object sender, EventArgs e)
@@ -60,43 +78,32 @@ public partial class ViewCategoryPage : ContentPage
     }
     #endregion
 
+    #region [Search Methods]
+
     private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
         string searchQuery = searchBar.Text;
         if (searchQuery != "")
         {
-           
+            SortLabel.Text = $"Искомый контент по запросу \"{searchQuery}\"";
         }
         else
         {
             SortLabel.Text = _nameCategory;
-            searchBar.Text = "";
-            //ContentCategory = ContentCategoryReserve;
-           // OnPropertyChanged(nameof(ContentCategory));
         }
+            _model.UpdateContentsByQuery(searchQuery);
     }
     private void SearchContent(object sender, EventArgs e)
     {
-
         string searchQuery = searchBar.Text;
         if (searchQuery != "")
         {
-           
-            SortLabel.Text = $"Искомый контент по запросу \"{searchQuery}\"";
-           // List<Content> SearchContent = ContentCategoryReserve;
-
-           // List<Content> filteredContents = SearchContent.Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-           // ContentCategory = filteredContents.ToList();
-           // BindingContext = this;
-            //OnPropertyChanged(nameof(ContentCategory));
+          
         }
         else
         {
-            SortLabel.Text = _nameCategory;
-            searchBar.Text = "";
-           // ContentCategory = ContentCategoryReserve;
-          //  OnPropertyChanged(nameof(ContentCategory));
 
         }
     }
+    #endregion
 }

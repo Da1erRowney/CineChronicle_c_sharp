@@ -1,11 +1,9 @@
 using CineChronicle.Application;
-using CineChronicle.Application.MainPage;
 using CineChronicle.Application.SupportClass;
 using CineChronicle.Tables;
 
 namespace TestProject
 {
-
     public partial class AddMoreContentPage : ContentPage 
     { 
 

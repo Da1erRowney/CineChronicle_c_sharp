@@ -6,9 +6,12 @@ namespace TestProject;
 
 public partial class MainPage : ContentPage
 {
+    #region [Private Fields]
     public Content SelectedItem { get; set; }
     public static string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content1.db");
+    #endregion
 
+    #region [Ctor's and Main Methods]
     public MainPage()
     {
         InitializeComponent();
@@ -41,7 +44,6 @@ public partial class MainPage : ContentPage
         // Проверяем состояние при открытии
         CheckInitialConnection();
     }
-
     private void ConnectionInternet()
     {
         IsDeviceOfflineBorder.IsVisible = false;
@@ -83,7 +85,9 @@ public partial class MainPage : ContentPage
             ConnectionInternet();
         }
     }
+    #endregion
 
+    #region [Content Click]
     private void ItemButtonClicked(object sender, EventArgs e)
     {
         HandleClick(sender);
@@ -130,8 +134,7 @@ public partial class MainPage : ContentPage
     {
         await Navigation.PushAsync(viewContentPage);
     }
-
-   
+    #endregion
 }
 
 

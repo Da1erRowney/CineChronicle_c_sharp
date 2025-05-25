@@ -25,12 +25,14 @@ namespace CineChronicle.Application.ViewModels
         public bool IsContentRecommendationVisible => ContentRecommendation?.Count > 0;
         #endregion
 
+        #region [Ctor's]
         public ViewContentMainPageModel()
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
 
             Task.Run(InitializeAllDataAsync);
         }
+        #endregion
 
         #region [Async Init]
         private async Task InitializeAllDataAsync()

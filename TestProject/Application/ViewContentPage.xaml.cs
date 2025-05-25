@@ -1,5 +1,4 @@
 using CineChronicle.Application;
-using CineChronicle.Application.MainPage;
 using CineChronicle.Application.SupportClass;
 using CineChronicle.Application.ViewModel;
 using CineChronicle.Tables;

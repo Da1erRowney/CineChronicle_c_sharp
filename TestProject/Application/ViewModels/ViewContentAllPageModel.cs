@@ -51,12 +51,14 @@ namespace CineChronicle.Application.ViewModels
         public static string[] _categoryData = new string[2];
         #endregion
 
+        #region [Ctor's]
         public ViewContentAllPageModel()
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
 
             Task.Run(InitializeAllDataAsync);
         }
+        #endregion
 
         #region [Async Init]
         private async Task InitializeAllDataAsync()

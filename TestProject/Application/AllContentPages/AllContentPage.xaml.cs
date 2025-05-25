@@ -1,5 +1,7 @@
+using CineChronicle.Application.SupportClass;
 using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
+using System;
 
 namespace TestProject
 {
@@ -21,6 +23,8 @@ namespace TestProject
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            UseNewBackground();
+
             string search = searchBar.Text;
             if (string.IsNullOrEmpty(search))
             {
@@ -32,6 +36,12 @@ namespace TestProject
             {
                
             }
+        }
+        private void UseNewBackground()
+        {
+            Random _random = new Random();
+            string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
+            Background.Source = randomImage;
         }
         #endregion
 

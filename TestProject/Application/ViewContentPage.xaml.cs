@@ -131,6 +131,12 @@ namespace TestProject
 
             //WatchStatusPicker.SelectedItem = content.WatchStatus;
         }
+        private void UseNewBackground()
+        {
+            Random _random = new Random();
+            string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
+            Background.Source = randomImage;
+        }
 
         private void InternetChecking()
         {
@@ -150,7 +156,7 @@ namespace TestProject
                     // 5.1.2
                     if (string.IsNullOrEmpty(content.Image))
                     {
-                        Background.Source = "gradientfive.jpg";
+                        UseNewBackground();
                     }
                     else
                     {
@@ -170,7 +176,7 @@ namespace TestProject
                 // 5.2
                 TrailerWebBackground.IsVisible = false;
                 Background.IsVisible = true;
-                Background.Source = "gradientfive.jpg";
+                UseNewBackground();
 
                 // 5.3
                 if (string.IsNullOrEmpty(content.Image))
@@ -259,7 +265,7 @@ namespace TestProject
                 // 5.1.2
                 if (string.IsNullOrEmpty(recommendated.ImageUrl))
                 {
-                    Background.Source = "gradientfive.jpg";
+                    UseNewBackground();
                 }
                 else
                 {

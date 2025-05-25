@@ -8,7 +8,7 @@
     </ContentPage.Resources>
     <Grid  BackgroundColor="Transparent">
 
-        <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+        <Image x:Name="Background" Grid.Row ="1" Source="all.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 
         <Grid Grid.Row="0" BackgroundColor="Transparent">
             <Grid.ColumnDefinitions>
@@ -100,13 +100,13 @@
                                     <Grid>
                                         <Border Margin="0,5,5,0" Stroke="black" Grid.RowSpan="3" 
                                         BackgroundColor="Black" 
-                                        HeightRequest="175" 
+                                        HeightRequest="200" 
                                         StrokeShape ="RoundRectangle 30,30,30,30" 
                                         StrokeThickness="3" 
                                         WidthRequest="150">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="175" WidthRequest="150" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="200" WidthRequest="150" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>

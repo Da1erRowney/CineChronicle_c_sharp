@@ -1,6 +1,7 @@
 namespace TestProject;
 
 using CineChronicle.Application.AllContentPages;
+using CineChronicle.Application.SupportClass;
 using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
 using Microsoft.Maui.Controls;
@@ -28,6 +29,7 @@ public partial class ViewCategoryPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
+        UseNewBackground();
 
         string search = searchBar.Text;
         if (string.IsNullOrEmpty(search))
@@ -46,6 +48,13 @@ public partial class ViewCategoryPage : ContentPage
         {
 
         }
+    }
+
+    private void UseNewBackground()
+    {
+        Random _random = new Random();
+        string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
+        Background.Source = randomImage;
     }
     #endregion
 

@@ -1,4 +1,5 @@
-﻿using CineChronicle.Application.ViewModels;
+﻿using CineChronicle.Application.SupportClass;
+using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
 using System.Diagnostics;
 
@@ -20,6 +21,7 @@ public partial class MainPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
+        UseNewBackground();
 
         // Подписываемся на события
         MessagingCenter.Subscribe<App>(this, "InternetConnected", (sender) =>
@@ -43,6 +45,12 @@ public partial class MainPage : ContentPage
 
         // Проверяем состояние при открытии
         CheckInitialConnection();
+    }
+    private void UseNewBackground()
+    {
+        Random _random = new Random();
+        string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
+        Background.Source = randomImage;
     }
     private void ConnectionInternet()
     {

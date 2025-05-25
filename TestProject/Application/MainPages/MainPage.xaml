@@ -44,7 +44,7 @@
 
         <!-- Основная область контента -->
         <ScrollView>
-            <StackLayout Margin="0,0,25,0">
+            <StackLayout Margin="0,0,0,0">
                 <!-- Оффлайн баннер -->
                 <Border x:Name="IsDeviceOfflineBorder"
                         Opacity="1"
@@ -97,7 +97,7 @@
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
-                                        Margin="25,10,0,10"
+                                        Margin="20,10,0,10"
                                         HeightRequest="250"
                                         WidthRequest="200">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
@@ -161,7 +161,7 @@
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
-                                        Margin="25,10,0,10"
+                                        Margin="20,10,0,10"
                                         HeightRequest="250"
                                         WidthRequest="200">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
@@ -206,7 +206,8 @@
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedItem}"
                                 Margin="0,25,0,25"
-                                VerticalOptions="Center">
+                                VerticalOptions="Center"
+                                HorizontalOptions="StartAndExpand">
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout Orientation="Horizontal"  Span="{Binding ContentRelease.Count, Converter={StaticResource CountToSpanConverter}}" />
                         </CollectionView.ItemsLayout>
@@ -216,7 +217,7 @@
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
-                                        Margin="25,10,0,10"
+                                        Margin="20,10,0,10"
                                         HeightRequest="250"
                                         WidthRequest="200">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
@@ -261,7 +262,8 @@
                     ItemsSource="{Binding ContentRecommendation}"
                     SelectionMode="Single"
                     SelectedItem="{Binding SelectedItem}"
-                    HorizontalOptions="Center">
+                                VerticalOptions="Center"
+                                HorizontalOptions="StartAndExpand">
 
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout Orientation="Horizontal"  Span="{Binding ContentRecommendation.Count, Converter={StaticResource CountToSpanConverter}}" />
@@ -271,7 +273,7 @@
                             <DataTemplate>
                                 <Grid>
                                     <Border Style="{StaticResource ContentCardStyle}"
-                             Margin="25,10,0,10"
+                             Margin="20,10,0,10"
                              HeightRequest="250"
                              WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.2*">

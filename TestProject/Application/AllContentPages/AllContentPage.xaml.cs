@@ -1,4 +1,3 @@
-using CineChronicle.Application.AllContentPages;
 using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
 
@@ -6,25 +5,14 @@ namespace TestProject
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AllContentPage : ContentPage
-    { 
-
-        public string Choise = "All";
-
-        private List<Content> _contentSearch;
-        public List<Content> ContentSort { get; set; }
-        public List<Content> ContentSearch
-        {
-            get { return _contentSearch; }
-            set
-            {
-                _contentSearch = value;
-                OnPropertyChanged(nameof(ContentSearch));
-            }
-        }
-
+    {
+        #region [Private Fields]
         public Content SelectedItem { get; set; }
 
+        private ViewContentAllPageModel _model;
+        #endregion
 
+        #region [Ctor's]
         public AllContentPage()
         {
             InitializeComponent();
@@ -33,46 +21,19 @@ namespace TestProject
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            BindingContext = new ViewContentAllPageModel();
-
             string search = searchBar.Text;
-            if (search != null && search != "")
+            if (string.IsNullOrEmpty(search))
             {
-                Sort.IsVisible = true;
-                DoShowElements(false);
+                BindingContext = new ViewContentAllPageModel();
+                _model = (ViewContentAllPageModel)BindingContext;
+                Sort.IsVisible = false;
             }
             else
             {
-                Sort.IsVisible = false;
+               
             }
         }
-
-        // Возврат показа всего
-        private async void ВсеButton_Clicked(object sender, EventArgs e)
-        {
-            DoShowElements(true);
-
-            Sort.IsVisible = false;
-            searchBar.Text = "";
-            Choise = "All";
-
-        }
-
-        private void DoShowElements(bool isShow)
-        {
-            All.IsVisible = isShow;
-            Serial.IsVisible = isShow;
-            Anime.IsVisible = isShow;
-            Film.IsVisible = isShow;
-            Dorama.IsVisible = isShow;
-            Mult.IsVisible = isShow;
-            Docum.IsVisible = isShow;
-            Other.IsVisible = isShow;
-            Viewed.IsVisible = isShow;
-            Process.IsVisible = isShow;
-            NotStart.IsVisible = isShow;
-        }
+        #endregion
 
         #region [Category]
         private async void CategoryButton_Clicked(object sender, EventArgs e)
@@ -112,28 +73,25 @@ namespace TestProject
         }
         #endregion
 
-        private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            if (e.Item is Content selectedContent)
-            {
-                ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-                await Navigation.PushAsync(viewContentPage);
-            }
-        }
+        #region [Search Methods]
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
             string searchQuery = searchBar.Text;
             if (searchQuery != "")
             {
-               
+                DoShowElements(false);
+                Sort.IsVisible = true;
+                SortLabel.Text = $"Искомый контент по запросу \"{searchQuery}\"";
+                _model.UpdateContentsByQuery(searchQuery);
             }
             else
             {
+                SortLabel.Text = "";
                 searchBar.Text = "";
-                SearchList.IsVisible = false;
                 Sort.IsVisible = false;
-                ContentSort = null; // Установка источника данных в null
-                OnPropertyChanged(nameof(ContentSort));
+
+                DoShowElements(true);
+                BindingContext = _model;
             }
         }
 
@@ -142,26 +100,50 @@ namespace TestProject
             string searchQuery = searchBar.Text;
             if (searchQuery != "")
             {
-                DoShowElements(false);
 
-                SearchList.IsVisible = false;
-
-                Sort.IsVisible = true;
-                SortLabel.Text = $"Искомый контент по запросу \"{searchQuery}\"";
-
-                ContentSort = ViewContentAllPageModel.GetContentsByQuery(searchQuery);
-                BindingContext = this;
             }
             else
             {
                 SortLabel.Text = "";
                 searchBar.Text = "";
-                SearchList.IsVisible = false;
                 Sort.IsVisible = false;
-                ContentSort = null; // Установка источника данных в null
-                OnPropertyChanged(nameof(ContentSort));
+
+                DoShowElements(true);
+                BindingContext = _model;
             }
         }
+        // Возврат показа всего
+        private async void ВсеButton_Clicked(object sender, EventArgs e)
+        {
+            DoShowElements(true);
 
+            Sort.IsVisible = false;
+            searchBar.Text = "";
+        }
+
+        private void DoShowElements(bool isShow)
+        {
+            bool[] visible = _model.GetVisibleProperties();
+            var elements = new[]
+            {
+                (Element: All, VisibleIndex: 0),
+                (Element: Serial, VisibleIndex: 1),
+                (Element: Anime, VisibleIndex: 2),
+                (Element: Film, VisibleIndex: 3),
+                (Element: Dorama, VisibleIndex: 4),
+                (Element: Mult, VisibleIndex: 5),
+                (Element: Docum, VisibleIndex: 6),
+                (Element: Other, VisibleIndex: 7),
+                (Element: Viewed, VisibleIndex: 8),
+                (Element: Process, VisibleIndex: 9),
+                (Element: NotStart, VisibleIndex: 10)
+            };
+
+            foreach (var (element, visibleIndex) in elements)
+            {
+                element.IsVisible = isShow && visible[visibleIndex];
+            }
+        }
+        #endregion
     }
 }

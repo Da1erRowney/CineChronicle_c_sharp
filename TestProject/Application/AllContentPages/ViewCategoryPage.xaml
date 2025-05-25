@@ -32,30 +32,11 @@
                     HorizontalOptions="CenterAndExpand" 
                     SearchButtonPressed="SearchContent" />
 
-                <!-- Навигация по страницам -->
-                <StackLayout Orientation="Horizontal" 
-                            HorizontalOptions="Center" 
-                            Spacing="20" Margin="0,20,0,0">
-                    <Button Text="← Назад" 
-                            Command="{Binding PreviousPageCommand}"
-                            IsEnabled="{Binding CurrentPage, Converter={x:Static local:GreaterThanZeroConverter.Instance}}"
-                            WidthRequest="150"/>
-
-                    <Label Text="{Binding SelectPageForUser, StringFormat='Страница {0}'}" 
-                           FontSize="16"
-                           VerticalOptions="Center"/>
-
-                    <Button Text="Вперед →" 
-                            Command="{Binding NextPageCommand}"
-                            IsEnabled="{Binding HasMoreItems}"
-                            WidthRequest="150"/>
-                </StackLayout>
-
-                <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10"  Margin="-10,20,-10,0">
-                    <Label  x:Name="SortLabel" Text="" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="20" Margin="50,0,0,0"/>
-                    <Label Text="{Binding ContentCategory.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="16" Margin="50,0,0,0"/>
+                <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10"  Margin="0,10,0,0">
+                    <Label  x:Name="SortLabel" Text="" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="20" Margin="15,0,0,0"/>
+                    <Label  Text="Весь ваш контент текущей категории" VerticalOptions="Center" FontSize="16" Margin="15,0,0,0"/>
                     
-                    <CollectionView Margin="0,15,0,0" 
+                    <CollectionView Margin="0,0,0,0" 
                                     x:Name="ContentCategoryCollectionView" 
                                     Grid.Row="2" 
                                     ItemsSource="{Binding ContentCategory}" 
@@ -70,15 +51,15 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <Border Margin="0,25,0,25" Stroke="black" Grid.RowSpan="3" 
+                                    <Border Margin="0,15,0,0" Stroke="black" Grid.RowSpan="3" 
                             BackgroundColor="Black" 
-                            HeightRequest="150" 
+                            HeightRequest="250" 
                             StrokeShape ="RoundRectangle 30,30,30,30" 
                             StrokeThickness="2" 
-                            WidthRequest="150">
+                            WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.3*">
                                             <Image Aspect="Fill" Source="{Binding Image}" Grid.RowSpan="3" />
-                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="150" WidthRequest="150" Opacity=".7">
+                                            <RoundRectangle Grid.RowSpan ="3" CornerRadius ="30" HeightRequest="250" WidthRequest="200" Opacity=".7">
                                                 <RoundRectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0,1">
                                                         <GradientStop Offset="0" Color="Transparent"></GradientStop>
@@ -87,9 +68,9 @@
                                                 </RoundRectangle.Fill>
                                             </RoundRectangle>
                                             <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
-                                                <Label  TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="8" />
-                                                <Label FontSize="12" Text="{Binding Title}" TextColor= "White"/>
-                                                <Label FontSize="8" TextColor="White">
+                                                <Label TextColor= "White" Text="{Binding Type, StringFormat='Тип: {0}'}" FontSize="10" />
+                                                <Label FontSize="14" Text="{Binding Title}" TextColor= "White"/>
+                                                <Label FontSize="10" TextColor="White">
                                                     <Label.Text>
                                                         <MultiBinding StringFormat="Сезон: {0} Серия: {1}">
                                                             <Binding Path="LastWatchedSeason" />
@@ -99,9 +80,6 @@
                                                 </Label>
                                             </VerticalStackLayout>
                                         </Grid>
-                                        <Border.Shadow>
-                                            <Shadow Brush="white" Opacity=".7" Radius="50" Offset="0,0"/>
-                                        </Border.Shadow>
                                     </Border>
                                     <Button  BackgroundColor="Transparent" Command="{Binding Path=BindingContext.ItemSelectedCommand, Source={x:Reference ContentCategoryCollectionView}}" CommandParameter="{Binding .}"
         Clicked="ItemButtonClickedSort"/>
@@ -111,7 +89,28 @@
                     </CollectionView>
 
                 </StackLayout>
+                <!-- Навигация по страницам -->
+                <StackLayout Orientation="Horizontal" 
+             HorizontalOptions="Center" 
+             Spacing="20" Margin="0,20,0,0">
+                    <Button Text="← Назад" 
+                       FontSize="16"
+             Command="{Binding PreviousPageCommand}"
+             IsEnabled="{Binding CurrentPage, Converter={x:Static local:GreaterThanZeroConverter.Instance}}"
+             WidthRequest="150"/>
+
+                    <Label Text="{Binding SelectPageForUser, StringFormat='Страница {0}'}" 
+            FontSize="16"
+            VerticalOptions="Center"/>
+
+                    <Button Text="Вперед →" 
+                            FontSize="16"
+             Command="{Binding NextPageCommand}"
+             IsEnabled="{Binding HasMoreItems}"
+             WidthRequest="150"/>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
+            
     </Grid>
 </ContentPage>

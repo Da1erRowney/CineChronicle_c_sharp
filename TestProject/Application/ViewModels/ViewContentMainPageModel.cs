@@ -2,8 +2,6 @@
 using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Windows.Input;
 
 namespace CineChronicle.Application.ViewModels
 {
@@ -34,6 +32,7 @@ namespace CineChronicle.Application.ViewModels
             Task.Run(InitializeAllDataAsync);
         }
 
+        #region [Async Init]
         private async Task InitializeAllDataAsync()
         {
             await InitializeAsyncAdded();
@@ -148,7 +147,9 @@ namespace CineChronicle.Application.ViewModels
             OnPropertyChanged(nameof(ContentRecommendation));
             OnPropertyChanged(nameof(IsContentRecommendationVisible));
         }
+        #endregion
 
+        #region [Query]
         public static void DeleteBaseContent()
         {
            _databaseService.DeleteContent( _databaseService.GetContentByTitle("Нажмите, чтобы добавить контент")[0]);
@@ -164,5 +165,6 @@ namespace CineChronicle.Application.ViewModels
             title = title.TrimEnd();
             return _databaseService.GetContentByTitle(title);
         }
+        #endregion
     }
 }

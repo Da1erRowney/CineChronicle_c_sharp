@@ -44,7 +44,7 @@
 
         <!-- Основная область контента -->
         <ScrollView>
-            <StackLayout>
+            <StackLayout Margin="0,0,25,0">
                 <!-- Оффлайн баннер -->
                 <Border x:Name="IsDeviceOfflineBorder"
                         Opacity="1"
@@ -78,7 +78,7 @@
                 </Border>
 
                 <!-- Недавно просмотренные -->
-                <StackLayout x:Name="CWatched" IsVisible="{Binding IsContentChangeVisible}">
+                <StackLayout x:Name="CWatched" IsVisible="{Binding IsContentChangeVisible}" Margin="0,0,0,0">
                 <Label Text="Недавно просмотренные" Style="{StaticResource SectionTitleStyle}"/>
                 <Label Text="Контент, который вы обновляли либо меняли серию" Style="{StaticResource SectionSubtitleStyle}"/>
 
@@ -86,7 +86,7 @@
                                ItemsSource="{Binding ContentChange}"
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedItem}"
-                                 Margin="0,50,0,50"
+                                Margin="0,25,0,25"
                                 VerticalOptions="Center"
                                 HorizontalOptions="StartAndExpand">
                         <CollectionView.ItemsLayout>
@@ -97,7 +97,7 @@
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
-                                        Margin="25,10,25,10"
+                                        Margin="25,10,0,10"
                                         HeightRequest="250"
                                         WidthRequest="200">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
@@ -141,7 +141,7 @@
                 </StackLayout>
 
                 <!-- Недавно добавленные -->
-                <StackLayout x:Name="CAdded" IsVisible="{Binding IsContentAddedVisible}">
+                <StackLayout x:Name="CAdded" IsVisible="{Binding IsContentAddedVisible}" Margin="0,25,0,0">
                 <Label Text="Недавно добавленные" Style="{StaticResource SectionTitleStyle}"/>
                 <Label Text="Контент, который вы недавно добавили" Style="{StaticResource SectionSubtitleStyle}"/>
 
@@ -149,7 +149,7 @@
                                ItemsSource="{Binding ContentAdded}"
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedItem}"
-                                Margin="0,50,0,50"
+                                Margin="0,25,0,25"
                                 VerticalOptions="Center"
                                 HorizontalOptions="StartAndExpand">
                         <CollectionView.ItemsLayout>
@@ -161,7 +161,7 @@
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
-                                        Margin="25,10,25,10"
+                                        Margin="25,10,0,10"
                                         HeightRequest="250"
                                         WidthRequest="200">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
@@ -197,7 +197,7 @@
                 </StackLayout>
 
                 <!-- Релизы контентов -->
-                <StackLayout x:Name="CRelease" IsVisible="{Binding IsContentReleaseVisible}">
+                <StackLayout x:Name="CRelease" IsVisible="{Binding IsContentReleaseVisible}" Margin="0,25,0,0">
                 <Label Text="Что нового?" Style="{StaticResource SectionTitleStyle}"/>
                 <Label Text="Последние релизы и предстоящие премьеры вашего контента" Style="{StaticResource SectionSubtitleStyle}"/>
 
@@ -205,7 +205,7 @@
                                ItemsSource="{Binding ContentRelease}"
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedItem}"
-                                Margin="0,50,0,50"
+                                Margin="0,25,0,25"
                                 VerticalOptions="Center">
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout Orientation="Horizontal"  Span="{Binding ContentRelease.Count, Converter={StaticResource CountToSpanConverter}}" />
@@ -216,7 +216,7 @@
                         <DataTemplate>
                             <Grid>
                                 <Border Style="{StaticResource ContentCardStyle}"
-                                        Margin="25,10,25,10"
+                                        Margin="25,10,0,10"
                                         HeightRequest="250"
                                         WidthRequest="200">
                                     <Grid RowDefinitions=".2*,.6*,.2*">
@@ -252,16 +252,17 @@
                 </StackLayout>
 
                 <!-- Рекомендованный контент -->
-                <StackLayout x:Name="MobilePhoneRec" IsVisible="{Binding IsContentRecommendationVisible}">
+                <StackLayout x:Name="MobilePhoneRec" IsVisible="{Binding IsContentRecommendationVisible}" Margin="0,25,0,0">
                     <Label Text="Рекомендованный контент" Style="{StaticResource SectionTitleStyle}"/>
                     <Label Text="Самое популярное на этой неделе" Style="{StaticResource SectionSubtitleStyle}"/>
 
-                    <CollectionView Margin="0,50,0,50"
+                    <CollectionView Margin="0,25,0,25"
                     x:Name="RecentlyRecommendationCarouselView"
                     ItemsSource="{Binding ContentRecommendation}"
                     SelectionMode="Single"
                     SelectedItem="{Binding SelectedItem}"
-                                    HorizontalOptions="Center">
+                    HorizontalOptions="Center">
+
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout Orientation="Horizontal"  Span="{Binding ContentRecommendation.Count, Converter={StaticResource CountToSpanConverter}}" />
                         </CollectionView.ItemsLayout>
@@ -270,7 +271,7 @@
                             <DataTemplate>
                                 <Grid>
                                     <Border Style="{StaticResource ContentCardStyle}"
-                             Margin="25,10,25,10"
+                             Margin="25,10,0,10"
                              HeightRequest="250"
                              WidthRequest="200">
                                         <Grid RowDefinitions=".2*,.6*,.2*">

@@ -115,7 +115,14 @@ namespace CineChronicle.Application.ViewModels
         {
             _databaseService.DeleteContent(_databaseService.GetContentByTitle("Нажмите, чтобы добавить контент")[0]);
         }
+        public static string GetName(object sender)
+        {
+            var label = sender as Label;
+            string nameSelected = label.Text;
 
+            _categoryData = GetTypeCategory(nameSelected);
+            return _categoryData[1];
+        }
         public static List<Content> PrepareCategory(object sender)
         {
             var label = sender as Label;

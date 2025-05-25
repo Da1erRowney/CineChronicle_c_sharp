@@ -76,7 +76,7 @@ namespace TestProject
         #region [Category]
         private async void CategoryButton_Clicked(object sender, EventArgs e)
         {
-            ViewCategoryPage viewContentPage = new ViewCategoryPage(ViewContentAllPageModel.PrepareCategory(sender), ViewContentAllPageModel._categoryData[1]);
+            ViewCategoryPage viewContentPage = new ViewCategoryPage(ViewContentAllPageModel.GetName(sender));
             await Navigation.PushAsync(viewContentPage);
         }
 

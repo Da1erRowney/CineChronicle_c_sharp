@@ -1,34 +1,68 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CineChronicle.Application.AllContentPages"
              x:Class="TestProject.ViewCategoryPage">
     <Grid  BackgroundColor="Transparent">
 
-        <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+        <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect=
+               "AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 
         <Grid Grid.Row="0" BackgroundColor="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
-
-
+            
         </Grid>
+        
+        <!-- Индикатор загрузки -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}" 
+                         IsRunning="{Binding IsBusy}" 
+                         Color="Blue"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Center"/>
+        
         <ScrollView>
             <StackLayout Orientation="Vertical" Padding="10">
                 <SearchBar x:Name="searchBar" 
-            Placeholder="Поиск по категории..." 
-            FontSize="18"  
-            TextChanged="SearchBar_TextChanged" 
-            HorizontalOptions="CenterAndExpand" 
-            SearchButtonPressed="SearchContent" />
-                
+                    Placeholder="Поиск по категории..." 
+                    FontSize="18"  
+                    TextChanged="SearchBar_TextChanged" 
+                    HorizontalOptions="CenterAndExpand" 
+                    SearchButtonPressed="SearchContent" />
+
+                <!-- Навигация по страницам -->
+                <StackLayout Orientation="Horizontal" 
+                            HorizontalOptions="Center" 
+                            Spacing="20" Margin="0,20,0,0">
+                    <Button Text="← Назад" 
+                            Command="{Binding PreviousPageCommand}"
+                            IsEnabled="{Binding CurrentPage, Converter={x:Static local:GreaterThanZeroConverter.Instance}}"
+                            WidthRequest="150"/>
+
+                    <Label Text="{Binding SelectPageForUser, StringFormat='Страница {0}'}" 
+                           FontSize="16"
+                           VerticalOptions="Center"/>
+
+                    <Button Text="Вперед →" 
+                            Command="{Binding NextPageCommand}"
+                            IsEnabled="{Binding HasMoreItems}"
+                            WidthRequest="150"/>
+                </StackLayout>
+
                 <StackLayout x:Name="Sort" Orientation="Vertical" Padding="10"  Margin="-10,20,-10,0">
                     <Label  x:Name="SortLabel" Text="" VerticalOptions="Center"  FontAttributes="Bold"  FontSize="20" Margin="50,0,0,0"/>
                     <Label Text="{Binding ContentCategory.Count, StringFormat='Общее количество: {0}'}" VerticalOptions="Center" FontSize="16" Margin="50,0,0,0"/>
                     
-                    <CollectionView Margin="0,15,0,0" x:Name="ContentCategoryCollectionView" Grid.Row="2" ItemsSource="{Binding ContentCategory}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}">
+                    <CollectionView Margin="0,15,0,0" 
+                                    x:Name="ContentCategoryCollectionView" 
+                                    Grid.Row="2" 
+                                    ItemsSource="{Binding ContentCategory}" 
+                                    SelectionMode="Single" 
+                                    SelectedItem="{Binding SelectedItem}"
+                                    RemainingItemsThreshold="5"
+                                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
                         <CollectionView.ItemsLayout >
                             <GridItemsLayout Orientation="Vertical" Span="2" />
                         </CollectionView.ItemsLayout>

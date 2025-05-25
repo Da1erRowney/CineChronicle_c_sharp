@@ -1,40 +1,65 @@
 namespace TestProject;
+
+using CineChronicle.Application.AllContentPages;
+using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
 using Microsoft.Maui.Controls;
 
 public partial class ViewCategoryPage : ContentPage
 {
-    private string NameCategory;
-    public List<Content> ContentCategory { get; set; }
-    public List<Content> ContentCategoryReserve { get; set; }
-    public ViewCategoryPage(List<Content> ContentSort, string nameCategory)
+    private static string _nameCategory {get;set;}
+    public Content SelectedItem { get; set; }
+    private ViewContentCategoryPageModel _model;
+
+    public ViewCategoryPage(string nameCategory)
 	{
 		InitializeComponent();
-        ContentCategoryReserve = ContentSort;
-        ContentCategory = ContentSort;
-        SortLabel.Text = nameCategory;
-        NameCategory = nameCategory;
-         BindingContext = this;
-        OnPropertyChanged(nameof(ContentCategory));
-    }
+        _nameCategory = nameCategory;
+        SortLabel.Text = _nameCategory;
 
-    private async void OnItemSelectedSort(Content item, int selectedIndex)
+        // Инициализация конвертера
+        Resources.Add("GreaterThanZeroConverter", new GreaterThanZeroConverter());
+    }
+    protected override void OnAppearing()
     {
-        if (item == null)
-            return;
+        base.OnAppearing();
 
-        Content selectedContent = ContentCategory[selectedIndex];
-        ViewContentPage viewContentPage = new ViewContentPage(selectedContent);
-        await Navigation.PushAsync(viewContentPage);
+        if (_model == null)
+        {
+            _model = new ViewContentCategoryPageModel(_nameCategory);
+            BindingContext = _model;
+        }
     }
 
+    #region [Content]
     private void ItemButtonClickedSort(object sender, EventArgs e)
+    {
+        HandleClick(sender);
+    }
+
+    private void HandleClick(object sender)
     {
         var button = (Button)sender;
         var item = (Content)button.CommandParameter;
-        var selectedIndex = new List<Content>((IEnumerable<Content>)ContentCategoryCollectionView.ItemsSource).IndexOf(item);
-        OnItemSelectedSort(item, selectedIndex);
+        OnItemClick(item.Id);
     }
+
+    private async void OnItemClick(int id)
+    {
+        SelectedItem = ViewContentCategoryPageModel.GetContentById(id);
+        if (SelectedItem.Type == "Ваш контент")
+        {
+            ViewContentCategoryPageModel.DeleteBaseContent();
+            await Navigation.PushAsync(new AddMoreContentPage());
+        }
+        else
+        {
+            ViewContentPage viewContentPage = new ViewContentPage(SelectedItem);
+            await Navigation.PushAsync(viewContentPage);
+        }
+    }
+    #endregion
+
     private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
         string searchQuery = searchBar.Text;
@@ -44,10 +69,10 @@ public partial class ViewCategoryPage : ContentPage
         }
         else
         {
-            SortLabel.Text = NameCategory;
+            SortLabel.Text = _nameCategory;
             searchBar.Text = "";
-            ContentCategory = ContentCategoryReserve;
-            OnPropertyChanged(nameof(ContentCategory));
+            //ContentCategory = ContentCategoryReserve;
+           // OnPropertyChanged(nameof(ContentCategory));
         }
     }
     private void SearchContent(object sender, EventArgs e)
@@ -58,19 +83,19 @@ public partial class ViewCategoryPage : ContentPage
         {
            
             SortLabel.Text = $"Искомый контент по запросу \"{searchQuery}\"";
-            List<Content> SearchContent = ContentCategoryReserve;
+           // List<Content> SearchContent = ContentCategoryReserve;
 
-            List<Content> filteredContents = SearchContent.Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-            ContentCategory = filteredContents.ToList();
-            BindingContext = this;
-            OnPropertyChanged(nameof(ContentCategory));
+           // List<Content> filteredContents = SearchContent.Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+           // ContentCategory = filteredContents.ToList();
+           // BindingContext = this;
+            //OnPropertyChanged(nameof(ContentCategory));
         }
         else
         {
-            SortLabel.Text = NameCategory;
+            SortLabel.Text = _nameCategory;
             searchBar.Text = "";
-            ContentCategory = ContentCategoryReserve;
-            OnPropertyChanged(nameof(ContentCategory));
+           // ContentCategory = ContentCategoryReserve;
+          //  OnPropertyChanged(nameof(ContentCategory));
 
         }
     }

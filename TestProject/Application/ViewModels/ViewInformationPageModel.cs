@@ -6,6 +6,7 @@ namespace CineChronicle.Application.ViewModels
 
     public partial class ViewInformationPageModel : ObservableObject
     {
+        #region [Private Fields]
         private static DatabaseServiceContent _databaseService;
         public Authorized Authorized { get; set; }
         public User User { get; set; }
@@ -13,20 +14,24 @@ namespace CineChronicle.Application.ViewModels
         public Content Content { get; set; }
 
         public bool HaveAthorizedUser = false;
+        #endregion
 
+        #region [Ctor's]
         public ViewInformationPageModel()
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
 
             Task.Run(InitUserData);
         }
+        #endregion
 
+        #region [Methods]
         private async Task InitUserData()
         {
             await CheckedAuthUser();
         }
 
-        private async Task CheckedAuthUser()
+        private async Task CheckedAuthUser() // Поиск авторизованного пользователя
         {
 
             if (_databaseService.GetAuthorizedByAuth(true) != null)                     // Если есть авторизованный пользователь в системе
@@ -58,13 +63,14 @@ namespace CineChronicle.Application.ViewModels
             OnPropertyChanged(nameof(HaveAthorizedUser));
         }
 
-        public async void ExitAccount()
+        public async void ExitAccount() // Выход из аккаунта
         {
             Authorized.IsAuthenticated = false;
             _databaseService.UpdateAuth(Authorized);
 
             await CheckedAuthUser();
         }
+        #endregion
     }
-    
+
 }

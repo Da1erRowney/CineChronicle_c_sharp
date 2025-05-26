@@ -1,11 +1,11 @@
 using CineChronicle.Application.SupportClass;
 using CineChronicle.Application.ViewModels;
-using CineChronicle.Tables;
 
 namespace TestProject;
 
 public partial class AuthorizationPage : ContentPage
 {
+    #region [Ctor's]
     public AuthorizationPage()
 	{
 		InitializeComponent();
@@ -17,24 +17,16 @@ public partial class AuthorizationPage : ContentPage
         BindingContext = new ViewAuthPageModel();
         UseNewBackground();
     }
+
     private void UseNewBackground()
     {
         Random _random = new Random();
         string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
         Background.Source = randomImage;
     }
+    #endregion
 
-    public async void CheckedAuthUser()
-    {
-        DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
-        if (databaseService.GetAuthorizedByAuth(true) != null)
-        {
-            var authUser = databaseService.GetAuthorizedByAuth(true);
-            string userName = authUser.Email;
-
-        }
-    }
-
+    #region [Main Handle Methods]
     // Создание
     private async void OnAddClicked(object sender, EventArgs e)
     {
@@ -90,36 +82,35 @@ public partial class AuthorizationPage : ContentPage
         } 
     }
 
+    #endregion
 
+    #region [Handle Methods]
     private void OnCreateTapped(object sender, EventArgs e)
     {
-        TitlePage.Text = "Начни жизнь с нового аккаунта...";
-
-        CreateLayout.IsVisible = true;
-        GoEntrance.IsVisible = true;
-
-        EntranceBorder.IsVisible = false;
-        GoRegistr.IsVisible = false;
-
-
-
-
+        HideElements("Начни жизнь с нового аккаунта...", true);
     }
 
     private void OnEntranceTapped(object sender, EventArgs e)
     {
-        TitlePage.Text = "Мы вас ждали путник...";
-
-        CreateLayout.IsVisible = false;
-        GoEntrance.IsVisible = false;
-
-        EntranceBorder.IsVisible = true;
-        GoRegistr.IsVisible = true;
-
+        HideElements("Мы вас ждали путник...",false);
     }
 
     private void OnForgotPasswordTapped(object sender, EventArgs e)
     {
         //Забыл пароль
     }
+    #endregion
+
+    #region [SomeBody Methods]
+    private void HideElements(string str, bool status)
+    {
+        TitlePage.Text = "Мы вас ждали путник...";
+
+        CreateLayout.IsVisible = status;
+        GoEntrance.IsVisible = status;
+
+        EntranceBorder.IsVisible = !status;
+        GoRegistr.IsVisible = !status;
+    }
+    #endregion
 }

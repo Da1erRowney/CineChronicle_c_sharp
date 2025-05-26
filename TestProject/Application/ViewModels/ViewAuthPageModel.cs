@@ -6,11 +6,16 @@ namespace CineChronicle.Application.ViewModels
 {
     public partial class ViewAuthPageModel : ObservableObject
     {
+        #region [Private Fields]
         private static DatabaseServiceContent _databaseService;
+        #endregion
+
+        #region [Ctor's]
         public ViewAuthPageModel() 
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
         }
+        #endregion
 
         #region [Create Account]
         public static string AddAccount(string emailEntryl, string passwordEntry, string nickName)

@@ -6,13 +6,18 @@
         {
             "gradient",
             "gradienteight",
-            "gradientfive",
+            //"gradientfive",
             "gradientfouth",
             "gradientsecond",
             "gradientseven",
             "gradientsix",
             "gradientthird",
-            "paper"
+            "paper",
+            "gradientnewfisrt",
+            "gradientnewsecond",
+            "gradientnewthird",
+            "gradientnewfourth",
+            "gradientnewfive"
         };
     }
 }

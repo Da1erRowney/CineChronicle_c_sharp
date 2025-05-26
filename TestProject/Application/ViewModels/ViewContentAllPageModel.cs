@@ -1,6 +1,7 @@
 ﻿using CineChronicle.Application.SupportClass;
 using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace CineChronicle.Application.ViewModels
 {
@@ -8,18 +9,18 @@ namespace CineChronicle.Application.ViewModels
     {
         #region [Private Fields]
         private static DatabaseServiceContent _databaseService;
-        public List<Content> ContentSort { get; set; }
-        public List<Content> ContentAll { get; set; }
-        public List<Content> ContentSerial { get; set; }
-        public List<Content> ContentAnime { get; set; }
-        public List<Content> ContentFilm { get; set; }
-        public List<Content> ContentDorama { get; set; }
-        public List<Content> ContentMult { get; set; }
-        public List<Content> ContentDocum { get; set; }
-        public List<Content> ContentOther { get; set; }
-        public List<Content> ContentViewed { get; set; }
-        public List<Content> ContentProcess { get; set; }
-        public List<Content> ContentNotStart { get; set; }
+        public ObservableCollection<Content> ContentSort { get; set; }
+        public ObservableCollection<Content> ContentAll { get; set; }
+        public ObservableCollection<Content> ContentSerial { get; set; }
+        public ObservableCollection<Content> ContentAnime { get; set; }
+        public ObservableCollection<Content> ContentFilm { get; set; }
+        public ObservableCollection<Content> ContentDorama { get; set; }
+        public ObservableCollection<Content> ContentMult { get; set; }
+        public ObservableCollection<Content> ContentDocum { get; set; }
+        public ObservableCollection<Content> ContentOther { get; set; }
+        public ObservableCollection<Content> ContentViewed { get; set; }
+        public ObservableCollection<Content> ContentProcess { get; set; }
+        public ObservableCollection<Content> ContentNotStart { get; set; }
 
         // Новые свойства для видимости
         public bool IsAllVisible => ContentAll?.Count > 0;
@@ -78,7 +79,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncAll()
         {
             await Task.Delay(200);
-            ContentAll = _databaseService.GetAllContent().Take(9).ToList();
+            ContentAll = new ObservableCollection<Content>(_databaseService.GetAllContent().Take(9).ToList());
             ContentAllall = _databaseService.GetContentCount();
             OnPropertyChanged(nameof(IsAllVisible));
             OnPropertyChanged(nameof(ContentAll));
@@ -87,7 +88,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncSerial()
         {
             await Task.Delay(200);
-            ContentSerial = _databaseService.GetContentByType(ContentTypes.SERIAL).Take(9).ToList();
+            ContentSerial = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.SERIAL).Take(9).ToList());
             ContentSerialall = _databaseService.GetContentCountByType(ContentTypes.SERIAL);
             OnPropertyChanged(nameof(IsSerialsVisible));
             OnPropertyChanged(nameof(ContentSerial));
@@ -96,7 +97,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncAnime()
         {
             await Task.Delay(200);
-            ContentAnime = _databaseService.GetContentByType(ContentTypes.ANIME).Take(9).ToList();
+            ContentAnime = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.ANIME).Take(9).ToList());
             ContentAnimeall = _databaseService.GetContentCountByType(ContentTypes.ANIME);
             OnPropertyChanged(nameof(IsAnimeVisible));
             OnPropertyChanged(nameof(ContentAnime));
@@ -105,7 +106,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncFilm()
         {
             await Task.Delay(200);
-            ContentFilm = _databaseService.GetContentByType(ContentTypes.FILM).Take(9).ToList();
+            ContentFilm = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.FILM).Take(9).ToList());
             ContentFilmall = _databaseService.GetContentCountByType(ContentTypes.FILM);
             OnPropertyChanged(nameof(IsFilmVisible));
             OnPropertyChanged(nameof(ContentFilm));
@@ -114,7 +115,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncDorama()
         {
             await Task.Delay(200);
-            ContentDorama = _databaseService.GetContentByType(ContentTypes.DORAMA).Take(9).ToList();
+            ContentDorama = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.DORAMA).Take(9).ToList());
             ContentDoramaall = _databaseService.GetContentCountByType(ContentTypes.DORAMA);
             OnPropertyChanged(nameof(IsDoramaVisible));
             OnPropertyChanged(nameof(ContentDorama));
@@ -123,7 +124,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncMult()
         {
             await Task.Delay(200);
-            ContentMult = _databaseService.GetContentByType(ContentTypes.CARTOON).Take(9).ToList();
+            ContentMult = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.CARTOON).Take(9).ToList());
             ContentMultall = _databaseService.GetContentCountByType(ContentTypes.CARTOON);
             OnPropertyChanged(nameof(IsMultVisible));
             OnPropertyChanged(nameof(ContentMult));
@@ -132,7 +133,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncDocum()
         {
             await Task.Delay(200);
-            ContentDocum = _databaseService.GetContentByType("Документалка").Take(9).ToList();
+            ContentDocum = new ObservableCollection<Content>(_databaseService.GetContentByType("Документалка").Take(9).ToList());
             ContentDocumall = _databaseService.GetContentCountByType("Документалка");
             OnPropertyChanged(nameof(IsDocumVisible));
             OnPropertyChanged(nameof(ContentDocum));
@@ -141,7 +142,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncOther()
         {
             await Task.Delay(200);
-            ContentOther = _databaseService.GetContentByType(ContentTypes.OTHER).Take(9).ToList();
+            ContentOther = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.OTHER).Take(9).ToList());
             ContentOtherall = _databaseService.GetContentCountByType(ContentTypes.OTHER);
             OnPropertyChanged(nameof(IsOtherVisible));
             OnPropertyChanged(nameof(ContentOther));
@@ -150,7 +151,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncViewed()
         {
             await Task.Delay(200);
-            ContentViewed = _databaseService.GetContentByWatchStatus("Просмотрено").Take(9).ToList();
+            ContentViewed = new ObservableCollection<Content>(_databaseService.GetContentByWatchStatus("Просмотрено").Take(9).ToList());
             ContentViewedall = _databaseService.GetContentCountByWatchStatus("Просмотрено");
             OnPropertyChanged(nameof(IsViewedVisible));
             OnPropertyChanged(nameof(ContentViewed));
@@ -159,7 +160,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncProcess()
         {
             await Task.Delay(200);
-            ContentProcess = _databaseService.GetContentByWatchStatus("Смотрю").Take(9).ToList();
+            ContentProcess = new ObservableCollection<Content>(_databaseService.GetContentByWatchStatus("Смотрю").Take(9).ToList());
             ContentProcessall = _databaseService.GetContentCountByWatchStatus("Смотрю");
             OnPropertyChanged(nameof(IsProcessVisible));
             OnPropertyChanged(nameof(ContentProcess));
@@ -168,7 +169,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncNotStart()
         {
             await Task.Delay(200);
-            ContentNotStart = _databaseService.GetContentByWatchStatus("Не начинал").Take(9).ToList();
+            ContentNotStart = new ObservableCollection<Content>(_databaseService.GetContentByWatchStatus("Не начинал").Take(9).ToList());
             ContentNotStartall = _databaseService.GetContentCountByWatchStatus("Не начинал");
             OnPropertyChanged(nameof(IsNotStartVisible));
             OnPropertyChanged(nameof(ContentNotStart));
@@ -188,7 +189,7 @@ namespace CineChronicle.Application.ViewModels
         }
         public void UpdateContentsByQuery(string searchQuery)
         {
-            ContentSort = _databaseService.GetAllContent().Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            ContentSort = new ObservableCollection<Content>(_databaseService.GetAllContent().Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList());
             OnPropertyChanged(nameof(ContentSort));
         }
         private static List<Content> GetContentStatus(string type)
@@ -200,8 +201,18 @@ namespace CineChronicle.Application.ViewModels
         #region [Somebody Methods]
         public static string GetName(object sender)
         {
-            var label = sender as Label;
-            string nameSelected = label.Text;
+            string labelName = "";
+            if (sender is StackLayout layout) // StackLayout, Grid и т.д.
+            {
+                foreach (var child in layout.Children)
+                {
+                    if (child is Label label)
+                    {
+                        labelName = label.Text; // Возвращаем текст первого найденного Label
+                    }
+                }
+            }
+            string nameSelected = labelName;
 
             _categoryData = GetTypeCategory(nameSelected);
             return _categoryData[1];

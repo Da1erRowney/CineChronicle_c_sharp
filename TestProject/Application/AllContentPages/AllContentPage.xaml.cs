@@ -28,9 +28,12 @@ namespace TestProject
             string search = searchBar.Text;
             if (string.IsNullOrEmpty(search))
             {
-                BindingContext = new ViewContentAllPageModel();
-                _model = (ViewContentAllPageModel)BindingContext;
-                Sort.IsVisible = false;
+                if (_model == null)
+                {
+                    BindingContext = new ViewContentAllPageModel();
+                    _model = (ViewContentAllPageModel)BindingContext;
+                }
+                    Sort.IsVisible = false;
             }
             else
             {
@@ -79,6 +82,27 @@ namespace TestProject
             {
                 ViewContentPage viewContentPage = new ViewContentPage(SelectedItem);
                 await Navigation.PushAsync(viewContentPage);
+            }
+        }
+        #endregion
+
+        #region [Refresh Data]
+        private async void OnRefreshing(object sender, EventArgs e)
+        {
+            try
+            {
+                BindingContext = new ViewContentAllPageModel();
+                _model = (ViewContentAllPageModel)BindingContext;
+            }
+            catch (Exception ex)
+            {
+                if (RefreshView != null)
+                    RefreshView.IsRefreshing = false;
+            }
+            finally
+            {
+                if (RefreshView != null)
+                    RefreshView.IsRefreshing = false;
             }
         }
         #endregion

@@ -18,9 +18,16 @@ namespace TestProject
 
         private void Init()
         {
+            UseNewBackground();
             _databaseService = new DatabaseServiceContent(CineChronicle.Application.DeviceInfo._databasePath);
             LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
             LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
+        }
+        private void UseNewBackground()
+        {
+            Random _random = new Random();
+            string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
+            Background.Source = randomImage;
         }
 
         public AddMoreContentPage(CineChronicle.Tables.ContentRecommendation data)

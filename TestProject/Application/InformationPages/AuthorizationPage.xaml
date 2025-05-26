@@ -1,157 +1,211 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TestProject.AuthorizationPage">
-    <Grid  BackgroundColor="Transparent">
+             x:Class="TestProject.AuthorizationPage"
+             Title="Авторизация">
 
-        <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+    <Grid BackgroundColor="{AppThemeBinding Light=White, Dark=#1A1A1A}">
+        <!-- Фон с размытием -->
+        <Image Source="gradientfive.jpg" 
+               x:Name="Background"
+               Aspect="AspectFill" 
+               Opacity="0.3"
+               Grid.RowSpan="2">
+        </Image>
 
-        <Grid Grid.Row="0" BackgroundColor="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-        </Grid>
-        
-        <ScrollView>
-            <VerticalStackLayout Spacing="20" Padding="20" >
-            <Label Text="Мы вас ждали путник..." FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" x:Name="TitlePage"/>
-            <Label Text="Управление аккаунтом" FontSize="18" Margin="25,-15,0,0"/>
-            <Border 
-                Margin="0,100,0,0"
-                Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-                x:Name="EntranceBorder"
-                HeightRequest="600"
-                Grid.RowSpan="3"
-                StrokeShape ="RoundRectangle 30,30,30,30"
-                StrokeThickness="2">
-                
-                <StackLayout Orientation="Vertical">
-                    <Label Text="Вход в аккаунт" FontAttributes="Bold" FontSize="25" Margin="50,25,0,0" />
-                        <!-- Поле ввода Почты -->
-                <StackLayout Orientation="Horizontal" Margin="50,50,0,0">
-                   
-                        <Border Margin="0,0,0,0"
-                            Stroke="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
-                            MinimumWidthRequest="300"
-                            HeightRequest="50"
-                            Grid.RowSpan="3"
-                            StrokeShape ="RoundRectangle 30,30,30,30"
-                            StrokeThickness="2">
-                            <Entry Placeholder="Введите почту" x:Name="EmailEntry" Margin="15,0,0,0" FontSize="17" PlaceholderColor="Gray"/>
-                        </Border>
+                <!-- Заголовок -->
+                <StackLayout Spacing="0" Margin="25,10,0,0" HorizontalOptions="Start">
+                    <Label Text="Мы вас ждали, путник..." 
+                           x:Name="TitlePage"
+                           FontAttributes="Bold" 
+                           FontSize="28"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
 
-                    </StackLayout>
-
-                <!-- Поле ввода для Пароля -->
-                <StackLayout Orientation="Horizontal" Margin="50,25,0,0">
-             
-                        <Border Margin="0,0,0,0"
-                                Stroke="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
-                                MinimumWidthRequest="300"
-                                HeightRequest="50"
-                                Grid.RowSpan="3"
-                                StrokeShape ="RoundRectangle 30,30,30,30"
-                                StrokeThickness="2">
-                                <Entry Placeholder="Введите пароль" Margin="15,0,0,0" x:Name="PasswordEntry" FontSize="17" PlaceholderColor="Gray" IsPassword="true" />
-                            </Border>
-                    </StackLayout>
-
-                        <Label Text="Забыли свой пароль?" FontSize="17" HorizontalOptions="Center" Margin="100,25,0,0">
-                            <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
-                            </Label.GestureRecognizers>
-                        </Label>
-
-                        <Button Text="Войти" FontSize="17" Clicked="OnEntranceClicked" HorizontalOptions="FillAndExpand"  WidthRequest="300" Margin="0,50,0,0" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100">
-                        </Button>
-                    <StackLayout Orientation="Horizontal" Margin="70,50,0,0">
-                        <Label Text="У вас нет аккаунта? " FontSize="17" Margin="0,0,0,0" HorizontalOptions="Center" TextColor="DimGray"/>
-                        <Label Text="Создать" FontSize="17" Margin="10,0,0,0" HorizontalOptions="Center">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnCreateTapped" />
-                            </Label.GestureRecognizers>
-                        </Label>
-                        
-                        <!-- Кнопка "Добавить" -->
-                        <!--<Button Text="Создать" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="150"  Margin="5,-9,0,0" >
-                            <Button.Shadow>
-                                <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="1.0" Radius="150" Offset="0,0"/>
-                            </Button.Shadow>
-                        </Button>-->
-
-                    </StackLayout>
-                </StackLayout>
-                
-                <Border.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
-                </Border.Shadow>
-            </Border>
-
-                <StackLayout x:Name="CreateLayout"  IsVisible="false">
-                <Border 
-                    Margin="0,100,0,0"
-                    Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-                    x:Name="CreateBorder"
-                   
-                    HeightRequest="450"
-                    Grid.RowSpan="3"
-                    StrokeShape ="RoundRectangle 30,30,30,30"
-                    StrokeThickness="2">
-
-
-
-                <StackLayout Orientation="Vertical">
-                        <Label Text="Создание аккаунта" FontAttributes="Bold" FontSize="25" Margin="50,25,0,0" />
-                        <StackLayout Orientation="Horizontal" Margin="50,50,0,0">
-                            <Border Margin="0,0,0,0"
-                            Stroke="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
-                            MinimumWidthRequest="300"
-                            HeightRequest="50"
-                            Grid.RowSpan="3"
-                            StrokeShape ="RoundRectangle 30,30,30,30"
-                            StrokeThickness="2">
-                                    <Entry Placeholder="Введите почту" x:Name="Email1Entry" Margin="15,0,0,0" FontSize="17" PlaceholderColor="Gray"/>
-                                
-                        </Border>
-
-                    </StackLayout>
-
-                    <StackLayout Orientation="Horizontal" Margin="50,25,0,0">
-
-                        <Border Margin="0,0,0,0"
-                            Stroke="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
-                            MinimumWidthRequest="300"
-                            HeightRequest="50"
-                            Grid.RowSpan="3"
-                            StrokeShape ="RoundRectangle 30,30,30,30"
-                            StrokeThickness="2">
-                                    <Entry Placeholder="Введите пароль" Margin="15,0,0,0" x:Name="Password1Entry" FontSize="17" PlaceholderColor="Gray"/>
-                        </Border>
-                    </StackLayout>
-
-
-                            <Button Text="Создать" FontSize="17" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"  WidthRequest="300" Margin="0,50,0,0" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100">
-                            </Button>
+                    <Label Text="Управление вашим аккаунтом" 
+                           FontSize="16"
+                           TextColor="Gray"/>
                     
-                    <StackLayout Orientation="Horizontal" Margin="130,50,0,0">
-                       
-                        <Label Text="Вернуться к входу" FontSize="17" Margin="0,0,0,0" HorizontalOptions="Center">
+                </StackLayout>
+        <!-- Основной контент -->
+        <ScrollView Grid.Row="1" Padding="20" Margin="0,100,0,0">
+            <StackLayout Spacing="30">
+
+                <!-- Форма входа -->
+                <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
+                        StrokeThickness="1"
+                         x:Name="EntranceBorder"
+                        StrokeShape="RoundRectangle 20"
+                        BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#252525}"
+                        Padding="25"
+                        VerticalOptions="Center">
+
+                    <StackLayout Spacing="25">
+                        <StackLayout Spacing="5">
+                            <Label Text="Вход в аккаунт" 
+                                   FontAttributes="Bold" 
+                                   FontSize="22"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                            <Label Text="Станьте нашим дорогим гостем" 
+                                   FontSize="14"
+                                   TextColor="Gray"/>
+                        </StackLayout>
+
+                        <!-- Поле email -->
+                        <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                            <Entry Placeholder="Email" 
+                                   x:Name="EmailEntry"
+                                   Keyboard="Email"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                   PlaceholderColor="Gray"
+                                   ClearButtonVisibility="WhileEditing"/>
+                        </Border>
+
+                        <!-- Поле пароля -->
+                        <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                            <Entry Placeholder="Пароль" 
+                                   x:Name="PasswordEntry"
+                                   IsPassword="True"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                   PlaceholderColor="Gray"/>
+                        </Border>
+
+                        <!-- Кнопка восстановления пароля -->
+                        <Label Text="Забыли пароль?" 
+                               FontSize="14"
+                               TextColor="#4285F4"
+                               HorizontalOptions="End">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnReturnTapped" />
+                                <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
                             </Label.GestureRecognizers>
                         </Label>
+
+                        <!-- Кнопка входа -->
+                        <Button Text="Войти" 
+                                BackgroundColor="#4285F4"
+                                TextColor="White"
+                                CornerRadius="10"
+                                HeightRequest="50"
+                                FontSize="16"
+                                Clicked="OnEntranceClicked"/>
                     </StackLayout>
+                </Border>
+
+                <!-- Переход к регистрации -->
+                <StackLayout Orientation="Horizontal" 
+                             HorizontalOptions="Center"
+                             x:Name="GoRegistr"
+                             Spacing="5">
+                    <Label Text="Нет аккаунта?" 
+                           FontSize="14"
+                           TextColor="Gray"/>
+
+                    <Label Text="Зарегистрироваться" 
+                           FontSize="14"
+                           TextColor="#4285F4">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCreateTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
                 </StackLayout>
+                
+            <!-- Форма регистрации (изначально скрыта) -->
+            <StackLayout x:Name="CreateLayout" 
+              IsVisible="False"
+              Grid.RowSpan="2">
+                <!-- Аналогичная форма регистрации -->
+                <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
+   StrokeThickness="1"
+   StrokeShape="RoundRectangle 20"
+   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#252525}"
+   Padding="25"
+   VerticalOptions="Center">
 
-                <Border.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" Opacity="0.5"  Radius="100" Offset="0,0"/>
-                </Border.Shadow>
-            </Border>
+                    <StackLayout Spacing="25">
+                        <StackLayout Spacing="5">
+                            <Label Text="Создание аккаунта" 
+              FontAttributes="Bold" 
+              FontSize="22"
+              TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                            <Label Text="Станьте нашим дорогим гостем" 
+              FontSize="14"
+              TextColor="Gray"/>
+                        </StackLayout>
+
+                        <!-- Поле email -->
+                        <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+           StrokeThickness="1"
+           StrokeShape="RoundRectangle 10"
+           BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                            <Entry Placeholder="Email" 
+              x:Name="EmailEEntry"
+              Keyboard="Email"
+              TextColor="{AppThemeBinding Light=Black, Dark=White}"
+              PlaceholderColor="Gray"
+              ClearButtonVisibility="WhileEditing"/>
+                        </Border>
+
+                        <!-- Поле NickName -->
+                        <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+           StrokeThickness="1"
+           StrokeShape="RoundRectangle 10"
+           BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                            <Entry Placeholder="Пользовательский nick name" 
+              x:Name="NickNameEntry"
+              TextColor="{AppThemeBinding Light=Black, Dark=White}"
+              PlaceholderColor="Gray"
+              ClearButtonVisibility="WhileEditing"/>
+                        </Border>
+
+                        <!-- Поле пароля -->
+                        <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+           StrokeThickness="1"
+           StrokeShape="RoundRectangle 10"
+           BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                            <Entry Placeholder="Пароль" 
+              x:Name="PasswordEEntry"
+              IsPassword="True"
+              TextColor="{AppThemeBinding Light=Black, Dark=White}"
+              PlaceholderColor="Gray"/>
+                        </Border>
+
+
+                        <!-- Кнопка входа -->
+                        <Button Text="Создать аккаунт" 
+           BackgroundColor="#4285F4"
+           TextColor="White"
+           CornerRadius="10"
+           HeightRequest="50"
+           FontSize="16"
+           Clicked="OnAddClicked"/>
+                    </StackLayout>
+                </Border>
+            </StackLayout>
+                <!-- Переход к регистрации -->
+                <StackLayout Orientation="Horizontal" 
+               HorizontalOptions="Center"
+                             IsVisible="False"
+               x:Name="GoEntrance"
+               Spacing="5">
+                    <Label Text="Вернуться к входу в аккаунт" 
+             FontSize="14"
+             TextColor="#4285F4">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnEntranceTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
                 </StackLayout>
+            </StackLayout>
+            
+        </ScrollView>
 
-
-            </VerticalStackLayout>
-</ScrollView>
+      
     </Grid>
 </ContentPage>

@@ -1,68 +1,71 @@
-#pragma warning disable CS4008
-using CineChronicle.Tables;
+using CineChronicle.Application.SupportClass;
+using CineChronicle.Application.ViewModels;
 
 namespace TestProject;
 
 public partial class InformationPage : ContentPage
 {
+    ViewInformationPageModel _model;
+
+    #region [Ctor's]
     public InformationPage()
 	{
 		InitializeComponent();
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        UseNewBackground();
+
+        BindingContext = new ViewInformationPageModel();
+        _model = (ViewInformationPageModel)BindingContext;
+
         CheckedAuthUser();
     }
 
-
-    public async Task CheckedAuthUser()
+    private void UseNewBackground()
     {
-        DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
-        if (databaseService.GetAuthorizedByAuth(true) != null)
-        {
-            var authUser = databaseService.GetAuthorizedByAuth(true);
-            string userName = authUser.Email;
-            int atIndex = userName.IndexOf('@');
-            if (atIndex != -1)
-            {
-                userName = userName.Substring(0, atIndex);
-            }
-            
-            EmailName.Text= userName;
-            ButtonAuth.Text = "Сменить аккаунт";
-            ButtonAuth.WidthRequest = 200;
-            var getIcon = databaseService.GetUsereByEmail(authUser.Email);
-            imageIcon.Source = getIcon.NameIcon;
-            InformationLayout.IsVisible = true;
-            ButtonExit.IsVisible = true;
-            NoteAuthAccountLayout.IsVisible = false;
+        Random _random = new Random();
+        string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
+        Background.Source = randomImage;
+    }
+    #endregion
 
+    #region [Somebody Methods]
+    private void CheckedAuthUser()
+    {
+        if(_model.HaveAthorizedUser)
+        {
+            HideElements(false, "Сменить аккаунт",200);
         }
         else
         {
-            InformationLayout.IsVisible = false;
-            EmailName.Text = "Пользователь отсутствует";
-            NoteAuthAccountLayout.IsVisible = true;
-            imageIcon.Source  = "nonicon.png";
-            ButtonExit.IsVisible = false;
-            ButtonAuth.Text = "Авторизация";
-            ButtonAuth.WidthRequest = 150;
+            HideElements(true, "Авторизация", 150);
         }
     }
 
+    private void HideElements(bool status, string str, int width)
+    {
+        NoteAuthAccountLayout.IsVisible = status;
+        InformationBlock.IsVisible = !status;
+        ButtonExit.IsVisible = !status;
+        ButtonAuth.Text = str;
+        ButtonAuth.WidthRequest = width;
+    }
+    #endregion
+
+    #region [Handle Methods]
     private async void AuthButton_Clicked(object sender, EventArgs e)
     {
-        var currentInformationPage = this;
-        var authorization = new AuthorizationPage(currentInformationPage);
-        await Navigation.PushModalAsync(authorization);
+        await Navigation.PushModalAsync(new AuthorizationPage());
     }
 
     private async void ExitAccountButton_Clicked(object sender, EventArgs e)
     {
-            DatabaseServiceContent databaseService = new DatabaseServiceContent(MainPage._databasePath);
-            var authUser = databaseService.GetAuthorizedByAuth(true);
-            authUser.IsAuthenticated = false;
-            databaseService.UpdateAuth(authUser);
-            await CheckedAuthUser();
-            //await Navigation.PushAsync(new InformationPage());
-
+        _model.ExitAccount();
+        CheckedAuthUser();
     }
+    #endregion
 
 }

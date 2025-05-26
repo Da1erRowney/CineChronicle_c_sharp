@@ -1,56 +1,132 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TestProject.InformationPage">
-    <Grid  BackgroundColor="Transparent">
+             x:Class="TestProject.InformationPage"
+             Title="{Binding User.NickName}">
 
-        <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
+    <Grid BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#121212}">
 
-        <Grid Grid.Row="0" BackgroundColor="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-        </Grid>
-        
-        <ScrollView>
-            <VerticalStackLayout Spacing="20" Padding="20" >
-                        <Label Text="Предания Странствующего..." FontAttributes="Bold" FontSize="25" Margin="25,0,0,0" x:Name="TitlePage"/>
-                        <Label Text="Информация о вашем аккаунте" FontSize="18" Margin="25,-15,0,0"/>
-                
-                <Border MinimumWidthRequest="400" HeightRequest="300" StrokeShape ="RoundRectangle 30,30,30,30" Margin="0,25,0,0" Opacity="0.9">
-                    <StackLayout >
-                        <Frame HasShadow="True" CornerRadius="50" Margin="0,10,0,10" HeightRequest="100" WidthRequest="100">
-                            <Image Aspect="Fill" x:Name="imageIcon" WidthRequest="100" HeightRequest="100"/>
+        <!-- Фон с эффектом размытия -->
+        <Image Source="gradientfive.jpg" 
+               Aspect="AspectFill"
+               x:Name="Background"
+               Opacity="0.3">
+        </Image>
+
+        <ScrollView Padding="20,10">
+            <StackLayout Spacing="30">
+                <!-- Заголовок -->
+                <StackLayout Spacing="5">
+                    <Label Text="Предания Странствующего..." 
+                           FontAttributes="Bold" 
+                           FontSize="28"
+                           TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
+
+                    <Label Text="Информация о вашем аккаунте" 
+                           FontSize="16"
+                           TextColor="Gray"/>
+                </StackLayout>
+
+                <!-- Блок профиля -->
+                <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#333333}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 20"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                        Padding="25"
+                        HorizontalOptions="Center"
+                        WidthRequest="400">
+
+                    <StackLayout Spacing="15" HorizontalOptions="Center">
+                        <!-- Аватар -->
+                        <Frame HasShadow="True" 
+                               CornerRadius="50" 
+                               HeightRequest="100" 
+                               WidthRequest="100"
+                               Padding="0"
+                               BorderColor="{AppThemeBinding Light=#EEEEEE, Dark=#333333}">
+                            <Image Aspect="AspectFill" 
+                                   Source="{Binding User.NameIcon}"
+                                   WidthRequest="100" 
+                                   HeightRequest="100"/>
                         </Frame>
-                        <Label  Text="Аккаунт пользователя" FontSize="20" Margin="0,0,0,0" HorizontalOptions="Center"/>
-                        <Label  x:Name="EmailName" FontSize="17" Margin="0,0,0,0" HorizontalOptions="Center"/>
-                        <Button FontSize="17" x:Name="ButtonAuth" Text="Сменить аккаунт" Clicked="AuthButton_Clicked" WidthRequest="200" HorizontalOptions="FillAndExpand" Margin="0,25,0,0" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100">
-                        </Button>
-                        <Button FontSize="17" x:Name="ButtonExit" Text="Выйти из аккаунта" Clicked="ExitAccountButton_Clicked" WidthRequest="150" HorizontalOptions="FillAndExpand" Margin="0,15,0,0" IsVisible="false" BorderColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" BorderWidth="1" CornerRadius="100">
-                        </Button>
-                    </StackLayout>
-                </Border>
-                
-                <Border MinimumWidthRequest="600" MinimumHeightRequest="300" StrokeShape ="RoundRectangle 30,30,30,30" Margin="0,25,0,0" Opacity="0.9">
-                    <StackLayout >
-                        <Label Text="Ваша информация" FontAttributes="Bold" FontSize="25" Margin="50,25,0,0"/>
-                        
-                        <StackLayout Orientation="Vertical" x:Name="InformationLayout" IsVisible="false">
-                            <Label Text="Информация об аккаунте временно не доступна. Приносим свои извинения" FontSize="17" Margin="50,25,0,0"/>
+
+                        <!-- Информация -->
+                        <StackLayout Spacing="5" HorizontalOptions="Center">
+                            <Label Text="Аккаунт пользователя" 
+                                   FontSize="16"
+                                   TextColor="Gray"/>
+
+                            <Label Text="{Binding User.NickName}"  HorizontalOptions="Center"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
                         </StackLayout>
-                        
-                        <StackLayout Orientation="Vertical" x:Name="NoteAuthAccountLayout" IsVisible="false">
-                            <Label Text="Информация доступна только авторизованным пользователям" FontSize="17" Margin="50,25,0,0"/>
-                            <Label Text="Извините, но информация об аккаунте доступна только для авторизованных пользователей. Пожалуйста, выполните вход или зарегистрируйтесь, чтобы получить доступ к этому разделу." FontSize="17" Margin="50,10,0,0"/>
+
+                        <!-- Кнопки -->
+                        <StackLayout Spacing="10" WidthRequest="200">
+                            <Button Text="Сменить аккаунт" 
+                                    BackgroundColor="#4285F4"
+                                    TextColor="White"
+                                    x:Name="ButtonAuth"
+                                    CornerRadius="10"
+                                    HeightRequest="45"
+                                    FontSize="16"
+                                    Clicked="AuthButton_Clicked"/>
+
+                            <Button Text="Выйти из аккаунта" 
+                                    BackgroundColor="Transparent"
+                                    TextColor="#4285F4"
+                                    BorderColor="#4285F4"
+                                    x:Name="ButtonExit"
+                                    BorderWidth="1"
+                                    CornerRadius="10"
+                                    HeightRequest="45"
+                                    FontSize="16"
+                                    Clicked="ExitAccountButton_Clicked"
+                                    IsVisible="{Binding HaveAthorizedUser}"/>
                         </StackLayout>
-                        
                     </StackLayout>
                 </Border>
 
+                <!-- Информационный блок -->
+                <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#333333}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 20"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                        Padding="25">
 
-            </VerticalStackLayout>
+                    <StackLayout Spacing="20">
+                        <Label Text="Ваша информация" 
+                               FontAttributes="Bold" 
+                               FontSize="24"
+                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                        <!-- Сообщение для неавторизованных -->
+                        <StackLayout x:Name="NoteAuthAccountLayout" 
+                                     IsVisible="false"
+                                     Spacing="15"
+                                     BackgroundColor="{AppThemeBinding Light=#FFF9F2, Dark=#2A2118}"
+                                     Padding="15">
+
+                            <Label Text="🔒 Требуется авторизация" 
+                                   FontAttributes="Bold" 
+                                   FontSize="18"
+                                   TextColor="{AppThemeBinding Light=#E65100, Dark=#FFA726}"/>
+
+                            <Label Text="Полная информация об аккаунте доступна только авторизованным пользователям. Пожалуйста, выполните вход или зарегистрируйтесь."
+                                   FontSize="15"
+                                   TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"/>
+                        </StackLayout>
+
+                        <!-- Основная информация -->
+                        <StackLayout x:Name="InformationBlock" 
+                                     IsVisible="False"
+                                     Spacing="15">
+                            <!-- Здесь будут динамические элементы информации -->
+                        </StackLayout>
+                    </StackLayout>
+                </Border>
+            </StackLayout>
         </ScrollView>
     </Grid>
-    
 </ContentPage>

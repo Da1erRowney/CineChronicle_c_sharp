@@ -83,7 +83,7 @@
                                     HeightRequest="45"
                                     FontSize="16"
                                     Clicked="ExitAccountButton_Clicked"
-                                    IsVisible="{Binding HaveAthorizedUser}"/>
+                                    IsVisible="False"/>
                         </StackLayout>
                     </StackLayout>
                 </Border>

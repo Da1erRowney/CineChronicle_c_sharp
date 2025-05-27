@@ -14,12 +14,14 @@ public partial class ViewCategoryPage : ContentPage
 
     private ViewContentCategoryPageModel _model;
     private static string _nameCategory { get; set; }
+    private int _oldUser;
     #endregion
 
     #region [Ctor's]
     public ViewCategoryPage(string nameCategory)
 	{
 		InitializeComponent();
+        _oldUser = CineChronicle.Application.DeviceInfo.UserId;
         _nameCategory = nameCategory;
         SortLabel.Text = _nameCategory;
 
@@ -34,8 +36,9 @@ public partial class ViewCategoryPage : ContentPage
         string search = searchBar.Text;
         if (string.IsNullOrEmpty(search))
         {
-            if (_model == null)
+            if (_model == null || _oldUser != CineChronicle.Application.DeviceInfo.UserId)
             {
+                _oldUser = CineChronicle.Application.DeviceInfo.UserId;
                 _model = new ViewContentCategoryPageModel(_nameCategory);
                 BindingContext = _model;
             }

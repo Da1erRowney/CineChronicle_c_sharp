@@ -8,6 +8,7 @@ namespace TestProject
     { 
 
         private DatabaseServiceContent _databaseService;
+        private int[] usersContent = CineChronicle.Application.DeviceInfo.GetContentUser();
 
         #region [Ctor's]
         public AddMoreContentPage()
@@ -227,7 +228,7 @@ namespace TestProject
         //Проверка существующего контента
         private async Task<bool> CheckExistingContent(string title)
         {
-            List<Content> contents = _databaseService.GetAllContent().ToList();
+            List<Content> contents = _databaseService.GetAllContent(usersContent).ToList();
 
             List<Content> filteredContents = contents.Where(c => c.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
             if (filteredContents.Count != 0)

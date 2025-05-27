@@ -94,7 +94,15 @@
                                 HeightRequest="50"
                                 FontSize="16"
                                 Clicked="OnEntranceClicked"/>
+
+                        <StackLayout x:Name="GoogleAuth" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+
+                            <Label Text="Или авторизуйтесь через" FontSize="14"/>
+                            <Image Source="googleicon" WidthRequest="30" HeightRequest="30" Margin="10,-6,0,0"></Image>
+
+                        </StackLayout>
                     </StackLayout>
+                   
                 </Border>
 
                 <!-- Переход к регистрации -->

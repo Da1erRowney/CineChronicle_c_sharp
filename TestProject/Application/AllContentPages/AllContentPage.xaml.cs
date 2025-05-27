@@ -1,7 +1,6 @@
 using CineChronicle.Application.SupportClass;
 using CineChronicle.Application.ViewModels;
 using CineChronicle.Tables;
-using System;
 
 namespace TestProject
 {
@@ -12,12 +11,14 @@ namespace TestProject
         public Content SelectedItem { get; set; }
 
         private ViewContentAllPageModel _model;
+        private int _oldUser;
         #endregion
 
         #region [Ctor's]
         public AllContentPage()
         {
             InitializeComponent();
+            _oldUser = CineChronicle.Application.DeviceInfo.UserId;
         }
 
         protected override void OnAppearing()
@@ -28,8 +29,9 @@ namespace TestProject
             string search = searchBar.Text;
             if (string.IsNullOrEmpty(search))
             {
-                if (_model == null)
+                if (_model == null || _oldUser != CineChronicle.Application.DeviceInfo.UserId)
                 {
+                    _oldUser = CineChronicle.Application.DeviceInfo.UserId;
                     BindingContext = new ViewContentAllPageModel();
                     _model = (ViewContentAllPageModel)BindingContext;
                 }

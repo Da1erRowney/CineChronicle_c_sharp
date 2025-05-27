@@ -8,6 +8,9 @@ namespace CineChronicle.Application.ViewModels
     {
         #region [Private Fields]
         private static DatabaseServiceContent _databaseService;
+
+        private List<UserContents> UserContents;
+
         #endregion
 
         #region [Ctor's]
@@ -29,7 +32,7 @@ namespace CineChronicle.Application.ViewModels
             {
                 return "Не все поля заполнены";
             }
-            if (passwordEntry.Length <8)
+            if (passwordEntry.Length < 8)
             {
                 return "Пароль меньше 8 символов. Придумайте пароль длинее";
             }
@@ -45,20 +48,24 @@ namespace CineChronicle.Application.ViewModels
                 return "Такой пользователь уже существует";
             }
 
+            CreatedAccount(passwordEntry, nickName, email);
 
-            /// Создание аккаунта
+            return "Аккаунт создан, вы успешно вошли в аккаунт";
+        }
 
-
+        private static void CreatedAccount(string passwordEntry, string nickName, string email)
+        {
+            // 1. Проверяем наличие никнейме
             if (string.IsNullOrEmpty(nickName))
             {
-                int atIndex = email.IndexOf('@'); 
+                int atIndex = email.IndexOf('@');
                 if (atIndex != -1)
                 {
                     nickName = email.Substring(0, atIndex);
-                } 
+                }
             }
 
-            // Создаем нового пользователя
+            // 2. Создаем нового пользователя
             var user = new User
             {
                 Email = email,
@@ -68,23 +75,40 @@ namespace CineChronicle.Application.ViewModels
             };
             _databaseService.InsertUser(user);
 
+            // 3. Убираем с старого пользователя статус авторизованности
             if (_databaseService.GetAuthorizedByAuth(true) != null)
             {
-                // Убираем с старого пользователя статус авторизованности
+                
                 var authUser = _databaseService.GetAuthorizedByAuth(true);
                 authUser.IsAuthenticated = false;
                 _databaseService.UpdateAuth(authUser);
             }
 
-            var authenticated = new Authorized
+            // 4.1. Проверяем был ли такой пользователь ранее и ставим статус авторизованности
+            if (_databaseService.GetAuthorizedByEmail(email) != null)
             {
-                Email = user.Email,
-                IsAuthenticated = true
-            };
+                var authUser = _databaseService.GetAuthorizedByEmail(email);
+                authUser.IsAuthenticated = true;
+                _databaseService.UpdateAuth(authUser);
+            }
+            else
+            {
+                // 4.2 Создаем нового авторизованного пользователя
+                var authenticated = new Authorized
+                {
+                    Email = user.Email,
+                    IsAuthenticated = true
+                };
+                _databaseService.InsertAuth(authenticated);
+            }
 
-            _databaseService.InsertAuth(authenticated);
-            return "Аккаунт создан, вы успешно вошли в аккаунт";
+            var unlinkedContentIds = _databaseService.GetUnlinkedContentIds();
+            int userId = _databaseService.GetUserIdByEmail(email);
+            DeviceInfo.UserId = userId;
+
+            _databaseService.AddUserContent(userId, unlinkedContentIds);
         }
+
         public static bool ValidateEmail(string email)
         {
             string emailRegex = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
@@ -144,6 +168,16 @@ namespace CineChronicle.Application.ViewModels
                 newAuthUser.IsAuthenticated = true;
                 _databaseService.UpdateAuth(newAuthUser);
             }
+
+            var unlinkedContentIds = _databaseService.GetUnlinkedContentIds();
+            int userId = _databaseService.GetUserIdByEmail(email);
+            DeviceInfo.UserId = userId;
+            if (unlinkedContentIds.Count != 0)
+            {
+
+                _databaseService.AddUserContent(userId, unlinkedContentIds);
+            }
+
             return "Вы успешно вошли в аккаунт";
         }
         #endregion

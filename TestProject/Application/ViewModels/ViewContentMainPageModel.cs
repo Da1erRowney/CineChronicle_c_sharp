@@ -23,13 +23,15 @@ namespace CineChronicle.Application.ViewModels
         public bool IsContentChangeVisible => ContentChange?.Count > 0;
         public bool IsContentReleaseVisible => ContentRelease?.Count > 0;
         public bool IsContentRecommendationVisible => ContentRecommendation?.Count > 0;
+
+        private static int[] usersContent;
         #endregion
 
         #region [Ctor's]
         public ViewContentMainPageModel()
         {
+            usersContent = DeviceInfo.GetContentUser();
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
-
             Task.Run(InitializeAllDataAsync);
         }
         #endregion
@@ -51,7 +53,7 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncChange()
         {
             // Недавно измененный
-            ContentChange = new ObservableCollection<Content>(_databaseService.GetAllContent()
+            ContentChange = new ObservableCollection<Content>(_databaseService.GetAllContent(usersContent)
                 .Where(c => c.SeriesChangeDate != "")
                 .Take(8)
                 .ToList());
@@ -65,7 +67,8 @@ namespace CineChronicle.Application.ViewModels
         public async Task InitializeAsyncRelease()
         {
             // Лучше использовать отдельный метод в DatabaseService
-            ContentRelease = new ObservableCollection<Content>(_databaseService.GetContentWithReleaseDates()
+            ContentRelease = new ObservableCollection<Content>(_databaseService.GetAllContent(usersContent).
+                Where(c => c.DateRelease != null && c.DateRelease != string.Empty)
                 .Take(8)
                 .ToList());
 
@@ -77,32 +80,31 @@ namespace CineChronicle.Application.ViewModels
         private async Task InitializeAsyncAdded()
         {
             // Недавно добавленный контент
-            ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent()
+            ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent(usersContent)
                 .OrderByDescending(c => c.DateAdded)
                 .Take(8)
                 .ToList());
 
-            OnPropertyChanged(nameof(ContentAdded));
-            OnPropertyChanged(nameof(IsContentAddedVisible));
-
             isContentNull[0] = ContentRelease?.Count == 0;
 
-            if (ContentAdded == null || !ContentAdded.Any())
-            {
-                Content ifContentNull = new Content
-                {
-                    Title = "Нажмите, чтобы добавить контент",
-                    Type = "Ваш контент",
-                    Image = "plus.png"
-                };
-                _databaseService.InsertContent(ifContentNull);
+            //if (ContentAdded == null || !ContentAdded.Any())
+            //{
+            //    Content ifContentNull = new Content
+            //    {
+            //        Title = "Нажмите, чтобы добавить контент",
+            //        Type = "Ваш контент",
+            //        Image = "pluscontent.png"
+            //    };
+            //    _databaseService.InsertContent(ifContentNull);
 
-                // Недавно добавленный контента
-                ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent()
-                    .OrderByDescending(c => c.DateAdded)
-                    .Take(8)
-                    .ToList());
-            }
+            //    // Недавно добавленный контента
+            //    ContentAdded = new ObservableCollection<Content>(_databaseService.GetAllContent(usersContent)
+            //        .OrderByDescending(c => c.DateAdded)
+            //        .Take(8)
+            //        .ToList());
+            //}
+            OnPropertyChanged(nameof(ContentAdded));
+            OnPropertyChanged(nameof(IsContentAddedVisible));
         }
 
         private async Task CheckInternetConnectionAsync()
@@ -154,7 +156,7 @@ namespace CineChronicle.Application.ViewModels
         #region [Query]
         public static void DeleteBaseContent()
         {
-           _databaseService.DeleteContent( _databaseService.GetContentByTitle("Нажмите, чтобы добавить контент")[0]);
+           _databaseService.DeleteContent( _databaseService.GetContentByTitle("Нажмите, чтобы добавить контент", usersContent)[0]);
         }
 
         public static Content GetContentById(int id)
@@ -165,7 +167,7 @@ namespace CineChronicle.Application.ViewModels
         public static List<Content> FindSameContent(string title)
         {
             title = title.TrimEnd();
-            return _databaseService.GetContentByTitle(title);
+            return _databaseService.GetContentByTitle(title, usersContent);
         }
         #endregion
     }

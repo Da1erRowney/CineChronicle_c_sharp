@@ -50,13 +50,14 @@ namespace CineChronicle.Application.ViewModels
        
 
         public static string[] _categoryData = new string[2];
+        private static int[] usersContent;
         #endregion
 
         #region [Ctor's]
         public ViewContentAllPageModel()
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
-
+            usersContent = DeviceInfo.GetContentUser();
             Task.Run(InitializeAllDataAsync);
         }
         #endregion
@@ -78,102 +79,135 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeAsyncAll()
         {
-            await Task.Delay(200);
-            ContentAll = new ObservableCollection<Content>(_databaseService.GetAllContent().Take(9).ToList());
-            ContentAllall = _databaseService.GetContentCount();
+            await Task.Delay(100);
+            ContentAllall = _databaseService.GetContentCount(usersContent);
+            if (ContentAllall != 0)
+            {
+                ContentAll = new ObservableCollection<Content>(_databaseService.GetAllContent(usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentAll));
+                OnPropertyChanged(nameof(ContentAllall));
+            }
             OnPropertyChanged(nameof(IsAllVisible));
-            OnPropertyChanged(nameof(ContentAll));
-            OnPropertyChanged(nameof(ContentAllall));
         }
         public async Task InitializeAsyncSerial()
         {
-            await Task.Delay(200);
-            ContentSerial = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.SERIAL).Take(9).ToList());
-            ContentSerialall = _databaseService.GetContentCountByType(ContentTypes.SERIAL);
+            await Task.Delay(100);
+            ContentSerialall = _databaseService.GetContentCountByType(ContentTypes.SERIAL, usersContent);
+            if (ContentSerialall != 0)
+            {
+                ContentSerial = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.SERIAL, usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentSerial));
+                OnPropertyChanged(nameof(ContentSerialall));
+            }
             OnPropertyChanged(nameof(IsSerialsVisible));
-            OnPropertyChanged(nameof(ContentSerial));
-            OnPropertyChanged(nameof(ContentSerialall));
         }
         public async Task InitializeAsyncAnime()
         {
-            await Task.Delay(200);
-            ContentAnime = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.ANIME).Take(9).ToList());
-            ContentAnimeall = _databaseService.GetContentCountByType(ContentTypes.ANIME);
+            await Task.Delay(100);
+            ContentAnimeall = _databaseService.GetContentCountByType(ContentTypes.ANIME, usersContent);
+            if (ContentAnimeall != 0)
+            {
+                ContentAnime = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.ANIME, usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentAnime));
+                OnPropertyChanged(nameof(ContentAnimeall));
+            }
             OnPropertyChanged(nameof(IsAnimeVisible));
-            OnPropertyChanged(nameof(ContentAnime));
-            OnPropertyChanged(nameof(ContentAnimeall));
         }
         public async Task InitializeAsyncFilm()
         {
-            await Task.Delay(200);
-            ContentFilm = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.FILM).Take(9).ToList());
-            ContentFilmall = _databaseService.GetContentCountByType(ContentTypes.FILM);
+            await Task.Delay(100);
+            ContentFilmall = _databaseService.GetContentCountByType(ContentTypes.FILM, usersContent);
+            if (ContentFilmall != 0)
+            {
+                ContentFilm = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.FILM, usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentFilm));
+                OnPropertyChanged(nameof(ContentFilmall));
+            }
             OnPropertyChanged(nameof(IsFilmVisible));
-            OnPropertyChanged(nameof(ContentFilm));
-            OnPropertyChanged(nameof(ContentFilmall));
         }
         public async Task InitializeAsyncDorama()
         {
-            await Task.Delay(200);
-            ContentDorama = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.DORAMA).Take(9).ToList());
-            ContentDoramaall = _databaseService.GetContentCountByType(ContentTypes.DORAMA);
+            await Task.Delay(100);
+            ContentDoramaall = _databaseService.GetContentCountByType(ContentTypes.DORAMA, usersContent);
+            if (ContentDoramaall != 0)
+            {
+                ContentDorama = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.DORAMA, usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentDorama));
+                OnPropertyChanged(nameof(ContentDoramaall));
+            }
             OnPropertyChanged(nameof(IsDoramaVisible));
-            OnPropertyChanged(nameof(ContentDorama));
-            OnPropertyChanged(nameof(ContentDoramaall));
         }
         public async Task InitializeAsyncMult()
         {
-            await Task.Delay(200);
-            ContentMult = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.CARTOON).Take(9).ToList());
-            ContentMultall = _databaseService.GetContentCountByType(ContentTypes.CARTOON);
+            await Task.Delay(100);
+            ContentMultall = _databaseService.GetContentCountByType(ContentTypes.CARTOON, usersContent);
+            if (ContentMultall != 0)
+            {
+                ContentMult = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.CARTOON, usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentMult));
+                OnPropertyChanged(nameof(ContentMultall));
+            }
             OnPropertyChanged(nameof(IsMultVisible));
-            OnPropertyChanged(nameof(ContentMult));
-            OnPropertyChanged(nameof(ContentMultall));
         }
         public async Task InitializeAsyncDocum()
         {
-            await Task.Delay(200);
-            ContentDocum = new ObservableCollection<Content>(_databaseService.GetContentByType("Документалка").Take(9).ToList());
-            ContentDocumall = _databaseService.GetContentCountByType("Документалка");
+            await Task.Delay(100);
+            ContentDocumall = _databaseService.GetContentCountByType("Документалка", usersContent);
+            if (ContentDocumall != 0)
+            {
+                ContentDocum = new ObservableCollection<Content>(_databaseService.GetContentByType("Документалка", usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentDocum));
+                OnPropertyChanged(nameof(ContentDocumall));
+            }
             OnPropertyChanged(nameof(IsDocumVisible));
-            OnPropertyChanged(nameof(ContentDocum));
-            OnPropertyChanged(nameof(ContentDocumall));
         }
         public async Task InitializeAsyncOther()
         {
-            await Task.Delay(200);
-            ContentOther = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.OTHER).Take(9).ToList());
-            ContentOtherall = _databaseService.GetContentCountByType(ContentTypes.OTHER);
+            await Task.Delay(100);
+            ContentOtherall = _databaseService.GetContentCountByType(ContentTypes.OTHER, usersContent);
+            if (ContentOtherall != 0)
+            {
+                ContentOther = new ObservableCollection<Content>(_databaseService.GetContentByType(ContentTypes.OTHER, usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentOther));
+                OnPropertyChanged(nameof(ContentOtherall));
+            }
             OnPropertyChanged(nameof(IsOtherVisible));
-            OnPropertyChanged(nameof(ContentOther));
-            OnPropertyChanged(nameof(ContentOtherall));
         }
         public async Task InitializeAsyncViewed()
         {
-            await Task.Delay(200);
-            ContentViewed = new ObservableCollection<Content>(_databaseService.GetContentByWatchStatus("Просмотрено").Take(9).ToList());
-            ContentViewedall = _databaseService.GetContentCountByWatchStatus("Просмотрено");
+            await Task.Delay(100);
+            ContentViewedall = _databaseService.GetContentCountByWatchStatus("Просмотрено", usersContent);
+            if (ContentViewedall != 0)
+            {
+                ContentViewed = new ObservableCollection<Content>(_databaseService.GetContentByWatchStatus("Просмотрено", usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentViewed));
+                OnPropertyChanged(nameof(ContentViewedall));
+            }
             OnPropertyChanged(nameof(IsViewedVisible));
-            OnPropertyChanged(nameof(ContentViewed));
-            OnPropertyChanged(nameof(ContentViewedall));
         }
         public async Task InitializeAsyncProcess()
         {
-            await Task.Delay(200);
-            ContentProcess = new ObservableCollection<Content>(_databaseService.GetContentByWatchStatus("Смотрю").Take(9).ToList());
-            ContentProcessall = _databaseService.GetContentCountByWatchStatus("Смотрю");
+            await Task.Delay(100);
+            ContentProcessall = _databaseService.GetContentCountByWatchStatus("Смотрю", usersContent);
+            if (ContentProcessall != 0)
+            {
+                ContentProcess = new ObservableCollection<Content>(_databaseService.GetContentByWatchStatus("Смотрю", usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentProcess));
+                OnPropertyChanged(nameof(ContentProcessall));
+            }
             OnPropertyChanged(nameof(IsProcessVisible));
-            OnPropertyChanged(nameof(ContentProcess));
-            OnPropertyChanged(nameof(ContentProcessall));
         }
         public async Task InitializeAsyncNotStart()
         {
-            await Task.Delay(200);
-            ContentNotStart = new ObservableCollection<Content>(_databaseService.GetContentByWatchStatus("Не начинал").Take(9).ToList());
-            ContentNotStartall = _databaseService.GetContentCountByWatchStatus("Не начинал");
+            await Task.Delay(100);
+            ContentNotStartall = _databaseService.GetContentCountByWatchStatus("Не начинал", usersContent);
+            if (ContentNotStartall != 0)
+            {
+                ContentNotStart = new ObservableCollection<Content>(_databaseService.GetContentByWatchStatus("Не начинал", usersContent).Take(9).ToList());
+                OnPropertyChanged(nameof(ContentNotStart));
+                OnPropertyChanged(nameof(ContentNotStartall));
+            }
             OnPropertyChanged(nameof(IsNotStartVisible));
-            OnPropertyChanged(nameof(ContentNotStart));
-            OnPropertyChanged(nameof(ContentNotStartall));
         }
         #endregion
 
@@ -185,16 +219,16 @@ namespace CineChronicle.Application.ViewModels
 
         public static void DeleteBaseContent()
         {
-            _databaseService.DeleteContent(_databaseService.GetContentByTitle("Нажмите, чтобы добавить контент")[0]);
+            _databaseService.DeleteContent(_databaseService.GetContentByTitle("Нажмите, чтобы добавить контент", usersContent)[0]);
         }
         public void UpdateContentsByQuery(string searchQuery)
         {
-            ContentSort = new ObservableCollection<Content>(_databaseService.GetAllContent().Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList());
+            ContentSort = new ObservableCollection<Content>(_databaseService.GetAllContent(usersContent).Where(c => c.Title.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0).ToList());
             OnPropertyChanged(nameof(ContentSort));
         }
         private static List<Content> GetContentStatus(string type)
         {
-            return _databaseService.GetContentByWatchStatus(type).ToList();
+            return _databaseService.GetContentByWatchStatus(type, usersContent).ToList();
         }
         #endregion
 
@@ -285,11 +319,11 @@ namespace CineChronicle.Application.ViewModels
         {
             if (type == "Весь")
             {
-                return _databaseService.GetAllContent().ToList();
+                return _databaseService.GetAllContent(usersContent).ToList();
             }
             else
             {
-                return _databaseService.GetContentByType(type).ToList();
+                return _databaseService.GetContentByType(type, usersContent).ToList();
             }
         }
 

@@ -308,8 +308,9 @@
                     </CollectionView>
                 </StackLayout>
 
+            <StackLayout x:Name="d" VerticalOptions="EndAndExpand">
                 <Grid 
-                    BackgroundColor="{AppThemeBinding Light= #919191, Dark=Black}"
+                    BackgroundColor="{AppThemeBinding Light= #919191, Dark=Black}" VerticalOptions="EndAndExpand"
                     Padding="20"
                    
                     RowDefinitions="Auto,Auto,Auto,Auto">
@@ -353,6 +354,7 @@
                         Margin="0,10,0,0"/>
 
                 </Grid>
+            </StackLayout>
             </StackLayout>
         </ScrollView>
     </Grid>

@@ -20,18 +20,18 @@ namespace CineChronicle.Application.ViewModels
         public ViewInformationPageModel()
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
-
-            Task.Run(InitUserData);
+            CheckedAuthUser();
+            //Task.Run(InitUserData);
         }
         #endregion
 
         #region [Methods]
         private async Task InitUserData()
         {
-            await CheckedAuthUser();
+            CheckedAuthUser();
         }
 
-        private async Task CheckedAuthUser() // Поиск авторизованного пользователя
+        private void CheckedAuthUser() // Поиск авторизованного пользователя
         {
 
             if (_databaseService.GetAuthorizedByAuth(true) != null)                     // Если есть авторизованный пользователь в системе
@@ -49,6 +49,7 @@ namespace CineChronicle.Application.ViewModels
                         User.NickName = User.Email.Substring(0, atIndex);
                     }
                 }
+                DeviceInfo.UserId = User.Id;
             }
             else
             {
@@ -57,18 +58,19 @@ namespace CineChronicle.Application.ViewModels
                 User = new User();
                 User.NameIcon = "nonicon.png";
                 User.NickName = "Пользователь отсутствует";
+                DeviceInfo.UserId = 0;
             }
 
             OnPropertyChanged(nameof(User));
             OnPropertyChanged(nameof(HaveAthorizedUser));
         }
 
-        public async void ExitAccount() // Выход из аккаунта
+        public void ExitAccount() // Выход из аккаунта
         {
             Authorized.IsAuthenticated = false;
             _databaseService.UpdateAuth(Authorized);
 
-            await CheckedAuthUser();
+            CheckedAuthUser();
         }
         #endregion
     }

@@ -44,7 +44,6 @@ public partial class InformationPage : ContentPage
             HideElements(true, "Авторизация", 150);
         }
     }
-
     private void HideElements(bool status, string str, int width)
     {
         NoteAuthAccountLayout.IsVisible = status;
@@ -61,7 +60,7 @@ public partial class InformationPage : ContentPage
         await Navigation.PushModalAsync(new AuthorizationPage());
     }
 
-    private async void ExitAccountButton_Clicked(object sender, EventArgs e)
+    private void ExitAccountButton_Clicked(object sender, EventArgs e)
     {
         _model.ExitAccount();
         CheckedAuthUser();

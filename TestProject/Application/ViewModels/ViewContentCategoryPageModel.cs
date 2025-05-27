@@ -20,6 +20,8 @@ namespace CineChronicle.Application.ViewModels
         public ICommand PreviousPageCommand { get; }
         private string NameCategory;
 
+        private static int[] usersContent;
+
         [ObservableProperty]
         private bool isBusy;
         #endregion
@@ -28,6 +30,7 @@ namespace CineChronicle.Application.ViewModels
         public ViewContentCategoryPageModel(string name, int page = 0)
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
+            usersContent = DeviceInfo.GetContentUser();
             CurrentPage = page;
             NameCategory = name; 
 
@@ -196,18 +199,18 @@ namespace CineChronicle.Application.ViewModels
         #region [Query]
         private static List<Content> GetContentStatus(string type)
         {
-            return _databaseService.GetContentByWatchStatus(type).ToList();
+            return _databaseService.GetContentByWatchStatus(type, usersContent).ToList();
         }
 
         private static List<Content> GetContent(string type)
         {
             if (type == "Весь")
             {
-                return _databaseService.GetAllContent().ToList();
+                return _databaseService.GetAllContent(usersContent).ToList();
             }
             else
             {
-                return _databaseService.GetContentByType(type).ToList();
+                return _databaseService.GetContentByType(type, usersContent).ToList();
             }
         }
 
@@ -218,7 +221,7 @@ namespace CineChronicle.Application.ViewModels
 
         public static void DeleteBaseContent()
         {
-            _databaseService.DeleteContent(_databaseService.GetContentByTitle("Нажмите, чтобы добавить контент")[0]);
+            _databaseService.DeleteContent(_databaseService.GetContentByTitle("Нажмите, чтобы добавить контент", usersContent)[0]);
         }
         public void UpdateContentsByQuery(string searchQuery)
         {

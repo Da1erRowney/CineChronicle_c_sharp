@@ -266,19 +266,15 @@ namespace TestProject
 
             if (selectedIndex != -1)
             {
-                string selectedType = (string)picker.ItemsSource[selectedIndex];
+                string selectedType = (string)picker.SelectedItem;
 
                 if (selectedType == ContentTypes.FILM || selectedType == "Документалка")
                 {
-                    SeriaEntrys.IsVisible = false;
-                    SeriaLabel.IsVisible = false;
-                    LastWatchedSeasonEntry.Text = "0";
-                    LastWatchedSeriesEntry.Text = "0";
+                    EntrySeriaGrid.IsVisible = false;
                 }
                 else
                 {
-                    SeriaEntrys.IsVisible = true;
-                    SeriaLabel.IsVisible = true;
+                    EntrySeriaGrid.IsVisible = true;
                 }
             }
         }

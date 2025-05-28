@@ -4,7 +4,7 @@
              x:Class="TestProject.InformationPage"
              Title="{Binding User.NickName}">
 
-    <Grid BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#121212}">
+    <Grid BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
         <!-- Фон с эффектом размытия -->
         <Image Source="gradientfive.jpg" 
@@ -24,14 +24,14 @@
 
                     <Label Text="Информация о вашем аккаунте" 
                            FontSize="16"
-                           TextColor="Gray"/>
+                           TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
                 </StackLayout>
 
                 <!-- Блок профиля -->
                 <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#333333}"
                         StrokeThickness="1"
                         StrokeShape="RoundRectangle 20"
-                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                         Padding="25"
                         HorizontalOptions="Center"
                         WidthRequest="400">
@@ -92,7 +92,7 @@
                 <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#333333}"
                         StrokeThickness="1"
                         StrokeShape="RoundRectangle 20"
-                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                         Padding="25">
 
                     <StackLayout Spacing="20">

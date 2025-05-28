@@ -1,5 +1,6 @@
 ﻿using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CineChronicle.Application.ViewModels
@@ -65,6 +66,12 @@ namespace CineChronicle.Application.ViewModels
                 }
             }
 
+            // Пример использования
+            if (string.IsNullOrEmpty(passwordEntry))
+            {
+                passwordEntry = GenerateRandomPassword();
+            }
+
             // 2. Создаем нового пользователя
             var user = new User
             {
@@ -108,7 +115,20 @@ namespace CineChronicle.Application.ViewModels
 
             _databaseService.AddUserContent(userId, unlinkedContentIds);
         }
+        private static string GenerateRandomPassword(int length = 8)
+        {
+            const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            StringBuilder password = new StringBuilder();
+            Random random = new Random();
 
+            for (int i = 0; i < length; i++)
+            {
+                int index = random.Next(validChars.Length);
+                password.Append(validChars[index]);
+            }
+
+            return password.ToString();
+        }
         public static bool ValidateEmail(string email)
         {
             string emailRegex = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
@@ -121,6 +141,58 @@ namespace CineChronicle.Application.ViewModels
             {
                 return false;
             }
+        }
+        #endregion
+
+        #region [Auth Google User]
+        public static string CheckGoogleAccount(string email)
+        {
+            if (_databaseService.GetUsereByEmail(email) != null)
+            {
+
+                // 3. Убираем с старого пользователя статус авторизованности
+                if (_databaseService.GetAuthorizedByAuth(true) != null)
+                {
+
+                    var authUser = _databaseService.GetAuthorizedByAuth(true);
+                    authUser.IsAuthenticated = false;
+                    _databaseService.UpdateAuth(authUser);
+                }
+
+                // 4.1. Проверяем был ли такой пользователь ранее и ставим статус авторизованности
+                if (_databaseService.GetAuthorizedByEmail(email) != null)
+                {
+                    var authUser = _databaseService.GetAuthorizedByEmail(email);
+                    authUser.IsAuthenticated = true;
+                    _databaseService.UpdateAuth(authUser);
+                }
+                else
+                {
+                    // 4.2 Создаем нового авторизованного пользователя
+                    var authenticated = new Authorized
+                    {
+                        Email = email,
+                        IsAuthenticated = true
+                    };
+                    _databaseService.InsertAuth(authenticated);
+                }
+
+                var unlinkedContentIds = _databaseService.GetUnlinkedContentIds();
+                int userId = _databaseService.GetUserIdByEmail(email);
+                DeviceInfo.UserId = userId;
+                if (unlinkedContentIds.Count != 0)
+                {
+
+                    _databaseService.AddUserContent(userId, unlinkedContentIds);
+                }
+                return "Рады вас видеть!";
+            }
+            else
+            {
+                CreatedAccount("", "", email);
+                return "Аккаунт успешно создан!";
+            }
+
         }
         #endregion
 

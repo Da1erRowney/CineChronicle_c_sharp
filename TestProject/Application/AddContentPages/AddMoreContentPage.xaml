@@ -5,35 +5,36 @@
              x:Class="TestProject.AddMoreContentPage"
              Title="Добавление контента">
 
-    <Grid BackgroundColor="Transparent">
-        <!-- Адаптивный фон -->
-        <Image x:Name="Background" 
-               Source="gradientfive.jpg" 
+    <Grid BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
+        <!-- Фон с эффектом размытия -->
+        <Image Source="gradientfive.jpg" 
                Aspect="AspectFill" 
-               Opacity="0.5"/>
+               Opacity="0.3"
+               x:Name="Background">
+        </Image>
 
-        <ScrollView>
-            <VerticalStackLayout Spacing="15" Padding="20">
-                <!-- Заголовки -->
-                <VerticalStackLayout Spacing="5">
+        <ScrollView Padding="20,10">
+            <StackLayout Spacing="25">
+                <!-- Заголовок -->
+                <StackLayout Spacing="5">
                     <Label Text="На пути к успеху..." 
                            FontAttributes="Bold" 
-                           FontSize="Title"
-                           HorizontalOptions="Start"/>
+                           FontSize="28"
+                           TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
+
                     <Label Text="Добавьте свой контент" 
-                           FontSize="Subtitle"
-                           TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"
-                           HorizontalOptions="Start"/>
-                </VerticalStackLayout>
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light=#33333, Dark=#AAAAAA}"/>
+                </StackLayout>
 
-                <!-- Основная форма -->
-                <Border Margin="0,20"
-                        Opacity="0.9"
-                        StrokeShape="RoundRectangle 30"
-                        Padding="15"
-                        Background="{AppThemeBinding Light=White, Dark=Black}">
+                <!-- Форма добавления -->
+                <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#333333}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 20"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                        Padding="25">
 
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                           RowSpacing="15"
                           ColumnDefinitions="Auto,*,Auto"
                           ColumnSpacing="10">
@@ -41,142 +42,195 @@
                         <!-- Заголовок формы -->
                         <Label Text="Добавление контента" 
                                FontAttributes="Bold" 
-                               FontSize="Title"
-                               HorizontalOptions="Center"
+                               FontSize="22"
+                               TextColor="{AppThemeBinding Light=Black, Dark=White}"
                                Grid.ColumnSpan="3"
                                Margin="0,0,0,10"/>
 
                         <!-- Название -->
                         <Label Text="Название:" 
-                               FontSize="Body"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"
                                VerticalOptions="Center"
                                Grid.Row="1"/>
-                        <Entry Placeholder="Введите название" 
-                               x:Name="TitleEntry"
-                               FontSize="Body"
-                               PlaceholderColor="Gray"
-                               Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-                        <!-- Тип -->
+                        <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#444444}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}">
+                            <Entry Placeholder="Введите название" 
+                                   x:Name="TitleEntry"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                   PlaceholderColor="Gray"
+                                   ClearButtonVisibility="WhileEditing"/>
+                        </Border>
+
+                        <!-- Тип контента -->
                         <Label Text="Тип:" 
-                               FontSize="Body"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"
                                VerticalOptions="Center"
                                Grid.Row="2"/>
-                        <Picker Title="Выберите тип"
-                            x:Name="TypePicker"
-                            FontSize="Body"
-                            TitleColor="Gray"
-                            Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
-                            SelectedIndexChanged="TypePicker_SelectedIndexChanged">
-                            <Picker.ItemsSource>
-                                <x:Array Type="{x:Type x:String}">
+
+                        <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#444444}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}">
+                            <Picker Title="Выберите тип"
+                                   x:Name="TypePicker"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                   TitleColor="Gray"
+                                   SelectedIndexChanged="TypePicker_SelectedIndexChanged">
+                                <Picker.Items>
                                     <x:String>Сериал</x:String>
                                     <x:String>Аниме</x:String>
                                     <x:String>Мультсериал</x:String>
                                     <x:String>Фильм</x:String>
                                     <x:String>Дорама</x:String>
-                                    <x:String>Документалка</x:String>
+                                    <x:String>Документальный</x:String>
                                     <x:String>Прочее</x:String>
-                                </x:Array>
-                            </Picker.ItemsSource>
-                        </Picker>
+                                </Picker.Items>
+                            </Picker>
+                        </Border>
 
                         <!-- Озвучка -->
                         <Label Text="Озвучка:" 
-                               FontSize="Body"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"
                                VerticalOptions="Center"
                                Grid.Row="3"/>
-                        <Entry Placeholder="Введите озвучку" 
-                               x:Name="DubbingEntry"
-                               FontSize="Body"
-                               PlaceholderColor="Gray"
-                               Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-                        <!-- Серия и сезон на одной строке -->
-                        <Label x:Name="SeriaLabel"
-                                Text="Серия/Сезон:" 
-                               FontSize="Body"
+                        <Border Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
+                                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#444444}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}">
+                            <Entry Placeholder="Введите озвучку" 
+                                   x:Name="DubbingEntry"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                   PlaceholderColor="Gray"/>
+                        </Border>
+
+                        <!-- Серия и сезон -->
+                        <Label Text="Прогресс:" 
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"
                                VerticalOptions="Center"
                                Grid.Row="4"/>
+
                         <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
-                              x:Name="SeriaEntrys"
-                              ColumnDefinitions="*,10,*">
-                            <Entry Placeholder="Серия" 
-                                   x:Name="LastWatchedSeriesEntry"
-                                   Keyboard="Numeric"
-                                   FontSize="Body"
-                                   PlaceholderColor="Gray"
-                                   Grid.Column="0"/>
+                              x:Name="EntrySeriaGrid"
+                              ColumnDefinitions="*,10,*"
+                              ColumnSpacing="5">
 
+                            <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#444444}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}"
+                                    Grid.Column="2">
+                                <Entry Placeholder="Сезон" 
+                                       x:Name="LastWatchedSeasonEntry"
+                                       Keyboard="Numeric"
+                                       FontSize="16"
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                       PlaceholderColor="Gray"/>
+                            </Border>
                             <Label Text="/" 
-                                   FontSize="Body"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center"
-                                   Grid.Column="1"/>
+                                    FontSize="16"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="Center"
+                                    Grid.Column="1"/>
+                            <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#444444}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}">
+                                <Entry Placeholder="Серия" 
+                                       x:Name="LastWatchedSeriesEntry"
+                                       Keyboard="Numeric"
+                                       FontSize="16"
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                       PlaceholderColor="Gray"/>
+                            </Border>
 
-                            <Entry Placeholder="Сезон" 
-                                   x:Name="LastWatchedSeasonEntry"
-                                   Keyboard="Numeric"
-                                   FontSize="Body"
-                                   PlaceholderColor="Gray"
-                                   Grid.Column="2"/>
+                          
+
                         </Grid>
 
                         <!-- Ссылка -->
                         <Label Text="Ссылка:" 
-                               FontSize="Body"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"
                                VerticalOptions="Center"
                                Grid.Row="5"/>
-                        <Entry Placeholder="https:// ваш любимый источник" 
-                               x:Name="LinkEntry"
-                               FontSize="Body"
-                               PlaceholderColor="Gray"
-                               Keyboard="Url"
-                               Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+                        <Border Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
+                                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#444444}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}">
+                            <Entry Placeholder="https://example.com" 
+                                   x:Name="LinkEntry"
+                                   Keyboard="Url"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                   PlaceholderColor="Gray"/>
+                        </Border>
 
                         <!-- Статус -->
                         <Label Text="Статус:" 
-                               FontSize="Body"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"
                                VerticalOptions="Center"
                                Grid.Row="6"/>
-                        <Picker Title="Выберите статус"
-                               x:Name="WatchStatusPicker"
-                               FontSize="Body"
-                               TitleColor="Gray"
-                               Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2">
-                            <Picker.ItemsSource>
-                                <x:Array Type="{x:Type x:String}">
+
+                        <Border Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"
+                                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#444444}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}">
+                            <Picker Title="Выберите статус"
+                                   x:Name="WatchStatusPicker"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                   TitleColor="Gray">
+                                <Picker.Items>
                                     <x:String>Просмотрено</x:String>
                                     <x:String>Смотрю</x:String>
                                     <x:String>Не начинал</x:String>
-                                </x:Array>
-                            </Picker.ItemsSource>
-                        </Picker>
+                                </Picker.Items>
+                            </Picker>
+                        </Border>
                     </Grid>
                 </Border>
 
-                <!-- Кнопка -->
+                <!-- Кнопка сохранения -->
                 <Button Text="Сохранить" 
-                        FontSize="Body"
-                        Clicked="OnAddClicked" 
-                        HorizontalOptions="Center"
-                        WidthRequest="200"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        BackgroundColor="#4285F4"
+                        CornerRadius="10"
                         HeightRequest="50"
-                        Margin="0,20"
-                        CornerRadius="25"
-                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"/>
-            </VerticalStackLayout>
+                        WidthRequest="200"
+                        HorizontalOptions="Center"
+                        Margin="0,15"
+                        Clicked="OnAddClicked"/>
+            </StackLayout>
         </ScrollView>
 
-        <!-- Overlay (фон) -->
+        <!-- Overlay и анимация -->
         <BoxView x:Name="Overlay"
                  BackgroundColor="#80000000"
-                 Opacity="0.5"
+                 Opacity="0"
                  IsVisible="False"
                  AbsoluteLayout.LayoutBounds="0,0,1,1"
                  AbsoluteLayout.LayoutFlags="All"/>
 
-        <!-- Lottie Animation -->
         <skia:SKLottieView x:Name="SavingAnimation"
                            Source="loading_animation.json"
                            RepeatCount="-1"

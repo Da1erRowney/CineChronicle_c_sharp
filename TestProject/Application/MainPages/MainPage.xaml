@@ -38,7 +38,7 @@
                               StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}"/>
     </Page.Behaviors>
 
-    <Grid BackgroundColor="Transparent">
+    <Grid BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
         <!-- Фоновое изображение -->
         <Image x:Name="Background" Source="gradientseven.jpg" Aspect="AspectFill" Opacity="0.5"/>
 
@@ -310,7 +310,7 @@
 
             <StackLayout x:Name="d" VerticalOptions="EndAndExpand">
                 <Grid 
-                    BackgroundColor="{AppThemeBinding Light= #919191, Dark=Black}" VerticalOptions="EndAndExpand"
+                    BackgroundColor="{AppThemeBinding Light= White, Dark=Black}" VerticalOptions="EndAndExpand"
                     Padding="20"
                    
                     RowDefinitions="Auto,Auto,Auto,Auto">

@@ -9,7 +9,7 @@
     </ContentPage.Resources>
 
     <RefreshView x:Name="RefreshView" RefreshColor="Black" Refreshing="OnRefreshing">
-        <Grid  BackgroundColor="Transparent">
+        <Grid  BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
             <Image x:Name="Background" Grid.Row ="1" Source="all.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" Opacity="0.5" />
 

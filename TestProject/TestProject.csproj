@@ -41,6 +41,9 @@
     <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Application\InformationPages\GoogleAuthService.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <MauiSplashScreen Remove="Resources\Images\notwificonnection.jpg" />
     <MauiSplashScreen Remove="Resources\Images\plus.png" />
   </ItemGroup>
@@ -53,6 +56,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Maui" Version="11.2.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.69.0.3764" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
     <PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />
@@ -61,6 +65,11 @@
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.11" />
     <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.11" />
     <PackageReference Include="YoutubeExplode" Version="6.5.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Raw\credentials.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Application\AllContentPages\AllContentPage.xaml.cs">
@@ -97,5 +106,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="Microsoft.Maui.Controls" Version="9.0.60" />
+  </ItemGroup>
+  <ItemGroup>
+    <MauiImage Include="Resources\Raw\credentials.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <MauiSplashScreen Include="Resources\Raw\credentials.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Existing Item\" />
   </ItemGroup>
 </Project>

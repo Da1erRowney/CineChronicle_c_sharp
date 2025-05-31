@@ -9,6 +9,7 @@ namespace CineChronicle.Application.ViewModels
     {
         #region [Private Fields]
         private static DatabaseServiceContent _databaseService;
+
         public ObservableCollection<Content> ContentSort { get; set; }
         public ObservableCollection<Content> ContentAll { get; set; }
         public ObservableCollection<Content> ContentSerial { get; set; }
@@ -46,8 +47,6 @@ namespace CineChronicle.Application.ViewModels
         public int ContentViewedall { get; set; }
         public int ContentProcessall { get; set; }
         public int ContentNotStartall { get; set; }
-
-       
 
         public static string[] _categoryData = new string[2];
         private static int[] usersContent;

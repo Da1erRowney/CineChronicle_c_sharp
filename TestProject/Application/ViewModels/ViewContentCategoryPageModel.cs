@@ -11,19 +11,22 @@ namespace CineChronicle.Application.ViewModels
         #region [Private Fields]
         private static DatabaseServiceContent _databaseService;
         public ObservableCollection<Content> ContentCategory { get; set; }
-        public static int CurrentPage { get; private set; } = 0;
-        public int SelectPageForUser { get; set; }
-        public static int ItemsPerPage { get; } = 10;
-        public bool HasMoreItems { get; private set; } = true;
+
         public ICommand LoadMoreCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand PreviousPageCommand { get; }
-        private string NameCategory;
 
-        private static int[] usersContent;
-
+        public bool HasMoreItems { get; private set; } = true;
         [ObservableProperty]
         private bool isBusy;
+
+        private string NameCategory;
+
+        public static int CurrentPage { get; private set; } = 0;
+        public static int ItemsPerPage { get; } = 10;
+        private static int[] usersContent;
+        public int SelectPageForUser { get; set; }
+
         #endregion
 
         #region [Ctor's]

@@ -34,6 +34,7 @@ namespace CineChronicle.Application
         private int countRead = 0;
         #endregion
 
+        #region [Prepare Parser]
         public async Task<bool> GetData(string type, string title)
         {
             try
@@ -66,7 +67,9 @@ namespace CineChronicle.Application
 
             await PushParser(type, title, typePars);
         }
+        #endregion
 
+        #region [Start/Finaly Parser]
         //Запуск парсера
         private async Task PushParser(string type, string title, string typePars)
         {
@@ -128,7 +131,9 @@ namespace CineChronicle.Application
             // Удаляем множественные пробелы, которые могли образоваться
             Description = Regex.Replace(Description, @"\s+", " ");
         }
+        #endregion
 
+        #region [Main Parser]
         /// <summary>
         /// Получаем описание, постер, трейлеры и дату выхода контента
         /// </summary>
@@ -441,7 +446,9 @@ namespace CineChronicle.Application
                 }
             }
         }
+        #endregion
 
+        #region [Support Wik Parser]
         private async Task WikInfoIsSuccess(HtmlNode node, HtmlDocument htmlDocument, string query)
         {
             string nameContent = $"{query}:\n";
@@ -627,6 +634,9 @@ namespace CineChronicle.Application
                 }
             }
         }
+        #endregion
+
+        #region [Support YouTube Parser]
 
         // Резервный метод получения трейлера с YouTube когда квота превысила лимит
         public async Task GetUniqueVideoIds(string query, string type, int maxCount = 2)
@@ -676,61 +686,9 @@ namespace CineChronicle.Application
             }
         }
 
-        private bool IsShortsVideo(string html, string videoId)
-        {
-            // Паттерн 1: Проверка /shorts/ в URL
-            if (Regex.IsMatch(html, $@"""webCommandMetadata"":\{{[^}}]*""url"":""/shorts/{videoId}"))
-            {
-                return true;
-            }
+        #endregion
 
-            // Паттерн 2: Проверка специальных маркеров Shorts
-            if (Regex.IsMatch(html, $@"""isShorts"":\s*true[^}}]*""videoId"":""{videoId}"""))
-            {
-                return true;
-            }
-
-            // Паттерн 3: Проверка в HTML-атрибутах
-            if (Regex.IsMatch(html, $@"<a\s[^>]*href=""(/shorts/{videoId}|/watch\?v={videoId}[^""]*\bp=shorts)"""))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        string ExtractDescription(string htmlContent)
-        {
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(htmlContent);
-
-            // Находим div с классом "description pb-3"
-            var descriptionNode = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@class, 'description') and contains(@class, 'pb-3')]");
-
-            if (descriptionNode != null)
-            {
-                // Удаляем все HTML-теги и спецсимволы
-                string description = descriptionNode.InnerText;
-
-                // Очистка от HTML-сущностей и лишних пробелов
-                description = System.Net.WebUtility.HtmlDecode(description);
-                description = description.Replace("&nbsp;", " ")
-                                        .Replace("&ndash;", "-")
-                                        .Replace("&laquo;", "\"")
-                                        .Replace("&raquo;", "\"")
-                                        .Trim();
-
-                // Удаляем лишние переносы строк и пробелы
-                description = string.Join("\n\n",
-                    description.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
-                               .Select(line => line.Trim()));
-
-                return description;
-            }
-
-            return string.Empty;
-        }
-
+        #region [Support DateExit Parser]
         private async Task DateExitIsSuccess(HtmlNode node, string query, string type, HtmlDocument htmlDocument)
         {
             using (HttpClient client = new HttpClient())
@@ -829,34 +787,10 @@ namespace CineChronicle.Application
             GetMainDataDE(htmlDocumentIn, type);
         }
 
-        private string FormirateString(string exitEpisod, string countText)
-        {
-            // Заменяем каждую точку на точку с отступом и символ перевода строки
-            exitEpisod = exitEpisod.Replace(".", ".");
-
-            // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
-            NextEpisodeReleaseDate = exitEpisod;
-            CountLabel = countText;
-            return exitEpisod;
-        }
-
         private void GetMainDataDE(HtmlDocument htmlDocumentIn, string type)
         {
             if (type == "Сериал" || type == "Дорама" || type == "Мультсериал" || type == "Аниме")
             {
-                //// Парсим изображение
-                //HtmlNode imgIn = htmlDocumentIn.DocumentNode.SelectSingleNode("//div[@class='imgWrapper']/img");
-                //if (imgIn != null)
-                //{
-                //    string ImageUrl = imgIn.GetAttributeValue("src", "");
-                //    if (!ImageUrl.StartsWith("https://"))
-                //    {
-                //        ImageUrl = "https:" + ImageUrl;
-                //    }
-                //    Image = ImageUrl;
-                //}
-                // Парсим описание
-
                 HtmlNode scriptNode = htmlDocumentIn.DocumentNode.SelectSingleNode("//script[@type='application/ld+json']");
                 if (scriptNode != null)
                 {
@@ -879,11 +813,81 @@ namespace CineChronicle.Application
                 };
             }
         }
+        #endregion
+
+        #region [Support Methods]
+        private bool IsShortsVideo(string html, string videoId)
+        {
+            // Паттерн 1: Проверка /shorts/ в URL
+            if (Regex.IsMatch(html, $@"""webCommandMetadata"":\{{[^}}]*""url"":""/shorts/{videoId}"))
+            {
+                return true;
+            }
+
+            // Паттерн 2: Проверка специальных маркеров Shorts
+            if (Regex.IsMatch(html, $@"""isShorts"":\s*true[^}}]*""videoId"":""{videoId}"""))
+            {
+                return true;
+            }
+
+            // Паттерн 3: Проверка в HTML-атрибутах
+            if (Regex.IsMatch(html, $@"<a\s[^>]*href=""(/shorts/{videoId}|/watch\?v={videoId}[^""]*\bp=shorts)"""))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        string ExtractDescription(string htmlContent)
+        {
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(htmlContent);
+
+            // Находим div с классом "description pb-3"
+            var descriptionNode = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@class, 'description') and contains(@class, 'pb-3')]");
+
+            if (descriptionNode != null)
+            {
+                // Удаляем все HTML-теги и спецсимволы
+                string description = descriptionNode.InnerText;
+
+                // Очистка от HTML-сущностей и лишних пробелов
+                description = System.Net.WebUtility.HtmlDecode(description);
+                description = description.Replace("&nbsp;", " ")
+                                        .Replace("&ndash;", "-")
+                                        .Replace("&laquo;", "\"")
+                                        .Replace("&raquo;", "\"")
+                                        .Trim();
+
+                // Удаляем лишние переносы строк и пробелы
+                description = string.Join("\n\n",
+                    description.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                               .Select(line => line.Trim()));
+
+                return description;
+            }
+
+            return string.Empty;
+        }
+
+        private string FormirateString(string exitEpisod, string countText)
+        {
+            // Заменяем каждую точку на точку с отступом и символ перевода строки
+            exitEpisod = exitEpisod.Replace(".", ".");
+
+            // Устанавливаем отформатированную строку в NextEpisodeReleaseDateEntry
+            NextEpisodeReleaseDate = exitEpisod;
+            CountLabel = countText;
+            return exitEpisod;
+        }
+
+        #endregion
     }
 }
 
 
-
+#region [Not Use Parser]
 //private async void GetLordsFilmImage(string query)
 //{
 //    string url = $"https://www.google.by/search?q= {Uri.EscapeDataString(query)} Постер&tbm=isch&ved=2ahUKEwiZtra589-EAxW8if0HHa5CCkYQ2-cCegQIABAA&oq=а&gs_lp=EgNpbWciAtCwSJwUUJsSWKoTcAB4AJABAJgBsAGgAbABqgEDMC4xuAEDyAEA-AEBigILZ3dzLXdpei1pbWeoAgDCAgoQABiABBiKBRhDiAYB&sclient=img&ei=-4ToZdnMOryT9u8ProWpsAQ";
@@ -926,3 +930,4 @@ namespace CineChronicle.Application
 //        }
 //    }
 //}
+#endregion

@@ -10,7 +10,6 @@ namespace CineChronicle.Application.ViewModels
         #region [Private Fields]
         private static DatabaseServiceContent _databaseService;
 
-        private List<UserContents> UserContents;
         private static string _recoveryCode;
         #endregion
 

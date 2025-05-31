@@ -1,5 +1,4 @@
 using CineChronicle.Application.SupportClass;
-using Microsoft.Maui.ApplicationModel;
 namespace TestProject;
 
 public partial class SettingPage : ContentPage
@@ -8,15 +7,18 @@ public partial class SettingPage : ContentPage
     {
         InitializeComponent();
         UseNewBackground();
+
         // Инициализация переключателя с учетом всех возможных сценариев
         ThemeSwitch.IsToggled = ShouldUseDarkTheme();
     }
+
     private void UseNewBackground()
     {
         Random _random = new Random();
         string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
         Background.Source = randomImage;
     }
+
     private bool ShouldUseDarkTheme()
     {
         // 1. Если тема явно задана в приложении - используем её

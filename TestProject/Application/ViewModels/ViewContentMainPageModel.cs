@@ -9,10 +9,8 @@ namespace CineChronicle.Application.ViewModels
     {
         #region [Private Fields]
         private GetContentRecommendation ContentRecommendationRead = new();
-        private DeviceInfo _device = new();
         private static DatabaseServiceContent _databaseService;
-
-        public static bool[] isContentNull = new bool[3];
+        private DeviceInfo _device = new();
 
         public ObservableCollection<ContentRecommendation> ContentRecommendation { get; set; }
         public ObservableCollection<Content> ContentAdded { get; set; }
@@ -24,6 +22,7 @@ namespace CineChronicle.Application.ViewModels
         public bool IsContentReleaseVisible => ContentRelease?.Count > 0;
         public bool IsContentRecommendationVisible => ContentRecommendation?.Count > 0;
 
+        public static bool[] isContentNull = new bool[3];
         private static int[] usersContent;
         #endregion
 

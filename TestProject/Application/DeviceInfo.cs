@@ -4,17 +4,22 @@ namespace CineChronicle.Application
 {
     public class DeviceInfo
     {
+        #region [Private Fields]
         public string TypeDevice { get; set; }
 
         private static DatabaseServiceContent _databaseService;
         public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content1.db");
         public static int UserId { get; set; }
+        #endregion
 
+        #region [Ctor's]
         public DeviceInfo()
         {
             TypeDevice = GetDeviceType();
         }
+        #endregion
 
+        #region [Methods]
         private string GetDeviceType()
         {
             return Device.RuntimePlatform.ToString();
@@ -43,5 +48,6 @@ namespace CineChronicle.Application
                 return usersContentClass.GetContentIdArray();
             }
         }
+        #endregion
     }
 }

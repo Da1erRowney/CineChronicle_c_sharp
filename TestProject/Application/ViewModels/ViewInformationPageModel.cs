@@ -46,7 +46,7 @@ namespace CineChronicle.Application.ViewModels
         }
         #endregion
 
-        #region [Methods]
+        #region [Async Find Information Block]
         private async Task InitUserData()
         {
             await InitializeOurStatics();
@@ -86,7 +86,7 @@ namespace CineChronicle.Application.ViewModels
         }
         public async Task InitializeStatusContent()
         {
-            OngoingContentCount = _databaseService.GetAllContent(usersContent) .Count(c => c.DateRelease != null && c.DateRelease != string.Empty);
+            OngoingContentCount = _databaseService.GetAllContent(usersContent).Count(c => c.DateRelease != null && c.DateRelease != string.Empty);
             CompletedContentCount = TotalContentCount - OngoingContentCount;
             OnPropertyChanged(nameof(OngoingContentCount));
             OnPropertyChanged(nameof(CompletedContentCount));
@@ -98,6 +98,9 @@ namespace CineChronicle.Application.ViewModels
             OnPropertyChanged(nameof(PreferredVoiceOver));
             OnPropertyChanged(nameof(FavoriteGenre));
         }
+        #endregion
+
+        #region [Methods]
 
         private void CheckedAuthUser() // Поиск авторизованного пользователя
         {

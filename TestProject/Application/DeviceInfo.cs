@@ -37,10 +37,9 @@ namespace CineChronicle.Application
             }
             else
             {
-                int userId = _databaseService.GetUserIdByEmail(AuthUser.Email);
-                DeviceInfo.UserId = userId;
+                UserId = _databaseService.GetUserIdByEmail(AuthUser.Email);
 
-                var usersContentClass = _databaseService.GetUserContentByUserId(DeviceInfo.UserId);
+                var usersContentClass = _databaseService.GetUserContentByUserId(UserId);
                 return usersContentClass.GetContentIdArray();
             }
         }

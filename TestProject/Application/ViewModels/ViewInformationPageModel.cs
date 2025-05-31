@@ -78,6 +78,7 @@ namespace CineChronicle.Application.ViewModels
         #region [Change user Avatar]
         public async Task ChangeAvatarAsync(string nickName)
         {
+            if (User.NameIcon == "nonicon.png") return;
             try
             {
                 // Проверяем и запрашиваем разрешения

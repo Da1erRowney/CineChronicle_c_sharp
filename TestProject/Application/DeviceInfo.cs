@@ -25,6 +25,7 @@ namespace CineChronicle.Application
             var current = Connectivity.NetworkAccess;
             return current == NetworkAccess.Internet;
         }
+
         public static int[] GetContentUser()
         {
             _databaseService = new DatabaseServiceContent(_databasePath);

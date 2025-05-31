@@ -1,4 +1,5 @@
-﻿using CineChronicle.Tables;
+﻿using CineChronicle.Application.SupportClass;
+using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Text;
 
@@ -14,7 +15,27 @@ namespace CineChronicle.Application.ViewModels
         public UserContents UserContents { get; set; }
         public Content Content { get; set; }
 
+        public int TotalContentCount { get; set; }
+        public int SeriesCount { get; set; }
+        public int AnimeCount { get; set; }
+        public int MoviesCount { get; set; }
+        public int DoramaCount { get; set; }
+        public int CartoonCount { get; set; }
+        public int DocumentalCount { get; set; }
+        public int OtherCount { get; set; }
+        public int WatchedCount { get; set; }
+        public int WatchNowCount { get; set; }
+        public int NotStartedCount { get; set; }
+
+        public int OngoingContentCount { get; set; }
+        public int CompletedContentCount { get; set; }
+
+        public string PreferredVoiceOver { get; set; }
+        public string FavoriteGenre { get; set; }
+
         public bool HaveAthorizedUser = false;
+
+        private static int[] usersContent;
         #endregion
 
         #region [Ctor's]
@@ -22,14 +43,60 @@ namespace CineChronicle.Application.ViewModels
         {
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
             CheckedAuthUser();
-            //Task.Run(InitUserData);
         }
         #endregion
 
         #region [Methods]
         private async Task InitUserData()
         {
-            CheckedAuthUser();
+            await InitializeOurStatics();
+            await InitializeCategory();
+            await InitializeStatusContent();
+            await InitializeLikedUser();
+        }
+        public async Task InitializeOurStatics()
+        {
+            TotalContentCount = _databaseService.GetContentCount(usersContent);
+            NotStartedCount = _databaseService.GetContentCountByWatchStatus("Не начинал", usersContent);
+            WatchNowCount = _databaseService.GetContentCountByWatchStatus("Смотрю", usersContent);
+            WatchedCount = _databaseService.GetContentCountByWatchStatus("Просмотрено", usersContent);
+
+            OnPropertyChanged(nameof(TotalContentCount));
+            OnPropertyChanged(nameof(NotStartedCount));
+            OnPropertyChanged(nameof(WatchNowCount));
+            OnPropertyChanged(nameof(WatchedCount));
+        }
+        public async Task InitializeCategory()
+        {
+            SeriesCount = _databaseService.GetContentCountByType(ContentTypes.SERIAL, usersContent);
+            AnimeCount = _databaseService.GetContentCountByType(ContentTypes.ANIME, usersContent);
+            MoviesCount = _databaseService.GetContentCountByType(ContentTypes.FILM, usersContent);
+            DoramaCount = _databaseService.GetContentCountByType(ContentTypes.DORAMA, usersContent);
+            CartoonCount = _databaseService.GetContentCountByType(ContentTypes.CARTOON, usersContent);
+            DocumentalCount = _databaseService.GetContentCountByType("Документалка", usersContent);
+            OtherCount = _databaseService.GetContentCountByType(ContentTypes.OTHER, usersContent);
+
+            OnPropertyChanged(nameof(SeriesCount));
+            OnPropertyChanged(nameof(AnimeCount));
+            OnPropertyChanged(nameof(MoviesCount));
+            OnPropertyChanged(nameof(DoramaCount));
+            OnPropertyChanged(nameof(CartoonCount));
+            OnPropertyChanged(nameof(DocumentalCount));
+            OnPropertyChanged(nameof(OtherCount));
+        }
+        public async Task InitializeStatusContent()
+        {
+            OngoingContentCount = _databaseService.GetAllContent(usersContent) .Count(c => c.DateRelease != null && c.DateRelease != string.Empty);
+            CompletedContentCount = TotalContentCount - OngoingContentCount;
+            OnPropertyChanged(nameof(OngoingContentCount));
+            OnPropertyChanged(nameof(CompletedContentCount));
+        }
+        public async Task InitializeLikedUser()
+        {
+            PreferredVoiceOver = _databaseService.GetFavoriteDubbing(usersContent);
+            FavoriteGenre = _databaseService.GetFavoriteCategory(usersContent);
+            OnPropertyChanged(nameof(PreferredVoiceOver));
+            OnPropertyChanged(nameof(FavoriteGenre));
         }
 
         private void CheckedAuthUser() // Поиск авторизованного пользователя
@@ -51,6 +118,8 @@ namespace CineChronicle.Application.ViewModels
                     }
                 }
                 DeviceInfo.UserId = User.Id;
+                usersContent = DeviceInfo.GetContentUser();
+                Task.Run(InitUserData);
             }
             else
             {

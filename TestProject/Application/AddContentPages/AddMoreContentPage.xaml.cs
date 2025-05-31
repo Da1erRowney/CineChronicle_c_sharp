@@ -37,27 +37,17 @@ namespace TestProject
             TitleEntry.Text = data.Title;
             if (data.Type == ContentTypes.SERIAL)
             {
-                // Найти объект элемента "Сериал" в списке элементов TypePicker
-                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == ContentTypes.SERIAL);
 
                 // Присвоить найденный объект элемента в SelectedItem
-                TypePicker.SelectedItem = selectedType;
+                TypePicker.SelectedItem = ContentTypes.SERIAL;
             }
             else if (data.Type == ContentTypes.ANIME)
             {
-                // Найти объект элемента "Сериал" в списке элементов TypePicker
-                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == ContentTypes.ANIME);
-
-                // Присвоить найденный объект элемента в SelectedItem
-                TypePicker.SelectedItem = selectedType;
+                TypePicker.SelectedItem = ContentTypes.ANIME;
             }
             else if (data.Type == ContentTypes.CARTOON)
             {
-                // Найти объект элемента "Сериал" в списке элементов TypePicker
-                var selectedType = TypePicker.ItemsSource.Cast<string>().FirstOrDefault(item => item == ContentTypes.CARTOON);
-
-                // Присвоить найденный объект элемента в SelectedItem
-                TypePicker.SelectedItem = selectedType;
+                TypePicker.SelectedItem = ContentTypes.CARTOON;
             }
 
             Init();

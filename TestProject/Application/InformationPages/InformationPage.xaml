@@ -3,7 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TestProject.InformationPage"
              Title="{Binding User.NickName}">
+    
+    <ContentPage.Resources>
+        <LinearGradientBrush x:Key="BlueGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="OrangeRed" Offset="0"/>
+            <GradientStop Color="{AppThemeBinding Light=White, Dark=Black}" Offset="1"/>
+        </LinearGradientBrush>
 
+        <LinearGradientBrush x:Key="RedGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="Firebrick" Offset="0"/>
+            <GradientStop Color="{AppThemeBinding Light=White, Dark=Black}" Offset="1"/>
+        </LinearGradientBrush>
+    </ContentPage.Resources>
+    
     <Grid BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
         <!-- Фон с эффектом размытия -->
@@ -136,8 +148,212 @@
                         <StackLayout x:Name="InformationBlock" 
                                      IsVisible="False"
                                      Spacing="15">
-                            <!-- Здесь будут динамические элементы информации -->
+                            
+                            <!--Общая статистика (Статусы просмотра и количество всего)-->
+                            <Border StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="0"
+                                    Padding="15"
+                                    Background="{StaticResource RedGradient}"
+                                    Shadow="5,5,5,5">
+                                <StackLayout Spacing="8">
+                                    <Label Text="📊 Общая статистика"
+                                            FontSize="18"
+                                            FontAttributes="Bold"
+                                            TextColor="{AppThemeBinding Light=#2C3E50, Dark=#ECF0F1}"/>
+
+                                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*" RowSpacing="10">
+                                        
+                                        <!-- 1 строка -->
+                                        <Label Grid.Row="0" Grid.Column="0"
+                                                Text="Всего контента:"
+                                                FontAttributes="Italic"/>
+                                        <Label Grid.Row="0" Grid.Column="1"
+                                                Text="{Binding TotalContentCount}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+
+                                        <!-- 2 строка -->
+                                        <Label Grid.Row="1" Grid.Column="0"
+                                                Text="Просмотрено:"
+                                                FontAttributes="Italic"/>
+                                        <Label Grid.Row="1" Grid.Column="1"
+                                                Text="{Binding WatchedCount}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+                                        
+                                        <!-- 3 строка -->
+                                        <Label Grid.Row="2" Grid.Column="0"
+                                                Text="Смотрите:"
+                                                FontAttributes="Italic"/>
+                                       <Label Grid.Row="2" Grid.Column="1"
+                                                Text="{Binding WatchNowCount}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+                                        
+                                        <!-- 4 строка -->
+                                        <Label Grid.Row="3" Grid.Column="0"
+                                                Text="Не начато:"
+                                                FontAttributes="Italic"/>
+                                        <Label Grid.Row="3" Grid.Column="1"
+                                                Text="{Binding NotStartedCount}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Border>
+                            
+                            <!--По категориям (Количество в каждой категории)-->
+                            <Border StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="0"
+                                    Padding="15"
+                                    Background="{StaticResource BlueGradient}"
+                                    Shadow="5,5,5,5">
+                                <StackLayout Spacing="8">
+                                    <Label Text="🎬 По категориям"
+                                            FontSize="18"
+                                            FontAttributes="Bold"
+                                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*,*" RowSpacing="10">
+                                        <!-- 1 строка -->
+                                        <Label Grid.Row="0" Grid.Column="0"
+                                               Text="Фильмы:"
+                                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Grid.Row="0" Grid.Column="1"
+                                               Text="{Binding MoviesCount}"
+                                               TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                               FontAttributes="Bold"
+                                               HorizontalTextAlignment="End"/>
+
+                                        <!-- 2 строка -->
+                                        <Label Grid.Row="1" Grid.Column="0"
+                                               Text="Сериалы:"
+                                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Grid.Row="1" Grid.Column="1"
+                                                Text="{Binding SeriesCount}"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+
+                                        <!-- 3 строка -->
+                                        <Label Grid.Row="2" Grid.Column="0"
+                                               Text="Аниме:"
+                                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Grid.Row="2" Grid.Column="1"
+                                                Text="{Binding AnimeCount}"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+                                        
+                                        <!-- 4 строка -->
+                                        <Label Grid.Row="3" Grid.Column="0"
+                                                Text="Дорамы:"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Grid.Row="3" Grid.Column="1"
+                                                Text="{Binding DoramaCount}"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+                                        
+                                        <!-- 5 строка -->
+                                        <Label Grid.Row="4" Grid.Column="0"
+                                                Text="Прочее:"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Grid.Row="4" Grid.Column="1"
+                                                Text="{Binding OtherCount}"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+                                        
+                                        <!-- 6 строка -->
+                                        <Label Grid.Row="5" Grid.Column="0"
+                                                Text="Мультсериалы:"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Grid.Row="5" Grid.Column="1"
+                                                Text="{Binding CartoonCount}"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+                                        <!-- 7 строка -->
+                                        <Label Grid.Row="6" Grid.Column="0"
+                                                Text="Мультсериалы:"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Grid.Row="6" Grid.Column="1"
+                                                Text="{Binding DocumentalCount}"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Border>
+                            
+                            <!-- Статус контента (Активные и завершенные)-->
+                            <Border StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="0"
+                                    Padding="15"
+                                    Background="{StaticResource RedGradient}"
+                                    Shadow="5,5,5,5">
+                                <StackLayout Spacing="8">
+                                    <Label Text="📡 Статус контента"
+                                            FontSize="18"
+                                            FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*" RowSpacing="10">
+                                        <!-- 1 строка -->
+                                        <Label Grid.Row="0" Grid.Column="0"
+                                                Text="Активные релизы:"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Grid.Row="0" Grid.Column="1"
+                                                Text="{Binding OngoingContentCount}"
+                                                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+
+                                        <!-- 2 строка -->
+                                        <Label Grid.Row="1" Grid.Column="0"
+                                                Text="Завершённые:"
+                                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Grid.Row="1" Grid.Column="1"
+                                                Text="{Binding CompletedContentCount}"
+                                               TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Border>
+
+                            <!-- Предпочтения (Озвучка и любимый киноматограф) -->
+                            <Border StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0"
+                                Padding="15"
+                                Background="{StaticResource BlueGradient}"
+                                Shadow="5,5,5,5">
+                                <StackLayout Spacing="8">
+                                    <Label Text="❤️ Ваши предпочтения"
+                                            FontSize="18"
+                                            FontAttributes="Bold"
+                                            TextColor="{AppThemeBinding Light=#2C3E50, Dark=#ECF0F1}"/>
+
+                                    <Label Text="Часто выбираемая озвучка:"
+                                            FontAttributes="Italic"/>
+                                    <Label Text="{Binding PreferredVoiceOver}"
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                                    <Label Text="Любимый киноматограф:"
+                                            FontAttributes="Italic"
+                                            Margin="0,10,0,0"/>
+                                    <Label Text="{Binding FavoriteGenre}"
+                                           FontAttributes="Bold"
+                                           FontSize="16"
+                                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                </StackLayout>
+                            </Border>
+                            
                         </StackLayout>
+
                     </StackLayout>
                 </Border>
             </StackLayout>

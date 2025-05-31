@@ -142,7 +142,25 @@ namespace CineChronicle.Tables
             return _connection.Table<Content>()
                 .Count(x => x.WatchStatus == watchStatus && ids.Contains(x.Id));
         }
+        public string GetFavoriteDubbing(int[] ids)
+        {
+            return _connection.Table<Content>()
+                .Where(x => ids.Contains(x.Id) && !string.IsNullOrEmpty(x.Dubbing))
+                .GroupBy(x => x.Dubbing)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .FirstOrDefault() ?? "Не указано";
+        }
 
+        public string GetFavoriteCategory(int[] ids)
+        {
+            return _connection.Table<Content>()
+                .Where(x => ids.Contains(x.Id) && !string.IsNullOrEmpty(x.Type))
+                .GroupBy(x => x.Type)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .FirstOrDefault() ?? "Не указано";
+        }
         #endregion
 
         #region [Дата выхода]

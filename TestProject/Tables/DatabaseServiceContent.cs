@@ -54,8 +54,6 @@ namespace CineChronicle.Tables
         }
         #endregion
 
-
-
         #region [Контент}
         public void InsertContent(Content content)
         {

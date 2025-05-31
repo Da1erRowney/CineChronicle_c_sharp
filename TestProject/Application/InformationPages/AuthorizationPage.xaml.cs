@@ -39,6 +39,7 @@ public partial class AuthorizationPage : ContentPage
                 case "Неправильный формат почты":
                 case "Такой пользователь уже существует":
                 case "Пароль меньше 8 символов. Придумайте пароль длинее":
+                case "Пользователь с таким ником уже существует":
                     await DisplayAlert("Ошибка", message, "Ок");
                     PasswordEntry.Text = "";
                     break;
@@ -81,23 +82,14 @@ public partial class AuthorizationPage : ContentPage
             }
         } 
     }
+    private void RecoveryPassword()
+    {
+        
+    }
 
     #endregion
 
-    #region [Handle Methods]
-    private void OnCreateTapped(object sender, EventArgs e)
-    {
-        HideElements("Начни жизнь с нового аккаунта...", true);
-    }
-
-    private void OnEntranceTapped(object sender, EventArgs e)
-    {
-        HideElements("Мы вас ждали, путник...",false);
-    }
-    private void OnGoogleAuthTapped(object sender, EventArgs e)
-    {
-       GoogleAuthSystem();
-    }
+    #region [Google Auth]
     private async Task GoogleAuthSystem()
     {
         try
@@ -144,7 +136,7 @@ public partial class AuthorizationPage : ContentPage
                 throw new Exception("Failed to get user info");
 
             var userInfo = await userInfoResponse.Content.ReadFromJsonAsync<GoogleUserInfo>();
-           string message =  ViewAuthPageModel.CheckGoogleAccount( userInfo?.Email);
+            string message = ViewAuthPageModel.CheckGoogleAccount(userInfo?.Email);
             await DisplayAlert("Успех", message, "Ок");
             ReturnAfterAuth();
         }
@@ -166,10 +158,105 @@ public partial class AuthorizationPage : ContentPage
     {
         public string Email { get; set; }
     }
+    #endregion
+
+    #region [Handle Methods]
+    private void OnCreateTapped(object sender, EventArgs e)
+    {
+        HideElements("Начни жизнь с нового аккаунта...", true);
+    }
+
+    private void OnEntranceTapped(object sender, EventArgs e)
+    {
+        HideElements("Мы вас ждали, путник...", false);
+    }
+    private void OnGoogleAuthTapped(object sender, EventArgs e)
+    {
+       GoogleAuthSystem();
+    }
 
     private void OnForgotPasswordTapped(object sender, EventArgs e)
     {
-        //Забыл пароль
+        TitlePage.Text = "Восстановление героя";
+        CreateLayout.IsVisible = false;
+        GoEntrance.IsVisible = false;
+
+        EntranceBorder.IsVisible = false;
+        GoRegistr.IsVisible = false;
+
+        RecoveryLayout.IsVisible = true;
+        AfterRecoveryEntrance.IsVisible = true;
+
+        RecoveryPassword();
+    }
+
+    private async void RecoveryButtonTapped(object sender, EventArgs e)
+    {
+        if (!string.IsNullOrEmpty(EmailNickEntry.Text) && CodeBorder.IsVisible == false)
+        {
+            string message = ViewAuthPageModel.FindAccountUserForRecovery(EmailNickEntry.Text);
+            switch (message)
+            {
+                case "Не удалось найти пользователя. Проверьте введенные данные.":
+                case "Ошибка при отправке письма":
+                    await DisplayAlert("Ошибка", message, "Ок");
+                    break;
+                default:
+                    await DisplayAlert("Успех", message, "Ок");
+                    CodeBorder.IsVisible = true;
+                    LabelCode.IsVisible = true;
+                    RecoveryButtonName.Text = "Подвердить код";
+                    return;
+            }
+        }
+        else if (CodeBorder.IsVisible == true && NewPasswordEntry.IsVisible == false)
+        {
+            if (!string.IsNullOrEmpty(CodeEntry.Text))
+            {
+                string message = ViewAuthPageModel.CheckRecoveryCode(CodeEntry.Text);
+                switch (message)
+                {
+                    case "Код с почты указан неверно":
+                        await DisplayAlert("Ошибка", message, "Ок");
+                        CodeEntry.Text = null;
+                        break;
+                    default:
+                        NewPasswordEntry.IsVisible = true;
+                        RecoveryButtonName.Text = "Подвердить новый пароль";
+                        EmailNickEntry.IsEnabled = false;
+                        return;
+                }
+            }
+            else
+            {
+                await DisplayAlert("Ошибка", "Заполните поле с кодом, который пришел на вашу почту.", "Ок");
+            }
+        }
+        else if (NewPasswordEntry.IsVisible)
+        {
+            if (!string.IsNullOrEmpty(PasswordNewEntry.Text))
+            {
+                string message = ViewAuthPageModel.CheckPasswordAndUpdateser(PasswordNewEntry.Text, EmailNickEntry.Text);
+                switch (message)
+                {
+                    case "Пароль успешно обновлен.":
+                        await DisplayAlert("Успех", message, "Ок");
+                        HideElements("Мы вас ждали, путник...", false);
+                        break;
+                    default:
+                        await DisplayAlert("Успех", message, "Ок");
+                        return;
+                }
+            }
+            else
+            {
+                await DisplayAlert("Ошибка", "Заполните поле с паролем.", "Ок");
+            }
+        }
+        else
+        {
+            await DisplayAlert("Ошибка", "Заполните поле ввода своей почтой либо своим ник неймом", "Ок");
+        }
     }
     #endregion
 
@@ -183,6 +270,17 @@ public partial class AuthorizationPage : ContentPage
 
         EntranceBorder.IsVisible = !status;
         GoRegistr.IsVisible = !status;
+
+        // Восстановление пароля
+        RecoveryLayout.IsVisible = false;
+        CodeBorder.IsVisible = false;
+        LabelCode.IsVisible = false;
+        NewPasswordEntry.IsVisible = false;
+        AfterRecoveryEntrance.IsVisible = false;
+        RecoveryButtonName.Text = "Выслать код на почту";
+        EmailNickEntry.IsEnabled = true;
+        EmailNickEntry.Text = null;
+
     }
     #endregion
 }

@@ -197,6 +197,10 @@ namespace CineChronicle.Tables
         {
             return _connection.Table<User>().FirstOrDefault(c => c.Email == title);
         }
+        public User GetUsereByNickName(string nickName)
+        {
+            return _connection.Table<User>().FirstOrDefault(c => c.NickName == nickName);
+        }
         public int GetUserIdByEmail(string email)
         {
             var user = _connection.Table<User>().FirstOrDefault(c => c.Email == email);

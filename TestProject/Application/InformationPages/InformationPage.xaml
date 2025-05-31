@@ -47,7 +47,11 @@
                             <Image Aspect="AspectFill" 
                                    Source="{Binding User.NameIcon}"
                                    WidthRequest="100" 
-                                   HeightRequest="100"/>
+                                   HeightRequest="100">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnAvatarTapped" />
+                                </Image.GestureRecognizers>
+                            </Image>
                         </Frame>
 
                         <!-- Информация -->
@@ -58,6 +62,7 @@
 
                             <Label Text="{Binding User.NickName}"  HorizontalOptions="Center"
                                    FontSize="20"
+                                   x:Name="NicknameUserLabel"
                                    FontAttributes="Bold"
                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
                         </StackLayout>

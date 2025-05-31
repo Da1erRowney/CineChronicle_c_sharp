@@ -126,79 +126,80 @@
                     </Label>
                 </StackLayout>
                 
-            <!-- Форма регистрации (изначально скрыта) -->
-            <StackLayout x:Name="CreateLayout" 
+                <!-- Форма регистрации (изначально скрыта) -->
+                <StackLayout x:Name="CreateLayout" 
               IsVisible="False"
               Grid.RowSpan="2">
                 <!-- Аналогичная форма регистрации -->
                 <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
-   StrokeThickness="1"
-   StrokeShape="RoundRectangle 20"
-   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=Black}"
-   Padding="25"
-   VerticalOptions="Center">
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 20"
+                        BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=Black}"
+                        Padding="25"
+                        VerticalOptions="Center">
 
                     <StackLayout Spacing="25">
                         <StackLayout Spacing="5">
                             <Label Text="Создание аккаунта" 
-              FontAttributes="Bold" 
-              FontSize="22"
-              TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                    FontAttributes="Bold" 
+                                    FontSize="22"
+                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
 
                             <Label Text="Станьте нашим дорогим гостем" 
-              FontSize="14"
-              TextColor="Gray"/>
+                                        FontSize="14"
+                                        TextColor="Gray"/>
                         </StackLayout>
 
                         <!-- Поле email -->
                         <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
-           StrokeThickness="1"
-           StrokeShape="RoundRectangle 10"
-           BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
                             <Entry Placeholder="Email" 
-              x:Name="EmailEEntry"
-              Keyboard="Email"
-              TextColor="{AppThemeBinding Light=Black, Dark=White}"
-              PlaceholderColor="Gray"
-              ClearButtonVisibility="WhileEditing"/>
+                                    x:Name="EmailEEntry"
+                                    Keyboard="Email"
+                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                    PlaceholderColor="Gray"
+                                    ClearButtonVisibility="WhileEditing"/>
                         </Border>
 
                         <!-- Поле NickName -->
                         <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
-           StrokeThickness="1"
-           StrokeShape="RoundRectangle 10"
-           BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
                             <Entry Placeholder="Пользовательский nick name" 
-              x:Name="NickNameEntry"
-              TextColor="{AppThemeBinding Light=Black, Dark=White}"
-              PlaceholderColor="Gray"
-              ClearButtonVisibility="WhileEditing"/>
+                                    x:Name="NickNameEntry"
+                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                    PlaceholderColor="Gray"
+                                    ClearButtonVisibility="WhileEditing"/>
                         </Border>
 
                         <!-- Поле пароля -->
                         <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
-           StrokeThickness="1"
-           StrokeShape="RoundRectangle 10"
-           BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
                             <Entry Placeholder="Пароль" 
-              x:Name="PasswordEEntry"
-              IsPassword="True"
-              TextColor="{AppThemeBinding Light=Black, Dark=White}"
-              PlaceholderColor="Gray"/>
+                                    x:Name="PasswordEEntry"
+                                    IsPassword="True"
+                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                    PlaceholderColor="Gray"/>
                         </Border>
 
 
                         <!-- Кнопка входа -->
                         <Button Text="Создать аккаунт" 
-           BackgroundColor="#4285F4"
-           TextColor="White"
-           CornerRadius="10"
-           HeightRequest="50"
-           FontSize="16"
-           Clicked="OnAddClicked"/>
+                                BackgroundColor="#4285F4"
+                                TextColor="White"
+                                CornerRadius="10"
+                                HeightRequest="50"
+                                FontSize="16"
+                                Clicked="OnAddClicked"/>
                     </StackLayout>
                 </Border>
             </StackLayout>
+                
                 <!-- Переход к регистрации -->
                 <StackLayout Orientation="Horizontal" 
                HorizontalOptions="Center"
@@ -208,6 +209,111 @@
                     <Label Text="Вернуться к входу в аккаунт" 
              FontSize="14"
              TextColor="#4285F4">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnEntranceTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+
+
+                <!-- Форма восстановления пароля (изначально скрыта) -->
+                <StackLayout x:Name="RecoveryLayout" 
+                                IsVisible="False"
+                                Grid.RowSpan="2">
+                    <!-- Аналогичная форма восстановления -->
+                    <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 20"
+                            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=Black}"
+                            Padding="25"
+                            VerticalOptions="Center">
+
+                        <StackLayout Spacing="25">
+                            <StackLayout Spacing="5">
+                                <Label Text="Восстановление аккаунта" 
+                        FontAttributes="Bold" 
+                        FontSize="22"
+                        TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                                <Label Text="Ваше возвращение в строй" 
+                            FontSize="14"
+                            TextColor="Gray"/>
+                            </StackLayout>
+
+                            <!-- Поле email и nick name -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                                <Entry Placeholder="Введите email либо nick-name" 
+                                        x:Name="EmailNickEntry"
+                                        Keyboard="Email"
+                                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                        PlaceholderColor="Gray"
+                                        ClearButtonVisibility="WhileEditing"/>
+                            </Border>
+                            
+                            <Label Text="Введите код, который пришел на вашу почту" 
+                                   FontSize="15"
+                                   x:Name="LabelCode" 
+                                   IsVisible="False"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}" 
+                                   HorizontalOptions="CenterAndExpand"/>
+                            <!-- Поле с кодом с почты -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                                    Margin="0,-20,0,0"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}"
+                                    x:Name="CodeBorder"
+                                    IsVisible="False" 
+                                    WidthRequest="100">
+
+                                <Entry HorizontalOptions="Center"
+                                       x:Name="CodeEntry"
+                                       FontSize="20"
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                       PlaceholderColor="Gray"
+                                       ClearButtonVisibility="WhileEditing"/>
+                            </Border>
+
+                            <!-- Поле нового пароля -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                                    StrokeThickness="1"
+                                    IsVisible="false"
+                                    x:Name="NewPasswordEntry"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                                <Entry Placeholder="Введите свой новый пароль" 
+                                       x:Name="PasswordNewEntry"
+                                       IsPassword="True"
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                       PlaceholderColor="Gray"/>
+                            </Border>
+
+
+                            <!-- Кнопка входа -->
+                            <Button Text="Выслать код на почту" 
+                                    BackgroundColor="#4285F4"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    HeightRequest="50"
+                                    x:Name="RecoveryButtonName"
+                                    FontSize="16"
+                                    Clicked="RecoveryButtonTapped"/>
+                        </StackLayout>
+                    </Border>
+                </StackLayout>
+
+                <!-- Переход к входу -->
+                <StackLayout Orientation="Horizontal" 
+                             HorizontalOptions="Center"
+                             IsVisible="False"
+                             x:Name="AfterRecoveryEntrance"
+                             Spacing="5">
+                    <Label Text="Вернуться к входу в аккаунт" 
+                                    FontSize="14"
+                                    TextColor="#4285F4">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnEntranceTapped" />
                         </Label.GestureRecognizers>

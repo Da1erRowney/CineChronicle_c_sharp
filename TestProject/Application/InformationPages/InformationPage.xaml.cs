@@ -65,6 +65,10 @@ public partial class InformationPage : ContentPage
         _model.ExitAccount();
         CheckedAuthUser();
     }
+    private async void OnAvatarTapped(object sender, EventArgs e)
+    {
+        await _model.ChangeAvatarAsync(NicknameUserLabel.Text);
+    }
     #endregion
 
 }

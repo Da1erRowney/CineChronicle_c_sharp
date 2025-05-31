@@ -1,5 +1,6 @@
 ﻿using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Text;
 
 namespace CineChronicle.Application.ViewModels
 {
@@ -71,6 +72,64 @@ namespace CineChronicle.Application.ViewModels
             _databaseService.UpdateAuth(Authorized);
 
             CheckedAuthUser();
+        }
+        #endregion
+
+        #region [Change user Avatar]
+        public async Task ChangeAvatarAsync(string nickName)
+        {
+            try
+            {
+                // Проверяем и запрашиваем разрешения
+                var status = await Permissions.CheckStatusAsync<Permissions.Photos>();
+                if (status != PermissionStatus.Granted)
+                {
+                    status = await Permissions.RequestAsync<Permissions.Photos>();
+                }
+
+                if (status != PermissionStatus.Granted)
+                {
+                    await Shell.Current.DisplayAlert("Permission Denied", "Can't access photos without permission", "OK");
+                    return;
+                }
+
+                // Выбираем фото из галереи
+                var photo = await MediaPicker.PickPhotoAsync();
+                if (photo != null)
+                {
+                    // Для сохранения выбранного изображения (опционально)
+                    var avatarFileName = GenerateRandomAvatarName() + ".jpg"; // Генерируем имя файла
+                    var newFile = Path.Combine(FileSystem.CacheDirectory, avatarFileName);
+                    using (var stream = await photo.OpenReadAsync())
+                    using (var newStream = File.OpenWrite(newFile))
+                    {
+                        await stream.CopyToAsync(newStream);
+                    }
+                    var newImage = ImageSource.FromFile(newFile);
+                    User.NameIcon = User.NameIcon = newFile;
+
+                    _databaseService.UpdateUser(User);
+                    OnPropertyChanged(nameof(User));
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+        private string GenerateRandomAvatarName(int length = 8)
+        {
+            const string validChars = "abcdefghijklmnopqrstuvwxyz";
+            StringBuilder avatarName = new StringBuilder();
+            Random random = new Random();
+
+            for (int i = 0; i < length; i++)
+            {
+                int index = random.Next(validChars.Length);
+                avatarName.Append(validChars[index]);
+            }
+
+            return avatarName.ToString();
         }
         #endregion
     }

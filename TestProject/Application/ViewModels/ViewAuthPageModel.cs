@@ -1,5 +1,6 @@
 ﻿using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Maui.ApplicationModel.Communication;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -11,7 +12,7 @@ namespace CineChronicle.Application.ViewModels
         private static DatabaseServiceContent _databaseService;
 
         private List<UserContents> UserContents;
-
+        private static string _recoveryCode;
         #endregion
 
         #region [Ctor's]
@@ -49,6 +50,10 @@ namespace CineChronicle.Application.ViewModels
                 return "Такой пользователь уже существует";
             }
 
+            if (_databaseService.GetUsereByNickName(nickName) != null)
+            {
+                return "Пользователь с таким ником уже существует";
+            }
             CreatedAccount(passwordEntry, nickName, email);
 
             return "Аккаунт создан, вы успешно вошли в аккаунт";
@@ -253,5 +258,81 @@ namespace CineChronicle.Application.ViewModels
             return "Вы успешно вошли в аккаунт";
         }
         #endregion
+
+        #region [Recovery Account]
+        public static string FindAccountUserForRecovery(string emailOrNick)
+        {
+            if (_databaseService.GetUsereByEmail(emailOrNick) == null && _databaseService.GetUsereByNickName(emailOrNick) == null)
+            {
+                return "Не удалось найти пользователя. Проверьте введенные данные.";
+            }
+            else
+            {
+                var user = _databaseService.GetUsereByEmail(emailOrNick);
+                if (user == null) 
+                {
+                    user = _databaseService.GetUsereByNickName(emailOrNick);
+                }
+
+                string emailUser = user.Email;
+                _recoveryCode = GenerateRandomCode();
+
+                var emailService = new EmailService(
+                    smtpServer: "smtp.gmail.com",
+                    smtpPort: 587,
+                    smtpUsername: "cine.chronicle.sup@gmail.com",
+                    smtpPassword: "dhjt ejew piwg cnkr",
+                    enableSsl: true
+                );
+
+
+                return emailService.SendRecoveryEmail(emailUser, _recoveryCode);
+            }
+        }
+
+        private static string GenerateRandomCode(int length = 6)
+        {
+            Random random = new Random();
+            string code = "";
+        
+            for (int i = 0; i < length; i++)
+            {
+                code += random.Next(0, 10).ToString(); // Генерирует случайную цифру от 0 до 9
+            }
+        
+            return code;
+        }
+
+        public static string CheckRecoveryCode(string entryCode)
+        {
+            if(entryCode == _recoveryCode)
+            {
+                return "";
+            }
+            else
+            {
+                return "Код с почты указан неверно";
+            }
+        }
+
+        public static string CheckPasswordAndUpdateser(string newPassword, string userData)
+        {
+            if (newPassword.Length < 8)
+            {
+                return "Пароль меньше 8 символов. Придумайте пароль длинее";
+            }
+
+            var user = _databaseService.GetUsereByEmail(userData);
+            if (user == null)
+            {
+                user = _databaseService.GetUsereByNickName(userData);
+            }
+            user.Password = newPassword;
+            _databaseService.UpdateUser(user);
+            return "Пароль успешно обновлен.";
+        }
+
+        #endregion
+
     }
 }

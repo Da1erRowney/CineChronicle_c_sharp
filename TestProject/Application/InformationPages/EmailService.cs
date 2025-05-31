@@ -26,6 +26,7 @@ public class EmailService
             {
                 message.From = new MailAddress(_smtpUsername, "Cine Chronicle Support");
                 message.To.Add(emailUser);
+
                 if (!isChange)
                 {
                     message.Subject = "Восстановление пароля в Cine Chronicle";
@@ -34,7 +35,8 @@ public class EmailService
                 {
                     message.Subject = "Изменение пользовательских данных в Cine Chronicle";
                 }
-                    message.IsBodyHtml = true;
+
+                message.IsBodyHtml = true;
 
                 if (!isChange)
                 {
@@ -195,12 +197,13 @@ public class EmailService
     </body>
     </html>";
                 }
-                    using (var client = new SmtpClient(_smtpServer, _smtpPort))
-                    {
-                        client.Credentials = new NetworkCredential(_smtpUsername, _smtpPassword);
-                        client.EnableSsl = _enableSsl;
-                        client.Send(message);
-                    }
+
+                using (var client = new SmtpClient(_smtpServer, _smtpPort))
+                {
+                    client.Credentials = new NetworkCredential(_smtpUsername, _smtpPassword);
+                    client.EnableSsl = _enableSsl;
+                    client.Send(message);
+                }
             }
 
             return "Письмо с кодом восстановления успешно отправлено.";

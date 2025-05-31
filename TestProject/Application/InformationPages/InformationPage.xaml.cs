@@ -56,22 +56,22 @@ public partial class InformationPage : ContentPage
     #endregion
 
     #region [Handle Methods]
+    private async void OnAvatarTapped(object sender, EventArgs e)
+    {
+        await _model.ChangeAvatarAsync(NicknameUserLabel.Text);
+    }
     private async void AuthButton_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushModalAsync(new AuthorizationPage());
-    }
-    private async void ChangeUserDataButton_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushModalAsync(new AuthorizationPage(true));
     }
     private void ExitAccountButton_Clicked(object sender, EventArgs e)
     {
         _model.ExitAccount();
         CheckedAuthUser();
     }
-    private async void OnAvatarTapped(object sender, EventArgs e)
+    private async void ChangeUserDataButton_Clicked(object sender, EventArgs e)
     {
-        await _model.ChangeAvatarAsync(NicknameUserLabel.Text);
+        await Navigation.PushModalAsync(new AuthorizationPage(true));
     }
     #endregion
 

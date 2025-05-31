@@ -11,13 +11,14 @@ public partial class AuthorizationPage : ContentPage
     public AuthorizationPage(bool isChange = false)
 	{
 		InitializeComponent();
-        IsChange= isChange;
+        IsChange = isChange;
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
         BindingContext = new ViewAuthPageModel();
+
         if (!IsChange)
         {
             HideElements("Мы вас ждали, путник...", false);
@@ -27,21 +28,23 @@ public partial class AuthorizationPage : ContentPage
             HideAllForChangeData();
             FillingUserData();
         }
+
         UseNewBackground();
     }
+    #endregion
 
+    #region [Main Handle Methods]
+
+    // Рандомная картинка на фоне
     private void UseNewBackground()
     {
         Random _random = new Random();
         string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
         Background.Source = randomImage;
     }
-    #endregion
-
-    #region [Main Handle Methods]
 
     // Создание
-    private async void OnAddClicked(object sender, EventArgs e)
+    private async void OnAdd()
     {
         string message = ViewAuthPageModel.AddAccount(EmailEEntry.Text, PasswordEEntry.Text, NickNameEntry.Text);
         if (message != null)
@@ -67,10 +70,10 @@ public partial class AuthorizationPage : ContentPage
     }
 
     // Вход
-    private async void OnEntranceClicked(object sender, EventArgs e)
+    private async void OnEntrance()
     {
         string message = ViewAuthPageModel.CheckValidator(EmailEntry.Text, PasswordEntry.Text);
-        if (message != null) 
+        if (message != null)
         {
             switch (message)
             {
@@ -87,7 +90,7 @@ public partial class AuthorizationPage : ContentPage
                 default:
                     break;
             }
-        } 
+        }
     }
 
     // Восстановление
@@ -299,74 +302,50 @@ public partial class AuthorizationPage : ContentPage
     #endregion
 
     #region [Handle Methods]
+    private void OnAddClicked(object sender, EventArgs e)
+    {
+        OnAdd();
+    }
     private void OnCreateTapped(object sender, EventArgs e)
     {
         HideElements("Начни жизнь с нового аккаунта...", true);
     }
-
+    private void VoidDataClicked(object sender, EventArgs e)
+    {
+        ChangeUserData();
+    }
     private void OnEntranceTapped(object sender, EventArgs e)
     {
         HideElements("Мы вас ждали, путник...", false);
     }
-
+    private void OnEntranceClicked(object sender, EventArgs e)
+    {
+        OnEntrance();
+    }
     private void OnGoogleAuthTapped(object sender, EventArgs e)
     {
        GoogleAuthSystem();
     }
-
-    private void OnForgotPasswordTapped(object sender, EventArgs e)
-    {
-        TitlePage.Text = "Восстановление героя";
-        CreateLayout.IsVisible = false;
-        GoEntrance.IsVisible = false;
-
-        EntranceBorder.IsVisible = false;
-        GoRegistr.IsVisible = false;
-
-        RecoveryLayout.IsVisible = true;
-        AfterRecoveryEntrance.IsVisible = true;
-
-       // RecoveryPassword();
-    }
-
-    private async void VoidDataClicked(object sender, EventArgs e)
-    {
-        ChangeUserData();
-    }
-
-    private async void RecoveryButtonTapped(object sender, EventArgs e)
+    private void RecoveryButtonTapped(object sender, EventArgs e)
     {
         RecoveryPassword();
+    }
+    private void OnForgotPasswordTapped(object sender, EventArgs e)
+    {
+        HideAllForForgetPassword();
     }
     #endregion
 
     #region [SomeBody Methods]
-    private void HideAllForChangeData()
-    {
-        TitlePage.Text = "Изменение ваших учетных данных";
-        ChangeLayout.IsVisible = true;
-        ChangeLabel.IsVisible = false;
-        CodeChangeBorder.IsVisible = false;
-
-        CreateLayout.IsVisible = false;
-        GoEntrance.IsVisible = false;
-
-        EntranceBorder.IsVisible = false;
-        GoRegistr.IsVisible = false;
-
-        // Восстановление пароля
-        RecoveryLayout.IsVisible = false;
-        AfterRecoveryEntrance.IsVisible = false;
-        VoidDataName.Text = "Подтвердить изменения";
-    }
-
     private void HideElements(string str, bool status)
     {
         TitlePage.Text = str;
 
+        // Создание
         CreateLayout.IsVisible = status;
         GoEntrance.IsVisible = status;
 
+        // Вход
         EntranceBorder.IsVisible = !status;
         GoRegistr.IsVisible = !status;
 
@@ -386,6 +365,36 @@ public partial class AuthorizationPage : ContentPage
         ChangeLabel.IsVisible = false;
         CodeChangeBorder.IsVisible = false;
         VoidDataName.Text = "Подтвердить изменения";
+    }
+    private void HideAllForChangeData()
+    {
+        TitlePage.Text = "Изменение ваших учетных данных";
+        ChangeLayout.IsVisible = true;
+        ChangeLabel.IsVisible = false;
+        CodeChangeBorder.IsVisible = false;
+
+        CreateLayout.IsVisible = false;
+        GoEntrance.IsVisible = false;
+
+        EntranceBorder.IsVisible = false;
+        GoRegistr.IsVisible = false;
+
+        // Восстановление пароля
+        RecoveryLayout.IsVisible = false;
+        AfterRecoveryEntrance.IsVisible = false;
+        VoidDataName.Text = "Подтвердить изменения";
+    }
+    private void HideAllForForgetPassword()
+    {
+        TitlePage.Text = "Восстановление героя";
+        CreateLayout.IsVisible = false;
+        GoEntrance.IsVisible = false;
+
+        EntranceBorder.IsVisible = false;
+        GoRegistr.IsVisible = false;
+
+        RecoveryLayout.IsVisible = true;
+        AfterRecoveryEntrance.IsVisible = true;
     }
     #endregion
 }

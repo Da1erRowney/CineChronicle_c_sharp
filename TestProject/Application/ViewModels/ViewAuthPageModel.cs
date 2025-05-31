@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace CineChronicle.Application.ViewModels
 {

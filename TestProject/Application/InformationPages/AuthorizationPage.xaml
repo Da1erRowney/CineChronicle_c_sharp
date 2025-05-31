@@ -30,6 +30,8 @@
         <ScrollView Grid.Row="1" Padding="20" Margin="0,100,0,0">
             <StackLayout Spacing="30">
 
+                <!--ВХОД-->
+                
                 <!-- Форма входа -->
                 <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
                         StrokeThickness="1"
@@ -105,9 +107,8 @@
                             </Image>
                         </StackLayout>
                     </StackLayout>
-                   
-                </Border>
 
+                </Border>
                 <!-- Переход к регистрации -->
                 <StackLayout Orientation="Horizontal" 
                              HorizontalOptions="Center"
@@ -126,81 +127,83 @@
                     </Label>
                 </StackLayout>
                 
+                
+                <!--РЕГИСТРАЦИЯ-->
+                
                 <!-- Форма регистрации (изначально скрыта) -->
                 <StackLayout x:Name="CreateLayout" 
               IsVisible="False"
               Grid.RowSpan="2">
-                <!-- Аналогичная форма регистрации -->
-                <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
+                    <!-- Аналогичная форма регистрации -->
+                    <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
                         StrokeThickness="1"
                         StrokeShape="RoundRectangle 20"
                         BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=Black}"
                         Padding="25"
                         VerticalOptions="Center">
 
-                    <StackLayout Spacing="25">
-                        <StackLayout Spacing="5">
-                            <Label Text="Создание аккаунта" 
+                        <StackLayout Spacing="25">
+                            <StackLayout Spacing="5">
+                                <Label Text="Создание аккаунта" 
                                     FontAttributes="Bold" 
                                     FontSize="22"
                                     TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
 
-                            <Label Text="Станьте нашим дорогим гостем" 
+                                <Label Text="Станьте нашим дорогим гостем" 
                                         FontSize="14"
                                         TextColor="Gray"/>
-                        </StackLayout>
+                            </StackLayout>
 
-                        <!-- Поле email -->
-                        <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                            <!-- Поле email -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
                                 StrokeThickness="1"
                                 StrokeShape="RoundRectangle 10"
                                 BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
-                            <Entry Placeholder="Email" 
+                                <Entry Placeholder="Email" 
                                     x:Name="EmailEEntry"
                                     Keyboard="Email"
                                     TextColor="{AppThemeBinding Light=Black, Dark=White}"
                                     PlaceholderColor="Gray"
                                     ClearButtonVisibility="WhileEditing"/>
-                        </Border>
+                            </Border>
 
-                        <!-- Поле NickName -->
-                        <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                            <!-- Поле NickName -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
                                 StrokeThickness="1"
                                 StrokeShape="RoundRectangle 10"
                                 BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
-                            <Entry Placeholder="Пользовательский nick name" 
+                                <Entry Placeholder="Пользовательский nick name" 
                                     x:Name="NickNameEntry"
                                     TextColor="{AppThemeBinding Light=Black, Dark=White}"
                                     PlaceholderColor="Gray"
                                     ClearButtonVisibility="WhileEditing"/>
-                        </Border>
+                            </Border>
 
-                        <!-- Поле пароля -->
-                        <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                            <!-- Поле пароля -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
                                 StrokeThickness="1"
                                 StrokeShape="RoundRectangle 10"
                                 BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
-                            <Entry Placeholder="Пароль" 
+                                <Entry Placeholder="Пароль" 
                                     x:Name="PasswordEEntry"
                                     IsPassword="True"
                                     TextColor="{AppThemeBinding Light=Black, Dark=White}"
                                     PlaceholderColor="Gray"/>
-                        </Border>
+                            </Border>
 
 
-                        <!-- Кнопка входа -->
-                        <Button Text="Создать аккаунт" 
+                            <!-- Кнопка входа -->
+                            <Button Text="Создать аккаунт" 
                                 BackgroundColor="#4285F4"
                                 TextColor="White"
                                 CornerRadius="10"
                                 HeightRequest="50"
                                 FontSize="16"
                                 Clicked="OnAddClicked"/>
-                    </StackLayout>
-                </Border>
-            </StackLayout>
-                
-                <!-- Переход к регистрации -->
+                        </StackLayout>
+                    </Border>
+                </StackLayout>
+                <!-- Переход к входу -->
                 <StackLayout Orientation="Horizontal" 
                HorizontalOptions="Center"
                              IsVisible="False"
@@ -215,7 +218,9 @@
                     </Label>
                 </StackLayout>
 
-
+                
+                <!--ВОССТАНОВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ-->
+                
                 <!-- Форма восстановления пароля (изначально скрыта) -->
                 <StackLayout x:Name="RecoveryLayout" 
                                 IsVisible="False"
@@ -252,7 +257,7 @@
                                         PlaceholderColor="Gray"
                                         ClearButtonVisibility="WhileEditing"/>
                             </Border>
-                            
+
                             <Label Text="Введите код, который пришел на вашу почту" 
                                    FontSize="15"
                                    x:Name="LabelCode" 
@@ -304,7 +309,6 @@
                         </StackLayout>
                     </Border>
                 </StackLayout>
-
                 <!-- Переход к входу -->
                 <StackLayout Orientation="Horizontal" 
                              HorizontalOptions="Center"
@@ -319,6 +323,117 @@
                         </Label.GestureRecognizers>
                     </Label>
                 </StackLayout>
+                
+                
+                <!--РЕДАКТИРОВАНИЕ ПОЛЬЗОВАТЕЛЯ-->
+                <!-- Форма редактирования пользовательских данных (изначально скрыта) -->
+                <StackLayout x:Name="ChangeLayout" 
+                 IsVisible="False"
+                 Grid.RowSpan="2">
+                    <!-- Аналогичная форма изменения -->
+                    <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 20"
+                            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=Black}"
+                            Padding="25"
+                            VerticalOptions="Center">
+
+                        <StackLayout Spacing="25">
+                            <StackLayout Spacing="5">
+                                <Label Text="Редактирование пользовательских данных" 
+                                       FontAttributes="Bold" 
+                                       FontSize="22"
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                                <Label Text="Творите себя сами" 
+                                       FontSize="14"
+                                       TextColor="Gray"/>
+                            </StackLayout>
+                            <Label Text="Ваша почта:" 
+                                    FontSize="15"
+                                    Margin="1,0,0,-20"
+                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                            <!-- Поле email -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                                <Entry Placeholder="Введите email" 
+                                        x:Name="EmailChangeEntry"
+                                        Keyboard="Email"
+                                       
+                                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                        PlaceholderColor="Gray"
+                                        ClearButtonVisibility="WhileEditing"/>
+                            </Border>
+                            <Label Text="Ваш пароль:" 
+                                    FontSize="15"
+                                    Margin="1,0,0,-20"
+                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                            <!-- Поле с паролем -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+
+                                <Entry  x:Name="PasswordChangeEntry"
+                                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                        PlaceholderColor="Gray"
+                                        ClearButtonVisibility="WhileEditing"/>
+                            </Border>
+                            <Label Text="Ваш ник нейм:" 
+                                    FontSize="15"
+                                    Margin="1,0,0,-20"
+                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                            <!-- Поле ник нейма -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}">
+                                <Entry Placeholder="Введите свой ник нейм" 
+                                       x:Name="NickNameChangeEntry"
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                       PlaceholderColor="Gray"/>
+                            </Border>
+                            
+                            <Label Text="Введите код, который пришел на вашу почту" 
+                                    FontSize="15"
+                                    x:Name="ChangeLabel"
+                                    IsVisible="False"
+                                    TextColor="{AppThemeBinding Light=Black, Dark=White}" 
+                                    HorizontalOptions="CenterAndExpand"/>
+                            
+                            <!-- Поле с кодом с почты -->
+                            <Border Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
+                                    Margin="0,-20,0,0"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#333333}"
+                                    x:Name="CodeChangeBorder"
+                                    IsVisible="False"
+                                    WidthRequest="100">
+
+                                <Entry HorizontalOptions="Center"
+                                        x:Name="CodeChangeEntry"
+                                        FontSize="20"
+                                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                        PlaceholderColor="Gray"
+                                        ClearButtonVisibility="WhileEditing"/>
+                            </Border>
+                            
+                            <!-- Кнопка подтверждения -->
+                            <Button Text="Подтвердить изменения" 
+                                    BackgroundColor="#4285F4"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    HeightRequest="50"
+                                    x:Name="VoidDataName"
+                                    FontSize="16"
+                                    Clicked="VoidDataClicked"/>
+                        </StackLayout>
+                    </Border>
+                </StackLayout>
+
             </StackLayout>
             
         </ScrollView>

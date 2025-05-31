@@ -1,8 +1,8 @@
 ﻿using CineChronicle.Tables;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Maui.ApplicationModel.Communication;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace CineChronicle.Application.ViewModels
 {
@@ -251,7 +251,6 @@ namespace CineChronicle.Application.ViewModels
             DeviceInfo.UserId = userId;
             if (unlinkedContentIds.Count != 0)
             {
-
                 _databaseService.AddUserContent(userId, unlinkedContentIds);
             }
 
@@ -334,5 +333,88 @@ namespace CineChronicle.Application.ViewModels
 
         #endregion
 
+        #region [Change Data Account]
+        public static User GetUser()
+        {
+            var authUser = _databaseService.GetAuthorizedByAuth(true);
+            return _databaseService.GetUsereByEmail(authUser.Email);
+        }
+
+        public static string CheckChangeFields(string email, string password, string nickName)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(nickName)) return "Не все поля заполнены";
+
+            email = email.ToLower().TrimEnd();
+            if (!ValidateEmail(email))
+            {
+                return "Неправильный формат почты";
+            }
+
+            if (password.Length < 8)
+            {
+                return "Пароль меньше 8 символов. Придумайте пароль длинее";
+            }
+
+            var authUser = _databaseService.GetAuthorizedByAuth(true);
+            var user =  _databaseService.GetUsereByEmail(authUser.Email);
+
+            if(email != user.Email || password != user.Password)
+            {
+                var emailService = new EmailService(
+                                   smtpServer: "smtp.gmail.com",
+                                   smtpPort: 587,
+                                   smtpUsername: "cine.chronicle.sup@gmail.com",
+                                   smtpPassword: "dhjt ejew piwg cnkr",
+                                   enableSsl: true
+                               );
+
+                _recoveryCode = GenerateRandomCode();
+                emailService.SendRecoveryEmail(user.Email, _recoveryCode, true);
+                return "На вашу изначальную почту был выслан код подтверждения для изменений";
+            }
+            else if(!string.IsNullOrEmpty(nickName) || _databaseService.GetUsereByNickName(nickName) == null)
+            {
+                user.NickName = nickName;
+                _databaseService.UpdateUser(user);
+                return "Пользователь успешно изменен";
+            }
+            else if(_databaseService.GetUsereByNickName(nickName) != null)
+            {
+                return "Такой ник нейм уже существует.";
+            }
+            else if (string.IsNullOrEmpty(nickName))
+            {
+                return "Поле с ник неймом пустое.";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public static string SaveNewUserData(string email, string password, string nickName)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(nickName)) return "Не все поля заполнены";
+
+            email = email.ToLower().TrimEnd();
+            if (!ValidateEmail(email))
+            {
+                return "Неправильный формат почты";
+            }
+
+            if (password.Length < 8)
+            {
+                return "Пароль меньше 8 символов. Придумайте пароль длинее";
+            }
+
+            var authUser = _databaseService.GetAuthorizedByAuth(true);
+            var user = _databaseService.GetUsereByEmail(authUser.Email);
+            user.NickName = nickName;
+            user.Email = email;
+            user.Password = password;
+            _databaseService.UpdateUser(user);
+            return "Данные успешно изменены";
+        }
+        #endregion
     }
 }

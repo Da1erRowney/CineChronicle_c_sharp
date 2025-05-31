@@ -5,16 +5,28 @@ namespace TestProject;
 
 public partial class AuthorizationPage : ContentPage
 {
+    private bool IsChange = false;
+
     #region [Ctor's]
-    public AuthorizationPage()
+    public AuthorizationPage(bool isChange = false)
 	{
 		InitializeComponent();
+        IsChange= isChange;
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
         BindingContext = new ViewAuthPageModel();
+        if (!IsChange)
+        {
+            HideElements("Мы вас ждали, путник...", false);
+        }
+        else
+        {
+            HideAllForChangeData();
+            FillingUserData();
+        }
         UseNewBackground();
     }
 
@@ -27,6 +39,7 @@ public partial class AuthorizationPage : ContentPage
     #endregion
 
     #region [Main Handle Methods]
+
     // Создание
     private async void OnAddClicked(object sender, EventArgs e)
     {
@@ -53,12 +66,6 @@ public partial class AuthorizationPage : ContentPage
         }
     }
 
-    private async void ReturnAfterAuth()
-    {
-        // Переход к информации
-        await Shell.Current.GoToAsync("//Information");
-    }
-
     // Вход
     private async void OnEntranceClicked(object sender, EventArgs e)
     {
@@ -82,9 +89,140 @@ public partial class AuthorizationPage : ContentPage
             }
         } 
     }
-    private void RecoveryPassword()
+
+    // Восстановление
+    private async void RecoveryPassword()
     {
-        
+        if (!string.IsNullOrEmpty(EmailNickEntry.Text) && CodeBorder.IsVisible == false)
+        {
+            string message = ViewAuthPageModel.FindAccountUserForRecovery(EmailNickEntry.Text);
+            switch (message)
+            {
+                case "Не удалось найти пользователя. Проверьте введенные данные.":
+                case "Ошибка при отправке письма":
+                    await DisplayAlert("Ошибка", message, "Ок");
+                    break;
+                default:
+                    await DisplayAlert("Успех", message, "Ок");
+                    CodeBorder.IsVisible = true;
+                    LabelCode.IsVisible = true;
+                    RecoveryButtonName.Text = "Подвердить код";
+                    return;
+            }
+        }
+        else if (CodeBorder.IsVisible == true && NewPasswordEntry.IsVisible == false)
+        {
+            if (!string.IsNullOrEmpty(CodeEntry.Text))
+            {
+                string message = ViewAuthPageModel.CheckRecoveryCode(CodeEntry.Text);
+                switch (message)
+                {
+                    case "Код с почты указан неверно":
+                        await DisplayAlert("Ошибка", message, "Ок");
+                        CodeEntry.Text = null;
+                        break;
+                    default:
+                        NewPasswordEntry.IsVisible = true;
+                        RecoveryButtonName.Text = "Подвердить новый пароль";
+                        EmailNickEntry.IsEnabled = false;
+                        return;
+                }
+            }
+            else
+            {
+                await DisplayAlert("Ошибка", "Заполните поле с кодом, который пришел на вашу почту.", "Ок");
+            }
+        }
+        else if (NewPasswordEntry.IsVisible)
+        {
+            if (!string.IsNullOrEmpty(PasswordNewEntry.Text))
+            {
+                string message = ViewAuthPageModel.CheckPasswordAndUpdateser(PasswordNewEntry.Text, EmailNickEntry.Text);
+                switch (message)
+                {
+                    case "Пароль успешно обновлен.":
+                        await DisplayAlert("Успех", message, "Ок");
+                        HideElements("Мы вас ждали, путник...", false);
+                        break;
+                    default:
+                        await DisplayAlert("Успех", message, "Ок");
+                        return;
+                }
+            }
+            else
+            {
+                await DisplayAlert("Ошибка", "Заполните поле с паролем.", "Ок");
+            }
+        }
+        else
+        {
+            await DisplayAlert("Ошибка", "Заполните поле ввода своей почтой либо своим ник неймом", "Ок");
+        }
+    }
+ 
+    // Изменение данных
+    private async void ChangeUserData()
+    {
+        if (ChangeLabel.IsVisible == false)
+        {
+            string message = ViewAuthPageModel.CheckChangeFields(EmailChangeEntry.Text, PasswordChangeEntry.Text, NickNameChangeEntry.Text);
+            switch (message)
+            {
+                case "Пользователь успешно изменен":
+                    await DisplayAlert("Успех", message, "Ок");
+                    ReturnAfterAuth();
+                    break;
+                case "На вашу изначальную почту был выслан код подтверждения для изменений":
+                    await DisplayAlert("Уведомление", message, "Ок");
+                    VoidDataName.Text = "Подтвердить код";
+                    ChangeLabel.IsVisible = true;
+                    CodeChangeBorder.IsVisible = true;
+                    break;
+                default:
+                    await DisplayAlert("Ошибка", message, "Ок");
+                    break;
+            }
+        }
+        else
+        {
+            string message = ViewAuthPageModel.CheckRecoveryCode(CodeChangeEntry.Text);
+            switch (message)
+            {
+                case "Код с почты указан неверно":
+                    await DisplayAlert("Ошибка", message, "Ок");
+                    CodeEntry.Text = null;
+                    break;
+                default:
+                    string messageLast = ViewAuthPageModel.SaveNewUserData(EmailChangeEntry.Text, PasswordChangeEntry.Text, NickNameChangeEntry.Text);
+                    switch (messageLast)
+                    {
+                        case "Данные успешно изменены":
+                            await DisplayAlert("Успех", messageLast, "Ок");
+                            ReturnAfterAuth();
+                            break;
+                        default:
+                            await DisplayAlert("Ошибка", messageLast, "Ок");
+                            break;
+                    }
+                   
+                    return;
+            }
+        }
+    }
+    private async void FillingUserData()
+    {
+        var user = ViewAuthPageModel.GetUser();
+
+        EmailChangeEntry.Text = user.Email;
+        PasswordChangeEntry.Text = user.Password;
+        NickNameChangeEntry.Text = user.NickName;
+    }
+
+    // Возвращение к информации после манипуляций
+    private async void ReturnAfterAuth()
+    {
+        // Переход к информации
+        await Shell.Current.GoToAsync("//Information");
     }
 
     #endregion
@@ -170,6 +308,7 @@ public partial class AuthorizationPage : ContentPage
     {
         HideElements("Мы вас ждали, путник...", false);
     }
+
     private void OnGoogleAuthTapped(object sender, EventArgs e)
     {
        GoogleAuthSystem();
@@ -190,77 +329,37 @@ public partial class AuthorizationPage : ContentPage
         RecoveryPassword();
     }
 
+    private async void VoidDataClicked(object sender, EventArgs e)
+    {
+        ChangeUserData();
+    }
+
     private async void RecoveryButtonTapped(object sender, EventArgs e)
     {
-        if (!string.IsNullOrEmpty(EmailNickEntry.Text) && CodeBorder.IsVisible == false)
-        {
-            string message = ViewAuthPageModel.FindAccountUserForRecovery(EmailNickEntry.Text);
-            switch (message)
-            {
-                case "Не удалось найти пользователя. Проверьте введенные данные.":
-                case "Ошибка при отправке письма":
-                    await DisplayAlert("Ошибка", message, "Ок");
-                    break;
-                default:
-                    await DisplayAlert("Успех", message, "Ок");
-                    CodeBorder.IsVisible = true;
-                    LabelCode.IsVisible = true;
-                    RecoveryButtonName.Text = "Подвердить код";
-                    return;
-            }
-        }
-        else if (CodeBorder.IsVisible == true && NewPasswordEntry.IsVisible == false)
-        {
-            if (!string.IsNullOrEmpty(CodeEntry.Text))
-            {
-                string message = ViewAuthPageModel.CheckRecoveryCode(CodeEntry.Text);
-                switch (message)
-                {
-                    case "Код с почты указан неверно":
-                        await DisplayAlert("Ошибка", message, "Ок");
-                        CodeEntry.Text = null;
-                        break;
-                    default:
-                        NewPasswordEntry.IsVisible = true;
-                        RecoveryButtonName.Text = "Подвердить новый пароль";
-                        EmailNickEntry.IsEnabled = false;
-                        return;
-                }
-            }
-            else
-            {
-                await DisplayAlert("Ошибка", "Заполните поле с кодом, который пришел на вашу почту.", "Ок");
-            }
-        }
-        else if (NewPasswordEntry.IsVisible)
-        {
-            if (!string.IsNullOrEmpty(PasswordNewEntry.Text))
-            {
-                string message = ViewAuthPageModel.CheckPasswordAndUpdateser(PasswordNewEntry.Text, EmailNickEntry.Text);
-                switch (message)
-                {
-                    case "Пароль успешно обновлен.":
-                        await DisplayAlert("Успех", message, "Ок");
-                        HideElements("Мы вас ждали, путник...", false);
-                        break;
-                    default:
-                        await DisplayAlert("Успех", message, "Ок");
-                        return;
-                }
-            }
-            else
-            {
-                await DisplayAlert("Ошибка", "Заполните поле с паролем.", "Ок");
-            }
-        }
-        else
-        {
-            await DisplayAlert("Ошибка", "Заполните поле ввода своей почтой либо своим ник неймом", "Ок");
-        }
+        RecoveryPassword();
     }
     #endregion
 
     #region [SomeBody Methods]
+    private void HideAllForChangeData()
+    {
+        TitlePage.Text = "Изменение ваших учетных данных";
+        ChangeLayout.IsVisible = true;
+        ChangeLabel.IsVisible = false;
+        CodeChangeBorder.IsVisible = false;
+
+        CreateLayout.IsVisible = false;
+        GoEntrance.IsVisible = false;
+
+        EntranceBorder.IsVisible = false;
+        GoRegistr.IsVisible = false;
+
+        // Восстановление пароля
+        RecoveryLayout.IsVisible = false;
+        AfterRecoveryEntrance.IsVisible = false;
+        VoidDataName.Text = "Подтвердить изменения";
+    }
+
     private void HideElements(string str, bool status)
     {
         TitlePage.Text = str;
@@ -273,14 +372,20 @@ public partial class AuthorizationPage : ContentPage
 
         // Восстановление пароля
         RecoveryLayout.IsVisible = false;
+        AfterRecoveryEntrance.IsVisible = false;
+        // Сбрасываем поля относящиеся к восстановлению
         CodeBorder.IsVisible = false;
         LabelCode.IsVisible = false;
         NewPasswordEntry.IsVisible = false;
-        AfterRecoveryEntrance.IsVisible = false;
         RecoveryButtonName.Text = "Выслать код на почту";
         EmailNickEntry.IsEnabled = true;
         EmailNickEntry.Text = null;
 
+        // Изменение данных
+        ChangeLayout.IsVisible = false;
+        ChangeLabel.IsVisible = false;
+        CodeChangeBorder.IsVisible = false;
+        VoidDataName.Text = "Подтвердить изменения";
     }
     #endregion
 }

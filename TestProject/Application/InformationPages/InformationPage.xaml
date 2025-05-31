@@ -77,6 +77,15 @@
                                     HeightRequest="45"
                                     FontSize="16"
                                     Clicked="AuthButton_Clicked"/>
+                            
+                            <Button Text="Редактировать данные" 
+                                    BackgroundColor="#4285F4"
+                                    TextColor="White"
+                                    x:Name="ButtonChange"
+                                    CornerRadius="10"
+                                    HeightRequest="45"
+                                    FontSize="16"
+                                    Clicked="ChangeUserDataButton_Clicked"/>
 
                             <Button Text="Выйти из аккаунта" 
                                     BackgroundColor="Transparent"

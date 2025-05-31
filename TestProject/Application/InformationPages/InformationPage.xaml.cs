@@ -49,6 +49,7 @@ public partial class InformationPage : ContentPage
         NoteAuthAccountLayout.IsVisible = status;
         InformationBlock.IsVisible = !status;
         ButtonExit.IsVisible = !status;
+        ButtonChange.IsVisible = !status;
         ButtonAuth.Text = str;
         ButtonAuth.WidthRequest = width;
     }
@@ -59,7 +60,10 @@ public partial class InformationPage : ContentPage
     {
         await Navigation.PushModalAsync(new AuthorizationPage());
     }
-
+    private async void ChangeUserDataButton_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushModalAsync(new AuthorizationPage(true));
+    }
     private void ExitAccountButton_Clicked(object sender, EventArgs e)
     {
         _model.ExitAccount();

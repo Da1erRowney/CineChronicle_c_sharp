@@ -326,7 +326,7 @@ public partial class AuthorizationPage : ContentPage
         RecoveryLayout.IsVisible = true;
         AfterRecoveryEntrance.IsVisible = true;
 
-        RecoveryPassword();
+       // RecoveryPassword();
     }
 
     private async void VoidDataClicked(object sender, EventArgs e)

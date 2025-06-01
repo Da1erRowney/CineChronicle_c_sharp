@@ -6,12 +6,12 @@
     
     <ContentPage.Resources>
         <LinearGradientBrush x:Key="BlueGradient" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="OrangeRed" Offset="0"/>
+            <GradientStop Color="#4285F4" Offset="0"/>
             <GradientStop Color="{AppThemeBinding Light=White, Dark=Black}" Offset="1"/>
         </LinearGradientBrush>
 
         <LinearGradientBrush x:Key="RedGradient" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="Firebrick" Offset="0"/>
+            <GradientStop Color="#4285F4" Offset="0"/>
             <GradientStop Color="{AppThemeBinding Light=White, Dark=Black}" Offset="1"/>
         </LinearGradientBrush>
     </ContentPage.Resources>

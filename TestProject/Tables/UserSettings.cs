@@ -4,10 +4,9 @@ namespace CineChronicle.Tables
 {
     public class UserSettings
     {
-        [PrimaryKey]
-        public string Email { get; set; }
-        public string Theme { get; set; }
+        [PrimaryKey, AutoIncrement]
+        public int UserId { get; set; }
+        public bool IsDarkTheme { get; set; }
         public bool IsVideoBackground { get; set; }
-        public string LastTakeRecomended { get; set; }
     }
 }

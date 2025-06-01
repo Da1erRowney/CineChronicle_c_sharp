@@ -112,11 +112,19 @@ namespace CineChronicle.Application.ViewModels
                 _databaseService.InsertAuth(authenticated);
             }
 
+            // 5. Добавляем пользователю непривязанный контент
             var unlinkedContentIds = _databaseService.GetUnlinkedContentIds();
             int userId = _databaseService.GetUserIdByEmail(email);
             DeviceInfo.UserId = userId;
-
             _databaseService.AddUserContent(userId, unlinkedContentIds);
+
+            // 6. Создание пользовательских настроек
+            var settings = new UserSettings
+            {
+                IsDarkTheme = true,
+                IsVideoBackground = Preferences.Get("ShowVideos", true)
+            };
+            _databaseService.InsertUserSetting(settings);
         }
         private static string GenerateRandomPassword(int length = 8)
         {
@@ -244,6 +252,7 @@ namespace CineChronicle.Application.ViewModels
                 _databaseService.UpdateAuth(newAuthUser);
             }
 
+            // Привязываем контент
             var unlinkedContentIds = _databaseService.GetUnlinkedContentIds();
             int userId = _databaseService.GetUserIdByEmail(email);
             DeviceInfo.UserId = userId;
@@ -252,7 +261,16 @@ namespace CineChronicle.Application.ViewModels
                 _databaseService.AddUserContent(userId, unlinkedContentIds);
             }
 
-            return "Вы успешно вошли в аккаунт";
+            var setting = _databaseService.GetUserSettingById(DeviceInfo.UserId);
+            if (setting.IsVideoBackground)
+            {
+                Preferences.Set("ShowVideos", true);
+            }
+            else
+            {
+                Preferences.Set("ShowVideos", false);
+            }
+                return "Вы успешно вошли в аккаунт";
         }
         #endregion
 

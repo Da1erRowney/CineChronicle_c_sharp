@@ -31,7 +31,29 @@ namespace CineChronicle.Application.ViewModels
         {
             usersContent = DeviceInfo.GetContentUser();
             _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
+            UseSettingUser();
+
             Task.Run(InitializeAllDataAsync);
+        }
+
+        private static void UseSettingUser()
+        {
+            var setting = _databaseService.GetUserSettingById(DeviceInfo.UserId);
+            if (setting != null)
+            {
+                if (setting.IsVideoBackground)
+                {
+                    Preferences.Set("ShowVideos", true);
+                }
+                else
+                {
+                    Preferences.Set("ShowVideos", false);
+                }
+            }
+            else
+            {
+                Preferences.Set("ShowVideos", true);
+            }
         }
         #endregion
 

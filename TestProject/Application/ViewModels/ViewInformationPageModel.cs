@@ -142,7 +142,7 @@ namespace CineChronicle.Application.ViewModels
         {
             Authorized.IsAuthenticated = false;
             _databaseService.UpdateAuth(Authorized);
-
+            Preferences.Set("ShowVideos", true);
             CheckedAuthUser();
         }
         #endregion

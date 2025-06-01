@@ -41,7 +41,7 @@ namespace CineChronicle.Tables
             _connection.Execute("DROP TABLE IF EXISTS UserContents");
             _connection.Execute("DROP TABLE IF EXISTS ContentRecommendation");
 
-           _connection.Execute("VACUUM");
+            _connection.Execute("VACUUM");
         }
         public void CloseConnection()
         {
@@ -317,6 +317,23 @@ namespace CineChronicle.Tables
         {
             return _connection.Table<UserContents>()
                 .FirstOrDefault(uc => uc.UserId == userId);
+        }
+        #endregion
+
+        #region [Пользовательские настройки]
+        public void InsertUserSetting(UserSettings user)
+        {
+            _connection.Insert(user);
+        }
+
+        public void UpdateUserSetting(UserSettings user)
+        {
+            _connection.Update(user);
+        }
+
+        public UserSettings GetUserSettingById(int id)
+        {
+            return _connection.Table<UserSettings>().FirstOrDefault(c => c.UserId == id);
         }
         #endregion
     }

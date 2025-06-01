@@ -1,8 +1,10 @@
 using CineChronicle.Application.SupportClass;
+using CineChronicle.Tables;
 namespace TestProject;
 
 public partial class SettingPage : ContentPage
 {
+    private static DatabaseServiceContent _databaseService;
     public SettingPage()
     {
         InitializeComponent();
@@ -42,6 +44,11 @@ public partial class SettingPage : ContentPage
     private void OnVideoToggled(object sender, ToggledEventArgs e)
     {
         Preferences.Set("ShowVideos", e.Value);
+        _databaseService = new DatabaseServiceContent(CineChronicle.Application.DeviceInfo._databasePath);
+        var setting = _databaseService.GetUserSettingById(CineChronicle.Application.DeviceInfo.UserId);
+        if (setting == null) return;
+        setting.IsVideoBackground = Preferences.Get("ShowVideos", true);
+        _databaseService.UpdateUserSetting(setting);
     }
 
     protected override void OnAppearing()
@@ -49,6 +56,25 @@ public partial class SettingPage : ContentPage
         base.OnAppearing();
         // ќбновл€ем состо€ние при каждом по€влении страницы
         ThemeSwitch.IsToggled = ShouldUseDarkTheme();
-        VideoSwitch.IsToggled = Preferences.Get("ShowVideos", true);
+
+        _databaseService = new DatabaseServiceContent(CineChronicle.Application.DeviceInfo._databasePath);
+        var setting = _databaseService.GetUserSettingById(CineChronicle.Application.DeviceInfo.UserId);
+        if (setting != null)
+        {
+            if (setting.IsVideoBackground)
+            {
+                Preferences.Set("ShowVideos", true);
+                VideoSwitch.IsToggled = Preferences.Get("ShowVideos", true);
+            }
+            else
+            {
+                Preferences.Set("ShowVideos", false);
+                VideoSwitch.IsToggled = Preferences.Get("ShowVideos", false);
+            }
+        }
+        else
+        {
+            VideoSwitch.IsToggled = Preferences.Get("ShowVideos", true);
+        }
     }
 }

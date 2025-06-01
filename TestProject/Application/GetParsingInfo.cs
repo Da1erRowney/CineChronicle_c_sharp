@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.WebRequestMethods;
 
 namespace CineChronicle.Application
 {
@@ -57,6 +58,8 @@ namespace CineChronicle.Application
                     typePars = SourceTypes.AG;
                     break;
                 case ContentTypes.FILM:
+                    typePars = SourceTypes.KO;
+                    break;
                 case ContentTypes.SERIAL:
                 case ContentTypes.CARTOON:
                 case ContentTypes.DORAMA:
@@ -124,12 +127,12 @@ namespace CineChronicle.Application
 
             Description = Regex.Replace(Description, @"&nbsp;", " ");
             Description = Regex.Replace(Description, @"\[\d+\]", string.Empty);
+            Description = Regex.Replace(Description, @"&quot;", string.Empty);
+            Description = Regex.Replace(Description, @"\s+", " ");                          // Удаляем множественные пробелы, которые могли образоваться
 
             // Удаляем числовые ссылки в круглых скобках (если нужно)
             // text = Regex.Replace(text, @"\(\d+\)", string.Empty);
 
-            // Удаляем множественные пробелы, которые могли образоваться
-            Description = Regex.Replace(Description, @"\s+", " ");
         }
         #endregion
 
@@ -229,14 +232,29 @@ namespace CineChronicle.Application
                                     }
                                     break;
                                 case (SourceTypes.KO, true):
-                                    node = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='excerpt']");
-                                    if (node != null)
+                                    // Находим элемент h2 с классом article__title
+                                    //node = htmlDocument.DocumentNode.SelectSingleNode("//h2[@class='article__title']");
+                                    // Парсим данные
+
+                                    OriginalTitle = htmlDocument.DocumentNode.SelectSingleNode("//h2[@class='article__title']/a")?.InnerText.Trim();
+                                    ExtractUrlWatch = htmlDocument.DocumentNode.SelectSingleNode("//h2[@class='article__title']/a")?.GetAttributeValue("href", "");
+
+                                    // Обработка картинки
+                                    Image = "https://kinogo.biz" + htmlDocument.DocumentNode
+                                        .SelectSingleNode("//a[@class='article__poster']/img")?
+                                        .GetAttributeValue("src", "");
+
+                                        // Рейтинг
+                                        string rating = "Рейтинг "+ htmlDocument.DocumentNode.SelectSingleNode("//div[@class='rating__votes']")?.InnerText.Trim();
+                                        string year = "Год выпуска"+ htmlDocument.DocumentNode.SelectSingleNode("//div[contains(b, 'Год выпуска:')]/a")?.InnerText.Trim();
+                                        string country = "Страна: "+ htmlDocument.DocumentNode.SelectSingleNode("//div[contains(b, 'Страна:')]/a")?.InnerText.Trim();
+                                        string duration = "Длительность" + htmlDocument.DocumentNode.SelectSingleNode("//div[contains(b, 'Длительность:')]")?.InnerText.Replace("Длительность:", "").Trim();
+
+                                        // Описание
+                                        Description = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='article__text']")? .InnerText.Trim() + "\n" + rating + "\n" + year + "\n" + country + "\n" + duration;
+                                    if (string.IsNullOrEmpty(OriginalTitle))
                                     {
-                                        Description = node.InnerText.Trim();
-                                    }
-                                    else
-                                    {
-                                        Description = Warning;
+                                       await GetParserFilm(query);
                                     }
                                     break;
                                 case (SourceTypes.JS, true):
@@ -815,6 +833,7 @@ namespace CineChronicle.Application
         }
         #endregion
 
+
         #region [Support Methods]
         private bool IsShortsVideo(string html, string videoId)
         {
@@ -883,6 +902,66 @@ namespace CineChronicle.Application
         }
 
         #endregion
+
+
+        private async Task GetParserFilm(string query)
+        {
+            string urlRezka = $"https://rezka-ua.tv/search/?do=search&subaction=search&q={query}";
+            using (HttpClient client = new HttpClient())    //Общая часть для всех парсеров
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(urlRezka);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        // Находим элемент с классом 'b-content__inline_item-cover'
+                        var itemNode = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='b-content__inline_item-cover']");
+
+                        if (itemNode != null)
+                        {
+                            // Извлекаем ссылку на источник
+                            ExtractUrlWatch = itemNode.SelectSingleNode(".//a")?.GetAttributeValue("href", "");
+
+                            // Извлекаем ссылку на изображение
+                            Image = itemNode.SelectSingleNode(".//img")?.GetAttributeValue("src", "");
+
+                            // Извлекаем название (из атрибута alt изображения)
+                            OriginalTitle = itemNode.SelectSingleNode(".//img")?.GetAttributeValue("alt", "");
+
+                            response = await client.GetAsync(ExtractUrlWatch);
+                            if (response.IsSuccessStatusCode)
+                            {
+                                htmlContent = await response.Content.ReadAsStringAsync();
+                                htmlDocument = new HtmlDocument();
+                                htmlDocument.LoadHtml(htmlContent);
+
+                                var descriptionNode = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='b-post__description_text']");
+
+                                if (descriptionNode != null)
+                                {
+                                    // Получаем текст описания (удаляем лишние пробелы)
+                                    Description = descriptionNode.InnerText.Trim();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Элемент не найден");
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
     }
 }
 

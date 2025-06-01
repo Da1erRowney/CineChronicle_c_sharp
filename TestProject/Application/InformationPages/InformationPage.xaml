@@ -274,7 +274,7 @@
                                                 HorizontalTextAlignment="End"/>
                                         <!-- 7 строка -->
                                         <Label Grid.Row="6" Grid.Column="0"
-                                                Text="Мультсериалы:"
+                                                Text="Документалки:"
                                                 TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
                                         <Label Grid.Row="6" Grid.Column="1"
                                                 Text="{Binding DocumentalCount}"

@@ -513,7 +513,6 @@ namespace TestProject
             HideElelmetsAfterCansel();
 
             CheckPage();
-
         }
 
         private async void TrailerButton_Clicked(object sender, EventArgs e)

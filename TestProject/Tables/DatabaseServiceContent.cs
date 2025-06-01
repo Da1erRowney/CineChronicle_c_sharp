@@ -300,7 +300,7 @@ namespace CineChronicle.Tables
             }
                     
         }
-        // Добавить запись в UserContents
+        // Удалить запись в UserContents
         public void DeleteUserContent(int userId, List<int> contentId)
         {
             var oldCards = GetUserContentByUserId(userId);

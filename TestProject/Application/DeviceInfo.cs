@@ -6,6 +6,7 @@ namespace CineChronicle.Application
     {
         #region [Private Fields]
         public string TypeDevice { get; set; }
+        public bool IsDarkTheme { get; set; }
 
         private static DatabaseServiceContent _databaseService;
         public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content1.db");

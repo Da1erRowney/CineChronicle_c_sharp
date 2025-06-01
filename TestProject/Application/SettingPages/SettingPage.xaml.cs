@@ -15,7 +15,7 @@ public partial class SettingPage : ContentPage
     private void UseNewBackground()
     {
         Random _random = new Random();
-        string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
+        string randomImage = $"{BackgroundImages.GetImageOfTheme(Application.Current.UserAppTheme, Application.Current.PlatformAppTheme)[_random.Next(0, BackgroundImages.GetImageOfTheme(Application.Current.UserAppTheme, Application.Current.PlatformAppTheme).Length)]}.jpg";
         Background.Source = randomImage;
     }
 
@@ -36,6 +36,7 @@ public partial class SettingPage : ContentPage
         // Устанавливаем явную тему (перестаём следовать системной)
         Application.Current.UserAppTheme = e.Value ? AppTheme.Dark : AppTheme.Light;
         Preferences.Set("DarkTheme", e.Value);
+        UseNewBackground();
     }
 
     private void OnVideoToggled(object sender, ToggledEventArgs e)

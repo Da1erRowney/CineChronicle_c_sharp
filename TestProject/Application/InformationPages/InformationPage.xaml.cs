@@ -27,7 +27,7 @@ public partial class InformationPage : ContentPage
     private void UseNewBackground()
     {
         Random _random = new Random();
-        string randomImage = $"{BackgroundImages._backgroundImages[_random.Next(0, BackgroundImages._backgroundImages.Length)]}.jpg";
+        string randomImage = $"{BackgroundImages.GetImageOfTheme(Application.Current.UserAppTheme, Application.Current.PlatformAppTheme)[_random.Next(0, BackgroundImages.GetImageOfTheme(Application.Current.UserAppTheme, Application.Current.PlatformAppTheme).Length)]}.jpg";
         Background.Source = randomImage;
     }
     #endregion

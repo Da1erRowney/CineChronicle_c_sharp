@@ -20,6 +20,7 @@ namespace CineChronicle.Tables
         private string originalTitle;                                               // Оригинальное название
         private string seriesChangeDate;                                            // Дата изменения контента
         private string sourceLink;                                                  // Ссылка
+        private string userLink;
         private string title;                                                       // Название
         private string type;                                                        // Тип
         private string watchStatus;                                                 // Статус просмотра
@@ -165,6 +166,15 @@ namespace CineChronicle.Tables
             {
                 sourceLink = value;
                 OnPropertyChanged(nameof(SourceLink));
+            }
+        }
+        public string UserLink
+        {
+            get => userLink;
+            set
+            {
+                userLink = value;
+                OnPropertyChanged(nameof(UserLink));
             }
         }
         public string Type

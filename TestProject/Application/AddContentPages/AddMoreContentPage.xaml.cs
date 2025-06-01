@@ -1,6 +1,7 @@
 using CineChronicle.Application;
 using CineChronicle.Application.SupportClass;
 using CineChronicle.Tables;
+using System.Text.RegularExpressions;
 
 namespace TestProject
 {
@@ -95,7 +96,13 @@ namespace TestProject
                 }
             }
 
-            string link = GetSourcesLink(type);
+            string link = LinkEntry?.Text;
+            if (!CheckUserLink(link))
+            {
+                await DisplayAlert("Ошибка", $"Похоже вы указали не корректную ссылку.", "Ок");
+                return;
+            }
+            string sourceLink = string.IsNullOrEmpty(getParsingInfo?.ExtractUrlWatch) ? GetSourcesLink(type) : getParsingInfo?.ExtractUrlWatch;
             string dubbing = DubbingEntry?.Text;
             string dateAdded = GetTodaysDate().ToString("yyyy-MM-dd HH:mm:ss");
             string statusWatches = WatchStatusPicker.SelectedItem?.ToString();
@@ -116,7 +123,8 @@ namespace TestProject
                 NextEpisodeReleaseDate = getParsingInfo?.NextEpisodeReleaseDate,
                 OriginalTitle = getParsingInfo?.OriginalTitle,
                 SeriesChangeDate = string.Empty,
-                SourceLink = string.IsNullOrEmpty(getParsingInfo.ExtractUrlWatch) ? link : getParsingInfo?.ExtractUrlWatch,
+                UserLink = link ,
+                SourceLink = sourceLink,
                 Title = title,
                 Type = type,
                 WatchStatus = string.IsNullOrEmpty(statusWatches) ? "Не начинал" : statusWatches,
@@ -158,6 +166,16 @@ namespace TestProject
         #endregion
 
         #region [Methods for saving content]
+        private bool CheckUserLink(string link)
+        {
+            string pattern = @"^https://";
+            if (string.IsNullOrEmpty(link)) return true;
+            bool isValid = Regex.IsMatch(link, pattern);
+
+            if (isValid) return true;
+            else return false;
+        }
+
         private void EnabledElements(bool IsEnabled)
         {
             TitleEntry.IsEnabled = IsEnabled;

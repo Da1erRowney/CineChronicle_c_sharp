@@ -2,6 +2,7 @@ using CineChronicle.Application;
 using CineChronicle.Application.SupportClass;
 using CineChronicle.Application.ViewModel;
 using CineChronicle.Tables;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using DeviceInfo = CineChronicle.Application.DeviceInfo;
 
@@ -129,6 +130,14 @@ namespace TestProject
                 SeasonBorders.IsVisible = true;
             }
 
+            if (string.IsNullOrEmpty(content.UserLink))
+            {
+                UserSourseBorder.IsVisible = false;
+            }
+            else
+            {
+                UserSourseBorder.IsVisible = true;
+            }
             //WatchStatusPicker.SelectedItem = content.WatchStatus;
         }
         private void UseNewBackground()
@@ -219,6 +228,7 @@ namespace TestProject
             {
                 case ContentTypes.ANIME:
                     WatchingButton.Source = "anime.png";
+                    WatchingUserButton.Source = "anime.png";
                     break;
                 case ContentTypes.FILM:
                 case ContentTypes.SERIAL:
@@ -226,9 +236,11 @@ namespace TestProject
                 case ContentTypes.DORAMA:
                 case ContentTypes.OTHER:
                     WatchingButton.Source = "movie.png";
+                    WatchingUserButton.Source = "movie.png";
                     break;
                 default:
                     WatchingButton.Source = "movie.png";
+                    WatchingUserButton.Source = "movie.png";
                     break;
             }
         }
@@ -272,11 +284,11 @@ namespace TestProject
                     Background.Source = recommendated.ImageUrl;
                 }
             }
-            BindingContext = new ViewContentPageRefreshModel(recommendated, parser);
 
            // InternetChecking();
             CheckContentType(recommendated.Type);
             HideContentDescription(parser?.Description);
+            BindingContext = new ViewContentPageRefreshModel(recommendated, parser);
         }
         private async Task GetDataRecom()
         {
@@ -324,6 +336,11 @@ namespace TestProject
 
         private async void SaveChanges()
         {
+            if (!CheckUserLink())
+            {
+                await DisplayAlert("Ошибка", $"Похоже вы указали не корректную ссылку.", "Ок");
+                return;
+            }
             IsEditing(false, "Изменить");
 
             HideElements(false);
@@ -332,12 +349,25 @@ namespace TestProject
             await GetNewDataAndSave();
         }
 
+        private bool CheckUserLink()
+        {
+            string pattern = @"^https://";
+            if (string.IsNullOrEmpty(content.UserLink)) return true;
+            bool isValid = Regex.IsMatch(content.UserLink, pattern);
+
+            if (isValid)  return true;
+            else return false; 
+        }
+
         private async Task GetNewDataAndSave()
         {
             var currentContent = content;
             currentContent.WatchStatus = WatchStatusPicker.SelectedItem?.ToString() ?? content.WatchStatus;
             currentContent.Type = TypePicker.SelectedItem != null ? TypePicker.SelectedItem.ToString() : content.Type;
             currentContent.Title = currentContent.Title.TrimEnd();
+
+            currentContent.UserLink = currentContent?.UserLink?.TrimEnd();
+
 
             // Проверяем, поменяли ли мы тип или название для получения новых данных из парсерса
             if (_oldName != currentContent.Title || _oldType!= currentContent.Type)
@@ -363,7 +393,6 @@ namespace TestProject
                     }
                 }
 
-                currentContent.SourceLink = parser?.ExtractUrlWatch;
                 currentContent.CountLabel = parser?.CountLabel;
                 currentContent.Description = parser?.Description;
                 currentContent.DateRelease = parser?.DateRelease;
@@ -372,30 +401,39 @@ namespace TestProject
                 currentContent.YouTubeLink = parser?.YouTubeLink;
                 currentContent.YouTubeBackground = parser?.YouTubeBackground;
                 currentContent.OriginalTitle = parser?.OriginalTitle;
+
+                // Проверяем, поменяли ли мы тип, для получения новой ссылки на источник
+                if (_oldType != currentContent.Type)
+                {
+                    if (string.IsNullOrEmpty(parser.ExtractUrlWatch))
+                    {
+                        // Обновляем ссылку на источник
+                        switch (currentContent.Type)
+                        {
+                            case ContentTypes.ANIME:
+                                currentContent.SourceLink = "https://animego.org/search/all?q=" + TitleEntry.Text;
+                                break;
+                            case ContentTypes.DORAMA:
+                                currentContent.SourceLink = "https://dorama.land/search?q=" + TitleEntry.Text;
+                                break;
+                            case ContentTypes.SERIAL:
+                            case ContentTypes.CARTOON:
+                            case ContentTypes.FILM:
+                                currentContent.SourceLink = "https://kinogo.biz/search/" + TitleEntry.Text;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        currentContent.SourceLink = parser?.ExtractUrlWatch;
+                    }
+                }
+
                 await HideLoadingAnimation();
             }
 
-            // Проверяем, поменяли ли мы тип, для получения новой ссылки на источник
-            if (_oldType != currentContent.Type)
-            {
-                // Обновляем ссылку на источник
-                switch (currentContent.Type)
-                {
-                    case ContentTypes.ANIME:
-                        currentContent.SourceLink = "https://animego.org/search/all?q=" + TitleEntry.Text;
-                        break;
-                    case ContentTypes.DORAMA:
-                        currentContent.SourceLink = "https://dorama.land/search?q=" + TitleEntry.Text;
-                        break;
-                    case ContentTypes.SERIAL:
-                    case ContentTypes.CARTOON:
-                    case ContentTypes.FILM:
-                        currentContent.SourceLink = "https://kinogo.biz/search/" + TitleEntry.Text;
-                        break;
-                    default:
-                        break;
-                }
-            }
 
             // Обновляем контент в базе данных
             DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
@@ -485,7 +523,11 @@ namespace TestProject
 
         private async void WatchingButton_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync(new Uri(content.SourceLink), BrowserLaunchMode.SystemPreferred);
+            await Browser.OpenAsync(new Uri(content?.SourceLink), BrowserLaunchMode.SystemPreferred);
+        }
+        private async void WatchingUserButton_Clicked(object sender, EventArgs e)
+        {
+            await Browser.OpenAsync(new Uri(content.UserLink), BrowserLaunchMode.SystemPreferred);
         }
 
         private void StepperSeries_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -510,9 +552,7 @@ namespace TestProject
         #region [Hide Elements]
         private void HideElelmetsAfterCansel()
         {
-            LinkSecondLabel.IsVisible = false;
-            LinkEntry.IsVisible = false;
-            LinkEntry.IsReadOnly = false;
+            UserLinkBorder.IsVisible = false;
             TypePicker.IsVisible = false;
             //WatchStatusPicker.IsVisible = false;
         }
@@ -544,6 +584,7 @@ namespace TestProject
             TitleEntry.IsVisible = false;
             TitleLabel.IsVisible = true;
             OriginalTitleLabel.IsVisible = true;
+            UserLinkBorder.IsVisible = false;
             DubbingEntry.IsEnabled = false;
             LastWatchedSeriesEntry.IsReadOnly = true;
             LastWatchedSeasonEntry.IsReadOnly = true;
@@ -558,9 +599,7 @@ namespace TestProject
         private void HideElements(bool isVisible)
         {
             // Разблокировать поля ввода
-            LinkSecondLabel.IsVisible = isVisible;
-            LinkEntry.IsVisible = isVisible;
-            LinkEntry.IsReadOnly = isVisible;
+            UserLinkBorder.IsVisible = !isVisible;
             TrailerWebBorder.IsVisible = isVisible;
 
             DecriptionBorder.IsVisible = isVisible;
@@ -586,10 +625,13 @@ namespace TestProject
 
         private void SelectRecomendetContent()
         {
-            OurInformationBlock.IsVisible = false;
-            EditButton.IsVisible = false;
-            DeleteButton.IsVisible = false;
             AddButton.IsVisible = true;
+            EditButton.IsVisible = false;
+            ViewContent.IsVisible = false;
+            DeleteButton.IsVisible = false;
+            UserSourseBorder.IsVisible = false;
+            OurInformationBlock.IsVisible = false;
+            ServiceSourseBorder.IsVisible = false;
         }
         #endregion
 

@@ -279,10 +279,12 @@ namespace TestProject
                 if (selectedType == ContentTypes.FILM || selectedType == "Документалка")
                 {
                     EntrySeriaGrid.IsVisible = false;
+                    LabelSeria.IsVisible = false;
                 }
                 else
                 {
                     EntrySeriaGrid.IsVisible = true;
+                    LabelSeria.IsVisible = true;
                 }
             }
         }

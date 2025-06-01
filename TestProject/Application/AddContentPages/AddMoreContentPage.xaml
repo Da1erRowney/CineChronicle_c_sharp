@@ -119,6 +119,7 @@
                         <!-- Серия и сезон -->
                         <Label Text="Прогресс:" 
                                FontSize="16"
+                               x:Name="LabelSeria"
                                TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"
                                VerticalOptions="Center"
                                Grid.Row="4"/>

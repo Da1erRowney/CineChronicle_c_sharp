@@ -223,7 +223,7 @@
                                         </StackLayout>
                                         
                                         <!-- Кнопка Изменить -->
-                                        <Button Opacity="0.8" x:Name="EditsButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="0,20,0,0" WidthRequest="150" FontSize="18" CornerRadius="100"/>
+                                        <Button Opacity="1" x:Name="EditsButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="0,20,0,0" WidthRequest="150" FontSize="18" CornerRadius="10"  BackgroundColor="#4285F4"/>
                                     </StackLayout>
                                 </Grid>
                                 <Border.Shadow>
@@ -313,13 +313,13 @@
                     <StackLayout Orientation="Vertical" HorizontalOptions="Center" Margin="0,50,0,0">
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,0">
                             <!-- Кнопка Удалить -->
-                            <Button Opacity="0.8" Text="Удалить" x:Name="DeleteButton" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18" CornerRadius="100"/>
+                            <Button Opacity="1" Text="Удалить" x:Name="DeleteButton" Clicked="DeleteButton_Clicked" Margin="0,0,0,0" WidthRequest="150" FontSize="18" CornerRadius="10" BackgroundColor="#4285F4"/>
 
                             <!-- Кнопка Изменить -->
-                            <Button Opacity="0.8" x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18" CornerRadius="100" />
+                            <Button Opacity="1" x:Name="EditButton" Text="Изменить" Clicked="EditButton_Clicked" Margin="50,0,0,0" WidthRequest="150" FontSize="18" CornerRadius="10" BackgroundColor="#4285F4" />
                         </StackLayout>
                         <!-- Кнопка Отмена -->
-                        <Button Opacity="0.8" FontSize="18" x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" CornerRadius="100" />
+                        <Button Opacity="1" FontSize="18" x:Name="CancelButton" Text="Отмена" HorizontalOptions="Center" Clicked="CancelButton_Clicked" Margin="0,50,0,0" IsVisible="false" WidthRequest="150" CornerRadius="10" BackgroundColor="#4285F4"/>
                     </StackLayout>
 
                 </VerticalStackLayout>

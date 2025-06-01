@@ -43,7 +43,7 @@
                             <Switch x:Name="ThemeSwitch" 
                                     HorizontalOptions="End"
                                     OnColor="#4285F4"
-                                    ThumbColor="{AppThemeBinding Light=White, Dark=#333333}"
+                                    ThumbColor="{AppThemeBinding Light=#333333, Dark=White}"
                                     Toggled="OnThemeToggled"/>
                         </StackLayout>
 
@@ -70,7 +70,7 @@
                             <Switch x:Name="VideoSwitch" 
                                     HorizontalOptions="End"
                                     OnColor="#4285F4"
-                                    ThumbColor="{AppThemeBinding Light=White, Dark=#333333}"
+                                    ThumbColor="{AppThemeBinding Light=#333333, Dark=White}"
                                     IsToggled="True"
                                     Toggled="OnVideoToggled"/>
                         </StackLayout>
@@ -82,7 +82,7 @@
                 </Border>
 
                 <!-- Информация о версии -->
-                <Label Text="Версия 1.0.0" 
+                <Label Text="Версия приложения 1.0.0" 
                        FontSize="14"
                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
                        HorizontalOptions="Center"/>

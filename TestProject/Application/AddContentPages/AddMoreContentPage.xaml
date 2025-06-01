@@ -132,7 +132,7 @@
                                     StrokeThickness="1"
                                     StrokeShape="RoundRectangle 10"
                                     BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}"
-                                    Grid.Column="2">
+                                    >
                                 <Entry Placeholder="Сезон" 
                                        x:Name="LastWatchedSeasonEntry"
                                        Keyboard="Numeric"
@@ -148,7 +148,8 @@
                             <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#444444}"
                                     StrokeThickness="1"
                                     StrokeShape="RoundRectangle 10"
-                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}">
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#252525}"
+                                    Grid.Column="2">
                                 <Entry Placeholder="Серия" 
                                        x:Name="LastWatchedSeriesEntry"
                                        Keyboard="Numeric"

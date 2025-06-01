@@ -20,7 +20,7 @@ namespace CineChronicle.Application.ViewModels
         [ObservableProperty]
         private bool isBusy;
 
-        private string NameCategory;
+        public string NameCategory;
 
         public static int CurrentPage { get; private set; } = 0;
         public static int ItemsPerPage { get; } = 10;

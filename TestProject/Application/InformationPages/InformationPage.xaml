@@ -118,6 +118,7 @@
                 <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#333333}"
                         StrokeThickness="1"
                         StrokeShape="RoundRectangle 20"
+                        Opacity="0.9"
                         BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                         Padding="25">
 

@@ -2,7 +2,36 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CineChronicle.Application.AllContentPages"
-             x:Class="TestProject.ViewCategoryPage">
+             x:Class="TestProject.ViewCategoryPage"
+             Title="Просмотр категории">
+    <ContentPage.Resources>
+        <Style x:Key="PaginationButton" TargetType="Button">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="WidthRequest" Value="150"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderWidth" Value="2"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#4285F4"/>
+                                <Setter Property="BorderColor" Value="Transparent"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Disabled">
+                            <VisualState.Setters>
+                                <Setter Property="BorderColor" Value="#4285F4"/>
+                                <Setter Property="TextColor" Value="#999999"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
     <Grid  BackgroundColor="Transparent">
 
         <Image x:Name="Background" Grid.Row ="1" Source="gradientfive.jpg" Aspect=
@@ -93,25 +122,20 @@
                 </StackLayout>
                 
                 <!-- Навигация по страницам -->
-                <StackLayout Orientation="Horizontal" 
-                            HorizontalOptions="Center" 
-                            Spacing="20" Margin="0,20,0,0">
-                    
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
                     <Button Text="← Назад" 
-                            FontSize="16"
-                            Command="{Binding PreviousPageCommand}"
-                            IsEnabled="{Binding CurrentPage, Converter={x:Static local:GreaterThanZeroConverter.Instance}}"
-                            WidthRequest="150"/>
+            Style="{StaticResource PaginationButton}"
+            Command="{Binding PreviousPageCommand}" 
+            IsEnabled="{Binding CurrentPage, Converter={x:Static local:GreaterThanZeroConverter.Instance}}"/>
 
                     <Label Text="{Binding SelectPageForUser, StringFormat='Страница {0}'}" 
-                            FontSize="16"
-                            VerticalOptions="Center"/>
+           FontSize="16" 
+           VerticalOptions="Center"/>
 
                     <Button Text="Вперед →" 
-                            FontSize="16"
-                            Command="{Binding NextPageCommand}"
-                            IsEnabled="{Binding HasMoreItems}"
-                            WidthRequest="150"/>
+            Style="{StaticResource PaginationButton}"
+            Command="{Binding NextPageCommand}" 
+            IsEnabled="{Binding HasMoreItems}"/>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

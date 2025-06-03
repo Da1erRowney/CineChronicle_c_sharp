@@ -16,7 +16,7 @@ namespace CineChronicle.Application.ViewModels
         #region [Ctor's]
         public ViewAuthPageModel() 
         {
-            _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
+            _databaseService = new DatabaseServiceContent();
         }
         #endregion
 

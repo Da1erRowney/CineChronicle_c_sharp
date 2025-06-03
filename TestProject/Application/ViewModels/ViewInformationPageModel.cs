@@ -41,7 +41,7 @@ namespace CineChronicle.Application.ViewModels
         #region [Ctor's]
         public ViewInformationPageModel()
         {
-            _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
+            _databaseService = new DatabaseServiceContent();
             CheckedAuthUser();
         }
         #endregion

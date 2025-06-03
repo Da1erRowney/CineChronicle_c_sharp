@@ -21,7 +21,7 @@ namespace TestProject
         private void Init()
         {
             UseNewBackground();
-            _databaseService = new DatabaseServiceContent(CineChronicle.Application.DeviceInfo._databasePath);
+            _databaseService = new DatabaseServiceContent();
             LastWatchedSeriesEntry.TextChanged += LastWatchedSeriesEntry_TextChanged;
             LastWatchedSeasonEntry.TextChanged += LastWatchedSeasonEntry_TextChanged;
         }

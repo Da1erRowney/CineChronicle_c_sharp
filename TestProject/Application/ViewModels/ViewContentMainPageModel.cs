@@ -30,7 +30,7 @@ namespace CineChronicle.Application.ViewModels
         public ViewContentMainPageModel()
         {
             usersContent = DeviceInfo.GetContentUser();
-            _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
+            _databaseService = new DatabaseServiceContent();
             UseSettingUser();
 
             Task.Run(InitializeAllDataAsync);

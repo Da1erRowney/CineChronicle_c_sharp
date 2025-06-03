@@ -6,9 +6,9 @@ namespace CineChronicle.Tables
     {
         private SQLiteConnection _connection;
 
-        public DatabaseServiceContent(string _databasePath)
+        public DatabaseServiceContent()
         {
-            _connection = new SQLiteConnection(_databasePath);
+            _connection = new SQLiteConnection(Path.Combine(FileSystem.AppDataDirectory, "content1.db"));
             //DropAllTables();
             CreateTables();
         }

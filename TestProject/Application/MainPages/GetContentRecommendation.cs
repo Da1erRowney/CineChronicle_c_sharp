@@ -9,7 +9,7 @@ public class GetContentRecommendation
 
     public async Task<List<ContentRecommendation>> GetRecommendationsAsync()
     {
-        DatabaseServiceContent _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
+        DatabaseServiceContent _databaseService = new DatabaseServiceContent();
 
         // Если рекомендации не пусты и не прошло 7 дней с добавления
         if (!_databaseService.IsRecomContentValid()) return _databaseService.GetAllRecomContent();

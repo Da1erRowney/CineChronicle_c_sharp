@@ -55,7 +55,7 @@ namespace CineChronicle.Application.ViewModels
         #region [Ctor's]
         public ViewContentAllPageModel()
         {
-            _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
+            _databaseService = new DatabaseServiceContent();
             usersContent = DeviceInfo.GetContentUser();
             Task.Run(InitializeAllDataAsync);
         }

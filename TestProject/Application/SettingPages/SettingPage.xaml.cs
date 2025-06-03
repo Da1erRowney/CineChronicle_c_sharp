@@ -44,7 +44,7 @@ public partial class SettingPage : ContentPage
     private void OnVideoToggled(object sender, ToggledEventArgs e)
     {
         Preferences.Set("ShowVideos", e.Value);
-        _databaseService = new DatabaseServiceContent(CineChronicle.Application.DeviceInfo._databasePath);
+        _databaseService = new DatabaseServiceContent();
         var setting = _databaseService.GetUserSettingById(CineChronicle.Application.DeviceInfo.UserId);
         if (setting == null) return;
         setting.IsVideoBackground = Preferences.Get("ShowVideos", true);
@@ -57,7 +57,7 @@ public partial class SettingPage : ContentPage
         // ќбновл€ем состо€ние при каждом по€влении страницы
         ThemeSwitch.IsToggled = ShouldUseDarkTheme();
 
-        _databaseService = new DatabaseServiceContent(CineChronicle.Application.DeviceInfo._databasePath);
+        _databaseService = new DatabaseServiceContent();
         var setting = _databaseService.GetUserSettingById(CineChronicle.Application.DeviceInfo.UserId);
         if (setting != null)
         {

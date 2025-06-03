@@ -32,7 +32,7 @@ namespace CineChronicle.Application.ViewModels
         #region [Ctor's]
         public ViewContentCategoryPageModel(string name, int page = 0)
         {
-            _databaseService = new DatabaseServiceContent(DeviceInfo._databasePath);
+            _databaseService = new DatabaseServiceContent();
             usersContent = DeviceInfo.GetContentUser();
             CurrentPage = page;
             NameCategory = name; 

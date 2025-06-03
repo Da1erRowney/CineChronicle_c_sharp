@@ -9,7 +9,6 @@ namespace CineChronicle.Application
         public bool IsDarkTheme { get; set; }
 
         private static DatabaseServiceContent _databaseService;
-        public static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, "content1.db");
         public static int UserId { get; set; }
         #endregion
 
@@ -34,7 +33,7 @@ namespace CineChronicle.Application
 
         public static int[] GetContentUser()
         {
-            _databaseService = new DatabaseServiceContent(_databasePath);
+            _databaseService = new DatabaseServiceContent();
             var AuthUser = _databaseService.GetAuthorizedByAuth(true);
             if (AuthUser == null)
             {

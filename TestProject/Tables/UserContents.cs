@@ -1,15 +1,22 @@
-﻿using SQLite;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineChronicle.Tables
 {
+    [Table("UserContents")] // Указывает точное имя таблицы в БД
     public class UserContents
     {
-        [PrimaryKey, AutoIncrement]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Замена AutoIncrement
         public int Id { get; set; }
         public int UserId { get; set; }
 
-        // Строка для хранения идентификаторов контента, разделенных запятыми
+        [Column(TypeName = "text")]
         public string ContentIds { get; set; } = string.Empty;
+
+
+
+
 
         // Метод для получения списка ContentId из строки
         public int[] GetContentIdArray()

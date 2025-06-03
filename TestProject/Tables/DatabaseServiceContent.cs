@@ -4,60 +4,26 @@ namespace CineChronicle.Tables
 {
     public class DatabaseServiceContent
     {
-        private SQLiteConnection _connection;
-
+        //private SQLiteConnection _context;
+        private readonly CineChronicleContext _context;
         public DatabaseServiceContent()
         {
-            _connection = new SQLiteConnection(Path.Combine(FileSystem.AppDataDirectory, "content1.db"));
-            //DropAllTables();
-            CreateTables();
+            _context = new CineChronicleContext();
+            _context.Database.EnsureCreated(); // Создает БД, если ее нет
         }
 
         #region [Таблицы]
-        public void CreateTables()
-        {
-            if (!TableExists<Authorized>()) _connection.CreateTable<Authorized>();
-            if (!TableExists<Content>()) _connection.CreateTable<Content>();
-            if (!TableExists<ContentRecommendation>()) _connection.CreateTable<ContentRecommendation>();
-            if (!TableExists<DateExit>()) _connection.CreateTable<DateExit>();
-            if (!TableExists<User>()) _connection.CreateTable<User>();
-            if (!TableExists<UserSettings>()) _connection.CreateTable<UserSettings>();
-            if (!TableExists<UserContents>()) _connection.CreateTable<UserContents>();
-        }
-        private bool TableExists<T>()
-        {
-            var tableName = typeof(T).Name;
-            var query = $"SELECT name FROM sqlite_master WHERE type='table' AND name='{tableName}';";
-            var result = _connection.ExecuteScalar<string>(query);
-            return result != null;
-        }
-        public void DropAllTables()
-        {
-            _connection.Execute("DROP TABLE IF EXISTS Content");
-            _connection.Execute("DROP TABLE IF EXISTS DateExit");
-            _connection.Execute("DROP TABLE IF EXISTS User");
-            _connection.Execute("DROP TABLE IF EXISTS Authorized");
-            _connection.Execute("DROP TABLE IF EXISTS UserSettings");
-            _connection.Execute("DROP TABLE IF EXISTS UserContents");
-            _connection.Execute("DROP TABLE IF EXISTS ContentRecommendation");
-
-            _connection.Execute("VACUUM");
-        }
         public void CloseConnection()
         {
-            _connection?.Close();
-        }
-        public void DeleteTable()
-        {
-            _connection.DropTable<User>();
-            _connection.DropTable<Authorized>();
+            //_context?.Close();
         }
         #endregion
 
         #region [Контент}
         public void InsertContent(Content content)
         {
-            _connection.Insert(content);
+            _context.Content.Add(content);
+            _context.SaveChanges(); // Добавлено сохранение изменений
 
             var AuthUser = GetAuthorizedByAuth(true);
             if (AuthUser == null) { }
@@ -66,16 +32,18 @@ namespace CineChronicle.Tables
                 int userId = GetUserIdByEmail(AuthUser.Email);
                 AddUserContent(userId, [content.Id]);
             }
-
         }
         public void UpdateContent(Content content)
         {
-            _connection.Update(content);
+            _context.Content.Update(content); // Добавлено уточнение Content
+            _context.SaveChanges(); // Добавлено сохранение изменений
         }
 
         public void DeleteContent(Content content)
         {
-            _connection.Delete(content);
+            _context.Content.Remove(content); // Изменено с Delete на Remove
+            _context.SaveChanges(); // Добавлено сохранение изменений
+
             var AuthUser = GetAuthorizedByAuth(true);
             if (AuthUser == null) { }
             else
@@ -92,36 +60,36 @@ namespace CineChronicle.Tables
                 return new List<Content>(); // Возвращаем пустой список, если ids равен null
             }
 
-            return _connection.Table<Content>()
+            return _context.Content
                 .Where(c => ids.Contains(c.Id))
                 .ToList();
         }
         public Content GetContentById(int id)
         {
-            return _connection.Table<Content>().FirstOrDefault(c => c.Id == id);
+            return _context.Content.FirstOrDefault(c => c.Id == id);
         }
         public List<Content> GetContentByType(string type, int[] ids)
         {
-            return _connection.Table<Content>()
+            return _context.Content
                 .Where(c => c.Type == type && ids.Contains(c.Id))
                 .ToList();
         }
         public List<Content> GetContentByWatchStatus(string watchStatus, int[] ids)
         {
-            return _connection.Table<Content>()
+            return _context.Content
                 .Where(c => c.WatchStatus == watchStatus && ids.Contains(c.Id))
                 .ToList();
         }
         public List<Content> GetContentByTitle(string title, int[] ids)
         {
-            return _connection.Table<Content>()
+            return _context.Content
                 .Where(c => c.Title == title && ids.Contains(c.Id))
                 .ToList();
         }
 
         public int GetContentCountByType(string type, int[] ids)
         {
-            return _connection.Table<Content>()
+            return _context.Content
                 .Count(x => x.Type == type && ids.Contains(x.Id));
         }
         public int GetContentCount(int[] ids)
@@ -132,17 +100,17 @@ namespace CineChronicle.Tables
                 return 0; // Возвращаем 0, если массив null или пуст
             }
 
-            return _connection.Table<Content>()
+            return _context.Content
                 .Count(x => ids.Contains(x.Id));
         }
         public int GetContentCountByWatchStatus(string watchStatus, int[] ids)
         {
-            return _connection.Table<Content>()
+            return _context.Content
                 .Count(x => x.WatchStatus == watchStatus && ids.Contains(x.Id));
         }
         public string GetFavoriteDubbing(int[] ids)
         {
-            return _connection.Table<Content>()
+            return _context.Content
                 .Where(x => ids.Contains(x.Id) && !string.IsNullOrEmpty(x.Dubbing))
                 .GroupBy(x => x.Dubbing)
                 .OrderByDescending(g => g.Count())
@@ -152,7 +120,7 @@ namespace CineChronicle.Tables
 
         public string GetFavoriteCategory(int[] ids)
         {
-            return _connection.Table<Content>()
+            return _context.Content
                 .Where(x => ids.Contains(x.Id) && !string.IsNullOrEmpty(x.Type))
                 .GroupBy(x => x.Type)
                 .OrderByDescending(g => g.Count())
@@ -164,20 +132,23 @@ namespace CineChronicle.Tables
         #region [Дата выхода]
         public void InsertDate(DateExit data)
         {
-            _connection.Insert(data);
+            _context.DateExit.Add(data);
+            _context.SaveChanges();
         }
         public void UpdateContent(DateExit data)
         {
-            _connection.Update(data);
+            _context.DateExit.Update(data);
+            _context.SaveChanges();
         }
 
         public void DeleteContent(DateExit data)
         {
-            _connection.Delete(data);
+            _context.DateExit.Remove(data);
+            _context.SaveChanges();
         }
         public DateExit GetDateByTitle(string title)
         {
-            return _connection.Table<DateExit>().FirstOrDefault(c => c.Title == title);
+            return _context.DateExit.FirstOrDefault(c => c.Title == title);
         }
         #endregion
 
@@ -185,50 +156,55 @@ namespace CineChronicle.Tables
         //Рекомендованный контент
         public void InsertRecomContent(ContentRecommendation contentRecommendation)
         {
-            _connection.Insert(contentRecommendation);
+            _context.ContentRecommendation.Add(contentRecommendation);
+            _context.SaveChanges();
         }
         public List<ContentRecommendation> GetAllRecomContent()
         {
-            return _connection.Table<ContentRecommendation>().ToList();
+            return _context.ContentRecommendation.ToList();
         }
         public bool IsRecomContentValid()
         {
-            var recommendations = _connection.Table<ContentRecommendation>().ToList();
+            var recommendations = _context.ContentRecommendation.ToList();
 
             // Возвращаем true, если список пуст или прошло 7 дней с даты изменения
             return !recommendations.Any() || recommendations.Any(cr => (DateTime.Now - cr.DateChange).TotalDays >= 7);
         }
         public void ClearRecomContent()
         {
-            _connection.DeleteAll<ContentRecommendation>();
+            var allRecommendations = _context.ContentRecommendation.ToList();
+            _context.ContentRecommendation.RemoveRange(allRecommendations);
+            _context.SaveChanges();
         }
         #endregion
 
         #region [Пользователь] 
         public void InsertUser(User user)
         {
-            _connection.Insert(user);
+            _context.User.Add(user);
+            _context.SaveChanges();
         }
         public User GetUsereByEmail(string title)
         {
-            return _connection.Table<User>().FirstOrDefault(c => c.Email == title);
+            return _context.User.FirstOrDefault(c => c.Email == title);
         }
         public User GetUsereByNickName(string nickName)
         {
-            return _connection.Table<User>().FirstOrDefault(c => c.NickName == nickName);
+            return _context.User.FirstOrDefault(c => c.NickName == nickName);
         }
         public int GetUserIdByEmail(string email)
         {
-            var user = _connection.Table<User>().FirstOrDefault(c => c.Email == email);
+            var user = _context.User.FirstOrDefault(c => c.Email == email);
             return user.Id; // Возвращаем Id или null, если пользователь не найден
         }
         public void UpdateUser(User user)
         {
-            _connection.Update(user);
+            _context.User.Update(user);
+            _context.SaveChanges();
         }
         public List<User> GetAllUser()
         {
-            return _connection.Table<User>().ToList();
+            return _context.User.ToList();
         }
         #endregion
 
@@ -237,40 +213,44 @@ namespace CineChronicle.Tables
         //Авторизованный пользователь
         public void InsertAuth(Authorized authorized)
         {
-            _connection.Insert(authorized);
+            _context.Authorized.Add(authorized);
+            _context.SaveChanges();
         }
         public void UpdateAuth(Authorized authorized)
         {
-            _connection.Update(authorized);
+            _context.Authorized.Update(authorized);
+            _context.SaveChanges();
         }
         public Authorized GetAuthorizedByAuth(bool status)
         {
-            return _connection.Table<Authorized>().FirstOrDefault(c => c.IsAuthenticated == status);
+            return _context.Authorized.FirstOrDefault(c => c.IsAuthenticated == status);
         }
         public Authorized GetAuthorizedByEmail(string email)
         {
-            return _connection.Table<Authorized>().FirstOrDefault(c => c.Email == email);
+            return _context.Authorized.FirstOrDefault(c => c.Email == email);
         }
         #endregion
 
         #region [Пользовательский контент]
         public List<int> GetUnlinkedContentIds()
         {
-            // Получаем все идентификаторы контента из таблицы Content
-            var allContentIds = _connection.Table<Content>()
+            // Получаем все идентификаторы контента
+            var allContentIds = _context.Content
                 .Select(c => c.Id)
                 .ToList();
 
-            // Получаем все идентификаторы контента, которые связаны в таблице UserContents
-            var linkedContentIds = _connection.Table<UserContents>()
+            // Получаем все связанные идентификаторы
+            var linkedContentIds = _context.UserContents
+                .AsEnumerable() // Переключаемся на клиентскую обработку для Split
                 .SelectMany(uc => uc.ContentIds.Split(',')
                     .Select(id => int.TryParse(id, out var contentId) ? contentId : (int?)null))
                 .Where(id => id.HasValue)
                 .Select(id => id.Value)
+                .Distinct() // Убираем дубликаты
                 .ToList();
 
-            // Возвращаем идентификаторы контента, которые не связаны с UserContents
-            return allContentIds.Where(id => !linkedContentIds.Contains(id)).ToList();
+            // Возвращаем только несвязанные ID
+            return allContentIds.Except(linkedContentIds).ToList();
         }
 
         // Добавить запись в UserContents
@@ -288,7 +268,7 @@ namespace CineChronicle.Tables
                 {
                     userContent.AddContentId(contentId[i]);
                 }
-            _connection.Insert(userContent);
+            _context.UserContents.Add(userContent);
             }
             else
             {
@@ -296,8 +276,10 @@ namespace CineChronicle.Tables
                 {
                     oldCards.AddContentId(contentId[i]);
                 }
-                _connection.Update(oldCards);
+                _context.Update(oldCards);
+                _context.SaveChanges();
             }
+            _context.SaveChanges();
                     
         }
         // Удалить запись в UserContents
@@ -309,13 +291,14 @@ namespace CineChronicle.Tables
                 {
                     oldCards.RemoveContentId(contentId[i]);
                 }
-                _connection.Update(oldCards);
+                _context.UserContents.Update(oldCards);
+                _context.SaveChanges();
             }
 
         }
         public UserContents GetUserContentByUserId(int userId)
         {
-            return _connection.Table<UserContents>()
+            return _context.UserContents
                 .FirstOrDefault(uc => uc.UserId == userId);
         }
         #endregion
@@ -323,17 +306,19 @@ namespace CineChronicle.Tables
         #region [Пользовательские настройки]
         public void InsertUserSetting(UserSettings user)
         {
-            _connection.Insert(user);
+            _context.UserSettings.Add(user);
+            _context.SaveChanges();
         }
 
         public void UpdateUserSetting(UserSettings user)
         {
-            _connection.Update(user);
+            _context.UserSettings.Update(user);
+            _context.SaveChanges();
         }
 
         public UserSettings GetUserSettingById(int id)
         {
-            return _connection.Table<UserSettings>().FirstOrDefault(c => c.UserId == id);
+            return _context.UserSettings.FirstOrDefault(c => c.UserId == id);
         }
         #endregion
     }

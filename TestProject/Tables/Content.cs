@@ -1,12 +1,14 @@
-﻿using SQLite;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineChronicle.Tables
 {
     public class Content : INotifyPropertyChanged
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }                                                 // Айди
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Замена AutoIncrement
+        public int Id { get; set; }
         private string countLabel;                                                  // Количество серий??
         private string dateAdded;                                                   // Дата добавления
         private string dateRelease = null;                                          // Строка даты выхода?
@@ -34,7 +36,7 @@ namespace CineChronicle.Tables
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
+        [Column(TypeName = "varchar(191)")]
         public string Title
         {
             get { return title; }
@@ -51,6 +53,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(Title));
             }
         }
+        [Column(TypeName = "varchar(191)")]
         public string CountLabel
         {
             get => countLabel;
@@ -60,6 +63,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(CountLabel));
             }
         }
+        [Column(TypeName = "varchar(100)")]
         public string DateAdded
         {
             get => dateAdded;
@@ -69,6 +73,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(DateAdded));
             }
         }
+        [Column(TypeName = "varchar(100)")]
         public string DateRelease
         {
             get => dateRelease;
@@ -78,6 +83,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(DateRelease));
             }
         }
+        [Column(TypeName = "text")]
         public string Description
         {
             get => description;
@@ -87,6 +93,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(Description));
             }
         }
+        [Column(TypeName = "varchar(100)")]
         public string Dubbing
         {
             get => dubbing;
@@ -96,6 +103,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(Dubbing));
             }
         }
+        [Column(TypeName = "varchar(191)")]
         public string EmailUser
         {
             get => emailUser;
@@ -105,6 +113,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(EmailUser));
             }
         }
+        [Column(TypeName = "text")]
         public string Image
         {
             get => image;
@@ -132,6 +141,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(LastWatchedSeries));
             }
         }
+        [Column(TypeName = "varchar(100)")]
         public string NextEpisodeReleaseDate
         {
             get => nextEpisodeReleaseDate;
@@ -141,6 +151,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(NextEpisodeReleaseDate));
             }
         }
+        [Column(TypeName = "varchar(191)")]
         public string OriginalTitle
         {
             get => originalTitle;
@@ -150,6 +161,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(OriginalTitle));
             }
         }
+        [Column(TypeName = "varchar(100)")]
         public string SeriesChangeDate
         {
             get => seriesChangeDate;
@@ -159,6 +171,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(SeriesChangeDate));
             }
         }
+        [Column(TypeName = "text")]
         public string SourceLink
         {
             get => sourceLink;
@@ -168,6 +181,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(SourceLink));
             }
         }
+        [Column(TypeName = "text")]
         public string UserLink
         {
             get => userLink;
@@ -177,6 +191,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(UserLink));
             }
         }
+        [Column(TypeName = "varchar(100)")]
         public string Type
         {
             get => type;
@@ -186,6 +201,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(Type));
             }
         }
+        [Column(TypeName = "varchar(100)")]
         public string WatchStatus
         {
             get => watchStatus;
@@ -195,6 +211,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(WatchStatus));
             }
         }
+        [Column(TypeName = "text")]
         public string YouTubeBackground
         {
             get => youTubeBackground;
@@ -204,6 +221,7 @@ namespace CineChronicle.Tables
                 OnPropertyChanged(nameof(YouTubeBackground));
             }
         }
+        [Column(TypeName = "text")]
         public string YouTubeLink
         {
             get => youTubeLink;

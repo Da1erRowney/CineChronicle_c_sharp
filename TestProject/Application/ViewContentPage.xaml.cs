@@ -311,7 +311,7 @@ namespace TestProject
         //Пользователь выбрал удалить контент
         private void TapDelete()
         {
-            DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            DatabaseServiceContent _databaseService = new DatabaseServiceContent();
             _databaseService.DeleteContent(content);
             _databaseService.CloseConnection();
         }
@@ -329,7 +329,7 @@ namespace TestProject
             DateTime newDate = currentDate.AddHours(+3);
             content.SeriesChangeDate = newDate.ToString("yyyy-MM-dd HH:mm:ss");
 
-            DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            DatabaseServiceContent _databaseService = new DatabaseServiceContent();
             _databaseService.UpdateContent(content);
             _databaseService.CloseConnection();
         }
@@ -436,7 +436,7 @@ namespace TestProject
 
 
             // Обновляем контент в базе данных
-            DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            DatabaseServiceContent _databaseService = new DatabaseServiceContent();
             _databaseService.UpdateContent(currentContent);
             _databaseService.CloseConnection();
 
@@ -473,7 +473,7 @@ namespace TestProject
                 string selectedType = (string)picker.ItemsSource[selectedIndex];
                 content.WatchStatus = selectedType;
 
-                DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
+                DatabaseServiceContent _databaseService = new DatabaseServiceContent();
                 _databaseService.UpdateContent(content);
                 _databaseService.CloseConnection();
 
@@ -503,7 +503,7 @@ namespace TestProject
         {
             // Возвращаем предыдущие значения
             BindingContext = null;
-            DatabaseServiceContent _databaseService = new DatabaseServiceContent(MainPage._databasePath);
+            DatabaseServiceContent _databaseService = new DatabaseServiceContent();
             content = _databaseService.GetContentById(content.Id);
             BindingContext = new ViewContentPageRefreshModel(content);
 

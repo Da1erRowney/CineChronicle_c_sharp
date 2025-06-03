@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MySql.EntityFrameworkCore.Extensions;
-using System.Linq;
 
 namespace CineChronicle.Tables
 {

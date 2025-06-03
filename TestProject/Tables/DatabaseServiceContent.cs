@@ -1,6 +1,4 @@
-﻿using SQLite;
-
-namespace CineChronicle.Tables
+﻿namespace CineChronicle.Tables
 {
     public class DatabaseServiceContent
     {
